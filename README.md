@@ -5,7 +5,7 @@
 
 ## Team Members
 *Please complete your team information:*
-- *student name / netid*
+- *Louise Li / xl435*
 - *student name / netid*
 - *student name / netid*
 - *student name / netid*
