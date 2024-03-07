@@ -6,12 +6,12 @@
 ## Team Members
 *Please complete your team information:*
 - *Louise Li / xl435*
-- *student name / netid*
-- *student name / netid*
-- *student name / netid*
+- *Charles Prior / cgp26*
+- *Qianyi Xue / qx49*
+- *Kenan Colak / kc566*
 
 ## LEAD TA
-- **Your Project LEAD TA is**: *TA's name here*
+- **Your Project LEAD TA is**: *Xingqi*
 - Your team will have one lead TA, to which you can reach out for clarification on the specifications.
 - You can ask for help from any TA, but regarding specifications, the LEAD TA definitions will have precedence over all other TAs. 
 
