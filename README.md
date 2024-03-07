@@ -1,6 +1,6 @@
 # ECE 651 - Spring 24 - Team Project - Evolution 1
 
-## Team #X
+## Team #2
 *Please replace the _x_ above with your team number*
 
 ## Team Members
