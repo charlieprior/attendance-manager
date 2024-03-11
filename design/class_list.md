@@ -4,6 +4,7 @@
 - Class
 - Student
 - AttendanceRecord
+- WeeklyAttendanceRecord (extends from AttendanceRecord)
 - LoginRequest
 - Notifier
  - EmailNotifier
@@ -16,6 +17,7 @@
 - Class
 - Student
 - AttendanceRecord
+- WeeklyAttendanceRecord (extends from AttendanceRecord)
 
 ### View:
 - ClassView
