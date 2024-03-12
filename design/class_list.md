@@ -6,8 +6,8 @@
 - AttendanceRecord
 - WeeklyAttendanceRecord (extends from AttendanceRecord)
 - LoginRequest
-- Notifier
- - EmailNotifier
+- Notifier (interface)
+ - EmailNotifier (implements Notifier)
 - PersistenceManager (functions: saveData(), loadData())
 - SecurityManager (functions: logAccessCheck(),encryptData()...)
 
