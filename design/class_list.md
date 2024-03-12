@@ -1,20 +1,20 @@
 # Class design list
 ## Server:
 - User
-- Class
+- Course
 - Student
 - AttendanceRecord
 - WeeklyAttendanceRecord (extends from AttendanceRecord)
 - LoginRequest
 - Notifier
  - EmailNotifier
-- SaveData
-- LoadData
+- PersistenceManager (functions: saveData(), loadData())
+- SecurityManager (functions: logAccessCheck(),encryptData()...)
 
 ## Client:
 ### Model:
 *Some classes can be shared with server. DRY*
-- Class
+- Course
 - Student
 - AttendanceRecord
 - WeeklyAttendanceRecord (extends from AttendanceRecord)
@@ -26,3 +26,4 @@
 ### Controller:
 - User
  - TextUser
+- AttendanceController
