@@ -1,0 +1,10 @@
+Notes from meeting:
+Make class Course which has a list of Lectures
+Make Course contain a single AttendenceSession
+TA invited us to Repo containing information on how to set up gradle to have server/client
+
+Next steps:
+Update UML with above changes
+Write spreadsheet with tasks (Wed)
+Set up multi project
+Set up CI/CD
