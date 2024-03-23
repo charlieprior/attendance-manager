@@ -9,6 +9,7 @@ public class Course {
     private final String professor;
     private final ArrayList<Lecture> lectures = new ArrayList<>();
     private final AttendanceSession attendance;
+    private final int lectureID;
 
     /*
      * constructor
@@ -19,6 +20,7 @@ public class Course {
         this.courseName = name;
         this.professor = pro;
         this.attendance = attendance;
+        this.lectureID = 0;
     }
 
     /*
@@ -49,6 +51,7 @@ public class Course {
     }
 
     public void startLecture(){
+        lectureID+=1;
         Lecture newLec = new Lecture();//constructor, losing parameters
         newLec.attendanceRecord(attendance); //function inside Lecture class
         addLecture(newLec);
