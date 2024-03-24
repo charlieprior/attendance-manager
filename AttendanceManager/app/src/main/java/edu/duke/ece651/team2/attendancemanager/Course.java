@@ -8,7 +8,7 @@ public class Course {
     private final String courseName;
     private final String professor;
     private final ArrayList<Lecture> lectures = new ArrayList<>();
-    private final AttendanceSession attendance;
+    private final ArrayList<AttendanceSession> attendance = new ArrayList<>();
     private final int lectureID;
 
     /*
@@ -50,9 +50,14 @@ public class Course {
         lectures.add(lec);
     }
 
+    public void addAttendanceSession(AttendanceSession as){
+        attendance.add(as);
+    }
+
     public void startLecture(){
         lectureID+=1;
         Lecture newLec = new Lecture();//constructor, losing parameters
+        AttendanceRecord newSession = new AttendanceSession();
         newLec.attendanceRecord(attendance); //function inside Lecture class
         addLecture(newLec);
     }
