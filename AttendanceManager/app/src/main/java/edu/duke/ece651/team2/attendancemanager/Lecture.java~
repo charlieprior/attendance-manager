@@ -1,0 +1,34 @@
+package edu.duke.ece651.team2.attendancemanager;
+
+import java.util.ArrayList;
+
+import java.util.Date;
+
+//omitted extends Course to be able to test Lecture
+public class Lecture{
+  String lectureID;
+  Date date;
+  ArrayList<Student> Students;
+
+  void setLectureID(String lectureID){
+    this.lectureID = lectureID;
+  }
+  String getLectureID(){
+    return lectureID;
+  }
+  void setDate(Date date){
+    this.date = date;
+  }
+  Date getDate(){
+    return date;
+  }
+  void setStudents(ArrayList<Student> Students){
+    for(Student s : this.Students){
+      Students.add(s);
+    }
+  }
+  ArrayList<Student> getStudents(){
+    return Students;
+  }
+  //void attendanceRecord(AttendanceSession);
+}

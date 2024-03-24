@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1711240737751" clover="4.4.1">
+   <project name="app" timestamp="1711240737304">
+      <metrics coveredelements="72" complexity="22" loc="152" methods="22" classes="6" statements="52" packages="1" coveredconditionals="0" coveredmethods="21" elements="74" ncloc="128" files="6" conditionals="0" coveredstatements="51"/>
+      <package name="edu.duke.ece651.team2.attendancemanager">
+         <metrics coveredelements="72" complexity="22" loc="152" methods="22" classes="6" statements="52" coveredconditionals="0" coveredmethods="21" elements="74" ncloc="128" files="6" conditionals="0" coveredstatements="51"/>
+         <file path="/home/kc566/project-team-2/AttendanceManager/app/src/main/java/edu/duke/ece651/team2/attendancemanager/Student.java" name="Student.java">
+            <metrics coveredelements="26" coveredconditionals="0" complexity="10" loc="36" coveredmethods="10" methods="10" elements="26" classes="1" ncloc="35" statements="16" conditionals="0" coveredstatements="16"/>
+            <class name="Student">
+               <metrics coveredelements="26" coveredconditionals="0" complexity="10" coveredmethods="10" methods="10" elements="26" statements="16" conditionals="0" coveredstatements="16"/>
+            </class>
+            <line complexity="1" visibility="public" signature="Student()" num="8" count="1" type="method"/>
+            <line num="9" count="1" type="stmt"/>
+            <line num="10" count="1" type="stmt"/>
+            <line num="11" count="1" type="stmt"/>
+            <line num="12" count="1" type="stmt"/>
+            <line complexity="1" visibility="public" signature="Student(String,String,String,String)" num="14" count="2" type="method"/>
+            <line num="15" count="2" type="stmt"/>
+            <line num="16" count="2" type="stmt"/>
+            <line num="17" count="2" type="stmt"/>
+            <line num="18" count="2" type="stmt"/>
+            <line complexity="1" visibility="package" signature="setLegalName(String) : void" num="20" count="1" type="method"/>
+            <line num="21" count="1" type="stmt"/>
+            <line complexity="1" visibility="package" signature="getLegalName() : String" num="23" count="1" type="method"/>
+            <line num="23" count="1" type="stmt"/>
+            <line complexity="1" visibility="package" signature="setStudentID(String) : void" num="24" count="1" type="method"/>
+            <line num="25" count="1" type="stmt"/>
+            <line complexity="1" visibility="package" signature="getStudentID() : String" num="27" count="1" type="method"/>
+            <line num="27" count="1" type="stmt"/>
+            <line complexity="1" visibility="package" signature="setEmail(String) : void" num="28" count="1" type="method"/>
+            <line num="29" count="1" type="stmt"/>
+            <line complexity="1" visibility="package" signature="getEmail() : String" num="31" count="1" type="method"/>
+            <line num="31" count="1" type="stmt"/>
+            <line complexity="1" visibility="package" signature="setDisplayName(String) : void" num="32" count="1" type="method"/>
+            <line num="33" count="1" type="stmt"/>
+            <line complexity="1" visibility="package" signature="getDisplayName() : String" num="35" count="1" type="method"/>
+            <line num="35" count="1" type="stmt"/>
+         </file>
+         <file path="/home/kc566/project-team-2/AttendanceManager/app/src/main/java/edu/duke/ece651/team2/attendancemanager/App.java" name="App.java">
+            <metrics coveredelements="2" coveredconditionals="0" complexity="2" loc="14" coveredmethods="1" methods="2" elements="4" classes="1" ncloc="9" statements="2" conditionals="0" coveredstatements="1"/>
+            <class name="App">
+               <metrics coveredelements="2" coveredconditionals="0" complexity="2" coveredmethods="1" methods="2" elements="4" statements="2" conditionals="0" coveredstatements="1"/>
+            </class>
+            <line complexity="1" visibility="public" signature="getGreeting() : String" num="7" count="1" type="method"/>
+            <line num="8" count="1" type="stmt"/>
+            <line complexity="1" visibility="public" signature="main(String[]) : void" num="11" count="0" type="method"/>
+            <line num="12" count="0" type="stmt"/>
+         </file>
+         <file path="/home/kc566/project-team-2/AttendanceManager/app/src/main/java/edu/duke/ece651/team2/attendancemanager/Lecture.java" name="Lecture.java">
+            <metrics coveredelements="16" coveredconditionals="0" complexity="7" loc="38" coveredmethods="7" methods="7" elements="16" classes="1" ncloc="32" statements="9" conditionals="0" coveredstatements="9"/>
+            <class name="Lecture">
+               <metrics coveredelements="16" coveredconditionals="0" complexity="7" coveredmethods="7" methods="7" elements="16" statements="9" conditionals="0" coveredstatements="9"/>
+            </class>
+            <line complexity="1" visibility="public" signature="Lecture()" num="12" count="1" type="method"/>
+            <line num="13" count="1" type="stmt"/>
+            <line num="14" count="1" type="stmt"/>
+            <line complexity="1" visibility="package" signature="setLectureID(String) : void" num="17" count="1" type="method"/>
+            <line num="18" count="1" type="stmt"/>
+            <line complexity="1" visibility="package" signature="getLectureID() : String" num="20" count="1" type="method"/>
+            <line num="21" count="1" type="stmt"/>
+            <line complexity="1" visibility="package" signature="setDate(Calendar) : void" num="23" count="1" type="method"/>
+            <line num="24" count="1" type="stmt"/>
+            <line complexity="1" visibility="package" signature="getDate() : Calendar" num="26" count="1" type="method"/>
+            <line num="27" count="1" type="stmt"/>
+            <line complexity="1" visibility="package" signature="setStudents(ArrayList&lt;Student&gt;) : void" num="29" count="1" type="method"/>
+            <line num="30" count="1" type="stmt"/>
+            <line num="31" count="2" type="stmt"/>
+            <line complexity="1" visibility="public" signature="getStudents() : Iterable&lt;Student&gt;" num="34" count="1" type="method"/>
+            <line num="35" count="1" type="stmt"/>
+         </file>
+         <file path="/home/kc566/project-team-2/AttendanceManager/app/src/test/java/edu/duke/ece651/team2/attendancemanager/AppTest.java" name="AppTest.java">
+            <metrics coveredelements="3" coveredconditionals="0" complexity="1" loc="14" coveredmethods="1" methods="1" elements="3" classes="1" ncloc="9" statements="2" conditionals="0" coveredstatements="2"/>
+            <class name="AppTest">
+               <metrics coveredelements="3" coveredconditionals="0" complexity="1" coveredmethods="1" methods="1" elements="3" statements="2" conditionals="0" coveredstatements="2"/>
+            </class>
+            <line complexity="1" visibility="package" signature="appHasAGreeting() : void" num="10" count="1" type="method"/>
+            <line num="11" count="1" type="stmt"/>
+            <line num="12" count="1" type="stmt"/>
+         </file>
+         <file path="/home/kc566/project-team-2/AttendanceManager/app/src/test/java/edu/duke/ece651/team2/attendancemanager/LectureTest.java" name="LectureTest.java">
+            <metrics coveredelements="14" coveredconditionals="0" complexity="1" loc="29" coveredmethods="1" methods="1" elements="14" classes="1" ncloc="25" statements="13" conditionals="0" coveredstatements="13"/>
+            <class name="LectureTest">
+               <metrics coveredelements="14" coveredconditionals="0" complexity="1" coveredmethods="1" methods="1" elements="14" statements="13" conditionals="0" coveredstatements="13"/>
+            </class>
+            <line complexity="1" visibility="public" signature="test_LectureGetterSetter() : void" num="11" count="1" type="method"/>
+            <line num="13" count="1" type="stmt"/>
+            <line num="14" count="1" type="stmt"/>
+            <line num="15" count="1" type="stmt"/>
+            <line num="16" count="1" type="stmt"/>
+            <line num="17" count="1" type="stmt"/>
+            <line num="18" count="1" type="stmt"/>
+            <line num="19" count="1" type="stmt"/>
+            <line num="21" count="1" type="stmt"/>
+            <line num="23" count="1" type="stmt"/>
+            <line num="24" count="1" type="stmt"/>
+            <line num="25" count="1" type="stmt"/>
+            <line num="26" count="1" type="stmt"/>
+            <line num="27" count="1" type="stmt"/>
+         </file>
+         <file path="/home/kc566/project-team-2/AttendanceManager/app/src/test/java/edu/duke/ece651/team2/attendancemanager/StudentTest.java" name="StudentTest.java">
+            <metrics coveredelements="11" coveredconditionals="0" complexity="1" loc="21" coveredmethods="1" methods="1" elements="11" classes="1" ncloc="18" statements="10" conditionals="0" coveredstatements="10"/>
+            <class name="StudentTest">
+               <metrics coveredelements="11" coveredconditionals="0" complexity="1" coveredmethods="1" methods="1" elements="11" statements="10" conditionals="0" coveredstatements="10"/>
+            </class>
+            <line complexity="1" visibility="public" signature="test_setter_getter() : void" num="8" count="1" type="method"/>
+            <line num="10" count="1" type="stmt"/>
+            <line num="11" count="1" type="stmt"/>
+            <line num="12" count="1" type="stmt"/>
+            <line num="13" count="1" type="stmt"/>
+            <line num="14" count="1" type="stmt"/>
+            <line num="15" count="1" type="stmt"/>
+            <line num="16" count="1" type="stmt"/>
+            <line num="17" count="1" type="stmt"/>
+            <line num="18" count="1" type="stmt"/>
+            <line num="19" count="1" type="stmt"/>
+         </file>
+      </package>
+   </project>
+   <testproject name="app" timestamp="1711240737304">
+      <metrics coveredelements="0" complexity="0" loc="0" methods="0" classes="0" statements="0" packages="0" coveredconditionals="0" coveredmethods="0" elements="0" ncloc="0" files="0" conditionals="0" coveredstatements="0"/>
+   </testproject>
+</coverage>
