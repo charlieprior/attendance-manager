@@ -4,20 +4,42 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * The AttendanceSession class represents a session for recording student
+ * attendance.
+ */
 public class AttendanceSession {
+    /**
+     * The list of attendance records for the session.
+     */
     private List<AttendanceRecord> records = new ArrayList<>();
-    // private PersistenceManager persistenceManager;
 
+    /**
+     * Constructs a new AttendanceSession object.
+     */
     public AttendanceSession() {
         this.records = new ArrayList<>();
-        // this.persistenceManager = persistenceManager;
     }
 
+    /**
+     * Returns the list of attendance records for the session.
+     *
+     * @return The list of attendance records for the session.
+     */
     public List<AttendanceRecord> getRecords() {
         return records;
     }
 
-    // Add AttendanceRecord into records
+    /**
+     * Records attendance for a student in the session.
+     *
+     * @param studentID The ID of the student.
+     * @param status    The status of the student's attendance (true if present,
+     *                  false if absent).
+     * @param lectureID The ID of the lecture.
+     * @return true if the attendance was successfully recorded, false if a record
+     *         for the same student and lecture already exists.
+     */
     public boolean recordAttendance(String studentID, Boolean status, String lectureID) {
         // Check if a record for the same student and lecture already exists
         for (AttendanceRecord record : records) {
@@ -33,8 +55,15 @@ public class AttendanceSession {
         return true;
     }
 
-    // Look for the AttendanceRecord with the specified studentID and Update its
-    // status.
+    /**
+     * Updates the attendance record for a student in the session.
+     *
+     * @param studentID The ID of the student.
+     * @param newStatus The new status of the student's attendance (true if present,
+     *                  false if absent).
+     * @return true if the attendance record was successfully updated, false if the
+     *         record was not found.
+     */
     public boolean updateAttendanceRecord(String studentID, Boolean newStatus) {
         for (AttendanceRecord record : records) {
             if (record.getStudentID().equals(studentID)) {
@@ -45,15 +74,23 @@ public class AttendanceSession {
         return false; // Record not found
     }
 
-    // Remove the AttendanceRecord with the specified studentID from the records
-    // list
+    /**
+     * Removes the attendance record for a student from the session.
+     *
+     * @param studentID The ID of the student.
+     * @return true if the attendance record was successfully removed, false if the
+     *         record was not found.
+     */
     public boolean removeAttendanceRecord(String studentID) {
         return records.removeIf(record -> record.getStudentID().equals(studentID));
         // removeIf returns true if any elements were removed
     }
 
+    /**
+     * Ends the attendance session by clearing all records and call function to
+     * write to CSV.
+     */
     public void endSession() {
-        // persistenceManager.save()
         records.clear();
     }
 }

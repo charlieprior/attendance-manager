@@ -13,8 +13,8 @@ public class ProfessorTest {
 
     @BeforeEach
     void setUp() {
-        professor1 = new Professor("John Doe", "12345");
-        professor2 = new Professor("TTT", "11111");
+        professor1 = new Professor("John Doe", "12345", "AAA@gmail.com");
+        professor2 = new Professor("TTT", "11111", "BBB@gmail.com");
         testCourse1 = new Course("CS101", "Intro to Computer Science");
         testCourse2 = new Course("CS301", "Database System");
     }
@@ -24,6 +24,13 @@ public class ProfessorTest {
         assertEquals("John Doe", professor1.getName());
         assertNotEquals("A", professor1.getName());
         assertNotEquals(professor2.getName(), professor1.getName());
+    }
+
+    @Test
+    public void testGetEmail() {
+        assertEquals("AAA@gmail.com", professor1.getEmail());
+        assertNotEquals("A", professor1.getEmail());
+        assertNotEquals(professor2.getEmail(), professor1.getEmail());
     }
 
     @Test
