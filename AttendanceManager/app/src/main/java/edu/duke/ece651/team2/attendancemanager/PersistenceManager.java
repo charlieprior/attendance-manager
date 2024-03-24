@@ -12,7 +12,7 @@ public class PersistenceManager {
     public void writeRecordsToCSV(String fileName, AttendanceSession session){
         List<AttendanceRecord> records = session.getRecords();
         try{
-            FileWriter writer = new FileWriter(fileName+".csv"); //path ???
+            FileWriter writer = new FileWriter("/"+fileName+session.getlectureID()+".csv"); //path ???
             writer.append(headers+newLine);
             for(AttendanceRecord r:records){
                 writer.write(r.getStudentID()+separator);

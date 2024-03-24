@@ -3,24 +3,29 @@ package edu.duke.ece651.team2.attendancemanager;
 import java.util.ArrayList;
 
 public class Course {
-    private final String categ;
     private final String courseID;
     private final String courseName;
-    private final String professor;
-    private final ArrayList<Lecture> lectures = new ArrayList<>();
-    private final ArrayList<AttendanceSession> attendance = new ArrayList<>();
-    private final int lectureID;
+    private final Professor professor;
+    private int lectureTimes;
+    private final ArrayList<Student> students;
 
     /*
      * constructor
      */
-    public Course(String categ, String id, String name, String pro, AttendanceSession attendance){
-        this.categ = categ;
+    public Course(String id, String name, Professor pro,ArrayList<Student> students){
         this.courseID = id;
         this.courseName = name;
         this.professor = pro;
-        this.attendance = attendance;
-        this.lectureID = 0;
+        this.lectureTimes = 0;
+        this.students = students;
+    }
+
+    public Course(String id, String name, Professor pro, int lectureTimes,ArrayList<Student> students){
+        this.courseID = id;
+        this.courseName = name;
+        this.professor = pro;
+        this.lectureTimes = lectureTimes;
+        this.students = students;
     }
 
     /*
@@ -34,31 +39,20 @@ public class Course {
         return courseID;
     }
 
-    public String getCateg(){
-        return categ;
-    }
-
-    public String toString(){
-        return categ+courseID;
-    }
-
     public String getProfessor(){
-        return professor;
+        return professor.getName();
     }
 
-    public void addLecture(Lecture lec){
-        lectures.add(lec);
+    public Lecture startLecture(){
+        lectureTimes+=1;
+        String lectureID = courseID+"_"+lectureTimes;
+        //AttendanceSession newSession = new AttendanceSession(courseName, lectureID, professor.getName(), students);
+        Lecture newLec = new Lecture(courseName,lectureID, students, professor);
+        newLec.attendanceRecord(); //function inside Lecture class
+        return newLec;
     }
 
-    public void addAttendanceSession(AttendanceSession as){
-        attendance.add(as);
-    }
-
-    public void startLecture(){
-        lectureID+=1;
-        Lecture newLec = new Lecture();//constructor, losing parameters
-        AttendanceRecord newSession = new AttendanceSession();
-        newLec.attendanceRecord(attendance); //function inside Lecture class
-        addLecture(newLec);
+    public void endLecture(Lecture lecture){
+        lecture.endLecture();
     }
 }

@@ -13,12 +13,23 @@ public class AttendanceSession {
      * The list of attendance records for the session.
      */
     private List<AttendanceRecord> records = new ArrayList<>();
+    private final String courseName;
+    private final String lectureID;
 
     /**
      * Constructs a new AttendanceSession object.
      */
     public AttendanceSession() {
         this.records = new ArrayList<>();
+        this.courseName = "courseName";
+        this.lectureID = "lectureID";
+    }
+
+    public AttendanceSession(String courseName,String lectureID) {
+        this.records = new ArrayList<>();
+        this.courseName = courseName;
+        this.lectureID = lectureID;
+
     }
 
     /**
@@ -28,6 +39,14 @@ public class AttendanceSession {
      */
     public List<AttendanceRecord> getRecords() {
         return records;
+    }
+
+    public String getCourseName(){
+        return courseName;
+    }
+
+    public String getlectureID(){
+        return lectureID;
     }
 
     /**
