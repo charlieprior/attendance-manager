@@ -43,7 +43,12 @@ public class PersistenceManager {
                 writer.write("\"Student Name\": "+"\""+r.getStudentName()+"\""+separator+newLine);
                 writer.write("\"Time\": "+"\""+r.getAttendanceDate()+"\""+separator+newLine);
                 writer.write("\"Status\": "+"\""+r.getStatus()+"\""+newLine);
-                writer.append("}"+newLine);
+                if(r.equals(records.get(records.size()-1))){
+                    writer.write("}"+newLine);
+                }
+                else{
+                    writer.write("},"+newLine);
+                }
             }
             writer.append("}"+newLine);
             writer.append("}");

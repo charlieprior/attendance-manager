@@ -99,7 +99,8 @@ public class Lecture{
       }
     }
     PersistenceManager export = new PersistenceManager();
-    export.writeRecordsToCSV(courseName+" "+lectureID,attendanceSession);
+    //export.writeRecordsToCSV(courseName+" "+lectureID,attendanceSession);
+    export.writeRecordsToJSON(courseName+" "+lectureID, courseName, lectureID, attendanceSession);
     attendanceSession.endSession();
   }
 
