@@ -1,0 +1,11 @@
+{
+"Course Name": "CS101",
+"Lecture ID": "CS101_Lecture1",
+"Attendance": {
+"12345": {
+"Student Name": "A1 B1",
+"Time": "Sun Mar 24 04:16:50 EDT 2024",
+"Status": "true"
+}
+}
+}

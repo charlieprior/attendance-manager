@@ -16,6 +16,8 @@ public class AttendanceRecordTest {
     private String testStudentID;
     private Boolean testStatus;
     private String testLectureID;
+    private String testStudentName;
+
 
     @BeforeEach
     void setUp() {
@@ -23,7 +25,8 @@ public class AttendanceRecordTest {
         testStudentID = "12345";
         testStatus = true; // Assume true means present
         testLectureID = "CS101_Lecture1";
-        record1 = new AttendanceRecord(testDate, testStudentID, testStatus, testLectureID);
+        testStudentName = "A B";
+        record1 = new AttendanceRecord(testDate,testStudentID, testStudentName,testStatus, testLectureID);
     }
 
     @Test

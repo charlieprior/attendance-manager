@@ -13,6 +13,8 @@ public class AttendanceSessionTest {
 
     String studentID1 = "student123";
     String lectureID1 = "lectureABC";
+    String studentName1 = "11 22 22";
+    String studentName2 = "AA BB CC";
     Boolean initialStatus = false;
     Boolean newStatus = true;
 
@@ -29,10 +31,11 @@ public class AttendanceSessionTest {
     void testRecordAttendanceNewRecord() {
         String studentID = "123";
         String lectureID = "Lecture1";
+        String studentName = "A1 B1";
         Boolean status = true;
 
         // Test adding a new record
-        assertTrue(session.recordAttendance(studentID, status, lectureID));
+        assertTrue(session.recordAttendance(studentID, studentName,status, lectureID));
 
         // Verify that the record was added
         assertEquals(1, session.getRecords().size());
@@ -40,19 +43,21 @@ public class AttendanceSessionTest {
         assertEquals(studentID, addedRecord.getStudentID());
         assertEquals(lectureID, addedRecord.getLectureID());
         assertEquals(status, addedRecord.getStatus());
+        assertEquals(studentName, addedRecord.getStudentName());
     }
 
     @Test
     void testRecordAttendanceDuplicateRecord() {
         String studentID = "123";
         String lectureID = "Lecture1";
+        String studentName = "A1 B1";
         Boolean status = true;
 
         // Add the initial record
-        session.recordAttendance(studentID, status, lectureID);
+        session.recordAttendance(studentID,studentName, status, lectureID);
 
         // Attempt to add a duplicate record
-        assertFalse(session.recordAttendance(studentID, status, lectureID));
+        assertFalse(session.recordAttendance(studentID, studentName,status, lectureID));
 
         // Verify that no duplicate record was added
         assertEquals(1, session.getRecords().size());
@@ -62,7 +67,7 @@ public class AttendanceSessionTest {
     void testUpdateAttendanceRecord() {
 
         // Update the status of the record
-        session.recordAttendance(studentID1, initialStatus, lectureID1);
+        session.recordAttendance(studentID1, studentName1,initialStatus, lectureID1);
         assertTrue(session.updateAttendanceRecord(studentID1, newStatus));
 
         // Verify the status was updated
@@ -77,7 +82,7 @@ public class AttendanceSessionTest {
     @Test
     void testRemoveAttendanceRecord() {
         // Add and Remove the record
-        session.recordAttendance(studentID1, initialStatus, lectureID1);
+        session.recordAttendance(studentID1, studentName1,initialStatus, lectureID1);
         assertTrue(session.removeAttendanceRecord(studentID1));
 
         // Verify the record was removed

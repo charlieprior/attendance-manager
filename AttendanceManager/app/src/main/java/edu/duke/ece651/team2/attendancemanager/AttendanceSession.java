@@ -13,24 +13,14 @@ public class AttendanceSession {
      * The list of attendance records for the session.
      */
     private List<AttendanceRecord> records = new ArrayList<>();
-    private final String courseName;
-    private final String lectureID;
 
     /**
      * Constructs a new AttendanceSession object.
      */
     public AttendanceSession() {
         this.records = new ArrayList<>();
-        this.courseName = "courseName";
-        this.lectureID = "lectureID";
     }
 
-    public AttendanceSession(String courseName,String lectureID) {
-        this.records = new ArrayList<>();
-        this.courseName = courseName;
-        this.lectureID = lectureID;
-
-    }
 
     /**
      * Returns the list of attendance records for the session.
@@ -41,13 +31,6 @@ public class AttendanceSession {
         return records;
     }
 
-    public String getCourseName(){
-        return courseName;
-    }
-
-    public String getlectureID(){
-        return lectureID;
-    }
 
     /**
      * Records attendance for a student in the session.
@@ -59,7 +42,7 @@ public class AttendanceSession {
      * @return true if the attendance was successfully recorded, false if a record
      *         for the same student and lecture already exists.
      */
-    public boolean recordAttendance(String studentID, Boolean status, String lectureID) {
+    public boolean recordAttendance(String studentID,String studentName, Boolean status, String lectureID) {
         // Check if a record for the same student and lecture already exists
         for (AttendanceRecord record : records) {
             if (record.getStudentID().equals(studentID) && record.getLectureID().equals(lectureID)) {
@@ -69,7 +52,7 @@ public class AttendanceSession {
         }
 
         // If no existing record is found, create a new one
-        AttendanceRecord newRecord = new AttendanceRecord(new Date(), studentID, status, lectureID);
+        AttendanceRecord newRecord = new AttendanceRecord(new Date(), studentID, studentName, status, lectureID);
         records.add(newRecord);
         return true;
     }
@@ -103,6 +86,26 @@ public class AttendanceSession {
     public boolean removeAttendanceRecord(String studentID) {
         return records.removeIf(record -> record.getStudentID().equals(studentID));
         // removeIf returns true if any elements were removed
+    }
+
+    public ArrayList<String> lateStudentsName(){
+        ArrayList<String> late = new ArrayList<>();
+        for(AttendanceRecord r:records){
+            if (r.getStatus()==false){
+                late.add(r.getStudentName());
+            }
+        }
+        return late;
+    }
+
+    public ArrayList<String> lateStudentsID(){
+        ArrayList<String> late = new ArrayList<>();
+        for(AttendanceRecord r:records){
+            if (r.getStatus()==false){
+                late.add(r.getStudentID());
+            }
+        }
+        return late;
     }
 
     /**

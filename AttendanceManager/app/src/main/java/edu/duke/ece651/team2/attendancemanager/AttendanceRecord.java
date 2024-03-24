@@ -27,6 +27,8 @@ public class AttendanceRecord {
      */
     private String lectureID;
 
+    private String studentName;
+
     /**
      * Constructs a new AttendanceRecord object with the specified attendance date,
      * student ID, status, and lecture ID.
@@ -39,11 +41,12 @@ public class AttendanceRecord {
      * @param lectureID      The ID of the lecture associated with the attendance
      *                       record.
      */
-    public AttendanceRecord(Date attendanceDate, String studentID, Boolean status, String lectureID) {
+    public AttendanceRecord(Date attendanceDate, String studentID, String studentName, Boolean status, String lectureID) {
         this.attendanceDate = attendanceDate;
         this.studentID = studentID;
         this.status = status;
         this.lectureID = lectureID;
+        this.studentName = studentName;
     }
 
     /**
@@ -111,6 +114,10 @@ public class AttendanceRecord {
         return lectureID;
     }
 
+    public String getStudentName(){
+        return studentName;
+    }
+
     /**
      * Sets the ID of the lecture associated with the attendance record.
      *
@@ -119,4 +126,5 @@ public class AttendanceRecord {
     public void setLectureID(String lectureID) {
         this.lectureID = lectureID;
     }
+
 }

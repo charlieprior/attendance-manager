@@ -10,16 +10,34 @@ public class PersistenceManagerTest {
     private String testStudentID;
     private Boolean testStatus;
     private String testLectureID;
+    String studentName;
 
     @Test
     public void testWriteRecordsToCSV(){
         testStudentID = "12345";
+        studentName = "A1 B1";
         testStatus = true; // Assume true means present
         testLectureID = "CS101_Lecture1";
-        record1 = new AttendanceRecord(testDate, testStudentID, testStatus, testLectureID);
+        System.out.println(getClass().getClassLoader());
+        record1 = new AttendanceRecord(testDate, testStudentID, studentName,testStatus, testLectureID);
         PersistenceManager m = new PersistenceManager();
         AttendanceSession s = new AttendanceSession();
-        s.recordAttendance(testStudentID, testStatus, testLectureID);
+        s.recordAttendance(testStudentID, studentName,testStatus, testLectureID);
+        m.writeRecordsToCSV(testLectureID, s);
+    }
+
+    @Test
+    public void testWriteRecordsToJSON(){
+        testStudentID = "12345";
+        studentName = "A1 B1";
+        testStatus = true; // Assume true means present
+        testLectureID = "CS101_Lecture1";
+        System.out.println(getClass().getClassLoader());
+        record1 = new AttendanceRecord(testDate, testStudentID, studentName,testStatus, testLectureID);
+        PersistenceManager m = new PersistenceManager();
+        AttendanceSession s = new AttendanceSession();
+        s.recordAttendance(testStudentID, studentName,testStatus, testLectureID);
+        m.writeRecordsToJSON(testLectureID, "CS101", testLectureID, s);
         m.writeRecordsToCSV(testLectureID, s);
     }
 }
