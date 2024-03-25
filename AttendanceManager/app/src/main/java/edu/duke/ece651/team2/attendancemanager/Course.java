@@ -15,9 +15,15 @@ public class Course {
     private final BufferedReader inputReader;
     // private final PrintStream out;
 
-    /*
-     * constructor
-     */
+    /**
+     * This constructor will create the Course object
+     * 
+     * @param id is the Course's ID
+     * @param name is the Course's name
+     * @param pro is the Professor information
+     * @param students is the ArrayList<Student> of the Course
+     * @param inputReader is the BufferedReader to be read
+    */
     public Course(String id, String name, Professor pro,ArrayList<Student> students,BufferedReader inputReader){
         this.courseID = id;
         this.courseName = name;
@@ -27,6 +33,16 @@ public class Course {
         this.inputReader = inputReader;
     }
 
+    /**
+     * This constructor will create the Course object
+     * 
+     * @param id is the Course's ID
+     * @param name is the Course's name
+     * @param pro is the Professor information
+     * @param lectureTimes is the times of the Course's Lectures
+     * @param students is the ArrayList<Student> of the Course
+     * @param inputReader is the BufferedReader to be read
+    */
     public Course(String id, String name, Professor pro, int lectureTimes,ArrayList<Student> students,BufferedReader inputReader){
         this.courseID = id;
         this.courseName = name;
@@ -36,39 +52,64 @@ public class Course {
         this.inputReader = inputReader;
     }
 
-    /*
-     * return course name
+    /**
+     * @return course name
     */
     public String getName(){
         return courseName;
     }
 
+    /**
+     * @return courseID
+    */
     public String getCourseID(){
         return courseID;
     }
 
+    /**
+     * @return professor's name
+    */
     public String getProfessor(){
         return professor.getName();
     }
 
+    /**
+     * @return lecture's times of this course
+    */
     public int getLectureTimes(){
         return lectureTimes;
     }
 
+    /**
+     * @return the number of students in this course
+    */
     public int numberOfStudents(){
         return students.size();
     }
 
+    /**
+     * @param s is the student to be added to the Course
+    */
     public void addStudent(Student s){
         students.add(s);
     }
 
+    /**
+     * @param stu is the list of students to be added to this Course
+    */
     public void addStudents(ArrayList<Student> stu){
         for(Student s:stu){
             students.add(s);
         }
     }
 
+    //or we can add a function to return students and let the textuser give the status 
+    /**
+     * This function will start a new lecture
+     * 
+     * @throws IOException if anything happens while recording students' status
+     * @return the new lecture 
+    */
     public Lecture startLecture() throws IOException{
         lectureTimes+=1;
         String lectureID = courseID+"_"+lectureTimes;
@@ -78,6 +119,11 @@ public class Course {
         return newLec;
     }
 
+    /**
+     * This function will end the lecture
+     * 
+     * @throws IOException if anything happens while recording the students' status at the end of the class
+    */
     public void endLecture(Lecture lecture) throws IOException{
         lecture.endLecture();
     }
