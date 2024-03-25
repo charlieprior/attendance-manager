@@ -31,6 +31,32 @@ class TextUserViewTest {
         view.printCourses(prof);
         assertEquals(expected, bytes.toString());
     }
+    
+      @Test
+    void testPrintStudents() {
+        BufferedReader input = new BufferedReader(new StringReader(""));
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(bytes, true);
+
+        Professor prof = new Professor("John", "123", "john@example.edu");
+        Course course1 = new Course("C1", "Course1", prof, 0, new ArrayList<Student>(), input);
+        Student s1 = new Student("Kenan", "kc566", "kc566@duke.edu", "kencolak");
+        Student s2 = new Student("Charlie", "cgp", "cgp@duke.edu", "charliep");
+        TextUserView view = new TextUserView(output);
+
+        prof.addCourse(course1);
+
+        course1.addStudent(s1);
+        course1.addStudent(s2);
+        
+        String expected = "===========================================================================\n"+
+    "Students in Course Course1\n"+
+    "===========================================================================\n"+
+    "1. Kenan\n"+
+    "2. Charlie\n";
+        view.printStudents(course1);
+        assertEquals(expected, bytes.toString());
+    }
 
     @Test
     void testPrintStudentStatuses() throws IOException {
