@@ -20,7 +20,7 @@ public class PersistenceManager {
                 writer.write(r.getAttendanceDate()+separator);
                 writer.write(r.getStatus()+newLine);
             }
-            System.out.println("Succesfully create and write csv");
+            System.out.println("Successfully create and write csv");
             writer.close();
         }
         catch(IOException e){
