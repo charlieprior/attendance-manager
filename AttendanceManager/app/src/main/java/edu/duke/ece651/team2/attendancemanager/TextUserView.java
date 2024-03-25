@@ -2,10 +2,10 @@ package edu.duke.ece651.team2.attendancemanager;
 
 import java.io.PrintStream;
 
-public class UserTextView {
+public class TextUserView {
   final PrintStream out;
 
-  public UserTextView(PrintStream out){
+  public TextUserView(PrintStream out){
     this.out = out;
   }
 
