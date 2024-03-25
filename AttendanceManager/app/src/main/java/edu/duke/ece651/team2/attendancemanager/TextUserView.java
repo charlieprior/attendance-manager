@@ -15,8 +15,14 @@ public class TextUserView {
     out.println("=".repeat(75));
   }
 
-  void printAllStudents(Lecture l){
-    /*code to print out students*/
+  void printStudents(Course course){
+    printHeader("Students in Course " + course.getName());
+    for (int i = 0; i < course.numberOfStudents(); i++) {
+      StringBuilder sb = new StringBuilder();
+      sb.append(i + 1).append(". ");
+      sb.append(course.getStudentName(i));
+      out.println(sb.toString());
+    }
   }
 
   void printCourses(Professor professor) {

@@ -87,6 +87,10 @@ public class Course {
         return students.size();
     }
 
+  public String getStudentName(int i){
+    return students.get(i).getLegalName();
+  }
+
     /**
      * @param s is the student to be added to the Course
     */
