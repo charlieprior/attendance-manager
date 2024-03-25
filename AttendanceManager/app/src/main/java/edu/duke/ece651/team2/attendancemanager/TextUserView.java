@@ -25,6 +25,16 @@ public class TextUserView {
     }
   }
 
+  void printLectures(Course course) {
+    printHeader("Lectures in " + course.getName());
+    for (int i = 0; i < course.numberOfLectures(); i++) {
+      StringBuilder sb = new StringBuilder();
+      sb.append(i + 1).append(". ");
+      sb.append(course.getLectureName(i));
+      out.println(sb.toString());
+    }
+  }
+  
   void printCourses(Professor professor) {
     printHeader("Courses Taught by " + professor.getName());
     for (int i = 0; i < professor.getCourses().size(); i++) {

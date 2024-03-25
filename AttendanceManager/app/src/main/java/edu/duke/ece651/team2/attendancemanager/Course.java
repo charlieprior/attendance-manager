@@ -12,6 +12,7 @@ public class Course {
     private final Professor professor;
     private int lectureTimes;
     private final ArrayList<Student> students;
+    private final ArrayList<Lecture> lectures;
     private final BufferedReader inputReader;
     // private final PrintStream out;
 
@@ -24,12 +25,13 @@ public class Course {
      * @param students is the ArrayList<Student> of the Course
      * @param inputReader is the BufferedReader to be read
     */
-    public Course(String id, String name, Professor pro,ArrayList<Student> students,BufferedReader inputReader){
+  public Course(String id, String name, Professor pro,ArrayList<Student> students, ArrayList<Lecture> lectures, BufferedReader inputReader){
         this.courseID = id;
         this.courseName = name;
         this.professor = pro;
         this.lectureTimes = 0;
         this.students = students;
+        this.lectures = lectures;
         this.inputReader = inputReader;
     }
 
@@ -43,11 +45,12 @@ public class Course {
      * @param students is the ArrayList<Student> of the Course
      * @param inputReader is the BufferedReader to be read
     */
-    public Course(String id, String name, Professor pro, int lectureTimes,ArrayList<Student> students,BufferedReader inputReader){
+  public Course(String id, String name, Professor pro, int lectureTimes,ArrayList<Student> students,ArrayList<Lecture> lectures,BufferedReader inputReader){
         this.courseID = id;
         this.courseName = name;
         this.professor = pro;
         this.lectureTimes = lectureTimes;
+        this.lectures = lectures;
         this.students = students;
         this.inputReader = inputReader;
     }
@@ -91,6 +94,14 @@ public class Course {
     return students.get(i).getLegalName();
   }
 
+  public int numberOfLectures(){
+    return lectures.size();
+  }
+
+  public String getLectureName(int i){
+    return lectures.get(i).getLectureID();
+  }
+  
     /**
      * @param s is the student to be added to the Course
     */

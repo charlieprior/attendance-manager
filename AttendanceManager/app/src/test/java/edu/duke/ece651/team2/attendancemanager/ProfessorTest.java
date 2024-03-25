@@ -15,8 +15,8 @@ public class ProfessorTest {
     void setUp() {
         professor1 = new Professor("John Doe", "12345", "AAA@gmail.com");
         professor2 = new Professor("TTT", "11111", "BBB@gmail.com");
-        testCourse1 = new Course("1", "CS101", professor1, null,null);
-        testCourse2 = new Course("2", "CS301", professor2, null,null);
+        testCourse1 = new Course("1", "CS101", professor1, null,null, null);
+        testCourse2 = new Course("2", "CS301", professor2, null,null, null);
         // testCourse1 = new Course("CS101", "Intro to Computer Science");
         // testCourse2 = new Course("CS301", "Database System");
     }
