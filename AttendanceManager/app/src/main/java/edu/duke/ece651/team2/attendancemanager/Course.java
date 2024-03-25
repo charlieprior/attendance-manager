@@ -13,9 +13,18 @@ public class Course {
     private int lectureTimes;
     private final ArrayList<Student> students;
     private final ArrayList<Lecture> lectures;
-    private final BufferedReader inputReader;
+    private BufferedReader inputReader;
     // private final PrintStream out;
 
+    public Course(String id,String name,Professor pro,ArrayList<Student> students){
+        this.courseID = id;
+        this.courseName = name;
+        this.professor = pro;
+        this.lectureTimes = 0;
+        this.students = students;
+        this.lectures = new ArrayList<>();
+    }
+    
     /**
      * This constructor will create the Course object
      * 

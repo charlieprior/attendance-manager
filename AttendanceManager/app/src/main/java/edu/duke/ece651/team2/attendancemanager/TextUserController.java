@@ -78,12 +78,28 @@ public class TextUserController {
     public Course readNewCourse(String id,Professor pro,ArrayList<Student> students) throws IOException{
         String prompt = "You are adding new Course, please provide the required info:\nWhats the course's name";
         String name = printPromptAndRead(prompt);
-        Course newCourse = new Course(id,name,pro,students,reader);//change the reader
+        Course newCourse = new Course(id, name, pro, students);
         return newCourse;
     }
 
-    public void readAction() throws IOException{
-        
+    public int readAction(String prompt) throws IOException{
+        prompt = prompt+"Currently you need to do some actions, please type the number of your desired action:\n";
+        ArrayList<String> actions = new ArrayList<>();
+        actions.add("1. add Course\n");
+        actions.add("2. add Students to Course\n");
+        actions.add("3. start a new Lecture from one Course,then take attenace records\n");
+        for(String action:actions){
+            prompt = prompt+action;
+        }
+        String ans = printPromptAndRead(prompt);
+        if(ans.length()==1){
+            if(Character.isDigit(ans.charAt(0))){
+                int cmd = Character.getNumericValue(ans.charAt(0));
+                return cmd;
+            }
+        }
+        return readAction("wrong input, please type the command again!\n");
+
     }
 }
 
