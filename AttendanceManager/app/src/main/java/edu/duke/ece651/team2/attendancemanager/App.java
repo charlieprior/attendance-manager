@@ -3,9 +3,16 @@
  */
 package edu.duke.ece651.team2.attendancemanager;
 
+
 public class App {
     public String getGreeting() {
         return "Hello World!";
+    }
+
+    enum AttendanceStatus{
+        present,
+        absent,
+        tardy
     }
 
     public static void main(String[] args) {
