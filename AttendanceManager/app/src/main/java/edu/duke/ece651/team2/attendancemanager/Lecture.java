@@ -14,6 +14,11 @@ public class Lecture{
   Calendar date;
   ArrayList<Student> Students;
   Professor professor;
+
+  public AttendanceSession getAttendanceSession() {
+    return attendanceSession;
+  }
+
   AttendanceSession attendanceSession;
   private BufferedReader inputReader;
   
