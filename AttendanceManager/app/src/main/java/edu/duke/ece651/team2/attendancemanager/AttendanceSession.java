@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import edu.duke.ece651.team2.attendancemanager.App.AttendanceStatus;
+
 /**
  * The AttendanceSession class represents a session for recording student
  * attendance.
@@ -21,7 +23,6 @@ public class AttendanceSession {
         this.records = new ArrayList<>();
     }
 
-
     /**
      * Returns the list of attendance records for the session.
      *
@@ -30,7 +31,6 @@ public class AttendanceSession {
     public List<AttendanceRecord> getRecords() {
         return records;
     }
-
 
     /**
      * Records attendance for a student in the session.
@@ -42,7 +42,7 @@ public class AttendanceSession {
      * @return true if the attendance was successfully recorded, false if a record
      *         for the same student and lecture already exists.
      */
-    public boolean recordAttendance(String studentID,String studentName, Boolean status, String lectureID) {
+    public boolean recordAttendance(String studentID, String studentName, AttendanceStatus status, String lectureID) {
         // Check if a record for the same student and lecture already exists
         for (AttendanceRecord record : records) {
             if (record.getStudentID().equals(studentID) && record.getLectureID().equals(lectureID)) {
@@ -66,7 +66,7 @@ public class AttendanceSession {
      * @return true if the attendance record was successfully updated, false if the
      *         record was not found.
      */
-    public boolean updateAttendanceRecord(String studentID, Boolean newStatus) {
+    public boolean updateAttendanceRecord(String studentID, AttendanceStatus newStatus) {
         for (AttendanceRecord record : records) {
             if (record.getStudentID().equals(studentID)) {
                 record.setStatus(newStatus);
@@ -88,20 +88,20 @@ public class AttendanceSession {
         // removeIf returns true if any elements were removed
     }
 
-    public ArrayList<String> lateStudentsName(){
+    public ArrayList<String> lateStudentsName() {
         ArrayList<String> late = new ArrayList<>();
-        for(AttendanceRecord r:records){
-            if (r.getStatus()==false){
+        for (AttendanceRecord r : records) {
+            if (r.getStatus() == AttendanceStatus.absent) {
                 late.add(r.getStudentName());
             }
         }
         return late;
     }
 
-    public ArrayList<String> lateStudentsID(){
+    public ArrayList<String> lateStudentsID() {
         ArrayList<String> late = new ArrayList<>();
-        for(AttendanceRecord r:records){
-            if (r.getStatus()==false){
+        for (AttendanceRecord r : records) {
+            if (r.getStatus() == AttendanceStatus.absent) {
                 late.add(r.getStudentID());
             }
         }

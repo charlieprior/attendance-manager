@@ -2,6 +2,8 @@ package edu.duke.ece651.team2.attendancemanager;
 
 import java.util.Date;
 
+import edu.duke.ece651.team2.attendancemanager.App.AttendanceStatus;
+
 /**
  * The AttendanceRecord class represents a record of student attendance for a
  * specific lecture.
@@ -20,7 +22,7 @@ public class AttendanceRecord {
     /**
      * The status of the student's attendance (true if present, false if absent).
      */
-    private Boolean status;
+    private AttendanceStatus status;
 
     /**
      * The ID of the lecture associated with the attendance record.
@@ -41,7 +43,8 @@ public class AttendanceRecord {
      * @param lectureID      The ID of the lecture associated with the attendance
      *                       record.
      */
-    public AttendanceRecord(Date attendanceDate, String studentID, String studentName, Boolean status, String lectureID) {
+    public AttendanceRecord(Date attendanceDate, String studentID, String studentName, AttendanceStatus status,
+            String lectureID) {
         this.attendanceDate = attendanceDate;
         this.studentID = studentID;
         this.status = status;
@@ -91,7 +94,7 @@ public class AttendanceRecord {
      * @return The status of the student's attendance (true if present, false if
      *         absent).
      */
-    public Boolean getStatus() {
+    public AttendanceStatus getStatus() {
         return status;
     }
 
@@ -101,7 +104,7 @@ public class AttendanceRecord {
      * @param status The status of the student's attendance (true if present, false
      *               if absent).
      */
-    public void setStatus(Boolean status) {
+    public void setStatus(AttendanceStatus status) {
         this.status = status;
     }
 
@@ -114,7 +117,7 @@ public class AttendanceRecord {
         return lectureID;
     }
 
-    public String getStudentName(){
+    public String getStudentName() {
         return studentName;
     }
 
