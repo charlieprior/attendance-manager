@@ -9,6 +9,12 @@ public class PersistenceManager {
     private final String newLine = "\n";
     private final String headers = "Student ID,Student Name,Time,Status"; //more info
 
+    /**
+     * This function will write the AttendanceRecord into CSV
+     * 
+     * @param fileName is the file's name
+     * @param session is the AttendanceSession that contain the records information
+    */
     public void writeRecordsToCSV(String fileName, AttendanceSession session){
         List<AttendanceRecord> records = session.getRecords();
         try{
@@ -29,6 +35,14 @@ public class PersistenceManager {
         
     }
 
+    /**
+     * This function will write the AttendanceRecord into JSON
+     * 
+     * @param fileName is the file's name
+     * @param courseName is the course's name
+     * @param lectureID is the lecture's ID
+     * @param session is the AttendanceSession that contain the records information
+    */
     public void writeRecordsToJSON(String fileName, String courseName, String lectureID, AttendanceSession session){
         List<AttendanceRecord> records = session.getRecords();
         try{
