@@ -50,6 +50,8 @@ clover {
     }
     compiler {
         debug = true
+        sourceCompatibility = '1.9'
+        targetCompatibility = '1.9'
     }
 }
 
