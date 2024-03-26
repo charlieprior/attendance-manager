@@ -37,11 +37,11 @@ public class TextUserController {
     }
 
     /**
-     * @param students is the ArrayList<Student> in this Course
+     * @param studentsName is the String of students' display name in this Course
      * @param start    means beginning of the lecture if true else end of the
      *                 lecture
      */
-    public AttendanceStatus readStudentStatus(Student student, boolean start) throws IOException {
+    public AttendanceStatus readStudentStatus(String studentsName, boolean start) throws IOException {
         String prompt = "You are recording students status, please type the status of the student:";
         out.println(prompt);
         if (start == true) {
@@ -50,7 +50,7 @@ public class TextUserController {
             prompt = "l for late, a for absent";
         }
 
-        String ans = printPromptAndRead(student.getDisplayName() + ":" + prompt);
+        String ans = printPromptAndRead(studentsName + ":" + prompt);
         out.print(ans);
         if (ans.equals("p") && start == true) {
             return AttendanceStatus.present;
@@ -87,6 +87,7 @@ public class TextUserController {
         actions.add("1. add Course\n");
         actions.add("2. add Students to Course\n");
         actions.add("3. start a new Lecture from one Course,then take attenace records\n");
+        actions.add("4. quit the program.\n");
         for (String action : actions) {
             prompt = prompt + action;
         }
@@ -98,6 +99,41 @@ public class TextUserController {
             }
         }
         return readAction("wrong input, please type the command again!\n");
+    }
+
+    public ArrayList<Student> keepAddingStudents() throws IOException{
+        ArrayList<Student> students = new ArrayList<>();
+        String prompt = "Do you want to add a new student? y for Yes.";
+        String ans = printPromptAndRead(prompt);
+        while (ans.equals("y")){
+            students.add(readNewStudents());
+            ans = printPromptAndRead(prompt);
+        }
+        return students;
+    }
+
+    public int displayAndChooseCourse(Professor professor) throws IOException{
+        TextUserView view = new TextUserView(out);
+        view.printCourses(professor);
+        String prompt = "Please type the number in front of the target course, invalid selection will return.";
+        String ans = printPromptAndRead(prompt);
+        try{
+            int idx = Integer.parseInt(ans)-1;
+            return idx;
+        }
+        catch(NumberFormatException e){
+            return professor.getCourses().size();
+        }
+    }
+
+    //maybe can add some time duration later ...?
+    public boolean stopTheLecture() throws IOException{
+        String prompt = "Would you want to stop right now? y for Yes";
+        String ans = printPromptAndRead(prompt);
+        if(ans.equals("")||ans.equals("y")){
+            return true;
+        }
+        return stopTheLecture();
     }
 
 }

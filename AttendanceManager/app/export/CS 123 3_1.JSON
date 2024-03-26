@@ -1,0 +1,21 @@
+{
+"Course Name": "CS 123",
+"Lecture ID": "3_1",
+"Attendance": {
+"1282080": {
+"Student Name": "Louise Li",
+"Time": "Tue Mar 26 01:30:45 EDT 2024",
+"Status": "absent"
+},
+"98765": {
+"Student Name": "Someone",
+"Time": "Tue Mar 26 01:30:45 EDT 2024",
+"Status": "tardy"
+},
+"34567": {
+"Student Name": "Someoneelse",
+"Time": "Tue Mar 26 01:30:45 EDT 2024",
+"Status": "present"
+}
+}
+}

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
+import edu.duke.ece651.team2.attendancemanager.App.AttendanceStatus;
+
 
 public class Course {
     private final String courseID;
@@ -92,6 +94,10 @@ public class Course {
         return lectureTimes;
     }
 
+    public int getLectureSize(){
+        return lectures.size();
+    }
+
     /**
      * @return the number of students in this course
     */
@@ -99,17 +105,29 @@ public class Course {
         return students.size();
     }
 
-  public String getStudentName(int i){
-    return students.get(i).getLegalName();
-  }
+    public ArrayList<Student> getStudents(){
+        return students;
+    }
 
-  public int numberOfLectures(){
-    return lectures.size();
-  }
+    public ArrayList<String> getStudentsDisplayName(){
+        ArrayList<String> dn = new ArrayList<>();
+        for(Student s:students){
+            dn.add(s.getDisplayName());
+        }
+        return dn;
+    }
 
-  public String getLectureName(int i){
-    return lectures.get(i).getLectureID();
-  }
+    public String getStudentName(int i){
+        return students.get(i).getLegalName();
+    }
+
+    public int numberOfLectures(){
+        return lectures.size();
+    }
+
+    public String getLectureName(int i){
+        return lectures.get(i).getLectureID();
+    }
   
     /**
      * @param s is the student to be added to the Course
@@ -127,19 +145,17 @@ public class Course {
         }
     }
 
-    //or we can add a function to return students and let the textuser give the status 
+
     /**
      * This function will start a new lecture
      * 
-     * @throws IOException if anything happens while recording students' status
      * @return the new lecture 
     */
-    public Lecture startLecture() throws IOException{
+    public Lecture startLecture(ArrayList<AttendanceStatus> status){
         lectureTimes+=1;
         String lectureID = courseID+"_"+lectureTimes;
-        //AttendanceSession newSession = new AttendanceSession(courseName, lectureID, professor.getName(), students);
-        Lecture newLec = new Lecture(courseName,lectureID, students, professor,inputReader);
-        newLec.attendanceRecord(); //function inside Lecture class
+        Lecture newLec = new Lecture(courseName, lectureID, students, professor);
+        newLec.attendanceRecord(status);
         return newLec;
     }
 
@@ -148,7 +164,8 @@ public class Course {
      * 
      * @throws IOException if anything happens while recording the students' status at the end of the class
     */
-    public void endLecture(Lecture lecture) throws IOException{
-        lecture.endLecture();
+    public void endLecture(Lecture lecture,ArrayList<String> lateStudentsID,ArrayList<AttendanceStatus> status) throws IOException{
+        lecture.endLecture(lateStudentsID, status);
+        lectures.add(lecture);
     }
 }

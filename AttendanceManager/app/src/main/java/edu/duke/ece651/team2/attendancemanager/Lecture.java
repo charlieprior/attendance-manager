@@ -10,7 +10,7 @@ import java.util.Calendar;
 
 import edu.duke.ece651.team2.attendancemanager.App.AttendanceStatus;
 
-public class Lecture {
+public class Lecture{
   String courseName;
   String lectureID;
   Calendar date;
@@ -23,90 +23,88 @@ public class Lecture {
 
   AttendanceSession attendanceSession;
   private BufferedReader inputReader;
+  
 
-  public Lecture() {
+  public Lecture(){
     this.lectureID = new String();
     this.Students = new ArrayList<>();
   }
 
-  public Lecture(String courseName, String lectureID, ArrayList<Student> students, Professor professor,
-      BufferedReader reader) {
+  public Lecture(String courseName,String lectureID, ArrayList<Student> students,Professor professor){
+    this.courseName = courseName;
+    this.lectureID = lectureID;
+    this.Students = students;
+    this.professor = professor;
+  }
+
+  public Lecture(String courseName,String lectureID, ArrayList<Student> students,Professor professor,BufferedReader reader){
     this.courseName = courseName;
     this.lectureID = lectureID;
     this.Students = students;
     this.professor = professor;
     this.inputReader = reader;
   }
-
-  void setLectureID(String lectureID) {
+  
+  void setLectureID(String lectureID){
     this.lectureID = lectureID;
   }
 
-  String getLectureID() {
+  String getLectureID(){
     return lectureID;
   }
 
-  String getCourseName() {
+  String getCourseName(){
     return courseName;
   }
 
-  void setDate(Calendar date) {
+  void setDate(Calendar date){
     this.date = date;
   }
 
-  Calendar getDate() {
+  Calendar getDate(){
     return date;
   }
 
-  void setStudents(ArrayList<Student> Students) {
-    for (Student s : Students) {
+  void setStudents(ArrayList<Student> Students){
+    for(Student s : Students){
       this.Students.add(s);
     }
   }
 
-  public Iterable<Student> getStudents() {
+  public Iterable<Student> getStudents(){
     return Students;
   }
-
-  public void setInputReader(BufferedReader inputReader) {
+  
+  public void setInputReader(BufferedReader inputReader){
     this.inputReader = inputReader;
   }
 
-  public AttendanceStatus readStatus(String s) throws IOException {
-    System.out.println(s);
-    String ans = inputReader.readLine();
-    if (ans == null) {
-      return AttendanceStatus.present;
-    }
-    ans = ans.toLowerCase();
-    if (ans.equals("y") || ans.equals("yes")) {
-      return AttendanceStatus.present;
-    }
-    return AttendanceStatus.absent;
-  }
-
-  public void attendanceRecord() throws IOException {
+  public void attendanceRecord(ArrayList<AttendanceStatus> status){
     AttendanceSession newSession = new AttendanceSession();
     this.attendanceSession = newSession;
-    for (Student s : Students) {
-      AttendanceStatus status = readStatus(s.getDisplayName());
-      newSession.recordAttendance(s.getStudentID(), s.getDisplayName(), status, lectureID);
+    for(int i =0;i<Students.size();i++){
+      newSession.recordAttendance(Students.get(i).getStudentID(),Students.get(i).getDisplayName(),status.get(i),lectureID);
     }
   }
 
-  public void endLecture() throws IOException {
-    ArrayList<String> lateStudentsID = attendanceSession.lateStudentsID();
-    ArrayList<String> lateStudentsName = attendanceSession.lateStudentsName();
-    assert (lateStudentsID.size() == lateStudentsName.size());
-    for (int i = 0; i < lateStudentsID.size(); i++) {
-      AttendanceStatus status = readStatus(lateStudentsName.get(i));
-      if (status == AttendanceStatus.absent) {
+  public ArrayList<String> getLateStudentsID(){
+    return attendanceSession.lateStudentsID();
+  }
+
+  public ArrayList<String> getLateStudentsName(){
+    return attendanceSession.lateStudentsName();
+  }
+
+  public void endLecture(ArrayList<String> lateStudentsID,ArrayList<AttendanceStatus> status) throws IOException{
+    for(int i =0;i<lateStudentsID.size();i++){
+      if(status.get(i)==AttendanceStatus.tardy){
         attendanceSession.updateAttendanceRecord(lateStudentsID.get(i), AttendanceStatus.tardy);
       }
     }
     PersistenceManager export = new PersistenceManager();
-    // export.writeRecordsToCSV(courseName+" "+lectureID,attendanceSession);
-    export.writeRecordsToJSON(courseName + " " + lectureID, courseName, lectureID, attendanceSession);
+    //export.writeRecordsToCSV(courseName+" "+lectureID,attendanceSession);
+    export.writeRecordsToCSV(courseName+" "+lectureID, attendanceSession);
+    export.writeRecordsToJSON(courseName+" "+lectureID, courseName, lectureID, attendanceSession);
     attendanceSession.endSession();
   }
 

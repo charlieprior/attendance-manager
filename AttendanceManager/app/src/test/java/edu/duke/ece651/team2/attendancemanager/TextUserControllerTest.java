@@ -58,12 +58,12 @@ public class TextUserControllerTest {
         TextUserController controllerStart = new TextUserController(new BufferedReader(new StringReader(startInput)),
                 output);
         System.out.println(bytes.toString());
-        AttendanceStatus statusStart = controllerStart.readStudentStatus(dummyStudent, true);
+        AttendanceStatus statusStart = controllerStart.readStudentStatus(dummyStudent.getDisplayName(), true);
         assertEquals(AttendanceStatus.present, statusStart);
 
         TextUserController controllerEnd = new TextUserController(new BufferedReader(new StringReader(endInput)),
                 System.out);
-        AttendanceStatus statusEnd = controllerEnd.readStudentStatus(dummyStudent, false);
+        AttendanceStatus statusEnd = controllerEnd.readStudentStatus(dummyStudent.getDisplayName(), false);
         assertEquals(AttendanceStatus.tardy, statusEnd);
 
         assertTrue(outContent.toString()

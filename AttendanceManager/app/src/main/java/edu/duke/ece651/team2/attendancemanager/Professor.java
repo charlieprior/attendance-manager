@@ -76,6 +76,10 @@ public class Professor {
         return courses;
     }
 
+    public Course getCourse(int index){
+        return courses.get(index);
+    }
+
     /**
      * Adds a course to the list of courses taught by the professor.
      *
