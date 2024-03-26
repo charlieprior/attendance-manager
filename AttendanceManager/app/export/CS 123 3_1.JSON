@@ -4,18 +4,18 @@
 "Attendance": {
 "1282080": {
 "Student Name": "Louise Li",
-"Time": "Tue Mar 26 01:30:45 EDT 2024",
-"Status": "absent"
+"Time": "Tue Mar 26 16:14:17 EDT 2024",
+"Status": "ABSENT"
 },
 "98765": {
 "Student Name": "Someone",
-"Time": "Tue Mar 26 01:30:45 EDT 2024",
-"Status": "tardy"
+"Time": "Tue Mar 26 16:14:17 EDT 2024",
+"Status": "TARDY"
 },
 "34567": {
 "Student Name": "Someoneelse",
-"Time": "Tue Mar 26 01:30:45 EDT 2024",
-"Status": "present"
+"Time": "Tue Mar 26 16:14:17 EDT 2024",
+"Status": "PRESENT"
 }
 }
 }
