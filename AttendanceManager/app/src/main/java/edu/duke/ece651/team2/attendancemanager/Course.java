@@ -145,7 +145,6 @@ public class Course {
         }
     }
 
-
     /**
      * This function will start a new lecture
      * 
