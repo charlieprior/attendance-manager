@@ -8,7 +8,6 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import edu.duke.ece651.team2.attendancemanager.App.AttendanceStatus;
 
 public class Lecture{
   String courseName;
@@ -97,8 +96,8 @@ public class Lecture{
 
   public void endLecture(ArrayList<String> lateStudentsID,ArrayList<AttendanceStatus> status) throws IOException{
     for(int i =0;i<lateStudentsID.size();i++){
-      if(status.get(i)==AttendanceStatus.tardy){
-        attendanceSession.updateAttendanceRecord(lateStudentsID.get(i), AttendanceStatus.tardy);
+      if(status.get(i)==AttendanceStatus.TARDY){
+        attendanceSession.updateAttendanceRecord(lateStudentsID.get(i), AttendanceStatus.TARDY);
       }
     }
     PersistenceManager export = new PersistenceManager();

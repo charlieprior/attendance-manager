@@ -2,8 +2,6 @@ package edu.duke.ece651.team2.attendancemanager;
 
 import java.util.Date;
 
-import edu.duke.ece651.team2.attendancemanager.App.AttendanceStatus;
-
 /**
  * The AttendanceRecord class represents a record of student attendance for a
  * specific lecture.

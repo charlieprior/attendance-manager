@@ -10,7 +10,6 @@ import java.util.Date;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import edu.duke.ece651.team2.attendancemanager.App.AttendanceStatus;
 
 public class AttendanceRecordTest {
     private AttendanceRecord record1;
@@ -25,7 +24,7 @@ public class AttendanceRecordTest {
     void setUp() {
         testDate = new Date();
         testStudentID = "12345";
-        testStatus = AttendanceStatus.present; // Assume true means present
+        testStatus = AttendanceStatus.PRESENT; // Assume true means present
         testLectureID = "CS101_Lecture1";
         testStudentName = "A B";
         record1 = new AttendanceRecord(testDate,testStudentID, testStudentName,testStatus, testLectureID);
@@ -72,19 +71,19 @@ public class AttendanceRecordTest {
     @Test
     void testGetStatus() {
         assertEquals(testStatus, record1.getStatus());
-        assertEquals(record1.getStatus(), AttendanceStatus.present);
+        assertEquals(record1.getStatus(), AttendanceStatus.PRESENT);
     }
 
     @Test
     void testSetStatus() {
-        AttendanceStatus newTestStatus = AttendanceStatus.absent;
+        AttendanceStatus newTestStatus = AttendanceStatus.ABSENT;
         record1.setStatus(newTestStatus);
         assertEquals(newTestStatus, record1.getStatus());
-        assertEquals(record1.getStatus(), AttendanceStatus.absent);
-        newTestStatus = AttendanceStatus.tardy;
+        assertEquals(record1.getStatus(), AttendanceStatus.ABSENT);
+        newTestStatus = AttendanceStatus.TARDY;
         record1.setStatus(newTestStatus);
         assertEquals(newTestStatus, record1.getStatus());
-        assertEquals(record1.getStatus(), AttendanceStatus.tardy);
+        assertEquals(record1.getStatus(), AttendanceStatus.TARDY);
     }
 
     @Test

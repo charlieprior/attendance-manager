@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
-import edu.duke.ece651.team2.attendancemanager.App.AttendanceStatus;
 
 public class CourseTest {
     
@@ -76,9 +75,9 @@ public class CourseTest {
         //Course course1 = new Course(courseID2, courseName2, professor2, lectureTimes2,slst1,null,provideInput("y\nN\ny\n"));
         Course course1 = new Course(courseID2, courseName2, professor2,slst1);
         ArrayList<AttendanceStatus> status = new ArrayList<>();
-        status.add(AttendanceStatus.absent);
-        status.add(AttendanceStatus.tardy);
-        status.add(AttendanceStatus.present);
+        status.add(AttendanceStatus.ABSENT);
+        status.add(AttendanceStatus.TARDY);
+        status.add(AttendanceStatus.PRESENT);
         Lecture newLec = course1.startLecture(status);
         assertEquals(newLec.getLectureID(), "3_1");
         assertEquals(course1.getLectureTimes(), 1);
@@ -100,30 +99,30 @@ public class CourseTest {
 
         Course course1 = new Course(courseID2, courseName2, professor2,slst1);
         ArrayList<AttendanceStatus> status = new ArrayList<>();
-        status.add(AttendanceStatus.absent);
-        status.add(AttendanceStatus.absent);
-        status.add(AttendanceStatus.present);
+        status.add(AttendanceStatus.ABSENT);
+        status.add(AttendanceStatus.ABSENT);
+        status.add(AttendanceStatus.PRESENT);
         Lecture newLec = course1.startLecture(status);
         ArrayList<String> lateStudentsID = new ArrayList<>();
         lateStudentsID.add("1282080");
         lateStudentsID.add("98765");
         ArrayList<AttendanceStatus> lateStatus = new ArrayList<>();
-        lateStatus.add(AttendanceStatus.absent);
-        lateStatus.add(AttendanceStatus.tardy);
+        lateStatus.add(AttendanceStatus.ABSENT);
+        lateStatus.add(AttendanceStatus.TARDY);
         course1.endLecture(newLec,lateStudentsID,lateStatus);
         assertEquals(course1.getLectureTimes(), course1.getLectureSize());
         assertEquals(course1.getLectureTimes(),1);
         ArrayList<AttendanceStatus> status2 = new ArrayList<>();
-        status2.add(AttendanceStatus.present);
-        status2.add(AttendanceStatus.absent);
-        status2.add(AttendanceStatus.absent);
+        status2.add(AttendanceStatus.PRESENT);
+        status2.add(AttendanceStatus.ABSENT);
+        status2.add(AttendanceStatus.ABSENT);
         Lecture newLec2 = course1.startLecture(status2);
         ArrayList<String> lateStudentsID2 = new ArrayList<>();
         lateStudentsID2.add("98765");
         lateStudentsID2.add("34567");
         ArrayList<AttendanceStatus> lateStatus2 = new ArrayList<>();
-        lateStatus2.add(AttendanceStatus.tardy);
-        lateStatus2.add(AttendanceStatus.absent);
+        lateStatus2.add(AttendanceStatus.TARDY);
+        lateStatus2.add(AttendanceStatus.ABSENT);
         course1.endLecture(newLec2,lateStudentsID2,lateStatus2);
         assertEquals(course1.getLectureTimes(), course1.getLectureSize());
         assertEquals(course1.getLectureTimes(),2);

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import edu.duke.ece651.team2.attendancemanager.App.AttendanceStatus;
 
 public class TextUserControllerTest {
     private TextUserController controller;
@@ -59,12 +58,12 @@ public class TextUserControllerTest {
                 output);
         System.out.println(bytes.toString());
         AttendanceStatus statusStart = controllerStart.readStudentStatus(dummyStudent.getDisplayName(), true);
-        assertEquals(AttendanceStatus.present, statusStart);
+        assertEquals(AttendanceStatus.PRESENT, statusStart);
 
         TextUserController controllerEnd = new TextUserController(new BufferedReader(new StringReader(endInput)),
                 System.out);
         AttendanceStatus statusEnd = controllerEnd.readStudentStatus(dummyStudent.getDisplayName(), false);
-        assertEquals(AttendanceStatus.tardy, statusEnd);
+        assertEquals(AttendanceStatus.TARDY, statusEnd);
 
         assertTrue(outContent.toString()
                 .contains("You are recording students status, please type the status of the student:"));
@@ -132,4 +131,5 @@ public class TextUserControllerTest {
         int action = controller.readAction("Choose an action:");
         assertEquals(2, action);
     }
+
 }

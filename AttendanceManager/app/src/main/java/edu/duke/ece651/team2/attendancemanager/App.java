@@ -8,13 +8,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+enum AttendanceStatus{
+    PRESENT,
+    ABSENT,
+    TARDY
+}
+
 public class App {
 
-    enum AttendanceStatus{
-        present,
-        absent,
-        tardy
-    }
 
     private final Professor professor;
     private final TextUserController controller;

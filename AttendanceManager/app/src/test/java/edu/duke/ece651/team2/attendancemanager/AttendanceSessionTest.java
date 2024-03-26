@@ -7,8 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import edu.duke.ece651.team2.attendancemanager.App.AttendanceStatus;
-
 public class AttendanceSessionTest {
     private AttendanceSession session;
     // private PersistenceManager mockPersistenceManager;
@@ -17,8 +15,8 @@ public class AttendanceSessionTest {
     String lectureID1 = "lectureABC";
     String studentName1 = "11 22 22";
     String studentName2 = "AA BB CC";
-    AttendanceStatus initialStatus = AttendanceStatus.absent;
-    AttendanceStatus newStatus = AttendanceStatus.present;
+    AttendanceStatus initialStatus = AttendanceStatus.ABSENT;
+    AttendanceStatus newStatus = AttendanceStatus.PRESENT;
 
     @BeforeEach
     public void setUp() {
@@ -34,7 +32,7 @@ public class AttendanceSessionTest {
         String studentID = "123";
         String lectureID = "Lecture1";
         String studentName = "A1 B1";
-        AttendanceStatus status = AttendanceStatus.absent;
+        AttendanceStatus status = AttendanceStatus.ABSENT;
 
         // Test adding a new record
         assertTrue(session.recordAttendance(studentID, studentName,status, lectureID));
@@ -53,7 +51,7 @@ public class AttendanceSessionTest {
         String studentID = "123";
         String lectureID = "Lecture1";
         String studentName = "A1 B1";
-        AttendanceStatus status = AttendanceStatus.absent;
+        AttendanceStatus status = AttendanceStatus.ABSENT;
 
         // Add the initial record
         session.recordAttendance(studentID,studentName, status, lectureID);
@@ -96,7 +94,7 @@ public class AttendanceSessionTest {
     @Test
     void testUpdateNonexistentAttendanceRecord() {
         // Try to update a nonexistent record
-        assertFalse(session.updateAttendanceRecord("nonexistentID", AttendanceStatus.tardy));
+        assertFalse(session.updateAttendanceRecord("nonexistentID", AttendanceStatus.TARDY));
     }
 
     @Test

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
-import edu.duke.ece651.team2.attendancemanager.App.AttendanceStatus;
 
 public class TextUserController {
     private final BufferedReader reader;
@@ -53,11 +52,11 @@ public class TextUserController {
         String ans = printPromptAndRead(studentsName + ":" + prompt);
         out.print(ans);
         if (ans.equals("p") && start == true) {
-            return AttendanceStatus.present;
+            return AttendanceStatus.PRESENT;
         } else if (ans.equals("l") && start == false) {
-            return AttendanceStatus.tardy;
+            return AttendanceStatus.TARDY;
         } else {
-            return AttendanceStatus.absent;
+            return AttendanceStatus.ABSENT;
         }
 
     }

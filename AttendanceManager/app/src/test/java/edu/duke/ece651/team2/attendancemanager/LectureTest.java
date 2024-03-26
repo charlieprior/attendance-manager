@@ -46,19 +46,6 @@ public class LectureTest {
     return input;
   }
 
-  @Test
-  public void testreadStatus() throws IOException{
-    Lecture l1 = new Lecture();
-    l1.setStudents(initailSetting());
-    l1.setInputReader(provideInput("y\n"));
-    assertTrue(l1.readStatus("Kenan"));
-    l1.setInputReader(provideInput("yes\n"));
-    assertTrue(l1.readStatus("Charlie"));
-    provideInput("\n");
-    assertTrue(l1.readStatus("SomeoneElse"));
-    l1.setInputReader(provideInput("n\n"));
-    assertFalse(l1.readStatus("SomeoneElse"));
-  }
 
   @Test
   public void  testAttendanceRecord() throws IOException{

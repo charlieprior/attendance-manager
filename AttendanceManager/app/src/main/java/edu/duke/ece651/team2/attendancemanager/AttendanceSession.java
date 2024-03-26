@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import edu.duke.ece651.team2.attendancemanager.App.AttendanceStatus;
 
 /**
  * The AttendanceSession class represents a session for recording student
@@ -91,7 +90,7 @@ public class AttendanceSession {
     public ArrayList<String> lateStudentsName() {
         ArrayList<String> late = new ArrayList<>();
         for (AttendanceRecord r : records) {
-            if (r.getStatus() == AttendanceStatus.absent) {
+            if (r.getStatus() == AttendanceStatus.ABSENT) {
                 late.add(r.getStudentName());
             }
         }
@@ -101,7 +100,7 @@ public class AttendanceSession {
     public ArrayList<String> lateStudentsID() {
         ArrayList<String> late = new ArrayList<>();
         for (AttendanceRecord r : records) {
-            if (r.getStatus() == AttendanceStatus.absent) {
+            if (r.getStatus() == AttendanceStatus.ABSENT) {
                 late.add(r.getStudentID());
             }
         }

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
-import edu.duke.ece651.team2.attendancemanager.App.AttendanceStatus;
 
 
 public class Course {

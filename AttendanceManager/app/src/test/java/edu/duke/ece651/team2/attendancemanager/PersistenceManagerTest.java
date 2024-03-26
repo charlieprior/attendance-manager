@@ -4,7 +4,6 @@ import java.util.Date;
 
 import org.junit.jupiter.api.Test;
 
-import edu.duke.ece651.team2.attendancemanager.App.AttendanceStatus;
 
 public class PersistenceManagerTest {
     private AttendanceRecord record1;
@@ -18,7 +17,7 @@ public class PersistenceManagerTest {
     public void testWriteRecordsToCSV(){
         testStudentID = "12345";
         studentName = "A1 B1";
-        testStatus = AttendanceStatus.present; // Assume true means present
+        testStatus = AttendanceStatus.PRESENT; // Assume true means PRESENT
         testLectureID = "CS101_Lecture1";
         System.out.println(getClass().getClassLoader());
         record1 = new AttendanceRecord(testDate, testStudentID, studentName,testStatus, testLectureID);
@@ -32,7 +31,7 @@ public class PersistenceManagerTest {
     public void testWriteRecordsToJSON(){
         testStudentID = "12345";
         studentName = "A1 B1";
-        testStatus = AttendanceStatus.present; // Assume true means present
+        testStatus = AttendanceStatus.PRESENT; // Assume true means present
         testLectureID = "CS101_Lecture1";
         System.out.println(getClass().getClassLoader());
         record1 = new AttendanceRecord(testDate, testStudentID, studentName,testStatus, testLectureID);
