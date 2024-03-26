@@ -59,7 +59,7 @@ public class App {
         switch(cmd){
             case 1:
                 int courseID = professor.getCourses().size();
-                Course newCourse = controller.readNewCourse(Integer.toString(courseID), professor, null);
+                Course newCourse = controller.readNewCourse(Integer.toString(courseID), professor, new ArrayList<Student>());
                 professor.addCourse(newCourse);
                 break;
             case 2:

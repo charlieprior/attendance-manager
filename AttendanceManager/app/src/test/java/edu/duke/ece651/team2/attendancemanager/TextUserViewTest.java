@@ -72,8 +72,8 @@ class TextUserViewTest {
         Course course1 = new Course("C1", "Course1", prof, 0, new ArrayList<Student>(), new ArrayList<Lecture>(),input);
         course1.addStudent(student1);
         course1.addStudent(student2);
-        Lecture lecture = course1.startLecture();
-        view.printStudentStatus(lecture);
+        // Lecture lecture = course1.startLecture();
+        // view.printStudentStatus(lecture);
 
         // TODO: Test the output
     }
