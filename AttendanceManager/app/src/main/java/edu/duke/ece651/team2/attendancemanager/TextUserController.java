@@ -86,7 +86,8 @@ public class TextUserController {
         actions.add("1. add Course\n");
         actions.add("2. add Students to Course\n");
         actions.add("3. start a new Lecture from one Course,then take attenace records\n");
-        actions.add("4. quit the program.\n");
+        actions.add("4. print students from one course\n");
+        actions.add("5. quit the program.\n");
         for (String action : actions) {
             prompt = prompt + action;
         }
@@ -111,9 +112,7 @@ public class TextUserController {
         return students;
     }
 
-    public int displayAndChooseCourse(Professor professor) throws IOException{
-        TextUserView view = new TextUserView(out);
-        view.printCourses(professor);
+    public int selectCourse(int maxSize) throws IOException{
         String prompt = "Please type the number in front of the target course, invalid selection will return.";
         String ans = printPromptAndRead(prompt);
         try{
@@ -121,8 +120,14 @@ public class TextUserController {
             return idx;
         }
         catch(NumberFormatException e){
-            return professor.getCourses().size();
+            return maxSize;
         }
+    }
+
+    public int displayAndChooseCourse(Professor professor) throws IOException{
+        TextUserView view = new TextUserView(out);
+        view.printCourses(professor);
+        return selectCourse(professor.getCourses().size());
     }
 
     //maybe can add some time duration later ...?
@@ -133,6 +138,11 @@ public class TextUserController {
             return true;
         }
         return stopTheLecture();
+    }
+
+    public void displayStudentsFromCourse(Course course) throws IOException{
+        TextUserView view = new TextUserView(out);
+        view.printStudents(course);
     }
 
 }
