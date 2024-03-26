@@ -54,6 +54,14 @@ public class App {
         }
     }
 
+    public void displayStudentsFromCourse() throws IOException{
+        int idx = controller.selectCourse(professor.getCourses().size());
+        if(idx<professor.getCourses().size()){
+            Course course = professor.getCourse(idx);
+            controller.displayStudentsFromCourse(course);
+        }
+    }
+
 
     public void welcome() throws IOException{
         int cmd = controller.readAction("Hi, "+professor.getName()+". What do you want to do?");
@@ -70,6 +78,9 @@ public class App {
                 startNewLecture();
                 break;
             case 4:
+                displayStudentsFromCourse();
+                break;
+            case 5:
                 return;
         }
         welcome();
