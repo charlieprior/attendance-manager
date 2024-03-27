@@ -26,6 +26,7 @@ dependencies {
 
     testImplementation 'org.junit.platform:junit-platform-launcher:1.6.2'
     clover 'org.openclover:clover:4.4.1'
+    implementation 'com.opencsv:opencsv:5.9'
 }
 
 application {

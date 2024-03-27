@@ -32,6 +32,17 @@ public class App {
         this.controller = controller;
     }
 
+    //TODO!!!!!!!May edit later, check keywords and userid match
+    public void logIn() throws IOException{
+        boolean status = controller.logIn();
+        if(status==true){
+            return;
+        }
+        else{
+            logIn();
+        }
+    }
+
     /**
      * Adds students to a course.
      * @throws IOException We will not handle this exception.
@@ -69,7 +80,7 @@ public class App {
         if(idx<professor.getCourses().size()){
             Course course = professor.getCourse(idx);
             ArrayList<AttendanceStatus> status = readStatusForStudents(course.getStudentsDisplayName(),true);
-            Lecture lec = course.startLecture(status); //TODO: startLecture should be modified later
+            Lecture lec = course.startLecture(status);
             controller.stopTheLecture();
             ArrayList<AttendanceStatus> statusLate = readStatusForStudents(lec.getLateStudentsName(),false);
             course.endLecture(lec, lec.getLateStudentsID(), statusLate);
@@ -102,15 +113,22 @@ public class App {
                 professor.addCourse(newCourse);
                 break;
             case 2:
-                addStudentsToCourse();
+                addStudentsToCourse();//adding feature to load csv
                 break;
             case 3:
                 startNewLecture();
                 break;
             case 4:
-                displayStudentsFromCourse();
+                updateStudentsRecords();//TODO!!! I will do that - Louise. If displayAttendanceFromCourse() finish I will update to it too.
                 break;
             case 5:
+                changeStudentDisplayName();//TODO!!
+            case 6:
+                displayAttendanceFromCourse();//TODO!! 
+            case 7:
+                displayStudentsFromCourse();
+                break;
+            case 8:
                 return;
         }
         welcome();
@@ -124,8 +142,11 @@ public class App {
     public static void main(String[] args) throws IOException {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         TextUserController controller = new TextUserController(input, System.out);
-        Professor user = controller.readNewProfessor();
+        University university = controller.readUniversity();//TODO!!!!
+        Professor user = controller.register(university);//TODO!!!!
+        //Professor user = controller.readNewProfessor();
         App app = new App(user, controller);
+        app.logIn();
         app.welcome();
     }
 }

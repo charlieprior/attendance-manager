@@ -27,6 +27,8 @@ public class Professor {
      */
     private String email;
 
+    private University university;//TODO!!!!!!!Adding constructors
+
     /**
      * Constructs a new Professor object with the specified name and professor ID.
      *

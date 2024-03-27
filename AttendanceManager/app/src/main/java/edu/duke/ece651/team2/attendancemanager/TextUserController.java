@@ -1,9 +1,12 @@
 package edu.duke.ece651.team2.attendancemanager;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+
+import com.opencsv.CSVReader;
 
 
 /**
@@ -41,6 +44,19 @@ public class TextUserController {
     protected String printPromptAndRead(String prompt) throws IOException {
         out.println(prompt);
         return reader.readLine();
+    }
+
+    //TODO: All of them should be done, feel free to use current methods
+    public University readUniversity() throws IOException{
+
+    }
+
+    public Professor register(University university) throws IOException{
+
+    }
+
+    public boolean logIn() throws IOException{
+
     }
 
     /**
@@ -81,7 +97,6 @@ public class TextUserController {
         }
 
         String ans = printPromptAndRead(studentsName + ":" + prompt);
-        out.print(ans);
         if (ans.equals("p") && start == true) {
             return AttendanceStatus.PRESENT;
         } else if (ans.equals("l") && start == false) {
@@ -220,6 +235,84 @@ public class TextUserController {
     public void displayStudentsFromCourse(Course course) throws IOException{
         TextUserView view = new TextUserView(out);
         view.printStudents(course);
+    }
+
+    //I am currently working on loading csv. Current progress: 
+    public boolean askHeader() throws IOException{
+        String prompt = "Do you have a header in this file? y for Yes";
+        String ans = printPromptAndRead(prompt);
+        if(ans.equals("y")){
+            return true;
+        }
+        return false;
+    }
+
+    public int fileColumns(CSVReader csv) throws Exception{
+        return csv.readNext().length;
+    }
+
+    public ArrayList<Integer> readColumns(int size, String ... ansStr) throws Exception{
+        ArrayList<Integer> ans = new ArrayList<>();
+        for(String s:ansStr){
+            ans.add(Integer.parseInt(s));
+        }
+        return ans;
+    }
+
+    //Working on it!
+    public ArrayList<Student> readStudents(CSVReader csv) throws Exception{
+        String ansln = printPromptAndRead("Which column is for legal name?");
+        String ansdn = printPromptAndRead("Which column is for display name? If not, please select the same column with legal name");
+        String ansemail = printPromptAndRead("Which column is for email?");
+        String ansuid = printPromptAndRead("Which column is for uid of this student?");
+        //ArrayList<Integer> ans = readColumns()
+        return new ArrayList<Student>();
+    }
+
+    //ask specific format of the csv 
+    public ArrayList<Student> readCSVFiles() throws IOException{
+        String prompt = "what is your path?";//path?
+        String ans = printPromptAndRead(prompt);
+        ArrayList<Student> newStudents = new ArrayList<>();
+        try{
+            FileReader filereader = new FileReader(ans); 
+            //ask header?
+            boolean header = askHeader();
+            CSVReader csvreader = new CSVReader(filereader);
+            
+            //ask each column responds to what?
+            return newStudents;
+        }
+        catch(IOException e){
+            out.println(e.getMessage());
+            out.println("cannot read the file, please give a valid file");
+            return readCSVFiles();
+        }
+    }
+
+    public ArrayList<Student> loadStudents() throws IOException{
+        ArrayList<Student> students =  new ArrayList<>();
+        String prompt = "whether to load students? y for yes";
+        String ans = printPromptAndRead(prompt);
+        if(ans.equals("y")){
+            students = readCSVFiles();
+        }
+        return students;
+    }
+
+
+    //TODO: All of them should be done
+    public void updateStudentsRecords() throws IOException{
+
+    }
+
+
+    public void changeStudentDisplayName() throws IOException{
+
+    }
+
+    public void displayAttendanceFromCourse() throws IOException{
+
     }
 
 }
