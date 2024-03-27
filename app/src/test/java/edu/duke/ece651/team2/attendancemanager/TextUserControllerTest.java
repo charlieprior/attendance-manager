@@ -174,7 +174,11 @@ public class TextUserControllerTest {
     public void testReadColumns() throws Exception {
         String input = "1\n3\n4\n2\n";
         TextUserController controller = new TextUserController(new BufferedReader(new StringReader(input)), System.out);
-        ArrayList<Integer> ans = controller.readColumns(5, "1", "3", "4", "2");
+        ArrayList<Integer> ans = new ArrayList<>();
+        ans.add(controller.readColumns(5, "1"));
+        ans.add(controller.readColumns(5, "3"));
+        ans.add(controller.readColumns(5, "4"));
+        ans.add(controller.readColumns(5, "2"));
         ArrayList<Integer> expect = new ArrayList<>();
         expect.add(0);
         expect.add(2);
@@ -185,7 +189,7 @@ public class TextUserControllerTest {
 
     @Test
     public void testReadStudents() throws Exception {
-        String input = "1\n3\n4\n2\n,\n";
+        String input = ",\n1\n3\n4\n2\n";
         TextUserController controller = new TextUserController(new BufferedReader(new StringReader(input)), System.out);
         FileReader filereader = new FileReader("/home/xl435/project-team-2/app/import/students.csv"); 
         BufferedReader breader = new BufferedReader(filereader);// Provide a CSVReader instance
@@ -221,7 +225,7 @@ public class TextUserControllerTest {
 
     @Test
     public void testReadCSVFiles() throws Exception{
-        String input = "/home/xl435/project-team-2/app/import/students.csv\ny\n1\n3\n4\n2\n,\n";
+        String input = "/home/xl435/project-team-2/app/import/students.csv\ny\n,\n1\n3\n4\n2\n";
         TextUserController controller = new TextUserController(new BufferedReader(new StringReader(input)), System.out);
         FileReader filereader = new FileReader("/home/xl435/project-team-2/app/import/students.csv"); 
         BufferedReader breader = new BufferedReader(filereader);// Provide a CSVReader instance

@@ -81,10 +81,19 @@ public class App {
             Course course = professor.getCourse(idx);
             ArrayList<AttendanceStatus> status = readStatusForStudents(course.getStudentsDisplayName(),true);
             Lecture lec = course.startLecture(status);
-            controller.stopTheLecture();
-            ArrayList<AttendanceStatus> statusLate = readStatusForStudents(lec.getLateStudentsName(),false);
-            course.endLecture(lec, lec.getLateStudentsID(), statusLate);
+            course.endLecture(lec);
+            // controller.stopTheLecture();
+            // ArrayList<AttendanceStatus> statusLate = readStatusForStudents(lec.getLateStudentsName(),false);
+            // course.endLecture(lec, lec.getLateStudentsID(), statusLate);
         }
+        else{
+            controller.printPromptAndRead("wrong course number,please select it again!");
+            startNewLecture();
+        }
+    }
+
+    public void updateStudentsRecords() throws IOException{
+        controller.updateStudentsRecords(professor);
     }
 
     /**
@@ -92,7 +101,7 @@ public class App {
      * @throws IOException We will not handle this exception.
      */
     public void displayStudentsFromCourse() throws IOException{
-        int idx = controller.selectCourse(professor.getCourses().size());
+        int idx = controller.displayAndChooseCourse(professor);
         if(idx<professor.getCourses().size()){
             Course course = professor.getCourse(idx);
             controller.displayStudentsFromCourse(course);
@@ -108,8 +117,8 @@ public class App {
         int cmd = controller.readAction("Hi, "+professor.getName()+". What do you want to do?");
         switch(cmd){
             case 1:
-                int courseID = professor.getCourses().size();
-                Course newCourse = controller.readNewCourse(Integer.toString(courseID), professor);
+                String courseID = "C"+(professor.getCourses().size()+1);
+                Course newCourse = controller.readNewCourse(courseID, professor);
                 professor.addCourse(newCourse);
                 break;
             case 2:
@@ -118,16 +127,16 @@ public class App {
             case 3:
                 startNewLecture();
                 break;
-            // case 4:
-            //     updateStudentsRecords();//TODO!!! I will do that - Louise. If displayAttendanceFromCourse() finish I will update to it too.
-            //     break;
+            case 4:
+                updateStudentsRecords();//TODO!!! I will do that - Louise. If displayAttendanceFromCourse() finish I will update to it too.
+                break;
             // case 5:
             //     changeStudentDisplayName();//TODO!!
             // case 6:
             //     displayAttendanceFromCourse();//TODO!! 
-            // case 7:
-            //     displayStudentsFromCourse();
-            //     break;
+            case 7:
+                displayStudentsFromCourse();
+                break;
             case 8:
                 return;
         }

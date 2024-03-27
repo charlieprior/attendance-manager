@@ -169,4 +169,45 @@ public class Lecture{
     attendanceSession.endSession();
   }
 
+  public void endLecture(){
+    PersistenceManager export = new PersistenceManager();
+    export.writeRecordsToCSV(courseName+" "+lectureID, attendanceSession);
+    //email-notify
+  }
+
+  public boolean currentStudent(String id){
+    for(Student s:students){
+        if(s.getStudentID().equals(id)){
+            return true;
+        }
+    }
+    return false;
+}
+
+  public String findEmailThroughID(String id){
+    if(currentStudent(id)){
+      for(Student s:students){
+        if(s.getStudentID().equals(id)){
+          return s.getEmail();
+        }
+      }
+    }
+    return null;
+  }
+
+  public boolean updateForOneStudent(String lateStudentsID){
+    if(currentStudent(lateStudentsID)){
+      boolean res = attendanceSession.updateAttendanceRecord(lateStudentsID, AttendanceStatus.TARDY);
+      if(res){
+        PersistenceManager export = new PersistenceManager();
+        export.writeRecordsToCSV(courseName+" "+lectureID+" updated", attendanceSession);
+        //send email
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+
 }

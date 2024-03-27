@@ -150,6 +150,7 @@ public class TextUserController {
         actions.add("1. add Course\n");
         actions.add("2. add Students to Course manually\n");
         actions.add("3. start a new Lecture from one Course,then take attenace records\n");
+        actions.add("4. update an attendance record for a student\n");
         actions.add("7. print students from one course\n");
         actions.add("8. quit the program.\n");
         for (String action : actions) {
@@ -192,9 +193,13 @@ public class TextUserController {
         String ans = printPromptAndRead(prompt);
         try{
             int idx = Integer.parseInt(ans)-1;
+            if(idx>=0 && idx<maxSize){
+                return maxSize;
+            }
             return idx;
         }
         catch(NumberFormatException e){
+            out.println(e.getMessage());
             return maxSize;
         }
     }
@@ -264,27 +269,28 @@ public class TextUserController {
         return count;
     }
 
-    public ArrayList<Integer> readColumns(int size, String ... ansStr) throws Exception{
-        ArrayList<Integer> ans = new ArrayList<>();
-        for(String s:ansStr){
-            int idx = Integer.parseInt(s);
-            if(idx>size || idx<=0){
-                throw new IOException("No such column!");
-            }
-            ans.add(idx-1);
+    public int readColumns(int size, String prompt) throws Exception{
+        String ans = printPromptAndRead(prompt);
+        int idx = Integer.parseInt(ans);
+        if(idx>size || idx<=0){
+            return readColumns(size,"No such column! Read it again!");
         }
-        return ans;
+        return idx-1;
     }
 
     //Working on it!
     public ArrayList<Student> readStudents(ArrayList<String> lines) throws Exception{
-        String ansln = printPromptAndRead("Which column is for legal name? Remember, column starts from 1.");
-        String ansuid = printPromptAndRead("Which column is for uid of this student?");
-        String ansemail = printPromptAndRead("Which column is for email?");
-        String ansdn = printPromptAndRead("Which column is for display name? If not, please select the same column with legal name");
         String separater = printPromptAndRead("Which separator in this file?");
         int columns = fileColumns(lines.get(0),separater);
-        ArrayList<Integer> ans = readColumns(columns,ansln,ansuid,ansemail,ansdn);
+        int ansln = readColumns(columns,"Which column is for legal name? Remember, column starts from 1.");
+        int ansuid = readColumns(columns,"Which column is for uid of this student?");
+        int ansemail = readColumns(columns,"Which column is for email?");
+        int ansdn = readColumns(columns,"Which column is for display name? If not, please select the same column with legal name");
+        ArrayList<Integer> ans = new ArrayList<>();
+        ans.add(ansln);
+        ans.add(ansuid);
+        ans.add(ansemail);
+        ans.add(ansdn);
         ArrayList<Student> newStudents =  new ArrayList<Student>();
         for (String line:lines) { 
             String []lineTokens = readLines(line, separater);
@@ -309,7 +315,7 @@ public class TextUserController {
             }
             catch(IOException e){
                 out.println(e.getMessage());
-                String rsp = printPromptAndRead("cannot read the file, y for loading again, else return");
+                String rsp = printPromptAndRead("cannot read the file, y for loading again, else return. The course will be created.");
                 if(rsp.equals("y")){
                     return readCSVFiles();
                 }
@@ -354,9 +360,24 @@ public class TextUserController {
     }
 
 
-    //TODO: All of them should be done
-    public void updateStudentsRecords() throws IOException{
+    public void updateRecordForStudent(Lecture lecture) throws IOException{
+        String ans = printPromptAndRead("What is your Student ID?");
+        if(lecture.updateForOneStudent(ans)){
+            out.println("Successfully update the record for this student. An email may send to the student's email");
+        }
+        else{
+            out.println("No updated record. The student may not be a student in this lecture");
+        }
+    }
 
+    //TODO: All of them should be done
+    public void updateStudentsRecords(Professor professor) throws IOException{
+        int courseIndex = displayAndChooseCourse(professor);
+        Course course = professor.getCourse(courseIndex);
+        Lecture lastLecture = course.getLatestLecture();
+        TextUserView view = new TextUserView(out);
+        view.printStudentStatus(lastLecture);
+        updateRecordForStudent(lastLecture);
     }
 
 

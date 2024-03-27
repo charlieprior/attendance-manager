@@ -170,6 +170,10 @@ public class Course {
     public String getLectureName(int i){
         return lectures.get(i).getLectureID();
     }
+
+    public Lecture getLatestLecture(){
+        return lectures.get(lectures.size()-1);
+    }
   
     /**
      * @param s is the student to be added to the Course
@@ -214,6 +218,11 @@ public class Course {
     */
     public void endLecture(Lecture lecture,ArrayList<String> lateStudentsID,ArrayList<AttendanceStatus> status) throws IOException{
         lecture.endLecture(lateStudentsID, status);
+        lectures.add(lecture);
+    }
+
+    public void endLecture(Lecture lecture){
+        lecture.endLecture();
         lectures.add(lecture);
     }
 }
