@@ -71,3 +71,7 @@ task resolveDependencies {
        }
    }
 }
+
+run {
+    standardInput = System.in
+}
