@@ -28,6 +28,7 @@ test:
       
 pages:
  stage: coverage
+ coverage: TOTAL COVERAGE: \d+\%
  tags:
      - testing
  dependencies:
