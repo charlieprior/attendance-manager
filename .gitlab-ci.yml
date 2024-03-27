@@ -29,7 +29,7 @@ test:
 pages:
  stage: coverage
  tags:
-     - ece651
+     - testing
  dependencies:
    - test
  script:
