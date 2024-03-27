@@ -1,6 +1,7 @@
 package edu.duke.ece651.team2.attendancemanager;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -37,6 +38,10 @@ public class LectureTest {
     l1.addStudents(stu1);
     assertEquals(stu1,l1.getStudents());
     l1.getAttendanceSession();
+    assertTrue(l1.currentStudent("kc566"));
+    assertFalse(l1.currentStudent("kc"));
+    assertEquals("kc566@duke.edu",l1.findEmailThroughID("kc566"));
+    assertNotEquals("kc566@duke.edu",l1.findEmailThroughID("kc"));
   }
 
   @Test
