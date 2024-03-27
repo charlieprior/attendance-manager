@@ -19,6 +19,8 @@ public class ProfessorTest {
         testCourse2 = new Course("2", "CS301", professor2, null,null);
         // testCourse1 = new Course("CS101", "Intro to Computer Science");
         // testCourse2 = new Course("CS301", "Database System");
+        professor1.getUniversityName();
+        professor1.getUniversityPolicy();
     }
 
     @Test
@@ -59,6 +61,7 @@ public class ProfessorTest {
         assertTrue(professor1.getCourses().contains(testCourse2));
 
         // Remove a course and validate the list again
+        assertEquals(professor1.getCourse(0),testCourse1);
         professor1.removeCourse(testCourse1);
         assertEquals(1, professor1.getCourses().size());
         assertFalse(professor1.getCourses().contains(testCourse1));

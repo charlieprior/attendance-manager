@@ -36,22 +36,12 @@ public class LectureTest {
     ArrayList<Student> stu1 = initailSetting();
     l1.addStudents(stu1);
     assertEquals(stu1,l1.getStudents());
+    l1.getAttendanceSession();
   }
-
-  BufferedReader provideInput(String data) {
-    BufferedReader input = new BufferedReader(new StringReader(data));
-    return input;
-  }
-
 
   @Test
   public void  testAttendanceRecord() throws IOException{
     Lecture l1 = new Lecture();
     l1.addStudents(initailSetting());
-  }
-
-  @Test
-  public void testEndLecture(){
-
   }
 }

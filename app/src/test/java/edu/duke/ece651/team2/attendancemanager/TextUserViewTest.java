@@ -59,27 +59,29 @@ class TextUserViewTest {
         view.printStudents(course1);
         assertEquals(expected, bytes.toString());
     }
+  
+  @Test
+  void testPrintStudentStatuses() throws IOException {
+    BufferedReader input = new BufferedReader(new StringReader(""));
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    PrintStream output = new PrintStream(bytes, true);
 
-    @Test
-    void testPrintStudentStatuses() throws IOException {
-        BufferedReader input = new BufferedReader(new StringReader(""));
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        PrintStream output = new PrintStream(bytes, true);
+    TextUserView view = new TextUserView(output);
 
-        TextUserView view = new TextUserView(output);
-
-        University university = new University("Duke", true);
-        Professor prof = new Professor("John", "123", "john@example.edu",university);
-        Student student1 = new Student("John Doe", "1", "john.doe@example.edu", "John");
-        Student student2 = new Student("Qianyi Jane", "2", "mary.jane@example.edu", "Mary");
-        Course course1 = new Course("C1", "Course1", prof, 0, new ArrayList<Student>(), new ArrayList<Lecture>());
-        course1.addStudent(student1);
-        course1.addStudent(student2);
-        // Lecture lecture = course1.startLecture();
-        // view.printStudentStatus(lecture);
-
-        // TODO: Test the output
-    }
+    University university = new University("Duke", true);
+    Professor prof = new Professor("John", "123", "john@example.edu",university);
+    Lecture l1 = new Lecture("Course1", "C1", null, prof);
+    Student student1 = new Student("John Doe", "1", "john.doe@example.edu", "John");
+    Student student2 = new Student("Qianyi Jane", "2", "mary.jane@example.edu", "Mary");
+    Student student3 = new Student("Qianyi Jane", "3", "mary.jane@example.edu", "");
+    Course course1 = new Course("C1", "Course1", prof, 0, new ArrayList<Student>(), new ArrayList<Lecture>());
+    course1.addStudent(student1);
+    course1.addStudent(student2);
+    course1.addStudent(student3);
+    view.studentAddCheck(student1);
+    view.studentAddCheck(student3);
+    // TODO: Test the output
+  }
 
   @Test
   void testPrintLectures() {
@@ -107,6 +109,6 @@ class TextUserViewTest {
     "2. C2\n";
         view.printLectures(course1);
         assertEquals(expected, bytes.toString());
-    }
+  }
   
 }
