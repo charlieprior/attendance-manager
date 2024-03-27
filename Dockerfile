@@ -33,6 +33,10 @@ COPY --chown=juser scripts/emacs-bare.sh ./
 RUN mkdir -p /home/juser/.emacs.d/dcoverage
 COPY --chown=juser scripts/dcoverage.el /home/juser/.emacs.d/dcoverage/
 RUN chmod u+x emacs-bare.sh && ./emacs-bare.sh
+COPY --chown=juser scripts/test.sh scripts/test.sh
+RUN chmod u+x scripts/test.sh
+COPY --chown=juser scripts/coverage_summary.sh scripts/coverage_summary.sh
+RUN chmod u+x scripts/coverage_summary.sh
 
 
 # we are going to do a bit of gradle first, just to speed
@@ -48,7 +52,7 @@ RUN ./gradlew resolveDependencies
 # Now we copy all our source files in.  Note that
 # if we change src, etc, but not our gradle setup,
 # Docker can resume from this point
-#COPY --chown=juser ./ ./
+COPY --chown=juser ./scripts ./scripts
 
 # compile the code
 RUN ./gradlew  assemble

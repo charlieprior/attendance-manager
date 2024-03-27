@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo ls
+ls -R
 
 emacs --batch -u `whoami` --script scripts/docov.el
 
