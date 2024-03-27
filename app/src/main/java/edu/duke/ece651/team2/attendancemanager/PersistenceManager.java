@@ -47,6 +47,25 @@ public class PersistenceManager {
         
     }
 
+    public void generateWholeReport(String fileName, List<AttendanceRecord> records){
+        try{
+            FileWriter writer = new FileWriter("./app/export/"+fileName+".csv"); //path ???
+            writer.append(headers+newLine);
+            for(AttendanceRecord r:records){
+                writer.write(r.getStudentID()+separator);
+                writer.write(r.getStudentName()+separator);
+                writer.write(r.getAttendanceDate()+separator);
+                writer.write(r.getStatus()+newLine);
+            }
+            System.out.println("Successfully create and write csv");
+            writer.close();
+        }
+        catch(IOException e){
+            System.out.println(e.getMessage());
+        }
+        
+    }
+
     /**
      * This function will write the AttendanceRecord into JSON
      * 

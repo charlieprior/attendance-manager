@@ -2,6 +2,7 @@ package edu.duke.ece651.team2.attendancemanager;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -191,6 +192,16 @@ public class Course {
         }
     }
 
+    public boolean dropStudents(String id){
+        for(Student s:students){
+            if(s.getStudentID().equals(id)){
+                students.remove(s);
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean changeStudentDisplayName(String id,String dn){
         for(Student s:students){
             if(s.getStudentID().equals(id)){
@@ -234,5 +245,17 @@ public class Course {
     public void endLecture(Lecture lecture){
         lecture.endLecture();
         lectures.add(lecture);
+    }
+
+    public List<AttendanceRecord> getLectureRecords(int idx){
+        return lectures.get(idx).getAttendanceSession().getRecords();
+    }
+
+    public void generateWholeReportTillNow(){
+        List<AttendanceRecord> all = new ArrayList<>();
+        for(int i =0;i<lectureTimes;i++){
+            all.addAll(lectures.get(i).getAttendanceSession().getRecords());
+        }
+        //may notify!!!!
     }
 }

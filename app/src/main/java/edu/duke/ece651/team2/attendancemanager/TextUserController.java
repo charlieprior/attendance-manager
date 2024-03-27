@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -171,11 +172,13 @@ public class TextUserController {
         ArrayList<String> actions = new ArrayList<>();
         actions.add("1. add Course\n");
         actions.add("2. add Students to Course manually\n");
-        actions.add("3. start a new Lecture from one Course,then take attenace records\n");
-        actions.add("4. update an attendance record for a student\n");
-        actions.add("5. change a student's display name\n");
-        actions.add("7. print students from one course\n");
-        actions.add("8. quit the program.\n");
+        actions.add("3. drop Students from Course manually\n");
+        actions.add("4. start a new Lecture from one Course,then take attenace records\n");
+        actions.add("5. update an attendance record for a student\n");
+        actions.add("6. change a student's display name\n");
+        actions.add("7. display the attendance records from one course\n");
+        actions.add("8. print students from one course\n");
+        actions.add("9. quit the program.\n");
         for (String action : actions) {
             prompt = prompt + action;
         }
@@ -301,7 +304,6 @@ public class TextUserController {
         return idx-1;
     }
 
-    //Working on it!
     public ArrayList<Student> readStudents(ArrayList<String> lines) throws Exception{
         String separater = printPromptAndRead("Which separator in this file?");
         int columns = fileColumns(lines.get(0),separater);
@@ -323,7 +325,6 @@ public class TextUserController {
         return newStudents;
     }
 
-    //ask specific format of the csv 
     public ArrayList<Student> readCSVFiles() throws Exception{
         String prompt = "what is your path?";//path?
         String ans = printPromptAndRead(prompt);
@@ -410,15 +411,39 @@ public class TextUserController {
         String id = printPromptAndRead("What is the student's ID?");
         String newName = printPromptAndRead("What is your new preferred display name?");
         if(course.changeStudentDisplayName(id,newName)){
-            out.println("Succesfully!");
+            print("Succesfully!");
         }
         else{
-            out.println("The id may be wrong.");
+            print("The id may be wrong.");
         }
     }
 
-    public void displayAttendanceFromCourse() throws IOException{
+    public void displayRecords(List<AttendanceRecord> records) throws IOException{
+        for(AttendanceRecord r:records){
+            print(r.getStudentID()+" "+r.getStudentName()+" "+r.getAttendanceDate()+" "+r.getStatus());
+        }
+    }
 
+    public void displayAttendanceFromCourse(Professor professor) throws IOException{
+        int idx = displayAndChooseCourse(professor);
+        Course course = professor.getCourse(idx);
+        for(int i =0;i<course.getLectureSize();i++){
+            print("Lecture "+i+":");
+            List<AttendanceRecord> records = course.getLectureRecords(i);
+            displayRecords(records);
+        }
+    }
+
+    public void removeStudentsFromCourse(Professor professor) throws IOException{
+        int idx = displayAndChooseCourse(professor);
+        Course course = professor.getCourse(idx);
+        String id = printPromptAndRead("What is the student's UID?");
+        if(course.dropStudents(id)){
+            print("Successfully!");
+        }
+        else{
+            print("The id may be wrong.");
+        }
     }
 
 }

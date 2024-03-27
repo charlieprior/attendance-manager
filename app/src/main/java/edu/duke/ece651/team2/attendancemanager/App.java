@@ -32,16 +32,6 @@ public class App {
         this.controller = controller;
     }
 
-    //TODO!!!!!!!May edit later, check keywords and userid match
-    // public void logIn() throws IOException{
-    //     boolean status = controller.logIn();
-    //     if(status==true){
-    //         return;
-    //     }
-    //     else{
-    //         logIn();
-    //     }
-    // }
 
     /**
      * Adds students to a course.
@@ -87,7 +77,7 @@ public class App {
             // course.endLecture(lec, lec.getLateStudentsID(), statusLate);
         }
         else{
-            controller.printPromptAndRead("wrong course number,please select it again!");
+            controller.printPromptAndRead("wrong course number,return to menu.");
             startNewLecture();
         }
     }
@@ -116,6 +106,7 @@ public class App {
     }
 
 
+
     /**
      * Welcomes the user.
      * @throws IOException We will not handle this exception.
@@ -129,22 +120,27 @@ public class App {
                 professor.addCourse(newCourse);
                 break;
             case 2:
-                addStudentsToCourse();//adding feature to load csv
+                addStudentsToCourse();
                 break;
             case 3:
-                startNewLecture();
+                controller.removeStudentsFromCourse(professor);
                 break;
             case 4:
-                updateStudentsRecords();
+                startNewLecture();
                 break;
             case 5:
-                changeStudentDisplayName();//TODO!!
-            // case 6:
-            //     displayAttendanceFromCourse();//TODO!! 
+                updateStudentsRecords();
+                break;
+            case 6:
+                changeStudentDisplayName();
+                break;
             case 7:
-                displayStudentsFromCourse();
+                controller.displayAttendanceFromCourse(professor);
                 break;
             case 8:
+                displayStudentsFromCourse();
+                break;
+            case 9:
                 return;
         }
         welcome();
