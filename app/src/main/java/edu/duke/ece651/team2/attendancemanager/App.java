@@ -3,7 +3,6 @@
  */
 package edu.duke.ece651.team2.attendancemanager;
 
-import javax.mail.MessagingException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,7 +22,7 @@ public class App {
      */
     private final TextUserController controller;
 
-    private final GmailSetup gmailSetup;
+    private final GmailSetup gmailSetup; // TODO: Remove from App
 
     /**
      * Constructs a new App object with the specified Professor and controller.
@@ -156,7 +155,7 @@ public class App {
      * @param args The command-line arguments.
      * @throws IOException We will not handle this exception.
      */
-    public static void main(String[] args) throws IOException, GeneralSecurityException, MessagingException {
+    public static void main(String[] args) throws IOException, GeneralSecurityException {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         TextUserController controller = new TextUserController(input, System.out);
         University university = controller.readUniversity();//TODO!!!!
@@ -164,8 +163,7 @@ public class App {
         Professor user = controller.register(info,university);
         controller.logIn(info);
         App app = new App(user, controller);
-        app.gmailSetup.printLabels();
-        app.gmailSetup.sendEmail("ece651testing2@gmail.com", "charles.gregory.prior@gmail.com");
+        app.gmailSetup.sendEmail("Test", "This is a test"); // TODO remove from App
         // app.logIn();
         app.welcome();
     }

@@ -6,13 +6,9 @@ import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.googleapis.json.GoogleJsonError;
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
-import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
-import com.google.api.client.util.Base64;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.GmailScopes;
@@ -20,15 +16,15 @@ import com.google.api.services.gmail.model.Label;
 import com.google.api.services.gmail.model.ListLabelsResponse;
 import com.google.api.services.gmail.model.Message;
 
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
-import java.util.Properties;
 
 /* class to demonstrate use of Gmail list labels API */
 public class GmailSetup {
@@ -49,8 +45,10 @@ public class GmailSetup {
      * Global instance of the scopes required by this quickstart.
      * If modifying these scopes, delete your previously saved tokens/ folder.
      */
-    private static final List<String> SCOPES = Collections.singletonList(GmailScopes.GMAIL_LABELS);
+    private static final List<String> SCOPES = new ArrayList<>(GmailScopes.all());
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
+
+    private static final String email = "charles.gregory.prior@gmail.com"; // TODO: change this
 
     private final Gmail service;
 
@@ -62,6 +60,7 @@ public class GmailSetup {
                 .build();
     }
 
+    // Code from https://developers.google.com/gmail/api/quickstart/java
     /**
      * Creates an authorized Credential object.
      *
@@ -106,48 +105,33 @@ public class GmailSetup {
         }
     }
 
-    // https://mailtrap.io/blog/java-send-email-gmail/#Sending-email-in-Java-with-Gmail-API
-    // Method to create and send an email directly without using JavaMail api
-    public Message sendEmail(String fromEmailAddress,
-                                    String toEmailAddress)
-            throws MessagingException, IOException {
-        // Create the email content
-        String messageSubject = "Test message";
-        String bodyText = "lorem ipsum.";
+    public void sendEmail(String subject, String bodyText) throws IOException, GeneralSecurityException {
+        System.out.println("2222222222222222222222" + email + "...");
+        String rawEmailString = createRawEmailString(email, "me", subject, bodyText);
+        Message message = createMessage(rawEmailString);
+        sendMessage(service, "me", message);
+    }
 
-        // Encode as MIME message
-        Properties props = new Properties();
-        Session session = Session.getDefaultInstance(props, null);
-        MimeMessage email = new MimeMessage(session);
-        email.setFrom(new InternetAddress(fromEmailAddress));
-        email.addRecipient(javax.mail.Message.RecipientType.TO,
-                new InternetAddress(toEmailAddress));
-        email.setSubject(messageSubject);
-        email.setText(bodyText);
+    // Code from https://mailtrap.io/blog/java-send-email-gmail/
+    private String createRawEmailString(String to, String from, String subject, String body) {
+        String bodyText = "Content-Type: text/plain; charset=\"UTF-8\"\n" +
+                "MIME-Version: 1.0\n" +
+                "Content-Transfer-Encoding: 7bit\n" +
+                "to: " + to + "\n" +
+                "from: " + from + "\n" +
+                "subject: " + subject + "\n\n" +
+                body;
 
-        // Encode and wrap the MIME message into a gmail message
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        email.writeTo(buffer);
-        byte[] rawMessageBytes = buffer.toByteArray();
-        String encodedEmail = Base64.encodeBase64URLSafeString(rawMessageBytes);
+        return Base64.getUrlEncoder().encodeToString(bodyText.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private Message createMessage(String rawEmail) {
         Message message = new Message();
-        message.setRaw(encodedEmail);
+        message.setRaw(rawEmail);
+        return message;
+    }
 
-        try {
-            // Create send message
-            message = service.users().messages().send("me", message).execute();
-            System.out.println("Message id: " + message.getId());
-            System.out.println(message.toPrettyString());
-            return message;
-        } catch (GoogleJsonResponseException e) {
-            // TODO(developer) - handle error appropriately
-            GoogleJsonError error = e.getDetails();
-            if (error.getCode() == 403) {
-                System.err.println("Unable to send message: " + e.getDetails());
-            } else {
-                throw e;
-            }
-        }
-        return null;
+    private void sendMessage(Gmail service, String userId, Message email) throws IOException {
+        service.users().messages().send(userId, email).execute();
     }
 }
