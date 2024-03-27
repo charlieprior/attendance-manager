@@ -21,6 +21,7 @@ test:
   tags:
      - testing
   stage: test
+  coverage: '/TOTAL COVERAGE: \d+\%/'
   script: scripts/run-tests-in-docker.sh
   artifacts:
     paths:
@@ -28,8 +29,7 @@ test:
       
 pages:
  stage: coverage
- coverage: '/TOTAL COVERAGE: \d+\%/'
- tags:
+  tags:
      - testing
  dependencies:
    - test
