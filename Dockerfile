@@ -37,7 +37,7 @@ RUN chmod u+x emacs-bare.sh && ./emacs-bare.sh
 
 # we are going to do a bit of gradle first, just to speed
 # up future builds
-COPY --chown=juser build.gradle gradlew settings.gradle  ./
+COPY --chown=juser app/build.gradle gradlew settings.gradle  ./
 COPY --chown=juser gradle/wrapper gradle/wrapper
 
 
