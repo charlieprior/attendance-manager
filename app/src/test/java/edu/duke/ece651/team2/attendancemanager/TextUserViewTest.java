@@ -70,17 +70,22 @@ class TextUserViewTest {
 
     University university = new University("Duke", true);
     Professor prof = new Professor("John", "123", "john@example.edu",university);
-    Lecture l1 = new Lecture("Course1", "C1", null, prof);
+    ArrayList<Student> students = new ArrayList<>();
     Student student1 = new Student("John Doe", "1", "john.doe@example.edu", "John");
     Student student2 = new Student("Qianyi Jane", "2", "mary.jane@example.edu", "Mary");
-    Student student3 = new Student("Qianyi Jane", "3", "mary.jane@example.edu", "");
-    Course course1 = new Course("C1", "Course1", prof, 0, new ArrayList<Student>(), new ArrayList<Lecture>());
-    course1.addStudent(student1);
-    course1.addStudent(student2);
-    course1.addStudent(student3);
-    view.studentAddCheck(student1);
-    view.studentAddCheck(student3);
-    // TODO: Test the output
+    students.add(student1);
+    students.add(student2);
+    ArrayList<AttendanceStatus> statuses = new ArrayList<>();
+    statuses.add(AttendanceStatus.PRESENT);
+    statuses.add(AttendanceStatus.ABSENT);
+    Lecture lecture1 = new Lecture("Course1", "L1", students, prof);
+    lecture1.recordAttendance(statuses);
+    view.printStudentStatus(lecture1);
+    assertEquals("===========================================================================\n" +
+            "Student Statuses\n" +
+            "===========================================================================\n" +
+            "John - PRESENT\n" +
+            "Mary - ABSENT\n", bytes.toString());
   }
 
   @Test
