@@ -6,6 +6,7 @@ package edu.duke.ece651.team2.attendancemanager;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
 /**
@@ -21,15 +22,18 @@ public class App {
      */
     private final TextUserController controller;
 
+    private final GmailSetup gmailSetup; // TODO: Remove from App
+
     /**
      * Constructs a new App object with the specified Professor and controller.
      *
      * @param professor  The Professor using the application.
      * @param controller The controller for the application.
      */
-    public App(Professor professor,TextUserController controller){
+    public App(Professor professor,TextUserController controller) throws GeneralSecurityException, IOException {
         this.professor = professor;
         this.controller = controller;
+        this.gmailSetup = new GmailSetup();
     }
 
 
@@ -151,7 +155,7 @@ public class App {
      * @param args The command-line arguments.
      * @throws IOException We will not handle this exception.
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, GeneralSecurityException {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         TextUserController controller = new TextUserController(input, System.out);
         University university = controller.readUniversity();//TODO!!!!
@@ -159,6 +163,7 @@ public class App {
         Professor user = controller.register(info,university);
         controller.logIn(info);
         App app = new App(user, controller);
+        app.gmailSetup.sendEmail("Test", "This is a test"); // TODO remove from App
         // app.logIn();
         app.welcome();
     }
