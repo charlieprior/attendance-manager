@@ -52,8 +52,8 @@ RUN ./gradlew resolveDependencies
 # if we change src, etc, but not our gradle setup,
 # Docker can resume from this point
 COPY --chown=juser ./scripts ./scripts
-COPY --chown=juser ./app/src ./app/src
-COPY --chown=juser ./app/build ./app/build
+COPY --chown=juser ./app/src ./src
+COPY --chown=juser ./app/build ./build
 
 # compile the code
 RUN ./gradlew  assemble
