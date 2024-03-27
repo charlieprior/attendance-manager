@@ -68,6 +68,8 @@ public class TextUserController {
      * @param studentsName is the String of students' display name in this Course
      * @param start    means beginning of the lecture if true else end of the
      *                 lecture
+     * @return The status of the student.
+     * @throws IOException We will not handle this exception.
      */
     public AttendanceStatus readStudentStatus(String studentsName, boolean start) throws IOException {
         String prompt = "You are recording students status, please type the status of the student:";

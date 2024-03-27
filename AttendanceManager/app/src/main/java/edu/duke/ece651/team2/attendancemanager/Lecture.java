@@ -32,6 +32,7 @@ public class Lecture{
 
   /**
    * Get the AttendanceSession of the lecture.
+   * @return The AttendanceSession of the lecture.
    */
   public AttendanceSession getAttendanceSession() {
     return attendanceSession;

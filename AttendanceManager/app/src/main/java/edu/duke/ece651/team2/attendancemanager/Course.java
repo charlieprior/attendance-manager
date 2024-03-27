@@ -76,6 +76,7 @@ public class Course {
      * @param pro          is the Professor information
      * @param lectureTimes is the times of the Course's Lectures
      * @param students     the students attending the course.
+     * @param lectures     the lectures for the course.
      */
   public Course(String id, String name, Professor pro, int lectureTimes,ArrayList<Student> students,ArrayList<Lecture> lectures){
         this.courseID = id;
@@ -147,6 +148,8 @@ public class Course {
     }
 
     /**
+     * Get the student's name at index i
+     * @param i is the index of the student
      * @return the name of the student at index i
     */
     public String getStudentName(int i){
@@ -160,6 +163,10 @@ public class Course {
         return lectures.size();
     }
 
+    /**
+     * @param i is the index of the lecture
+     * @return the lecture at index i
+    */
     public String getLectureName(int i){
         return lectures.get(i).getLectureID();
     }
@@ -182,6 +189,8 @@ public class Course {
 
     /**
      * This function will start a new lecture
+     *
+     * @param status is the list of students' status at the beginning of the class.
      * 
      * @return the new lecture 
     */
@@ -195,6 +204,11 @@ public class Course {
 
     /**
      * This function will end the lecture
+     *
+     *
+     * @param lecture is the lecture to be ended
+     * @param lateStudentsID is the list of students who are late
+     * @param status is the list of students' status at the end of the class
      * 
      * @throws IOException if anything happens while recording the students' status at the end of the class
     */

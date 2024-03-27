@@ -35,6 +35,7 @@ public class AttendanceSession {
      * Records attendance for a student in the session.
      *
      * @param studentID The ID of the student.
+     * @param studentName The name of the student.
      * @param status    The status of the student's attendance (true if present,
      *                  false if absent).
      * @param lectureID The ID of the lecture.

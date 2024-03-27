@@ -32,6 +32,7 @@ public class Professor {
      *
      * @param name        The name of the professor.
      * @param professorID The unique ID of the professor.
+     * @param email       The email address of the professor.
      */
     public Professor(String name, String professorID, String email) {
         this.name = name;
@@ -76,6 +77,12 @@ public class Professor {
         return courses;
     }
 
+    /**
+     * Returns the course at the specified index in the list of courses taught by the professor.
+     *
+     * @param index The index of the course to be returned.
+     * @return The course at the specified index in the list of courses taught by the professor.
+     */
     public Course getCourse(int index){
         return courses.get(index);
     }

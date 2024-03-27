@@ -39,6 +39,7 @@ public class AttendanceRecord {
      * @param attendanceDate The date of the attendance record.
      * @param studentID      The ID of the student associated with the attendance
      *                       record.
+     * @param studentName    The name of the student associated with the attendance
      * @param status         The status of the student's attendance (true if
      *                       present, false if absent).
      * @param lectureID      The ID of the lecture associated with the attendance
