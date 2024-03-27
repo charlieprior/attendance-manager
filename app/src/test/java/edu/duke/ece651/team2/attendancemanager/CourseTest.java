@@ -25,10 +25,10 @@ public class CourseTest {
     Professor professor2 = new Professor("Prof CS123", "HIJKL", "cs123@duke.edu",university);
     int lectureTimes2 = 2;
 
-    BufferedReader provideInput(String data) {
+  /*BufferedReader provideInput(String data) {
         BufferedReader input = new BufferedReader(new StringReader(data));
         return input;
-    }
+    }*/
 
     @Test
     public void testConstructors(){
@@ -65,6 +65,11 @@ public class CourseTest {
         slst2.add(s3);
         course1.addStudents(slst2);
         assertEquals(course1.numberOfStudents(), 3);
+        course1.getStudentsDisplayName();
+        course1.changeStudentDisplayName("98765", "test");
+        course1.changeStudentDisplayName("9876", "test");
+        course1.dropStudents("98765");
+        course1.dropStudents("9876");
     }
 
     @Test
@@ -89,7 +94,7 @@ public class CourseTest {
         assertEquals(course1.getLectureTimes(), 2);
         assertEquals(newLec2.getCourseName(), "CS 123");
         assertEquals(newLec2.getStudents(), slst1);
-
+        //course1.getLatestLecture();
     }
 
     @Test
@@ -127,5 +132,49 @@ public class CourseTest {
         course1.endLecture(newLec2,lateStudentsID2,lateStatus2);
         assertEquals(course1.getLectureTimes(), course1.getLectureSize());
         assertEquals(course1.getLectureTimes(),2);
+        course1.getLectureRecords(1);
+        course1.generateWholeReportTillNow();
     }
+
+  @Test
+  public void testEndLecture2() throws IOException{
+    slst1.add(s1);
+    slst1.add(s2);
+    slst1.add(s3);
+
+    Course course1 = new Course(courseID2, courseName2, professor2,slst1);
+    ArrayList<AttendanceStatus> status = new ArrayList<>();
+    status.add(AttendanceStatus.ABSENT);
+    status.add(AttendanceStatus.ABSENT);
+    status.add(AttendanceStatus.PRESENT);
+    Lecture newLec = course1.startLecture(status);
+    ArrayList<String> lateStudentsID = new ArrayList<>();
+    lateStudentsID.add("1282080");
+    lateStudentsID.add("98765");
+    ArrayList<AttendanceStatus> lateStatus = new ArrayList<>();
+    lateStatus.add(AttendanceStatus.ABSENT);
+    lateStatus.add(AttendanceStatus.TARDY);
+    course1.endLecture(newLec,lateStudentsID,lateStatus);
+    assertEquals(course1.getLectureTimes(), course1.getLectureSize());
+    assertEquals(course1.getLectureTimes(),1);
+    ArrayList<AttendanceStatus> status2 = new ArrayList<>();
+    status2.add(AttendanceStatus.PRESENT);
+    status2.add(AttendanceStatus.ABSENT);
+    status2.add(AttendanceStatus.ABSENT);
+    Lecture newLec2 = course1.startLecture(status2);
+    ArrayList<String> lateStudentsID2 = new ArrayList<>();
+    lateStudentsID2.add("98765");
+    lateStudentsID2.add("34567");
+    ArrayList<AttendanceStatus> lateStatus2 = new ArrayList<>();
+    lateStatus2.add(AttendanceStatus.TARDY);
+    lateStatus2.add(AttendanceStatus.ABSENT);
+    course1.endLecture(newLec2);
+    assertEquals(course1.getLectureTimes(), course1.getLectureSize());
+    assertEquals(course1.getLectureTimes(),2);
+    course1.getLectureRecords(1);
+    course1.generateWholeReportTillNow();
+    course1.getLatestLecture();
+    course1.getStudents();
+  }
+  
 }

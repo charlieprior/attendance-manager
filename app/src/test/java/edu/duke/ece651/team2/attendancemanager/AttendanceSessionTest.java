@@ -1,5 +1,6 @@
 package edu.duke.ece651.team2.attendancemanager;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,18 +33,26 @@ public class AttendanceSessionTest {
         String studentID = "123";
         String lectureID = "Lecture1";
         String studentName = "A1 B1";
+        String studentID2 = "456";
+        String studentName2 = "C1 D1";
         AttendanceStatus status = AttendanceStatus.ABSENT;
-
+        AttendanceStatus status2 = AttendanceStatus.TARDY;
+        
         // Test adding a new record
         assertTrue(session.recordAttendance(studentID, studentName,status, lectureID));
+        assertTrue(session.recordAttendance(studentID2, studentName2,status2, lectureID));
 
         // Verify that the record was added
-        assertEquals(1, session.getRecords().size());
+        assertEquals(2, session.getRecords().size());
         AttendanceRecord addedRecord = session.getRecords().get(0);
         assertEquals(studentID, addedRecord.getStudentID());
         assertEquals(lectureID, addedRecord.getLectureID());
         assertEquals(status, addedRecord.getStatus());
         assertEquals(studentName, addedRecord.getStudentName());
+        session.lateStudentsName();
+        ArrayList<String> late = new ArrayList<>();
+        late.add(studentID);
+        assertEquals(session.lateStudentsID(),late);
     }
 
     @Test

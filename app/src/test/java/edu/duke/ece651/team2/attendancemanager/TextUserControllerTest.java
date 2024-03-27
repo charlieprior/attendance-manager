@@ -92,6 +92,48 @@ public class TextUserControllerTest {
         assertTrue(outputText.contains("What's your E-Mail:"));
     }
 
+  @Test
+  public void testLogIn() throws IOException {
+    String input = "987654321\n" + "17778888aaa\n"+"Jane Doe\njane.doe@example.com\n"+ "987654321\n" + "17778888aaa\n";
+        TextUserController controller = new TextUserController(new BufferedReader(new StringReader(input)), System.out);
+        University university = new University("Duke", true);
+        ProtectedInfo info = new ProtectedInfo();
+        Professor newProfessor = controller.register(info,university);
+        //ProtectedInfo login = new ProtectedInfo();
+        //login.storeProtectedInfo("987654321\n","17778888aaa\n");
+        controller.logIn(info);
+    }
+
+  @Test
+  public void testLogInFails() throws IOException {
+    String input = "987654321\n" + "17778888aaa\n"+"Jane Doe\njane.doe@example.com\n"+ "987654321\n" + "17778889aaa\n"+"987654321\n"+"17778888aaa\n";
+    TextUserController controller = new TextUserController(new BufferedReader(new StringReader(input)), System.out);
+    University university = new University("Duke", true);
+    ProtectedInfo info = new ProtectedInfo();
+    Professor newProfessor = controller.register(info,university);
+    controller.logIn(info);
+  }
+
+  @Test
+  public void testReadUniversity() throws IOException {
+    String input = "Duke\n"+"y\n"+"987654321\n" + "17778888aaa\n"+"Jane Doe\njane.doe@example.com\n"+ "987654321\n" + "17778889aaa\n"+"987654321\n"+"17778888aaa\n";
+    TextUserController controller = new TextUserController(new BufferedReader(new StringReader(input)), System.out);
+    University university = controller.readUniversity();
+    ProtectedInfo info = new ProtectedInfo();
+    Professor newProfessor = controller.register(info,university);
+    controller.logIn(info);
+  }
+
+    @Test
+  public void testReadUniversityNo() throws IOException {
+    String input = "Duke\n"+"n\n"+"987654321\n" + "17778888aaa\n"+"Jane Doe\njane.doe@example.com\n"+ "987654321\n" + "17778889aaa\n"+"987654321\n"+"17778888aaa\n";
+    TextUserController controller = new TextUserController(new BufferedReader(new StringReader(input)), System.out);
+    University university = controller.readUniversity();
+    ProtectedInfo info = new ProtectedInfo();
+    Professor newProfessor = controller.register(info,university);
+    controller.logIn(info);
+  }
+  
     @Test
     public void testReadNewCourse() throws IOException {
         String courseId = "CS101";
