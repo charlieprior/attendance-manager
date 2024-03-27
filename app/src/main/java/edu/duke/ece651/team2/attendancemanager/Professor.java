@@ -10,12 +10,12 @@ public class Professor {
     /**
      * The name of the professor.
      */
-    private String name;
+    private final String name;
 
     /**
      * The unique ID of the professor.
      */
-    private String professorID;
+    private final String professorID;
 
     /**
      * The list of courses taught by the professor.
@@ -25,9 +25,9 @@ public class Professor {
     /**
      * The email address of the professor.
      */
-    private String email;
+    private final String email;
 
-    private University university;//TODO!!!!!!!Adding constructors
+    private final University university;
 
     /**
      * Constructs a new Professor object with the specified name and professor ID.
@@ -36,11 +36,12 @@ public class Professor {
      * @param professorID The unique ID of the professor.
      * @param email       The email address of the professor.
      */
-    public Professor(String name, String professorID, String email) {
+    public Professor(String name, String professorID, String email,University university) {
         this.name = name;
         this.professorID = professorID;
         this.courses = new ArrayList<>();
         this.email = email;
+        this.university = university;
     }
 
     /**
@@ -87,6 +88,14 @@ public class Professor {
      */
     public Course getCourse(int index){
         return courses.get(index);
+    }
+
+    public boolean getUniversityPolicy(){
+        return university.getSupportChange();
+    }
+
+    public String getUniversityName(){
+        return university.getName();
     }
 
     /**

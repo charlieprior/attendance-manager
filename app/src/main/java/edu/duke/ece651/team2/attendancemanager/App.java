@@ -151,9 +151,10 @@ public class App {
     public static void main(String[] args) throws IOException {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         TextUserController controller = new TextUserController(input, System.out);
-        // University university = controller.readUniversity();//TODO!!!!
-        // Professor user = controller.register(university);//TODO!!!!
-        Professor user = controller.readNewProfessor();
+        University university = controller.readUniversity();//TODO!!!!
+        ProtectedInfo info = new ProtectedInfo();
+        Professor user = controller.register(info,university);
+        controller.logIn(info);
         App app = new App(user, controller);
         // app.logIn();
         app.welcome();

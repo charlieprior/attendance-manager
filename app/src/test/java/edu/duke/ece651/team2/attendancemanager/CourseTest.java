@@ -14,14 +14,15 @@ public class CourseTest {
     
     String courseID1 = "0";
     String courseName1 = "ECE 651";
-    Professor professor1 = new Professor("Prof A", "ABCDEF", "abc@duke.edu");
+    University university = new University("Duke", true);
+    Professor professor1 = new Professor("Prof A", "ABCDEF", "abc@duke.edu",university);
     Student s1 = new Student("Xinyi Li", "1282080", "xl435@duke.edu", "Louise Li");
     Student s2 = new Student("Some one","98765","so@duke.edu","Someone");
     Student s3 = new Student("Some one Else","34567","soe@duke.edu","Someoneelse");
     ArrayList<Student> slst1 = new ArrayList<>();
     String courseID2 = "3";
     String courseName2 = "CS 123";
-    Professor professor2 = new Professor("Prof CS123", "HIJKL", "cs123@duke.edu");
+    Professor professor2 = new Professor("Prof CS123", "HIJKL", "cs123@duke.edu",university);
     int lectureTimes2 = 2;
 
     BufferedReader provideInput(String data) {

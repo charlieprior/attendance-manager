@@ -44,18 +44,39 @@ public class TextUserController {
         return reader.readLine();
     }
 
-    //TODO: All of them should be done, feel free to use current methods
-    // public University readUniversity() throws IOException{
+    //TODO!!!!!!!This function only!!
+    public String printAndGetHiddenPassword(String prompt) throws IOException{
+        out.println(prompt);
+        return reader.readLine();
+    }
 
-    // }
+    public University readUniversity() throws IOException{
+        String name = printAndGetHiddenPassword("Whats the university?");
+        String support = printPromptAndRead("Does it allow for change display name? y for yes");
+        if(support.equals("y")){
+            return new University(name,true);
+        }
+        return new University(name,false);
+    }
 
-    // public Professor register(University university) throws IOException{
+    public Professor register(ProtectedInfo info,University university) throws IOException{
+        String id = printPromptAndRead("Hi, new Professor, this is " +university.getName()+". What is your id?");
+        String password = printAndGetHiddenPassword("What is your password?");
+        info.storeProtectedInfo(id, password);
+        Professor professor = readNewProfessor(id,university);
+        return professor;
+    }
 
-    // }
-
-    // public boolean logIn() throws IOException{
-
-    // }
+    public void logIn(ProtectedInfo info) throws IOException{
+        String id = printPromptAndRead("Hello, what is your UID?");
+        String password = printAndGetHiddenPassword("What is your password?");
+        boolean res = info.match(id, password);
+        if(res){
+            return;
+        }
+        out.println("Incorrect User/Password. Try again!");
+        logIn(info);
+    }
 
     /**
      * Reads the user's input for a new Student.
@@ -110,15 +131,12 @@ public class TextUserController {
      * @return The new Professor object created from the user's input.
      * @throws IOException We will not handle this exception.
      */
-    public Professor readNewProfessor() throws IOException {
-        String prompt = "You are adding new Professor, please provide the required info:\nWhat's the professor's legal name:";
+    public Professor readNewProfessor(String id,University university) throws IOException {
+        String prompt = "What's your legal name:";
         String name = printPromptAndRead(prompt);
-        prompt = "What's the professor's UID:";
-        String id = printPromptAndRead(prompt);
-        prompt = "What's the professor's E-Mail:";
+        prompt = "What's your E-Mail:";
         String email = printPromptAndRead(prompt);
-
-        Professor newProfessor = new Professor(name, id, email);
+        Professor newProfessor = new Professor(name, id, email,university);
         return newProfessor;
     }
 

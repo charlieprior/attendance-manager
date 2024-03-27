@@ -72,10 +72,11 @@ public class TextUserControllerTest {
 
     @Test
     public void testReadNewProfessor() throws IOException {
-        String input = "Jane Doe\n987654321\njane.doe@example.com\n";
+        String input = "987654321\n" + "17778888aaa\n"+ "Jane Doe\njane.doe@example.com\n";
         TextUserController controller = new TextUserController(new BufferedReader(new StringReader(input)), System.out);
-
-        Professor newProfessor = controller.readNewProfessor();
+        University university = new University("Duke", true);
+        ProtectedInfo info = new ProtectedInfo();
+        Professor newProfessor = controller.register(info,university);
 
         assertNotNull(newProfessor, "New professor should not be null.");
         assertEquals("Jane Doe", newProfessor.getName());
@@ -83,9 +84,10 @@ public class TextUserControllerTest {
         assertEquals("jane.doe@example.com", newProfessor.getEmail());
 
         String outputText = outContent.toString();
-        assertTrue(outputText.contains("What's the professor's legal name:"));
-        assertTrue(outputText.contains("What's the professor's UID:"));
-        assertTrue(outputText.contains("What's the professor's E-Mail:"));
+        assertTrue(outputText.contains("Hi, new Professor, this is " +university.getName()+". What is your id?"));
+        assertTrue(outputText.contains("What is your password?"));
+        assertTrue(outputText.contains("What's your legal name:"));
+        assertTrue(outputText.contains("What's your E-Mail:"));
     }
 
     @Test
@@ -97,7 +99,8 @@ public class TextUserControllerTest {
         Professor professor;
         ArrayList<Student> students;
 
-        professor = new Professor("Prof. John", "001", "prof.john@example.com");
+        University university = new University("Duke", true);
+        professor = new Professor("Prof. John", "001", "prof.john@example.com",university);
 
         students = new ArrayList<>();
         students.add(new Student("Student1", "1001", "student1@example.com", "Stu1"));

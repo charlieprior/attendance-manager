@@ -16,7 +16,8 @@ class TextUserViewTest {
 
         TextUserView view = new TextUserView(output);
 
-        Professor prof = new Professor("John", "123", "john@example.edu");
+        University university = new University("Duke", true);
+        Professor prof = new Professor("John", "123", "john@example.edu",university);
         Course course1 = new Course("C1", "Course1", prof, 0, new ArrayList<Student>(), new ArrayList<Lecture>());
         Course course2 = new Course("C2", "Course2", prof, 0, new ArrayList<Student>(), new ArrayList<Lecture>());
 
@@ -38,7 +39,8 @@ class TextUserViewTest {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         PrintStream output = new PrintStream(bytes, true);
 
-        Professor prof = new Professor("John", "123", "john@example.edu");
+        University university = new University("Duke", true);
+        Professor prof = new Professor("John", "123", "john@example.edu",university);
         Course course1 = new Course("C1", "Course1", prof, 0, new ArrayList<Student>(), new ArrayList<Lecture>());
         Student s1 = new Student("Kenan", "kc566", "kc566@duke.edu", "kencolak");
         Student s2 = new Student("Charlie", "cgp", "cgp@duke.edu", "charliep");
@@ -66,7 +68,8 @@ class TextUserViewTest {
 
         TextUserView view = new TextUserView(output);
 
-        Professor prof = new Professor("John", "123", "john@example.edu");
+        University university = new University("Duke", true);
+        Professor prof = new Professor("John", "123", "john@example.edu",university);
         Student student1 = new Student("John Doe", "1", "john.doe@example.edu", "John");
         Student student2 = new Student("Qianyi Jane", "2", "mary.jane@example.edu", "Mary");
         Course course1 = new Course("C1", "Course1", prof, 0, new ArrayList<Student>(), new ArrayList<Lecture>());
@@ -84,7 +87,8 @@ class TextUserViewTest {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         PrintStream output = new PrintStream(bytes, true);
 
-        Professor prof = new Professor("John", "123", "john@example.edu");
+        University university = new University("Duke", true);
+        Professor prof = new Professor("John", "123", "john@example.edu",university);
         ArrayList<Lecture> lectures = new ArrayList<>();
         Lecture l1 = new Lecture("Course1", "C1", null, prof);
         Lecture l2 = new Lecture("Course1", "C2", null, prof);
