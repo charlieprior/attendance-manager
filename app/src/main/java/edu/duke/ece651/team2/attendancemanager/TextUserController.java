@@ -32,6 +32,10 @@ public class TextUserController {
         this.out = out;
     }
 
+    public void print(String prompt){
+        out.println(prompt);
+    }
+
     /**
      * Prints the specified prompt to the user and reads the user's input.
      *
@@ -169,6 +173,7 @@ public class TextUserController {
         actions.add("2. add Students to Course manually\n");
         actions.add("3. start a new Lecture from one Course,then take attenace records\n");
         actions.add("4. update an attendance record for a student\n");
+        actions.add("5. change a student's display name\n");
         actions.add("7. print students from one course\n");
         actions.add("8. quit the program.\n");
         for (String action : actions) {
@@ -212,9 +217,9 @@ public class TextUserController {
         try{
             int idx = Integer.parseInt(ans)-1;
             if(idx>=0 && idx<maxSize){
-                return maxSize;
+                return idx;
             }
-            return idx;
+            return maxSize;
         }
         catch(NumberFormatException e){
             out.println(e.getMessage());
@@ -399,8 +404,17 @@ public class TextUserController {
     }
 
 
-    public void changeStudentDisplayName() throws IOException{
-
+    public void changeStudentDisplayName(Professor professor) throws IOException{
+        int idx = displayAndChooseCourse(professor);
+        Course course = professor.getCourse(idx);
+        String id = printPromptAndRead("What is the student's ID?");
+        String newName = printPromptAndRead("What is your new preferred display name?");
+        if(course.changeStudentDisplayName(id,newName)){
+            out.println("Succesfully!");
+        }
+        else{
+            out.println("The id may be wrong.");
+        }
     }
 
     public void displayAttendanceFromCourse() throws IOException{

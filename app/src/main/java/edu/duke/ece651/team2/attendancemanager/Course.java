@@ -191,6 +191,16 @@ public class Course {
         }
     }
 
+    public boolean changeStudentDisplayName(String id,String dn){
+        for(Student s:students){
+            if(s.getStudentID().equals(id)){
+                s.setDisplayName(dn);
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * This function will start a new lecture
      *

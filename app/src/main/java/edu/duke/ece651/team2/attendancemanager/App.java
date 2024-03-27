@@ -108,6 +108,13 @@ public class App {
         }
     }
 
+    public void changeStudentDisplayName() throws IOException{
+        if(professor.getUniversityPolicy()==false){
+            controller.print("You cannot change the display name by policy!");
+        }
+        controller.changeStudentDisplayName(professor);
+    }
+
 
     /**
      * Welcomes the user.
@@ -128,10 +135,10 @@ public class App {
                 startNewLecture();
                 break;
             case 4:
-                updateStudentsRecords();//TODO!!! I will do that - Louise. If displayAttendanceFromCourse() finish I will update to it too.
+                updateStudentsRecords();
                 break;
-            // case 5:
-            //     changeStudentDisplayName();//TODO!!
+            case 5:
+                changeStudentDisplayName();//TODO!!
             // case 6:
             //     displayAttendanceFromCourse();//TODO!! 
             case 7:
