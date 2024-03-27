@@ -51,9 +51,14 @@ RUN ./gradlew resolveDependencies
 # Now we copy all our source files in.  Note that
 # if we change src, etc, but not our gradle setup,
 # Docker can resume from this point
+#COPY --chown=juser ./ ./
 COPY --chown=juser ./scripts ./scripts
-COPY --chown=juser ./app/src ./app/src
-COPY --chown=juser ./app/build ./app/build
+#COPY --chown=juser ./app ./app
+COPY --chown=juser ./app/src ./src
+COPY --chown=juser ./app/build ./build
+
+RUN mkdir -p coverage-out
+RUN chown juser coverage-out
 
 # compile the code
 RUN ./gradlew  assemble
