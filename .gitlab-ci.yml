@@ -13,13 +13,13 @@ stages:
    
 build:
   tags:
-     - ece651
+     - testing
   stage: build
   script: docker build --build-arg LOCAL_USER_ID=`id -u`  --tag citest .
 
 test:
   tags:
-     - ece651
+     - testing
   stage: test
   script: scripts/run-tests-in-docker.sh
   artifacts:
