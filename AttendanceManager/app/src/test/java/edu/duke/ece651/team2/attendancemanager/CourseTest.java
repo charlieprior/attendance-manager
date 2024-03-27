@@ -32,14 +32,14 @@ public class CourseTest {
     @Test
     public void testConstructors(){
         slst1.add(s1);
-        Course course1 = new Course(courseID1, courseName1, professor1, slst1,null, null);
+        Course course1 = new Course(courseID1, courseName1, professor1, slst1,null);
         assertEquals(course1.getCourseID(), "0");
         assertEquals(course1.getName(), "ECE 651");
         assertEquals(course1.getLectureTimes(), 0);
         assertEquals(course1.getProfessor(), "Prof A");
         assertEquals(course1.numberOfStudents(), 1);
         slst1.add(s2);
-        Course course2 = new Course(courseID2, courseName2, professor2, lectureTimes2,slst1,null, null);
+        Course course2 = new Course(courseID2, courseName2, professor2, lectureTimes2,slst1,null);
         assertEquals(course2.getCourseID(), "3");
         assertEquals(course2.getName(), "CS 123");
         assertEquals(course2.getLectureTimes(), 2);

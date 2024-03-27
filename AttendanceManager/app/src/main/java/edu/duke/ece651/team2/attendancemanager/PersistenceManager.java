@@ -4,9 +4,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The PersistenceManager class is responsible for writing the AttendanceRecord into CSV or JSON file.
+ */
 public class PersistenceManager {
+    /**
+     * The separator for the CSV file.
+     */
     private final String separator = ",";
+    /**
+     * The new line for the CSV file.
+     */
     private final String newLine = "\n";
+    /**
+     * The headers for the CSV file.
+     */
     private final String headers = "Student ID,Student Name,Time,Status"; //more info
 
     /**

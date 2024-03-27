@@ -27,6 +27,9 @@ public class AttendanceRecord {
      */
     private String lectureID;
 
+    /**
+     * The name of the student associated with the attendance record.
+     */
     private String studentName;
 
     /**
@@ -89,8 +92,7 @@ public class AttendanceRecord {
     /**
      * Returns the status of the student's attendance.
      *
-     * @return The status of the student's attendance (true if present, false if
-     *         absent).
+     * @return The status of the student's attendance.
      */
     public AttendanceStatus getStatus() {
         return status;
@@ -99,8 +101,7 @@ public class AttendanceRecord {
     /**
      * Sets the status of the student's attendance.
      *
-     * @param status The status of the student's attendance (true if present, false
-     *               if absent).
+     * @param status The status of the student's attendance.
      */
     public void setStatus(AttendanceStatus status) {
         this.status = status;
@@ -115,6 +116,11 @@ public class AttendanceRecord {
         return lectureID;
     }
 
+    /**
+     * Returns the name of the student associated with the attendance record.
+     *
+     * @return The name of the student associated with the attendance record.
+     */
     public String getStudentName() {
         return studentName;
     }

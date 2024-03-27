@@ -87,6 +87,10 @@ public class AttendanceSession {
         // removeIf returns true if any elements were removed
     }
 
+    /**
+     * Returns the list of student names for students who were late to the lecture.
+     * @return The list of student names for students who were late to the lecture.
+     */
     public ArrayList<String> lateStudentsName() {
         ArrayList<String> late = new ArrayList<>();
         for (AttendanceRecord r : records) {
@@ -97,6 +101,10 @@ public class AttendanceSession {
         return late;
     }
 
+    /**
+     * Returns the list of student IDs for students who were late to the lecture.
+     * @return The list of student IDs for students who were late to the lecture.
+     */
     public ArrayList<String> lateStudentsID() {
         ArrayList<String> late = new ArrayList<>();
         for (AttendanceRecord r : records) {

@@ -17,8 +17,8 @@ class TextUserViewTest {
         TextUserView view = new TextUserView(output);
 
         Professor prof = new Professor("John", "123", "john@example.edu");
-        Course course1 = new Course("C1", "Course1", prof, 0, new ArrayList<Student>(), new ArrayList<Lecture>(), input);
-        Course course2 = new Course("C2", "Course2", prof, 0, new ArrayList<Student>(), new ArrayList<Lecture>(), input);
+        Course course1 = new Course("C1", "Course1", prof, 0, new ArrayList<Student>(), new ArrayList<Lecture>());
+        Course course2 = new Course("C2", "Course2", prof, 0, new ArrayList<Student>(), new ArrayList<Lecture>());
 
         prof.addCourse(course1);
         prof.addCourse(course2);
@@ -39,7 +39,7 @@ class TextUserViewTest {
         PrintStream output = new PrintStream(bytes, true);
 
         Professor prof = new Professor("John", "123", "john@example.edu");
-        Course course1 = new Course("C1", "Course1", prof, 0, new ArrayList<Student>(), new ArrayList<Lecture>(),input);
+        Course course1 = new Course("C1", "Course1", prof, 0, new ArrayList<Student>(), new ArrayList<Lecture>());
         Student s1 = new Student("Kenan", "kc566", "kc566@duke.edu", "kencolak");
         Student s2 = new Student("Charlie", "cgp", "cgp@duke.edu", "charliep");
         TextUserView view = new TextUserView(output);
@@ -69,7 +69,7 @@ class TextUserViewTest {
         Professor prof = new Professor("John", "123", "john@example.edu");
         Student student1 = new Student("John Doe", "1", "john.doe@example.edu", "John");
         Student student2 = new Student("Qianyi Jane", "2", "mary.jane@example.edu", "Mary");
-        Course course1 = new Course("C1", "Course1", prof, 0, new ArrayList<Student>(), new ArrayList<Lecture>(),input);
+        Course course1 = new Course("C1", "Course1", prof, 0, new ArrayList<Student>(), new ArrayList<Lecture>());
         course1.addStudent(student1);
         course1.addStudent(student2);
         // Lecture lecture = course1.startLecture();
@@ -86,11 +86,11 @@ class TextUserViewTest {
 
         Professor prof = new Professor("John", "123", "john@example.edu");
         ArrayList<Lecture> lectures = new ArrayList<>();
-        Lecture l1 = new Lecture("Course1", "C1", null, prof, input);
-        Lecture l2 = new Lecture("Course1", "C2", null, prof, input);
+        Lecture l1 = new Lecture("Course1", "C1", null, prof);
+        Lecture l2 = new Lecture("Course1", "C2", null, prof);
         lectures.add(l1);
         lectures.add(l2);
-        Course course1 = new Course("C1", "Course1", prof, 0, new ArrayList<Student>(), lectures,input);
+        Course course1 = new Course("C1", "Course1", prof, 0, new ArrayList<Student>(), lectures);
         
         TextUserView view = new TextUserView(output);
 

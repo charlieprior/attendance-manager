@@ -8,23 +8,34 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-enum AttendanceStatus{
-    PRESENT,
-    ABSENT,
-    TARDY
-}
-
+/**
+ * The main class for the Attendance Manager application.
+ */
 public class App {
-
-
+    /**
+     * The Professor using the application.
+     */
     private final Professor professor;
+    /**
+     * The controller for the application.
+     */
     private final TextUserController controller;
 
+    /**
+     * Constructs a new App object with the specified Professor and controller.
+     *
+     * @param professor  The Professor using the application.
+     * @param controller The controller for the application.
+     */
     public App(Professor professor,TextUserController controller){
         this.professor = professor;
         this.controller = controller;
     }
 
+    /**
+     * Adds students to a course.
+     * @throws IOException We will not handle this exception.
+     */
     public void addStudentsToCourse() throws IOException{
         int idx = controller.displayAndChooseCourse(professor);
         if(idx<professor.getCourses().size()){
@@ -33,6 +44,13 @@ public class App {
         }
     }
 
+    /**
+     * Reads the attendance status for a list of students.
+     * @param studentsName The names of the students.
+     * @param start Whether the lecture has started.
+     * @return The attendance status for the students.
+     * @throws IOException We will not handle this exception.
+     */
     public ArrayList<AttendanceStatus> readStatusForStudents(ArrayList<String> studentsName,boolean start) throws IOException{
         ArrayList<AttendanceStatus> status = new ArrayList<>();
         for(String s:studentsName){
@@ -42,18 +60,26 @@ public class App {
     }
 
 
+    /**
+     * Starts a new lecture.
+     * @throws IOException We will not handle this exception.
+     */
     public void startNewLecture() throws IOException{
         int idx = controller.displayAndChooseCourse(professor);
         if(idx<professor.getCourses().size()){
             Course course = professor.getCourse(idx);
             ArrayList<AttendanceStatus> status = readStatusForStudents(course.getStudentsDisplayName(),true);
-            Lecture lec = course.startLecture(status); //startLecture should be modified later
+            Lecture lec = course.startLecture(status); //TODO: startLecture should be modified later
             controller.stopTheLecture();
             ArrayList<AttendanceStatus> statusLate = readStatusForStudents(lec.getLateStudentsName(),false);
             course.endLecture(lec, lec.getLateStudentsID(), statusLate);
         }
     }
 
+    /**
+     * Displays the students from a course.
+     * @throws IOException We will not handle this exception.
+     */
     public void displayStudentsFromCourse() throws IOException{
         int idx = controller.selectCourse(professor.getCourses().size());
         if(idx<professor.getCourses().size()){
@@ -63,6 +89,10 @@ public class App {
     }
 
 
+    /**
+     * Welcomes the user.
+     * @throws IOException We will not handle this exception.
+     */
     public void welcome() throws IOException{
         int cmd = controller.readAction("Hi, "+professor.getName()+". What do you want to do?");
         switch(cmd){
@@ -86,8 +116,11 @@ public class App {
         welcome();
     }
 
-    
-
+    /**
+     * The main method for the Attendance Manager application.
+     * @param args The command-line arguments.
+     * @throws IOException We will not handle this exception.
+     */
     public static void main(String[] args) throws IOException {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         TextUserController controller = new TextUserController(input, System.out);

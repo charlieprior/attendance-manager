@@ -5,10 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,7 +34,7 @@ public class LectureTest {
     assertEquals("L1",l1.getLectureID());
     assertEquals(c1,l1.getDate());
     ArrayList<Student> stu1 = initailSetting();
-    l1.setStudents(stu1);
+    l1.addStudents(stu1);
     assertEquals(stu1,l1.getStudents());
   }
 
@@ -50,7 +47,7 @@ public class LectureTest {
   @Test
   public void  testAttendanceRecord() throws IOException{
     Lecture l1 = new Lecture();
-    l1.setStudents(initailSetting());
+    l1.addStudents(initailSetting());
   }
 
   @Test
