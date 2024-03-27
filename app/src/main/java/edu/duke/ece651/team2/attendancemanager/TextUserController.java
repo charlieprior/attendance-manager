@@ -287,6 +287,9 @@ public class TextUserController {
         if(line.length()>0){
             count+=1;
         }
+        else{
+            return count;
+        }
         int idx = 0;
         while ((idx = line.indexOf(separator,idx)) != -1) {
             count+=1;

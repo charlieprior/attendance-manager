@@ -30,7 +30,7 @@ public class PersistenceManager {
     public void writeRecordsToCSV(String fileName, AttendanceSession session){
         List<AttendanceRecord> records = session.getRecords();
         try{
-            FileWriter writer = new FileWriter("./app/export/"+fileName+".csv"); //path ???
+            FileWriter writer = new FileWriter("export/"+fileName+".csv"); //path ???
             writer.append(headers+newLine);
             for(AttendanceRecord r:records){
                 writer.write(r.getStudentID()+separator);
@@ -49,7 +49,7 @@ public class PersistenceManager {
 
     public void generateWholeReport(String fileName, List<AttendanceRecord> records){
         try{
-            FileWriter writer = new FileWriter("./app/export/"+fileName+".csv"); //path ???
+            FileWriter writer = new FileWriter("export/"+fileName+".csv"); //path ???
             writer.append(headers+newLine);
             for(AttendanceRecord r:records){
                 writer.write(r.getStudentID()+separator);

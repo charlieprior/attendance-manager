@@ -3,6 +3,7 @@ package edu.duke.ece651.team2.attendancemanager;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -141,8 +142,14 @@ public class TextUserControllerTest {
     @Test
     public void testAskHeader() throws IOException {
         String input = "y\n";
-        TextUserController controller = new TextUserController(new BufferedReader(new StringReader(input)), System.out);
-        assertTrue(controller.askHeader()); // Test when user enters 'y'
+        TextUserController controller1 = new TextUserController(new BufferedReader(new StringReader(input)), System.out);
+        assertTrue(controller1.askHeader()); // Test when user enters 'y'
+        String input2 = "n\n";
+        TextUserController controller2 = new TextUserController(new BufferedReader(new StringReader(input2)), System.out);
+        assertFalse(controller2.askHeader()); // Test when user enters 'n'
+        String input3 = "\n";
+        TextUserController controller3 = new TextUserController(new BufferedReader(new StringReader(input3)), System.out);
+        assertFalse(controller3.askHeader()); // Test when user enters 'n'
     }
 
     @Test
@@ -172,11 +179,13 @@ public class TextUserControllerTest {
         //         lines.add(line);
         // }
         assertEquals(5, controller.fileColumns("rohini,rohiniR,rrrrr,23456@stu.edu,3.1",",")); // Assuming CSV has 5 columns
+        assertEquals(0, controller.fileColumns("",null));
+        assertEquals(1, controller.fileColumns("1",","));
     }
 
     @Test
     public void testReadColumns() throws Exception {
-        String input = "1\n3\n4\n2\n";
+        String input = "-1\n6\n0\n1\n3\n4\n2\n";
         TextUserController controller = new TextUserController(new BufferedReader(new StringReader(input)), System.out);
         ArrayList<Integer> ans = new ArrayList<>();
         ans.add(controller.readColumns(5, "1"));
