@@ -83,19 +83,4 @@ public class TextUserView {
             out.println(record.getStudentName() + " - " + record.getStatus());
     }
   }
-
-  /**
-   * Prints the attendance status for a list of students.
-   * @param s the student to check
-   */
-  void studentAddCheck(Student s){
-    if(s.legalName != "" && s.studentID != "" &&
-       s.email != "" && s.displayName != ""){
-      out.println("Student " + s.legalName +
-                         "Successfully Added");
-    }
-    else{
-      out.println("Failed to add all fields for the student");
-    }
-  }
 }
