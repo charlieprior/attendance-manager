@@ -47,9 +47,6 @@ public class GmailSetup {
      */
     private static final List<String> SCOPES = new ArrayList<>(GmailScopes.all());
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
-
-    private static final String email = "charles.gregory.prior@gmail.com"; // TODO: change this
-
     private final Gmail service;
 
     public GmailSetup() throws IOException, GeneralSecurityException {
@@ -105,8 +102,7 @@ public class GmailSetup {
         }
     }
 
-    public void sendEmail(String subject, String bodyText) throws IOException, GeneralSecurityException {
-        System.out.println("2222222222222222222222" + email + "...");
+    public void sendEmail(String email, String subject, String bodyText) throws IOException, GeneralSecurityException {
         String rawEmailString = createRawEmailString(email, "me", subject, bodyText);
         Message message = createMessage(rawEmailString);
         sendMessage(service, "me", message);

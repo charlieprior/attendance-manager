@@ -22,8 +22,6 @@ public class App {
      */
     private final TextUserController controller;
 
-    private final GmailSetup gmailSetup; // TODO: Remove from App
-
     /**
      * Constructs a new App object with the specified Professor and controller.
      *
@@ -33,7 +31,6 @@ public class App {
     public App(Professor professor,TextUserController controller) throws GeneralSecurityException, IOException {
         this.professor = professor;
         this.controller = controller;
-        this.gmailSetup = new GmailSetup();
     }
 
 
@@ -163,7 +160,6 @@ public class App {
         Professor user = controller.register(info,university);
         controller.logIn(info);
         App app = new App(user, controller);
-        app.gmailSetup.sendEmail("Test", "This is a test"); // TODO remove from App
         // app.logIn();
         app.welcome();
     }

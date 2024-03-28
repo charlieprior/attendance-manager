@@ -1,5 +1,7 @@
 package edu.duke.ece651.team2.attendancemanager;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
 /**
@@ -33,9 +35,9 @@ public class EventManager {
     /**
      * Notifies all subscribed EventListeners that the attendance of a Student has changed.
      */
-    public void notifyAttendanceChanged() {
+    public void notifyAttendanceChanged(Student student, AttendanceRecord record) throws GeneralSecurityException, IOException {
         for (EventListener listener : listeners) {
-            listener.attendanceChanged();
+            listener.attendanceChanged(student, record);
         }
     }
 }
