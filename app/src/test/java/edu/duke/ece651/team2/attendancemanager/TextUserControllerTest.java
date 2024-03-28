@@ -2,6 +2,7 @@ package edu.duke.ece651.team2.attendancemanager;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -174,12 +175,34 @@ public class TextUserControllerTest {
 
     @Test
     public void testReadActionInvalidThenValidInput() throws IOException {
-        String input = "invalid\n2\n";
+        String input = "invalid\na\n2\n";
         TextUserController controller = new TextUserController(new BufferedReader(new StringReader(input)), System.out);
 
         int action = controller.readAction("Choose an action:");
         assertEquals(2, action);
     }
+
+    @Test
+    public void testKeepAddingStudent() throws IOException{
+        String input = "y\na\nb\nc\nd\ny\na\nb\nc\nd\nn\n";
+        TextUserController controller = new TextUserController(new BufferedReader(new StringReader(input)), System.out);
+        ArrayList<Student> ans = controller.keepAddingStudents();
+        assertEquals(2, ans.size());
+    }
+
+    @Test void selectCourse() throws IOException{
+        String input = "-1\n";
+        TextUserController controller = new TextUserController(new BufferedReader(new StringReader(input)), System.out);
+        assertEquals(1, controller.selectCourse(1));
+        String input1 = "";
+        TextUserController controller1 = new TextUserController(new BufferedReader(new StringReader(input1)), System.out);
+        assertEquals(1, controller1.selectCourse(1));
+        String input2 = "1\n";
+        TextUserController controller2 = new TextUserController(new BufferedReader(new StringReader(input2)), System.out);
+        assertEquals(0, controller2.selectCourse(1));
+
+    }
+
 
     @Test
     public void testAskHeader() throws IOException {
@@ -311,5 +334,47 @@ public class TextUserControllerTest {
             assertEquals(expect.get(i).getStudentID(), students.get(i).getStudentID());
         }
     }
+    
+    @Test
+    public void testLoadStudents(){
+        String input = "n\n";
+        TextUserController controller = new TextUserController(new BufferedReader(new StringReader(input)), System.out);
+        assertEquals(0, controller.loadStudents().size());
+    }
+    
+    @Test
+    public void testUpdateRecordForStudent() throws IOException{
+        ArrayList<Student> stu = new ArrayList<>();
+        Student s = new Student("11", "22", "33", "44");
+        stu.add(s);
+        University university = new University("Duke", true);
+        Professor professor = new Professor("11", "22", "33", university);
+        Lecture l = new Lecture("!234", "1_1", stu, professor);
+        String input = "11";
+        TextUserController controller = new TextUserController(new BufferedReader(new StringReader(input)), System.out);
+        controller.updateRecordForStudent(l);
+        String outputText = outContent.toString();
+        assertEquals("What is your Student ID?\nNo updated record. The student may not be a student in this lecture\n", outputText);
+    }
 
+    @Test
+    public void testPrevious() throws IOException{
+        ArrayList<Student> stu = new ArrayList<>();
+        Student s = new Student("11", "22", "33", "44");
+        stu.add(s);
+        University university = new University("Duke", true);
+        Professor professor = new Professor("11", "22", "33", university);
+        Lecture l = new Lecture("!234", "1_1", stu, professor);
+        ArrayList<AttendanceStatus> sta = new ArrayList<>();
+        sta.add(AttendanceStatus.ABSENT);
+        l.recordAttendance(sta);
+        String input1 = "22";
+        TextUserController controller1 = new TextUserController(new BufferedReader(new StringReader(input1)), System.out);
+        controller1.updateRecordForStudent(l);
+        String outputText = outContent.toString();
+        assertEquals("What is your Student ID?\n" + //
+                        "Successfully create and write csv\n" + //
+                        "Successfully update the record for this student. An email may send to the student's email\n", outputText);
+
+    }
 }

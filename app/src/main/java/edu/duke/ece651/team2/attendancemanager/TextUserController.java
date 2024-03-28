@@ -293,10 +293,10 @@ public class TextUserController {
         else{
             return count;
         }
-        int idx = 0;
-        while ((idx = line.indexOf(separator,idx)) != -1) {
+        int idx = line.indexOf(separator,0);
+        while (idx != -1) {
             count+=1;
-            idx += separator.length();
+            idx = line.indexOf(separator,idx+separator.length());
         }
         return count;
     }
