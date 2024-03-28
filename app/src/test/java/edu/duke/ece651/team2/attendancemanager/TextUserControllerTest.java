@@ -68,7 +68,7 @@ public class TextUserControllerTest {
         TextUserController controllerEnd = new TextUserController(new BufferedReader(new StringReader(endInput)),
                 System.out);
         AttendanceStatus statusEnd = controllerEnd.readStudentStatus(dummyStudent.getDisplayName(), false);
-        assertEquals(AttendanceStatus.TARDY, statusEnd);
+        assertEquals(AttendanceStatus.ABSENT, statusEnd);
 
         assertTrue(outContent.toString()
                 .contains("You are recording students status, please type the status of the student:"));
@@ -275,8 +275,10 @@ public class TextUserControllerTest {
         String line;
         breader.readLine();
         ArrayList<String> lines = new ArrayList<>();
-        while((line = breader.readLine())!=null){
-                lines.add(line);
+        line = breader.readLine();
+        while(line!=null){
+            lines.add(line);
+            line = breader.readLine();
         }
         breader.close();
         System.out.println("testReadStudents");
@@ -311,8 +313,10 @@ public class TextUserControllerTest {
         String line;
         breader.readLine();
         ArrayList<String> lines = new ArrayList<>();
-        while((line = breader.readLine())!=null){
-                lines.add(line);
+        line = breader.readLine();
+        while(line!=null){
+            lines.add(line);
+            line = breader.readLine();
         }
         breader.close();
         ArrayList<Student> students =  controller.readCSVFiles();
@@ -335,12 +339,50 @@ public class TextUserControllerTest {
             assertEquals(expect.get(i).getStudentID(), students.get(i).getStudentID());
         }
     }
+
+    @Test
+    public void testReadCSVFilesNoHeader() throws Exception{
+        String input = "import/studentsNoheader.csv\nn\n,\n1\n3\n4\n2\n";
+        TextUserController controller = new TextUserController(new BufferedReader(new StringReader(input)), System.out);
+        FileReader filereader = new FileReader("import/studentsNoheader.csv"); 
+        BufferedReader breader = new BufferedReader(filereader);// Provide a CSVReader instance
+        String line;
+        ArrayList<String> lines = new ArrayList<>();
+        line = breader.readLine();
+        while(line!=null){
+            lines.add(line);
+            line = breader.readLine();
+        }
+        breader.close();
+        ArrayList<Student> students =  controller.readCSVFiles();
+        ArrayList<Student> expect = new ArrayList<>();
+        Student s1 = new Student("amar","aaaa","12345@stu.edu","amar A");
+        Student s2 = new Student("rr", "rrrrr", "23456@stu.edu", "rohi R");
+        Student s3 = new Student("amen","34567","34567@stu.edu","amen A");
+        Student s4 = new Student("rahu","rrr567","45678@stu.edu","rahul R");
+        Student s5 = new Student("prati","ppp","56789@stu.edu","pratik P");
+        expect.add(s1);
+        expect.add(s2);
+        expect.add(s3);
+        expect.add(s4);
+        expect.add(s5);
+        assertEquals(5, students.size()); // Ensure all columns are added to the list
+        for(int i =0;i<5;i++){
+            assertEquals(expect.get(i).getDisplayName(), students.get(i).getDisplayName());
+            assertEquals(expect.get(i).getEmail(), students.get(i).getEmail());
+            assertEquals(expect.get(i).getLegalName(), students.get(i).getLegalName());
+            assertEquals(expect.get(i).getStudentID(), students.get(i).getStudentID());
+        }
+    }
     
     @Test
     public void testLoadStudents(){
         String input = "n\n";
         TextUserController controller = new TextUserController(new BufferedReader(new StringReader(input)), System.out);
         assertEquals(0, controller.loadStudents().size());
+        String input1 = "y\nimport/studentsNoheader.csv\nn\n,\n1\n3\n4\n2\n";
+        controller = new TextUserController(new BufferedReader(new StringReader(input1)), System.out);
+        assertEquals(5, controller.loadStudents().size());
     }
     
     @Test
@@ -379,5 +421,102 @@ public class TextUserControllerTest {
                         "Successfully create and write csv\n" + //
                         "Successfully update the record for this student. An email may send to the student's email\n", outputText);
 
+    }
+
+    @Test
+    public void testchangeStudentDisplayName() throws IOException{
+        ArrayList<Student> stu = new ArrayList<>();
+        Student s = new Student("11", "22", "33", "44");
+        stu.add(s);
+        University university = new University("Duke", true);
+        Professor professor = new Professor("11", "22", "33", university);
+        Course c = new Course("c1", "ecs", professor, stu);
+        professor.addCourse(c);
+        String input1 = "1\n22\n222\n";
+        TextUserController controller1 = new TextUserController(new BufferedReader(new StringReader(input1)), System.out);
+        controller1.changeStudentDisplayName(professor);
+        String outputText = outContent.toString();
+        assertEquals("===========================================================================\n" + //
+                        "Courses Taught by 11\n" + //
+                        "===========================================================================\n" + //
+                        "1. c1 - ecs\n" + //
+                        "Please type the number in front of the target course, invalid selection will return.\n" + //
+                        "What is the student's ID?\nWhat is your new preferred display name?\nSuccessfully!\n", outputText);
+        assertEquals("222",s.getDisplayName());
+        outContent.reset();
+        input1 = "1\n11\n";
+        controller1 = new TextUserController(new BufferedReader(new StringReader(input1)), System.out);
+        controller1.changeStudentDisplayName(professor);
+        outputText = outContent.toString();
+        assertEquals("===========================================================================\n" + //
+                        "Courses Taught by 11\n" + //
+                        "===========================================================================\n" + //
+                        "1. c1 - ecs\n" + //
+                        "Please type the number in front of the target course, invalid selection will return.\n" + //
+                        "What is the student's ID?\nWhat is your new preferred display name?\n" + //
+                                                        "The id may be wrong.\n", outputText);
+    }
+
+    @Test
+    public void testdisplayAttendanceFromCourse() throws IOException{
+        ArrayList<Student> stu = new ArrayList<>();
+        Student s1 = new Student("11", "22", "33", "44");
+        Student s2 = new Student("12", "23", "34", "45");
+        stu.add(s1);
+        stu.add(s2);
+        University university = new University("Duke", true);
+        Professor professor = new Professor("11", "22", "33", university);
+        
+        Course c = new Course("c1", "ecs", professor, stu);
+        professor.addCourse(c);
+
+        String input1 = "1\n";
+        TextUserController controller1 = new TextUserController(new BufferedReader(new StringReader(input1)), System.out);
+        ArrayList<AttendanceStatus> status1 = new ArrayList<>();
+        status1.add(AttendanceStatus.PRESENT);
+        status1.add(AttendanceStatus.PRESENT);
+        c.endLecture(c.startLecture(status1));
+        ArrayList<AttendanceStatus> status2 = new ArrayList<>();
+        status2.add(AttendanceStatus.ABSENT);
+        status2.add(AttendanceStatus.TARDY);
+        c.endLecture(c.startLecture(status2));
+        controller1.displayAttendanceFromCourse(professor);
+        String outputText = outContent.toString();
+        outputText.contains("Lecture 0:");
+        outputText.contains("Lecture 1:");
+    }
+
+    @Test
+    public void testremoveStudentsFromCourse() throws IOException{
+        ArrayList<Student> stu = new ArrayList<>();
+        Student s = new Student("11", "22", "33", "44");
+        stu.add(s);
+        University university = new University("Duke", true);
+        Professor professor = new Professor("11", "22", "33", university);
+        Course c = new Course("c1", "ecs", professor, stu);
+        professor.addCourse(c);
+        String input1 = "1\n22\n";
+        TextUserController controller1 = new TextUserController(new BufferedReader(new StringReader(input1)), System.out);
+        controller1.removeStudentsFromCourse(professor);
+        String outputText = outContent.toString();
+        assertEquals("===========================================================================\n" + //
+                        "Courses Taught by 11\n" + //
+                        "===========================================================================\n" + //
+                        "1. c1 - ecs\n" + //
+                        "Please type the number in front of the target course, invalid selection will return.\n" + //
+                        "What is the student's UID?\nSuccessfully!\n", outputText);
+        assertEquals(0,c.getStudents().size());
+        outContent.reset();
+        input1 = "1\n11\n";
+        controller1 = new TextUserController(new BufferedReader(new StringReader(input1)), System.out);
+        controller1.removeStudentsFromCourse(professor);
+        outputText = outContent.toString();
+        assertEquals("===========================================================================\n" + //
+                        "Courses Taught by 11\n" + //
+                        "===========================================================================\n" + //
+                        "1. c1 - ecs\n" + //
+                        "Please type the number in front of the target course, invalid selection will return.\n" + //
+                        "What is the student's UID?\n" + //
+                                                        "The id may be wrong.\n", outputText);
     }
 }

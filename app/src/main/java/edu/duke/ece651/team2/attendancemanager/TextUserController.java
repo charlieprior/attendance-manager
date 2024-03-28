@@ -155,9 +155,8 @@ public class TextUserController {
         String ans = printPromptAndRead(studentsName + ":" + prompt);
         if (ans.equals("p") && start == true) {
             return AttendanceStatus.PRESENT;
-        } else if (ans.equals("l") && start == false) {
-            return AttendanceStatus.TARDY;
-        } else {
+        }
+        else{
             return AttendanceStatus.ABSENT;
         }
 
@@ -275,20 +274,6 @@ public class TextUserController {
         return selectCourse(professor.getCourses().size());
     }
 
-    /**
-     * Asks if the user would like to stop the lecture.
-     * @return True if the user would like to stop the lecture, false otherwise.
-     * @throws IOException We will not handle this exception.
-     */
-    public boolean stopTheLecture() throws IOException{
-        //maybe can add some time duration later ...?
-        String prompt = "Would you want to stop right now? y for Yes";
-        String ans = printPromptAndRead(prompt);
-        if(ans.equals("")||ans.equals("y")){
-            return true;
-        }
-        return stopTheLecture();
-    }
 
     /**
      * Displays the students in the specified course.
@@ -507,7 +492,7 @@ public class TextUserController {
         String id = printPromptAndRead("What is the student's ID?");
         String newName = printPromptAndRead("What is your new preferred display name?");
         if(course.changeStudentDisplayName(id,newName)){
-            print("Succesfully!");
+            print("Successfully!");
         }
         else{
             print("The id may be wrong.");
