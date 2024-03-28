@@ -55,6 +55,8 @@ RUN ./gradlew resolveDependencies
 COPY --chown=juser ./scripts ./scripts
 #COPY --chown=juser ./app ./app
 COPY --chown=juser ./app/src ./src
+COPY --chown=juser ./app/import ./import
+COPY --chown=juser ./app/export ./export
 #COPY --chown=juser ./app/build ./build
 
 RUN mkdir -p coverage-out
