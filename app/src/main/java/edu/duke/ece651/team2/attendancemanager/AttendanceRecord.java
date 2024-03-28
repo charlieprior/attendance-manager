@@ -8,29 +8,25 @@ import java.util.Date;
  */
 public class AttendanceRecord {
     /**
+     * The name of the student associated with the attendance record.
+     */
+    private final String studentName;
+    /**
      * The date of the attendance record.
      */
     private Date attendanceDate;
-
     /**
      * The ID of the student associated with the attendance record.
      */
     private String studentID;
-
     /**
      * The status of the student's attendance (true if present, false if absent).
      */
     private AttendanceStatus status;
-
     /**
      * The ID of the lecture associated with the attendance record.
      */
     private String lectureID;
-
-    /**
-     * The name of the student associated with the attendance record.
-     */
-    private String studentName;
 
     /**
      * Constructs a new AttendanceRecord object with the specified attendance date,
@@ -46,7 +42,7 @@ public class AttendanceRecord {
      *                       record.
      */
     public AttendanceRecord(Date attendanceDate, String studentID, String studentName, AttendanceStatus status,
-            String lectureID) {
+                            String lectureID) {
         this.attendanceDate = attendanceDate;
         this.studentID = studentID;
         this.status = status;
@@ -118,21 +114,21 @@ public class AttendanceRecord {
     }
 
     /**
-     * Returns the name of the student associated with the attendance record.
-     *
-     * @return The name of the student associated with the attendance record.
-     */
-    public String getStudentName() {
-        return studentName;
-    }
-
-    /**
      * Sets the ID of the lecture associated with the attendance record.
      *
      * @param lectureID The ID of the lecture associated with the attendance record.
      */
     public void setLectureID(String lectureID) {
         this.lectureID = lectureID;
+    }
+
+    /**
+     * Returns the name of the student associated with the attendance record.
+     *
+     * @return The name of the student associated with the attendance record.
+     */
+    public String getStudentName() {
+        return studentName;
     }
 
 }

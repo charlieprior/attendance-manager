@@ -22,10 +22,6 @@ public class Course {
      */
     private final Professor professor;
     /**
-     * The number of times the Course has been lectured.
-     */
-    private int lectureTimes;
-    /**
      * The list of students taking the Course.
      */
     private final ArrayList<Student> students;
@@ -33,16 +29,20 @@ public class Course {
      * The list of Lectures for the Course.
      */
     private final ArrayList<Lecture> lectures;
+    /**
+     * The number of times the Course has been lectured.
+     */
+    private int lectureTimes;
 
     /**
      * This constructor will create the Course object.
      *
-     * @param id   is the Course's ID.
-     * @param name is the Course's name.
-     * @param pro  is the Professor teaching the course.
+     * @param id       is the Course's ID.
+     * @param name     is the Course's name.
+     * @param pro      is the Professor teaching the course.
      * @param students the students taking the course.
      */
-    public Course(String id,String name,Professor pro,ArrayList<Student> students){
+    public Course(String id, String name, Professor pro, ArrayList<Student> students) {
         this.courseID = id;
         this.courseName = name;
         this.professor = pro;
@@ -50,7 +50,7 @@ public class Course {
         this.students = students;
         this.lectures = new ArrayList<>();
     }
-    
+
     /**
      * This constructor will create the Course object.
      *
@@ -60,7 +60,7 @@ public class Course {
      * @param students the students taking the course.
      * @param lectures the lectures for the course.
      */
-  public Course(String id, String name, Professor pro,ArrayList<Student> students, ArrayList<Lecture> lectures){
+    public Course(String id, String name, Professor pro, ArrayList<Student> students, ArrayList<Lecture> lectures) {
         this.courseID = id;
         this.courseName = name;
         this.professor = pro;
@@ -79,7 +79,7 @@ public class Course {
      * @param students     the students attending the course.
      * @param lectures     the lectures for the course.
      */
-  public Course(String id, String name, Professor pro, int lectureTimes,ArrayList<Student> students,ArrayList<Lecture> lectures){
+    public Course(String id, String name, Professor pro, int lectureTimes, ArrayList<Student> students, ArrayList<Lecture> lectures) {
         this.courseID = id;
         this.courseName = name;
         this.professor = pro;
@@ -90,59 +90,59 @@ public class Course {
 
     /**
      * @return course name
-    */
-    public String getName(){
+     */
+    public String getName() {
         return courseName;
     }
 
     /**
      * @return courseID
-    */
-    public String getCourseID(){
+     */
+    public String getCourseID() {
         return courseID;
     }
 
     /**
      * @return professor's name
-    */
-    public String getProfessor(){
+     */
+    public String getProfessor() {
         return professor.getName();
     }
 
     /**
      * @return lecture's times of this course
-    */
-    public int getLectureTimes(){
+     */
+    public int getLectureTimes() {
         return lectureTimes;
     }
 
     /**
      * @return the number of lectures in this course
-    */
-    public int getLectureSize(){
+     */
+    public int getLectureSize() {
         return lectures.size();
     }
 
     /**
      * @return the number of students in this course
-    */
-    public int numberOfStudents(){
+     */
+    public int numberOfStudents() {
         return students.size();
     }
 
     /**
      * @return the list of students in this course
-    */
-    public ArrayList<Student> getStudents(){
+     */
+    public ArrayList<Student> getStudents() {
         return students;
     }
 
     /**
      * @return the list of students' display names in this course
-    */
-    public ArrayList<String> getStudentsDisplayName(){
+     */
+    public ArrayList<String> getStudentsDisplayName() {
         ArrayList<String> dn = new ArrayList<>();
-        for(Student s:students){
+        for (Student s : students) {
             dn.add(s.getDisplayName());
         }
         return dn;
@@ -150,59 +150,61 @@ public class Course {
 
     /**
      * Get the student's name at index i
+     *
      * @param i is the index of the student
      * @return the name of the student at index i
-    */
-    public String getStudentName(int i){
+     */
+    public String getStudentName(int i) {
         return students.get(i).getLegalName();
     }
 
     /**
      * @return the number of lectures in this course
-    */
-    public int numberOfLectures(){
+     */
+    public int numberOfLectures() {
         return lectures.size();
     }
 
     /**
      * @param i is the index of the lecture
      * @return the lecture at index i
-    */
-    public String getLectureName(int i){
+     */
+    public String getLectureName(int i) {
         return lectures.get(i).getLectureID();
     }
 
     /**
      * @return the latest lecture
      */
-    public Lecture getLatestLecture(){
-        return lectures.get(lectures.size()-1);
+    public Lecture getLatestLecture() {
+        return lectures.get(lectures.size() - 1);
     }
-  
+
     /**
      * @param s is the student to be added to the Course
-    */
-    public void addStudent(Student s){
+     */
+    public void addStudent(Student s) {
         students.add(s);
     }
 
     /**
      * @param stu is the list of students to be added to this Course
-    */
-    public void addStudents(ArrayList<Student> stu){
-        for(Student s:stu){
+     */
+    public void addStudents(ArrayList<Student> stu) {
+        for (Student s : stu) {
             students.add(s);
         }
     }
 
     /**
      * Drop the student with the given ID.
+     *
      * @param id is the student's ID.
      * @return true if the student is dropped successfully, false otherwise.
-    */
-    public boolean dropStudents(String id){
-        for(Student s:students){
-            if(s.getStudentID().equals(id)){
+     */
+    public boolean dropStudents(String id) {
+        for (Student s : students) {
+            if (s.getStudentID().equals(id)) {
                 students.remove(s);
                 return true;
             }
@@ -212,13 +214,14 @@ public class Course {
 
     /**
      * Change the student's display name.
+     *
      * @param id is the student's ID.
      * @param dn is the new display name.
      * @return true if the display name is changed successfully, false otherwise.
-    */
-    public boolean changeStudentDisplayName(String id,String dn){
-        for(Student s:students){
-            if(s.getStudentID().equals(id)){
+     */
+    public boolean changeStudentDisplayName(String id, String dn) {
+        for (Student s : students) {
+            if (s.getStudentID().equals(id)) {
                 s.setDisplayName(dn);
                 return true;
             }
@@ -230,12 +233,11 @@ public class Course {
      * This function will start a new lecture
      *
      * @param status is the list of students' status at the beginning of the class.
-     * 
-     * @return the new lecture 
-    */
-    public Lecture startLecture(ArrayList<AttendanceStatus> status){
-        lectureTimes+=1;
-        String lectureID = courseID+"_"+lectureTimes;
+     * @return the new lecture
+     */
+    public Lecture startLecture(ArrayList<AttendanceStatus> status) {
+        lectureTimes += 1;
+        String lectureID = courseID + "_" + lectureTimes;
         Lecture newLec = new Lecture(courseName, lectureID, students, professor);
         newLec.recordAttendance(status);
         return newLec;
@@ -244,14 +246,12 @@ public class Course {
     /**
      * This function will end the lecture
      *
-     *
-     * @param lecture is the lecture to be ended
+     * @param lecture        is the lecture to be ended
      * @param lateStudentsID is the list of students who are late
-     * @param status is the list of students' status at the end of the class
-     * 
+     * @param status         is the list of students' status at the end of the class
      * @throws IOException if anything happens while recording the students' status at the end of the class
-    */
-    public void endLecture(Lecture lecture,ArrayList<String> lateStudentsID,ArrayList<AttendanceStatus> status) throws IOException{
+     */
+    public void endLecture(Lecture lecture, ArrayList<String> lateStudentsID, ArrayList<AttendanceStatus> status) throws IOException {
         lecture.endLecture(lateStudentsID, status);
         lectures.add(lecture);
     }
@@ -260,8 +260,8 @@ public class Course {
      * This function will end the lecture
      *
      * @param lecture is the lecture to be ended
-    */
-    public void endLecture(Lecture lecture){
+     */
+    public void endLecture(Lecture lecture) {
         lecture.endLecture();
         lectures.add(lecture);
     }
@@ -270,16 +270,16 @@ public class Course {
      * @param idx the index of the lecture.
      * @return the attendance records of the lecture at index idx.
      */
-    public List<AttendanceRecord> getLectureRecords(int idx){
+    public List<AttendanceRecord> getLectureRecords(int idx) {
         return lectures.get(idx).getAttendanceSession().getRecords();
     }
 
     /**
      * Generates all attendance records for all lectures in this course.
      */
-    public void generateWholeReportTillNow(){
+    public void generateWholeReportTillNow() {
         List<AttendanceRecord> all = new ArrayList<>();
-        for(int i =0;i<lectureTimes;i++){
+        for (int i = 0; i < lectureTimes; i++) {
             all.addAll(lectures.get(i).getAttendanceSession().getRecords());
         }
         //may notify!!!!

@@ -12,8 +12,6 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.GmailScopes;
-import com.google.api.services.gmail.model.Label;
-import com.google.api.services.gmail.model.ListLabelsResponse;
 import com.google.api.services.gmail.model.Message;
 
 import java.io.FileNotFoundException;
@@ -60,7 +58,7 @@ public class GmailSetup {
     /**
      * Creates a new GmailSetup object, in particular initiates the service.
      *
-     * @throws IOException If there is an I/O error.
+     * @throws IOException              If there is an I/O error.
      * @throws GeneralSecurityException If there is a security error.
      */
     public GmailSetup() throws IOException, GeneralSecurityException {
@@ -72,6 +70,7 @@ public class GmailSetup {
     }
 
     // Code from https://developers.google.com/gmail/api/quickstart/java
+
     /**
      * Creates an authorized Credential object.
      *
@@ -107,7 +106,7 @@ public class GmailSetup {
      * @param email    The email address to send the email to.
      * @param subject  The subject of the email.
      * @param bodyText The body text of the email.
-     * @throws IOException If there is an I/O error.
+     * @throws IOException              If there is an I/O error.
      * @throws GeneralSecurityException If there is a security error.
      */
     public void sendEmail(String email, String subject, String bodyText) throws IOException, GeneralSecurityException {
@@ -117,12 +116,14 @@ public class GmailSetup {
     }
 
     // Code from https://mailtrap.io/blog/java-send-email-gmail/
+
     /**
      * Creates a base-64 encoded email string with headers.
-     * @param to The email address to send the email to.
-     * @param from The email address to send the email from.
+     *
+     * @param to      The email address to send the email to.
+     * @param from    The email address to send the email from.
      * @param subject The subject of the email.
-     * @param body The body text of the email.
+     * @param body    The body text of the email.
      * @return The base-64 encoded email string.
      */
     private String createRawEmailString(String to, String from, String subject, String body) {
@@ -139,6 +140,7 @@ public class GmailSetup {
 
     /**
      * Creates a new Message object with the specified raw email.
+     *
      * @param rawEmail The raw email string.
      * @return The Message object.
      */
@@ -150,9 +152,10 @@ public class GmailSetup {
 
     /**
      * Sends the specified email.
+     *
      * @param service The Gmail service.
-     * @param userId The user ID.
-     * @param email The email to send.
+     * @param userId  The user ID.
+     * @param email   The email to send.
      * @throws IOException If there is an I/O error.
      */
     private void sendMessage(Gmail service, String userId, Message email) throws IOException {

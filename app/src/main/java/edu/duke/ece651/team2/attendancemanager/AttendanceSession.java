@@ -34,13 +34,13 @@ public class AttendanceSession {
     /**
      * Records attendance for a student in the session.
      *
-     * @param studentID The ID of the student.
+     * @param studentID   The ID of the student.
      * @param studentName The name of the student.
-     * @param status    The status of the student's attendance (true if present,
-     *                  false if absent).
-     * @param lectureID The ID of the lecture.
+     * @param status      The status of the student's attendance (true if present,
+     *                    false if absent).
+     * @param lectureID   The ID of the lecture.
      * @return true if the attendance was successfully recorded, false if a record
-     *         for the same student and lecture already exists.
+     * for the same student and lecture already exists.
      */
     public boolean recordAttendance(String studentID, String studentName, AttendanceStatus status, String lectureID) {
         // Check if a record for the same student and lecture already exists
@@ -64,7 +64,7 @@ public class AttendanceSession {
      * @param newStatus The new status of the student's attendance (true if present,
      *                  false if absent).
      * @return true if the attendance record was successfully updated, false if the
-     *         record was not found.
+     * record was not found.
      */
     public boolean updateAttendanceRecord(String studentID, AttendanceStatus newStatus) {
         for (AttendanceRecord record : records) {
@@ -81,7 +81,7 @@ public class AttendanceSession {
      *
      * @param studentID The ID of the student.
      * @return true if the attendance record was successfully removed, false if the
-     *         record was not found.
+     * record was not found.
      */
     public boolean removeAttendanceRecord(String studentID) {
         return records.removeIf(record -> record.getStudentID().equals(studentID));
@@ -90,6 +90,7 @@ public class AttendanceSession {
 
     /**
      * Returns the attendance record for a student in the session.
+     *
      * @param studentID The ID of the student.
      * @return The attendance record for the student, or null if the record was not found.
      */
@@ -104,6 +105,7 @@ public class AttendanceSession {
 
     /**
      * Returns the list of student names for students who were late to the lecture.
+     *
      * @return The list of student names for students who were late to the lecture.
      */
     public ArrayList<String> lateStudentsName() {
@@ -118,6 +120,7 @@ public class AttendanceSession {
 
     /**
      * Returns the list of student IDs for students who were late to the lecture.
+     *
      * @return The list of student IDs for students who were late to the lecture.
      */
     public ArrayList<String> lateStudentsID() {

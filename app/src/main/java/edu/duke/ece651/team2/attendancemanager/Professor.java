@@ -16,18 +16,15 @@ public class Professor {
      * The unique ID of the professor.
      */
     private final String professorID;
-
-    /**
-     * The list of courses taught by the professor.
-     */
-    private ArrayList<Course> courses;
-
     /**
      * The email address of the professor.
      */
     private final String email;
-
     private final University university;
+    /**
+     * The list of courses taught by the professor.
+     */
+    private final ArrayList<Course> courses;
 
     /**
      * Constructs a new Professor object with the specified name and professor ID.
@@ -35,9 +32,9 @@ public class Professor {
      * @param name        The name of the professor.
      * @param professorID The unique ID of the professor.
      * @param email       The email address of the professor.
-     * @param university The university the professor is affiliated with.
+     * @param university  The university the professor is affiliated with.
      */
-    public Professor(String name, String professorID, String email,University university) {
+    public Professor(String name, String professorID, String email, University university) {
         this.name = name;
         this.professorID = professorID;
         this.courses = new ArrayList<>();
@@ -87,23 +84,25 @@ public class Professor {
      * @param index The index of the course to be returned.
      * @return The course at the specified index in the list of courses taught by the professor.
      */
-    public Course getCourse(int index){
+    public Course getCourse(int index) {
         return courses.get(index);
     }
 
     /**
      * Get the university policy on changing names.
+     *
      * @return true if the university supports changing names, false otherwise.
      */
-    public boolean getUniversityPolicy(){
+    public boolean getUniversityPolicy() {
         return university.getSupportChange();
     }
 
     /**
      * Get the university name.
+     *
      * @return the name of the university.
      */
-    public String getUniversityName(){
+    public String getUniversityName() {
         return university.getName();
     }
 

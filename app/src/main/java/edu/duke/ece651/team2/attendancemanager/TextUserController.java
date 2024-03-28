@@ -1,7 +1,5 @@
 package edu.duke.ece651.team2.attendancemanager;
 
-import jdk.jfr.Event;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -41,7 +39,7 @@ public class TextUserController {
      *
      * @param prompt The prompt to print to the user.
      */
-    public void print(String prompt){
+    public void print(String prompt) {
         out.println(prompt);
     }
 
@@ -61,54 +59,58 @@ public class TextUserController {
 
     /**
      * Prints the specified prompt and reads a password from the user.
+     *
      * @param prompt The prompt to print to the user.
      * @return The user's password.
      * @throws IOException We will not handle this exception.
      */
-    public String printAndGetHiddenPassword(String prompt) throws IOException{
+    public String printAndGetHiddenPassword(String prompt) throws IOException {
         out.println(prompt);
         return reader.readLine();
     }
 
     /**
      * Reads the user's input for a new University.
+     *
      * @return The new University object created from the user's input.
      * @throws IOException We will not handle this exception.
      */
-    public University readUniversity() throws IOException{
+    public University readUniversity() throws IOException {
         String name = printAndGetHiddenPassword("Whats the university?");
         String support = printPromptAndRead("Does it allow for change display name? y for yes");
-        if(support.equals("y")){
-            return new University(name,true);
+        if (support.equals("y")) {
+            return new University(name, true);
         }
-        return new University(name,false);
+        return new University(name, false);
     }
 
     /**
      * Registers a new Professor.
-     * @param info is the ProtectedInfo object to store the professor's information
+     *
+     * @param info       is the ProtectedInfo object to store the professor's information
      * @param university is the university where the professor works
      * @return The new Professor object created from the user's input.
      * @throws IOException We will not handle this exception.
      */
-    public Professor register(ProtectedInfo info,University university) throws IOException{
-        String id = printPromptAndRead("Hi, new Professor, this is " +university.getName()+". What is your id?");
+    public Professor register(ProtectedInfo info, University university) throws IOException {
+        String id = printPromptAndRead("Hi, new Professor, this is " + university.getName() + ". What is your id?");
         String password = printAndGetHiddenPassword("What is your password?");
         info.storeProtectedInfo(id, password);
-        Professor professor = readNewProfessor(id,university);
+        Professor professor = readNewProfessor(id, university);
         return professor;
     }
 
     /**
      * Logs in a Professor.
+     *
      * @param info is the ProtectedInfo object to store the professor's information.
      * @throws IOException We will not handle this exception.
      */
-    public void logIn(ProtectedInfo info) throws IOException{
+    public void logIn(ProtectedInfo info) throws IOException {
         String id = printPromptAndRead("Hello, what is your UID?");
         String password = printAndGetHiddenPassword("What is your password?");
         boolean res = info.match(id, password);
-        if(res){
+        if (res) {
             return;
         }
         out.println("Incorrect User/Password. Try again!");
@@ -137,26 +139,26 @@ public class TextUserController {
 
     /**
      * Reads the user's input for a new Lecture.
+     *
      * @param studentsName is the String of students' display name in this Course
-     * @param start    means beginning of the lecture if true else end of the
-     *                 lecture
+     * @param start        means beginning of the lecture if true else end of the
+     *                     lecture
      * @return The status of the student.
      * @throws IOException We will not handle this exception.
      */
     public AttendanceStatus readStudentStatus(String studentsName, boolean start) throws IOException {
         String prompt = "You are recording students status, please type the status of the student:";
         out.println(prompt);
-        if (start == true) {
+        if (start) {
             prompt = "p for present, a for absent";
         } else {
             prompt = "l for late, a for absent";
         }
 
         String ans = printPromptAndRead(studentsName + ":" + prompt);
-        if (ans.equals("p") && start == true) {
+        if (ans.equals("p") && start) {
             return AttendanceStatus.PRESENT;
-        }
-        else{
+        } else {
             return AttendanceStatus.ABSENT;
         }
 
@@ -164,23 +166,25 @@ public class TextUserController {
 
     /**
      * Reads the user's input for a new Professor.
-     * @param id is the professor ID
+     *
+     * @param id         is the professor ID
      * @param university is the university where the professor works
      * @return The new Professor object created from the user's input.
      * @throws IOException We will not handle this exception.
      */
-    public Professor readNewProfessor(String id,University university) throws IOException {
+    public Professor readNewProfessor(String id, University university) throws IOException {
         String prompt = "What's your legal name:";
         String name = printPromptAndRead(prompt);
         prompt = "What's your E-Mail:";
         String email = printPromptAndRead(prompt);
-        Professor newProfessor = new Professor(name, id, email,university);
+        Professor newProfessor = new Professor(name, id, email, university);
         return newProfessor;
     }
 
     /**
      * Reads the user's input for a new Course.
-     * @param id is the course ID
+     *
+     * @param id  is the course ID
      * @param pro is the professor who teaches this course
      * @return The new Course object created from the user's input.
      * @throws IOException We will not handle this exception.
@@ -195,6 +199,7 @@ public class TextUserController {
 
     /**
      * Reads the user's action.
+     *
      * @param prompt is the prompt to ask the user to type the command
      * @return The command number
      * @throws IOException We will not handle this exception.
@@ -226,14 +231,15 @@ public class TextUserController {
 
     /**
      * Asks if the user would like to keep adding students.
+     *
      * @return The list of students added by the user.
      * @throws IOException We will not handle this exception.
      */
-    public ArrayList<Student> keepAddingStudents() throws IOException{
+    public ArrayList<Student> keepAddingStudents() throws IOException {
         ArrayList<Student> students = new ArrayList<>();
         String prompt = "Do you want to add a new student? y for Yes.";
         String ans = printPromptAndRead(prompt);
-        while (ans.equals("y")){
+        while (ans.equals("y")) {
             students.add(readNewStudents());
             ans = printPromptAndRead(prompt);
         }
@@ -242,21 +248,21 @@ public class TextUserController {
 
     /**
      * Asks the user to select a course.
+     *
      * @param maxSize is the maximum number of courses.
      * @return The index of the selected course.
      * @throws IOException We will not handle this exception.
      */
-    public int selectCourse(int maxSize) throws IOException{
+    public int selectCourse(int maxSize) throws IOException {
         String prompt = "Please type the number in front of the target course, invalid selection will return.";
         String ans = printPromptAndRead(prompt);
-        try{
-            int idx = Integer.parseInt(ans)-1;
-            if(idx>=0 && idx<maxSize){
+        try {
+            int idx = Integer.parseInt(ans) - 1;
+            if (idx >= 0 && idx < maxSize) {
                 return idx;
             }
             return maxSize;
-        }
-        catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             out.println(e.getMessage());
             return maxSize;
         }
@@ -264,11 +270,12 @@ public class TextUserController {
 
     /**
      * Displays the courses and asks the user to select one.
+     *
      * @param professor is the professor who teaches the courses
      * @return The index of the selected course.
      * @throws IOException We will not handle this exception.
      */
-    public int displayAndChooseCourse(Professor professor) throws IOException{
+    public int displayAndChooseCourse(Professor professor) throws IOException {
         TextUserView view = new TextUserView(out);
         view.printCourses(professor);
         return selectCourse(professor.getCourses().size());
@@ -277,10 +284,11 @@ public class TextUserController {
 
     /**
      * Displays the students in the specified course.
+     *
      * @param course is the course to display the students
      * @throws IOException We will not handle this exception.
      */
-    public void displayStudentsFromCourse(Course course) throws IOException{
+    public void displayStudentsFromCourse(Course course) throws IOException {
         TextUserView view = new TextUserView(out);
         view.printStudents(course);
     }
@@ -289,89 +297,90 @@ public class TextUserController {
 
     /**
      * Asks the user if there is a header in the file.
+     *
      * @return True if there is a header in the file, false otherwise.
      * @throws IOException We will not handle this exception.
      */
-    public boolean askHeader() throws IOException{
+    public boolean askHeader() throws IOException {
         String prompt = "Do you have a header in this file? y for Yes";
         String ans = printPromptAndRead(prompt);
-        if(ans.equals("y")){
-            return true;
-        }
-        return false;
+        return ans.equals("y");
     }
 
     /**
      * Tokenizes a line from the csv file.
-     * @param line is the line to read
+     *
+     * @param line      is the line to read
      * @param separator is the separator in the csv file
      * @return The tokens in the line.
      */
-    public String[] readLines(String line, String separator){
-        String [] tokens = line.split(separator);
+    public String[] readLines(String line, String separator) {
+        String[] tokens = line.split(separator);
         return tokens;
     }
 
     /**
      * Counts the number of columns in the csv file.
-     * @param line is the line to read
+     *
+     * @param line      is the line to read
      * @param separator is the separator in the csv file
      * @return The number of columns in the csv file.
      */
-    public int fileColumns(String line,String separator){
+    public int fileColumns(String line, String separator) {
         int count = 0;
-        if(line.length()>0){
-            count+=1;
-        }
-        else{
+        if (line.length() > 0) {
+            count += 1;
+        } else {
             return count;
         }
-        int idx = line.indexOf(separator,0);
+        int idx = line.indexOf(separator);
         while (idx != -1) {
-            count+=1;
-            idx = line.indexOf(separator,idx+separator.length());
+            count += 1;
+            idx = line.indexOf(separator, idx + separator.length());
         }
         return count;
     }
 
     /**
      * Asks the user which column corresponds to the prompted column.
-     * @param size is the number of columns in the csv file.
+     *
+     * @param size   is the number of columns in the csv file.
      * @param prompt is the prompt to ask the user to select the column.
      * @return The index of the selected column.
      * @throws Exception We will not handle this exception.
      */
-    public int readColumns(int size, String prompt) throws Exception{
+    public int readColumns(int size, String prompt) throws Exception {
         String ans = printPromptAndRead(prompt);
         int idx = Integer.parseInt(ans);
-        if(idx>size || idx<=0){
-            return readColumns(size,"No such column! Read it again!");
+        if (idx > size || idx <= 0) {
+            return readColumns(size, "No such column! Read it again!");
         }
-        return idx-1;
+        return idx - 1;
     }
 
     /**
      * Reads the students from the csv file.
+     *
      * @param lines is the list of lines in the csv file
      * @return The list of students read from the csv file.
      * @throws Exception We will not handle this exception.
      */
-    public ArrayList<Student> readStudents(ArrayList<String> lines) throws Exception{
+    public ArrayList<Student> readStudents(ArrayList<String> lines) throws Exception {
         String separater = printPromptAndRead("Which separator in this file?");
-        int columns = fileColumns(lines.get(0),separater);
-        int ansln = readColumns(columns,"Which column is for legal name? Remember, column starts from 1.");
-        int ansuid = readColumns(columns,"Which column is for uid of this student?");
-        int ansemail = readColumns(columns,"Which column is for email?");
-        int ansdn = readColumns(columns,"Which column is for display name? If not, please select the same column with legal name");
+        int columns = fileColumns(lines.get(0), separater);
+        int ansln = readColumns(columns, "Which column is for legal name? Remember, column starts from 1.");
+        int ansuid = readColumns(columns, "Which column is for uid of this student?");
+        int ansemail = readColumns(columns, "Which column is for email?");
+        int ansdn = readColumns(columns, "Which column is for display name? If not, please select the same column with legal name");
         ArrayList<Integer> ans = new ArrayList<>();
         ans.add(ansln);
         ans.add(ansuid);
         ans.add(ansemail);
         ans.add(ansdn);
-        ArrayList<Student> newStudents =  new ArrayList<Student>();
-        for (String line:lines) { 
-            String []lineTokens = readLines(line, separater);
-            Student newStudent = new Student(lineTokens[ans.get(0)], lineTokens[ans.get(1)],lineTokens[ans.get(2)], lineTokens[ans.get(3)]);
+        ArrayList<Student> newStudents = new ArrayList<Student>();
+        for (String line : lines) {
+            String[] lineTokens = readLines(line, separater);
+            Student newStudent = new Student(lineTokens[ans.get(0)], lineTokens[ans.get(1)], lineTokens[ans.get(2)], lineTokens[ans.get(3)]);
             newStudents.add(newStudent);
         }
         return newStudents;
@@ -379,46 +388,45 @@ public class TextUserController {
 
     /**
      * Reads the csv file.
+     *
      * @return The list of students read from the csv file.
      * @throws Exception We will not handle this exception.
      */
-    public ArrayList<Student> readCSVFiles() throws Exception{
+    public ArrayList<Student> readCSVFiles() throws Exception {
         String prompt = "what is your path?";//path?
         String ans = printPromptAndRead(prompt);
         ArrayList<Student> newStudents;
         ArrayList<String> lines = new ArrayList<>();
         FileReader filereader;
         BufferedReader breader;
-        try{
-            try{
-                filereader = new FileReader(ans); 
+        try {
+            try {
+                filereader = new FileReader(ans);
                 breader = new BufferedReader(filereader);
-            }
-            catch(IOException e){
+            } catch (IOException e) {
                 out.println(e.getMessage());
                 String rsp = printPromptAndRead("cannot read the file, y for loading again, else return. The course will be created.");
-                if(rsp.equals("y")){
+                if (rsp.equals("y")) {
                     return readCSVFiles();
                 }
                 return new ArrayList<Student>();
             }
             String line;
             boolean header = askHeader();
-            if(header){
+            if (header) {
                 breader.readLine();
             }
-            while((line = breader.readLine())!=null){
+            while ((line = breader.readLine()) != null) {
                 lines.add(line);
             }
             breader.close();
             //ask each column responds to what?
             newStudents = readStudents(lines);
             return newStudents;
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             out.println(e.getMessage());
             String res = printPromptAndRead("Do you want to repeat loading? y for yes");
-            if(res.equals("y")){
+            if (res.equals("y")) {
                 return readCSVFiles();
             }
             return new ArrayList<Student>();
@@ -427,37 +435,37 @@ public class TextUserController {
 
     /**
      * Checks whether to load students from csv file, and loads them if so.
+     *
      * @return The list of students read from the csv file, or empty.
      */
-    public ArrayList<Student> loadStudents(){
-        try{
-            ArrayList<Student> students =  new ArrayList<>();
+    public ArrayList<Student> loadStudents() {
+        try {
+            ArrayList<Student> students = new ArrayList<>();
             String prompt = "whether to load students? y for yes";
             String ans = printPromptAndRead(prompt);
-            if(ans.equals("y")){
+            if (ans.equals("y")) {
                 students = readCSVFiles();
             }
             return students;
-        }
-        catch(Exception e){
-           return loadStudents();
+        } catch (Exception e) {
+            return loadStudents();
         }
     }
 
 
     /**
      * Asks the user to update the record for a student.
-     * @param lecture is the lecture to update the record for.
+     *
+     * @param lecture      is the lecture to update the record for.
      * @param eventManager is the EventManager to notify of the change.
-     * @throws IOException We will not handle this exception.
+     * @throws IOException              We will not handle this exception.
      * @throws GeneralSecurityException We will not handle this exception.
      */
     public void updateRecordForStudent(Lecture lecture, EventManager eventManager) throws IOException, GeneralSecurityException {
         String ans = printPromptAndRead("What is your Student ID?");
-        if(lecture.updateForOneStudent(ans, eventManager)){
+        if (lecture.updateForOneStudent(ans, eventManager)) {
             out.println("Successfully update the record for this student. An email may send to the student's email");
-        }
-        else{
+        } else {
             out.println("No updated record. The student may not be a student in this lecture");
         }
     }
@@ -466,9 +474,10 @@ public class TextUserController {
 
     /**
      * Updates the students' records.
-     * @param professor is the professor who teaches the course.
+     *
+     * @param professor    is the professor who teaches the course.
      * @param eventManager is the EventManager to notify of the change.
-     * @throws IOException We will not handle this exception.
+     * @throws IOException              We will not handle this exception.
      * @throws GeneralSecurityException We will not handle this exception.
      */
     public void updateStudentsRecords(Professor professor, EventManager eventManager) throws IOException, GeneralSecurityException {
@@ -483,43 +492,45 @@ public class TextUserController {
 
     /**
      * Changes the student's display name.
+     *
      * @param professor is the professor who teaches the course.
      * @throws IOException We will not handle this exception.
      */
-    public void changeStudentDisplayName(Professor professor) throws IOException{
+    public void changeStudentDisplayName(Professor professor) throws IOException {
         int idx = displayAndChooseCourse(professor);
         Course course = professor.getCourse(idx);
         String id = printPromptAndRead("What is the student's ID?");
         String newName = printPromptAndRead("What is your new preferred display name?");
-        if(course.changeStudentDisplayName(id,newName)){
+        if (course.changeStudentDisplayName(id, newName)) {
             print("Successfully!");
-        }
-        else{
+        } else {
             print("The id may be wrong.");
         }
     }
 
     /**
      * Displays the attendance records.
+     *
      * @param records is the list of attendance records to display
      * @throws IOException We will not handle this exception.
      */
-    public void displayRecords(List<AttendanceRecord> records) throws IOException{
-        for(AttendanceRecord r:records){
-            print(r.getStudentID()+" "+r.getStudentName()+" "+r.getAttendanceDate()+" "+r.getStatus());
+    public void displayRecords(List<AttendanceRecord> records) throws IOException {
+        for (AttendanceRecord r : records) {
+            print(r.getStudentID() + " " + r.getStudentName() + " " + r.getAttendanceDate() + " " + r.getStatus());
         }
     }
 
     /**
      * Displays the attendance records from a course.
-     * @param professor　is the professor who teaches the course.
+     *
+     * @param professor 　is the professor who teaches the course.
      * @throws IOException We will not handle this exception.
      */
     public void displayAttendanceFromCourse(Professor professor) throws IOException {
         int idx = displayAndChooseCourse(professor);
         Course course = professor.getCourse(idx);
-        for(int i =0;i<course.getLectureSize();i++){
-            print("Lecture "+i+":");
+        for (int i = 0; i < course.getLectureSize(); i++) {
+            print("Lecture " + i + ":");
             List<AttendanceRecord> records = course.getLectureRecords(i);
             displayRecords(records);
         }
@@ -527,17 +538,17 @@ public class TextUserController {
 
     /**
      * Asks user if they would like to remove students from a course.
+     *
      * @param professor is the professor who teaches the course.
      * @throws IOException We will not handle this exception.
      */
-    public void removeStudentsFromCourse(Professor professor) throws IOException{
+    public void removeStudentsFromCourse(Professor professor) throws IOException {
         int idx = displayAndChooseCourse(professor);
         Course course = professor.getCourse(idx);
         String id = printPromptAndRead("What is the student's UID?");
-        if(course.dropStudents(id)){
+        if (course.dropStudents(id)) {
             print("Successfully!");
-        }
-        else{
+        } else {
             print("The id may be wrong.");
         }
     }

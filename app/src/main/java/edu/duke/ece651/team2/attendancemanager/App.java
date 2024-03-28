@@ -41,14 +41,34 @@ public class App {
         this.eventManager = new EventManager();
     }
 
+    /**
+     * The main method for the Attendance Manager application.
+     *
+     * @param args The command-line arguments.
+     * @throws IOException              We will not handle this exception.
+     * @throws GeneralSecurityException We will not handle this exception.
+     */
+    public static void main(String[] args) throws IOException, GeneralSecurityException {
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        TextUserController controller = new TextUserController(input, System.out);
+        University university = controller.readUniversity();//TODO!!!!
+        ProtectedInfo info = new ProtectedInfo();
+        Professor user = controller.register(info, university);
+        controller.logIn(info);
+        App app = new App(user, controller);
+        app.eventManager.subscribe(new EmailAlertsListener());
+        // app.logIn();
+        app.welcome();
+    }
 
     /**
      * Adds students to a course.
+     *
      * @throws IOException We will not handle this exception.
      */
-    public void addStudentsToCourse() throws IOException{
+    public void addStudentsToCourse() throws IOException {
         int idx = controller.displayAndChooseCourse(professor);
-        if(idx<professor.getCourses().size()){
+        if (idx < professor.getCourses().size()) {
             ArrayList<Student> students = controller.keepAddingStudents();
             professor.getCourse(idx).addStudents(students);
         }
@@ -56,36 +76,36 @@ public class App {
 
     /**
      * Reads the attendance status for a list of students.
+     *
      * @param studentsName The names of the students.
-     * @param start Whether the lecture has started.
+     * @param start        Whether the lecture has started.
      * @return The attendance status for the students.
      * @throws IOException We will not handle this exception.
      */
-    public ArrayList<AttendanceStatus> readStatusForStudents(ArrayList<String> studentsName,boolean start) throws IOException{
+    public ArrayList<AttendanceStatus> readStatusForStudents(ArrayList<String> studentsName, boolean start) throws IOException {
         ArrayList<AttendanceStatus> status = new ArrayList<>();
-        for(String s:studentsName){
+        for (String s : studentsName) {
             status.add(controller.readStudentStatus(s, start));
         }
         return status;
     }
 
-
     /**
      * Starts a new lecture.
+     *
      * @throws IOException We will not handle this exception.
      */
-    public void startNewLecture() throws IOException{
+    public void startNewLecture() throws IOException {
         int idx = controller.displayAndChooseCourse(professor);
-        if(idx<professor.getCourses().size()){
+        if (idx < professor.getCourses().size()) {
             Course course = professor.getCourse(idx);
-            ArrayList<AttendanceStatus> status = readStatusForStudents(course.getStudentsDisplayName(),true);
+            ArrayList<AttendanceStatus> status = readStatusForStudents(course.getStudentsDisplayName(), true);
             Lecture lec = course.startLecture(status);
             course.endLecture(lec);
             // controller.stopTheLecture();
             // ArrayList<AttendanceStatus> statusLate = readStatusForStudents(lec.getLateStudentsName(),false);
             // course.endLecture(lec, lec.getLateStudentsID(), statusLate);
-        }
-        else{
+        } else {
             controller.printPromptAndRead("wrong course number,return to menu.");
             startNewLecture();
         }
@@ -93,7 +113,8 @@ public class App {
 
     /**
      * Allows the professor to update the students' records for the most recent lecture.
-     * @throws IOException We will not handle this exception.
+     *
+     * @throws IOException              We will not handle this exception.
      * @throws GeneralSecurityException We will not handle this exception.
      */
     public void updateStudentsRecords() throws IOException, GeneralSecurityException {
@@ -102,11 +123,12 @@ public class App {
 
     /**
      * Displays the students from a course.
+     *
      * @throws IOException We will not handle this exception.
      */
-    public void displayStudentsFromCourse() throws IOException{
+    public void displayStudentsFromCourse() throws IOException {
         int idx = controller.displayAndChooseCourse(professor);
-        if(idx<professor.getCourses().size()){
+        if (idx < professor.getCourses().size()) {
             Course course = professor.getCourse(idx);
             controller.displayStudentsFromCourse(course);
         }
@@ -114,10 +136,11 @@ public class App {
 
     /**
      * Changes the display name of a student, if allowed.
+     *
      * @throws IOException We will not handle this exception.
      */
-    public void changeStudentDisplayName() throws IOException{
-        if(professor.getUniversityPolicy()==false){
+    public void changeStudentDisplayName() throws IOException {
+        if (!professor.getUniversityPolicy()) {
             controller.print("You cannot change the display name by policy!");
         }
         controller.changeStudentDisplayName(professor);
@@ -125,14 +148,15 @@ public class App {
 
     /**
      * Welcomes the user and allows them to choose an action.
-     * @throws IOException We will not handle this exception.
+     *
+     * @throws IOException              We will not handle this exception.
      * @throws GeneralSecurityException We will not handle this exception.
      */
     public void welcome() throws IOException, GeneralSecurityException {
-        int cmd = controller.readAction("Hi, "+professor.getName()+". What do you want to do?");
-        switch(cmd){
+        int cmd = controller.readAction("Hi, " + professor.getName() + ". What do you want to do?");
+        switch (cmd) {
             case 1:
-                String courseID = "C"+(professor.getCourses().size()+1);
+                String courseID = "C" + (professor.getCourses().size() + 1);
                 Course newCourse = controller.readNewCourse(courseID, professor);
                 professor.addCourse(newCourse);
                 break;
@@ -161,24 +185,5 @@ public class App {
                 return;
         }
         welcome();
-    }
-
-    /**
-     * The main method for the Attendance Manager application.
-     * @param args The command-line arguments.
-     * @throws IOException We will not handle this exception.
-     * @throws GeneralSecurityException We will not handle this exception.
-     */
-    public static void main(String[] args) throws IOException, GeneralSecurityException {
-        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        TextUserController controller = new TextUserController(input, System.out);
-        University university = controller.readUniversity();//TODO!!!!
-        ProtectedInfo info = new ProtectedInfo();
-        Professor user = controller.register(info,university);
-        controller.logIn(info);
-        App app = new App(user, controller);
-        app.eventManager.subscribe(new EmailAlertsListener());
-        // app.logIn();
-        app.welcome();
     }
 }
