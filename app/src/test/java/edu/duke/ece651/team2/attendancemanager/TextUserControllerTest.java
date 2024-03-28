@@ -380,4 +380,9 @@ public class TextUserControllerTest {
                         "Successfully update the record for this student. An email may send to the student's email\n", outputText);
 
     }
+
+    @Test
+    public void testchangeStudentDisplayName() throws IOException{
+        
+    }
 }
