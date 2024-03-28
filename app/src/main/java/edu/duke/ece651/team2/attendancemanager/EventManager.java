@@ -40,9 +40,19 @@ public class EventManager {
      * @throws GeneralSecurityException If there is a security error.
      * @throws IOException If there is an I/O error.
      */
-    public void notifyAttendanceChanged(Student student, AttendanceRecord record) throws GeneralSecurityException, IOException {
+    public void notifyAttendanceChanged(Student student, AttendanceRecord record)
+            throws GeneralSecurityException, IOException {
         for (EventListener listener : listeners) {
             listener.attendanceChanged(student, record);
         }
+    }
+
+    /**
+     * Retrieves the list of EventListeners subscribed to this EventManager.
+     *
+     * @return The list of EventListeners.
+     */
+    public ArrayList<EventListener> getListeners() {
+        return listeners;
     }
 }
