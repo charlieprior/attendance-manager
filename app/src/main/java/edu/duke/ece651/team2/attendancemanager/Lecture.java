@@ -2,6 +2,7 @@ package edu.duke.ece651.team2.attendancemanager;
 
 import java.io.IOException;
 //import java.text.SimpleDateFormat;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -195,13 +196,26 @@ public class Lecture{
     return null;
   }
 
-  public boolean updateForOneStudent(String lateStudentsID){
+  public Student findStudentThroughID(String id) {
+    for (Student s : students) {
+      if (s.getStudentID().equals(id)) {
+        return s;
+      }
+    }
+    return null;
+  }
+
+  public boolean updateForOneStudent(String lateStudentsID, EventManager eventManager) throws GeneralSecurityException, IOException {
     if(currentStudent(lateStudentsID)){
       boolean res = attendanceSession.updateAttendanceRecord(lateStudentsID, AttendanceStatus.TARDY);
       if(res){
         PersistenceManager export = new PersistenceManager();
         export.writeRecordsToCSV(courseName+" "+lectureID+" updated", attendanceSession);
-        //send email
+
+        // Send Email
+        Student student = findStudentThroughID(lateStudentsID);
+        AttendanceRecord record = attendanceSession.getAttendanceRecord(lateStudentsID);
+        eventManager.notifyAttendanceChanged(student, record);
         return true;
       }
     }

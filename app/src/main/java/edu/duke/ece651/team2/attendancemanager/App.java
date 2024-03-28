@@ -22,15 +22,18 @@ public class App {
      */
     private final TextUserController controller;
 
+    private final EventManager eventManager;
+
     /**
      * Constructs a new App object with the specified Professor and controller.
      *
      * @param professor  The Professor using the application.
      * @param controller The controller for the application.
      */
-    public App(Professor professor,TextUserController controller) throws GeneralSecurityException, IOException {
+    public App(Professor professor, TextUserController controller) throws GeneralSecurityException, IOException {
         this.professor = professor;
         this.controller = controller;
+        this.eventManager = new EventManager();
     }
 
 
@@ -83,8 +86,8 @@ public class App {
         }
     }
 
-    public void updateStudentsRecords() throws IOException{
-        controller.updateStudentsRecords(professor);
+    public void updateStudentsRecords() throws IOException, GeneralSecurityException {
+        controller.updateStudentsRecords(professor, eventManager);
     }
 
     /**
@@ -112,7 +115,7 @@ public class App {
      * Welcomes the user.
      * @throws IOException We will not handle this exception.
      */
-    public void welcome() throws IOException{
+    public void welcome() throws IOException, GeneralSecurityException {
         int cmd = controller.readAction("Hi, "+professor.getName()+". What do you want to do?");
         switch(cmd){
             case 1:
@@ -160,6 +163,7 @@ public class App {
         Professor user = controller.register(info,university);
         controller.logIn(info);
         App app = new App(user, controller);
+        app.eventManager.subscribe(new EmailAlertsListener());
         // app.logIn();
         app.welcome();
     }

@@ -1,9 +1,12 @@
 package edu.duke.ece651.team2.attendancemanager;
 
+import jdk.jfr.Event;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -387,9 +390,9 @@ public class TextUserController {
     }
 
 
-    public void updateRecordForStudent(Lecture lecture) throws IOException{
+    public void updateRecordForStudent(Lecture lecture, EventManager eventManager) throws IOException, GeneralSecurityException {
         String ans = printPromptAndRead("What is your Student ID?");
-        if(lecture.updateForOneStudent(ans)){
+        if(lecture.updateForOneStudent(ans, eventManager)){
             out.println("Successfully update the record for this student. An email may send to the student's email");
         }
         else{
@@ -398,13 +401,13 @@ public class TextUserController {
     }
 
     //TODO: All of them should be done
-    public void updateStudentsRecords(Professor professor) throws IOException{
+    public void updateStudentsRecords(Professor professor, EventManager eventManager) throws IOException, GeneralSecurityException {
         int courseIndex = displayAndChooseCourse(professor);
         Course course = professor.getCourse(courseIndex);
         Lecture lastLecture = course.getLatestLecture();
         TextUserView view = new TextUserView(out);
         view.printStudentStatus(lastLecture);
-        updateRecordForStudent(lastLecture);
+        updateRecordForStudent(lastLecture, eventManager);
     }
 
 

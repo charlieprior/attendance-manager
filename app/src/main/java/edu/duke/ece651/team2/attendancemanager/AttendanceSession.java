@@ -88,6 +88,15 @@ public class AttendanceSession {
         // removeIf returns true if any elements were removed
     }
 
+    public AttendanceRecord getAttendanceRecord(String studentID) {
+        for (AttendanceRecord record : records) {
+            if (record.getStudentID().equals(studentID)) {
+                return record;
+            }
+        }
+        return null;
+    }
+
     /**
      * Returns the list of student names for students who were late to the lecture.
      * @return The list of student names for students who were late to the lecture.
