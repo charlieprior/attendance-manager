@@ -22,6 +22,9 @@ public class App {
      */
     private final TextUserController controller;
 
+    /**
+     * The EventManager for the application.
+     */
     private final EventManager eventManager;
 
     /**
@@ -29,6 +32,8 @@ public class App {
      *
      * @param professor  The Professor using the application.
      * @param controller The controller for the application.
+     * @throws GeneralSecurityException If there is a security error.
+     * @throws IOException              If there is an I/O error.
      */
     public App(Professor professor, TextUserController controller) throws GeneralSecurityException, IOException {
         this.professor = professor;
@@ -86,6 +91,11 @@ public class App {
         }
     }
 
+    /**
+     * Allows the professor to update the students' records for the most recent lecture.
+     * @throws IOException We will not handle this exception.
+     * @throws GeneralSecurityException We will not handle this exception.
+     */
     public void updateStudentsRecords() throws IOException, GeneralSecurityException {
         controller.updateStudentsRecords(professor, eventManager);
     }
@@ -102,6 +112,10 @@ public class App {
         }
     }
 
+    /**
+     * Changes the display name of a student, if allowed.
+     * @throws IOException We will not handle this exception.
+     */
     public void changeStudentDisplayName() throws IOException{
         if(professor.getUniversityPolicy()==false){
             controller.print("You cannot change the display name by policy!");
@@ -109,11 +123,10 @@ public class App {
         controller.changeStudentDisplayName(professor);
     }
 
-
-
     /**
-     * Welcomes the user.
+     * Welcomes the user and allows them to choose an action.
      * @throws IOException We will not handle this exception.
+     * @throws GeneralSecurityException We will not handle this exception.
      */
     public void welcome() throws IOException, GeneralSecurityException {
         int cmd = controller.readAction("Hi, "+professor.getName()+". What do you want to do?");
@@ -154,6 +167,7 @@ public class App {
      * The main method for the Attendance Manager application.
      * @param args The command-line arguments.
      * @throws IOException We will not handle this exception.
+     * @throws GeneralSecurityException We will not handle this exception.
      */
     public static void main(String[] args) throws IOException, GeneralSecurityException {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));

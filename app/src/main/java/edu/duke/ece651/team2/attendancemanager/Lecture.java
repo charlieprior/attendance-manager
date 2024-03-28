@@ -170,12 +170,20 @@ public class Lecture{
     attendanceSession.endSession();
   }
 
+    /**
+     * Ends the lecture and updates the attendance records.
+     */
   public void endLecture(){
     PersistenceManager export = new PersistenceManager();
     export.writeRecordsToCSV(courseName+" "+lectureID, attendanceSession);
     //email-notify
   }
 
+  /**
+   * Checks if the student is in the lecture.
+   * @param id The ID of the student.
+   * @return true if the student is in the lecture, false otherwise.
+   */
   public boolean currentStudent(String id){
     for(Student s:students){
         if(s.getStudentID().equals(id)){
@@ -185,6 +193,11 @@ public class Lecture{
     return false;
 }
 
+  /**
+   * Finds the email of the student with the specified ID.
+   * @param id The ID of the student.
+   * @return The email of the student, or null if the student is not in the lecture.
+   */
   public String findEmailThroughID(String id){
     if(currentStudent(id)){
       for(Student s:students){
@@ -196,6 +209,11 @@ public class Lecture{
     return null;
   }
 
+    /**
+     * Finds the student with the specified ID.
+     * @param id The ID of the student.
+     * @return The student with the specified ID, or null if the student is not in the lecture.
+     */
   public Student findStudentThroughID(String id) {
     for (Student s : students) {
       if (s.getStudentID().equals(id)) {
@@ -205,6 +223,14 @@ public class Lecture{
     return null;
   }
 
+    /**
+     * Updates the attendance record for a student.
+     * @param lateStudentsID The ID of the student.
+     * @param eventManager The EventManager to notify of the change.
+     * @return true if the attendance record was successfully updated, false otherwise.
+     * @throws GeneralSecurityException We will not handle this exception.
+     * @throws IOException We will not handle this exception.
+     */
   public boolean updateForOneStudent(String lateStudentsID, EventManager eventManager) throws GeneralSecurityException, IOException {
     if(currentStudent(lateStudentsID)){
       boolean res = attendanceSession.updateAttendanceRecord(lateStudentsID, AttendanceStatus.TARDY);

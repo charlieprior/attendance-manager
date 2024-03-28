@@ -172,6 +172,9 @@ public class Course {
         return lectures.get(i).getLectureID();
     }
 
+    /**
+     * @return the latest lecture
+     */
     public Lecture getLatestLecture(){
         return lectures.get(lectures.size()-1);
     }
@@ -192,6 +195,11 @@ public class Course {
         }
     }
 
+    /**
+     * Drop the student with the given ID.
+     * @param id is the student's ID.
+     * @return true if the student is dropped successfully, false otherwise.
+    */
     public boolean dropStudents(String id){
         for(Student s:students){
             if(s.getStudentID().equals(id)){
@@ -202,6 +210,12 @@ public class Course {
         return false;
     }
 
+    /**
+     * Change the student's display name.
+     * @param id is the student's ID.
+     * @param dn is the new display name.
+     * @return true if the display name is changed successfully, false otherwise.
+    */
     public boolean changeStudentDisplayName(String id,String dn){
         for(Student s:students){
             if(s.getStudentID().equals(id)){
@@ -242,15 +256,27 @@ public class Course {
         lectures.add(lecture);
     }
 
+    /**
+     * This function will end the lecture
+     *
+     * @param lecture is the lecture to be ended
+    */
     public void endLecture(Lecture lecture){
         lecture.endLecture();
         lectures.add(lecture);
     }
 
+    /**
+     * @param idx the index of the lecture.
+     * @return the attendance records of the lecture at index idx.
+     */
     public List<AttendanceRecord> getLectureRecords(int idx){
         return lectures.get(idx).getAttendanceSession().getRecords();
     }
 
+    /**
+     * Generates all attendance records for all lectures in this course.
+     */
     public void generateWholeReportTillNow(){
         List<AttendanceRecord> all = new ArrayList<>();
         for(int i =0;i<lectureTimes;i++){

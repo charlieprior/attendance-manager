@@ -26,12 +26,14 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
-/* class to demonstrate use of Gmail list labels API */
+/**
+ * The GmailSetup class sets up the Gmail API for sending emails.
+ */
 public class GmailSetup {
     /**
      * Application name.
      */
-    private static final String APPLICATION_NAME = "Gmail API Java Quickstart";
+    private static final String APPLICATION_NAME = "ECE651 Team 2 Attendance Manager";
     /**
      * Global instance of the JSON factory.
      */
@@ -46,9 +48,21 @@ public class GmailSetup {
      * If modifying these scopes, delete your previously saved tokens/ folder.
      */
     private static final List<String> SCOPES = new ArrayList<>(GmailScopes.all());
+    /**
+     * Path to the credentials file.
+     */
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
+    /**
+     * The Gmail service.
+     */
     private final Gmail service;
 
+    /**
+     * Creates a new GmailSetup object, in particular initiates the service.
+     *
+     * @throws IOException If there is an I/O error.
+     * @throws GeneralSecurityException If there is a security error.
+     */
     public GmailSetup() throws IOException, GeneralSecurityException {
         // Build a new authorized API client service.
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
@@ -87,21 +101,15 @@ public class GmailSetup {
         return credential;
     }
 
-    public void printLabels() throws IOException, GeneralSecurityException {
-        // Print the labels in the user's account.
-        String user = "me";
-        ListLabelsResponse listResponse = service.users().labels().list(user).execute();
-        List<Label> labels = listResponse.getLabels();
-        if (labels.isEmpty()) {
-            System.out.println("No labels found.");
-        } else {
-            System.out.println("Labels:");
-            for (Label label : labels) {
-                System.out.printf("- %s\n", label.getName());
-            }
-        }
-    }
-
+    /**
+     * Sends an email with the specified email address, subject, and body text.
+     *
+     * @param email    The email address to send the email to.
+     * @param subject  The subject of the email.
+     * @param bodyText The body text of the email.
+     * @throws IOException If there is an I/O error.
+     * @throws GeneralSecurityException If there is a security error.
+     */
     public void sendEmail(String email, String subject, String bodyText) throws IOException, GeneralSecurityException {
         String rawEmailString = createRawEmailString(email, "me", subject, bodyText);
         Message message = createMessage(rawEmailString);
@@ -109,6 +117,14 @@ public class GmailSetup {
     }
 
     // Code from https://mailtrap.io/blog/java-send-email-gmail/
+    /**
+     * Creates a base-64 encoded email string with headers.
+     * @param to The email address to send the email to.
+     * @param from The email address to send the email from.
+     * @param subject The subject of the email.
+     * @param body The body text of the email.
+     * @return The base-64 encoded email string.
+     */
     private String createRawEmailString(String to, String from, String subject, String body) {
         String bodyText = "Content-Type: text/plain; charset=\"UTF-8\"\n" +
                 "MIME-Version: 1.0\n" +
@@ -121,12 +137,24 @@ public class GmailSetup {
         return Base64.getUrlEncoder().encodeToString(bodyText.getBytes(StandardCharsets.UTF_8));
     }
 
+    /**
+     * Creates a new Message object with the specified raw email.
+     * @param rawEmail The raw email string.
+     * @return The Message object.
+     */
     private Message createMessage(String rawEmail) {
         Message message = new Message();
         message.setRaw(rawEmail);
         return message;
     }
 
+    /**
+     * Sends the specified email.
+     * @param service The Gmail service.
+     * @param userId The user ID.
+     * @param email The email to send.
+     * @throws IOException If there is an I/O error.
+     */
     private void sendMessage(Gmail service, String userId, Message email) throws IOException {
         service.users().messages().send(userId, email).execute();
     }

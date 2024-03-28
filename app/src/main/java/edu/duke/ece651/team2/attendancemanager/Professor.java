@@ -35,6 +35,7 @@ public class Professor {
      * @param name        The name of the professor.
      * @param professorID The unique ID of the professor.
      * @param email       The email address of the professor.
+     * @param university The university the professor is affiliated with.
      */
     public Professor(String name, String professorID, String email,University university) {
         this.name = name;
@@ -90,10 +91,18 @@ public class Professor {
         return courses.get(index);
     }
 
+    /**
+     * Get the university policy on changing names.
+     * @return true if the university supports changing names, false otherwise.
+     */
     public boolean getUniversityPolicy(){
         return university.getSupportChange();
     }
 
+    /**
+     * Get the university name.
+     * @return the name of the university.
+     */
     public String getUniversityName(){
         return university.getName();
     }

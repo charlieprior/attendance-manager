@@ -88,6 +88,11 @@ public class AttendanceSession {
         // removeIf returns true if any elements were removed
     }
 
+    /**
+     * Returns the attendance record for a student in the session.
+     * @param studentID The ID of the student.
+     * @return The attendance record for the student, or null if the record was not found.
+     */
     public AttendanceRecord getAttendanceRecord(String studentID) {
         for (AttendanceRecord record : records) {
             if (record.getStudentID().equals(studentID)) {

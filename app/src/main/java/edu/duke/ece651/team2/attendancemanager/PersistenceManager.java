@@ -47,6 +47,12 @@ public class PersistenceManager {
         
     }
 
+    /**
+     * This function will generate the whole report of the AttendanceRecord into CSV
+     *
+     * @param fileName is the file's name
+     * @param records is the list of AttendanceRecord
+    */
     public void generateWholeReport(String fileName, List<AttendanceRecord> records){
         try{
             FileWriter writer = new FileWriter("export/"+fileName+".csv"); //path ???
