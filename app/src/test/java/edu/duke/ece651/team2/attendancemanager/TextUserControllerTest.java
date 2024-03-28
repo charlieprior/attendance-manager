@@ -12,6 +12,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.StringReader;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -343,7 +344,7 @@ public class TextUserControllerTest {
     }
     
     @Test
-    public void testUpdateRecordForStudent() throws IOException{
+    public void testUpdateRecordForStudent() throws IOException, GeneralSecurityException{
         ArrayList<Student> stu = new ArrayList<>();
         Student s = new Student("11", "22", "33", "44");
         stu.add(s);
@@ -352,13 +353,14 @@ public class TextUserControllerTest {
         Lecture l = new Lecture("!234", "1_1", stu, professor);
         String input = "11";
         TextUserController controller = new TextUserController(new BufferedReader(new StringReader(input)), System.out);
-        controller.updateRecordForStudent(l);
+        EventManager m = new EventManager();
+        controller.updateRecordForStudent(l,m);
         String outputText = outContent.toString();
         assertEquals("What is your Student ID?\nNo updated record. The student may not be a student in this lecture\n", outputText);
     }
 
     @Test
-    public void testPrevious() throws IOException{
+    public void testPrevious() throws IOException, GeneralSecurityException{
         ArrayList<Student> stu = new ArrayList<>();
         Student s = new Student("11", "22", "33", "44");
         stu.add(s);
@@ -370,7 +372,8 @@ public class TextUserControllerTest {
         l.recordAttendance(sta);
         String input1 = "22";
         TextUserController controller1 = new TextUserController(new BufferedReader(new StringReader(input1)), System.out);
-        controller1.updateRecordForStudent(l);
+        EventManager m = new EventManager();
+        controller1.updateRecordForStudent(l,m);
         String outputText = outContent.toString();
         assertEquals("What is your Student ID?\n" + //
                         "Successfully create and write csv\n" + //
