@@ -21,6 +21,7 @@ public class App {
      * The controller for the application.
      */
     private final TextUserController controller;
+    private final TextUserView view;
 
     /**
      * The EventManager for the application.
@@ -35,9 +36,10 @@ public class App {
      * @throws GeneralSecurityException If there is a security error.
      * @throws IOException              If there is an I/O error.
      */
-    public App(Professor professor, TextUserController controller) throws GeneralSecurityException, IOException {
+    public App(Professor professor, TextUserController controller, TextUserView view) throws GeneralSecurityException, IOException {
         this.professor = professor;
         this.controller = controller;
+        this.view = view;
         this.eventManager = new EventManager();
     }
 
@@ -51,11 +53,12 @@ public class App {
     public static void main(String[] args) throws IOException, GeneralSecurityException {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         TextUserController controller = new TextUserController(input, System.out);
+        TextUserView view = new TextUserView(System.out);
         University university = controller.readUniversity();//TODO!!!!
         ProtectedInfo info = new ProtectedInfo();
         Professor user = controller.register(info, university);
         controller.logIn(info);
-        App app = new App(user, controller);
+        App app = new App(user, controller, view);
         app.eventManager.subscribe(new EmailAlertsListener());
         // app.logIn();
         app.welcome();
@@ -67,7 +70,7 @@ public class App {
      * @throws IOException We will not handle this exception.
      */
     public void addStudentsToCourse() throws IOException {
-        int idx = controller.displayAndChooseCourse(professor);
+        int idx = controller.chooseCourse(professor);
         if (idx < professor.getCourses().size()) {
             ArrayList<Student> students = controller.keepAddingStudents();
             professor.getCourse(idx).addStudents(students);
@@ -96,7 +99,7 @@ public class App {
      * @throws IOException We will not handle this exception.
      */
     public void startNewLecture() throws IOException {
-        int idx = controller.displayAndChooseCourse(professor);
+        int idx = controller.chooseCourse(professor);
         if (idx < professor.getCourses().size()) {
             Course course = professor.getCourse(idx);
             ArrayList<AttendanceStatus> status = readStatusForStudents(course.getStudentsDisplayName(), true);
@@ -127,10 +130,11 @@ public class App {
      * @throws IOException We will not handle this exception.
      */
     public void displayStudentsFromCourse() throws IOException {
-        int idx = controller.displayAndChooseCourse(professor);
+        view.printCourses(professor);
+        int idx = controller.chooseCourse(professor);
         if (idx < professor.getCourses().size()) {
             Course course = professor.getCourse(idx);
-            controller.displayStudentsFromCourse(course);
+            view.printStudents(course);
         }
     }
 
@@ -141,7 +145,7 @@ public class App {
      */
     public void changeStudentDisplayName() throws IOException {
         if (!professor.getUniversityPolicy()) {
-            controller.print("You cannot change the display name by policy!");
+            view.printError("You cannot change the display name by policy!");
         }
         controller.changeStudentDisplayName(professor);
     }

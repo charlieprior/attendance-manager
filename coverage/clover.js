@@ -1,7 +1,7 @@
-AJS.$(function($) {
+AJS.$(function ($) {
     // initialize tooltips on all elements with title attribute
     $("[title]").tooltip({
-        aria:true,
+        aria: true,
         html: true,
         hideOnClick: true,
         hoverable: false,
@@ -10,12 +10,12 @@ AJS.$(function($) {
 
 
     // shows the dialog when the "Show dialog" button is clicked
-    $(".dialog-show-button").click(function(e) {
+    $(".dialog-show-button").click(function (e) {
         AJS.dialog2("#" + $(this).data('dialog-id')).show();
     });
 
     // hides the dialog
-    $(".dialog-close-button").click(function(e) {
+    $(".dialog-close-button").click(function (e) {
         e.preventDefault();
         AJS.dialog2("#" + $(this).data('dialog-id')).hide();
     });
@@ -35,15 +35,19 @@ AJS.$(function($) {
     // select all tests for hi-lighting
     $testMethodCheckboxesToggle.click(function toggleSelectAllTests() {
         if (!$testMethodCheckboxesToggle.hasClass("active")) {
-            $testMethodCheckboxes.each(function () { toggleWithEvent($(this), true) } );
+            $testMethodCheckboxes.each(function () {
+                toggleWithEvent($(this), true)
+            });
             $testMethodCheckboxesToggle.addClass("active");
         } else {
-            $testMethodCheckboxes.each(function () { toggleWithEvent($(this), false) } );
+            $testMethodCheckboxes.each(function () {
+                toggleWithEvent($(this), false)
+            });
             $testMethodCheckboxesToggle.removeClass("active");
         }
     });
 
-    $testMethodCheckboxes.change(function(element) {
+    $testMethodCheckboxes.change(function (element) {
         // change state of the main button
         if ($testMethodCheckboxes.length != $('input[name="testMethod"]:checked').length) {
             $testMethodCheckboxesToggle.removeClass("active");
@@ -73,14 +77,14 @@ AJS.$(function($) {
     var $filterForm = $('.package-filter-container');
     var $filterInput = $('#package-filter');
 
-    $filterForm.submit(function(e) {
+    $filterForm.submit(function (e) {
         e.preventDefault();
     });
 
-    $filterInput.on("input keyup", function(e){
+    $filterInput.on("input keyup", function (e) {
         var val = $filterInput.val();
 
-        if ($packagesTree.data("current-search") !== val){
+        if ($packagesTree.data("current-search") !== val) {
             $packagesTree.data("current-search", val);
 
             $packagesTree.cloverPackages({
@@ -89,13 +93,13 @@ AJS.$(function($) {
         }
     });
 
-    $filterInput.on("keydown", function(e){
+    $filterInput.on("keydown", function (e) {
         var special = [13, 27, 37, 38, 39, 40];
 
-        if (special.indexOf(e.which) !== -1){
+        if (special.indexOf(e.which) !== -1) {
             e.preventDefault();
 
-            if (e.which === 27){
+            if (e.which === 27) {
                 $filterInput.val("");
 
                 $packagesTree.data("current-search", "");
@@ -110,7 +114,7 @@ AJS.$(function($) {
         }
     });
 
-    $filterInput.on("blur", function(){
+    $filterInput.on("blur", function () {
         $packagesTree.cloverPackages({
             "resetKeyboardSelection": true
         });
@@ -118,19 +122,19 @@ AJS.$(function($) {
 
     /* === sidebar === */
 
-    var updateSidebarHeight = function(){
+    var updateSidebarHeight = function () {
         var $footer = $("#footer");
         var $sidebar = $(".aui-page-panel-nav-clover");
         var clientHeight = document.documentElement.clientHeight;
         var height = clientHeight - parseInt($sidebar.css("top"));
 
         $sidebar.css({
-            height: height+"px",
+            height: height + "px",
             visibility: "visible"
         });
 
         $packagesWrapper.css({
-            height: height-217+"px"
+            height: height - 217 + "px"
         });
 
         $footer.css("margin-top", "0px");
@@ -139,7 +143,7 @@ AJS.$(function($) {
         var footerHeight = $footer.outerHeight();
         var marginTop = clientHeight - footerOffset.top - footerHeight - 1;
 
-        if (marginTop > 0){
+        if (marginTop > 0) {
             $footer.css("margin-top", marginTop + "px");
         }
 
@@ -153,69 +157,69 @@ AJS.$(function($) {
 
 
 var SRC_FILE_LEGEND_TEXT =
-        '<h2>Legend</h2>' +
-        '<p><b>Left margin ruler</b><br/>' +
-        '<small>Left margin ruler shows information about global and per-test coverage</small></p>' +
-        '<table class="legend" id="legend" style="padding: 0; border-spacing: 0;">' +
-        '<tbody>' +
-        '<tr>' +
-        '<td class="methodToggle" align="right">line#</td>' +
-        '<td class="methodToggle" align="right">hit count</td>' +
-        '<td class="methodToggle"></td>' +
-        '</tr><tr>' +
-        '<td class="lineCount Good" align="right">1</td>' +
-        '<td class="coverageCount Good missedByTest" align="right">17</td>' +
-        '<td class="srcCellLegend">line was covered, but not by a test (e.g. by main(), setUp() or tearDown() method)</td>' +
-        '</tr><tr>' +
-        '<td class="lineCount Good" align="right">2</td>' +
-        '<td class="coverageCount Good hitByTest" align="right">86</td>' +
-        '<td class="srcCellLegend">line was covered by test(s) which passed</td>' +
-        '</tr><tr>' +
-        '<td class="lineCount Good" align="right">3</td>' +
-        '<td class="coverageCount Good hitByFailedTest" align="right">7</td>' +
-        '<td class="srcCellLegend">line was covered by test(s) which did not pass (includeFailedTestCoverage=true)</td>' +
-        '</tr><tr>' +
-        '<td class="lineCount Bad" align="right">4</td>' +
-        '<td class="coverageCount Bad hitByFailedTest" align="right">7</td>' +
-        '<td class="srcCellLegend">line was covered by test(s) which did not pass (includeFailedTestCoverage=false)</td>' +
-        '</tr><tr>' +
-        '<td class="lineCount Good" align="right">5</td>' +
-        '<td class="coverageCount Bad hitByTest" align="right">1</td>' +
-        '<td class="srcCellLegend">line is covered partially (i.e some branch or a statement was not covered) and was hit by a test</td>' +
-        '</tr><tr>' +
-        '<td class="lineCount Good" align="right">6</td>' +
-        '<td class="coverageCount Bad missedByTest" align="right">1</td>' +
-        '<td class="srcCellLegend">line is covered partially, but not by a test</td>' +
-        '</tr><tr>' +
-        '<td class="lineCount Bad" align="right">7</td>' +
-        '<td class="coverageCount Bad missedByTest" align="right">0</td>' +
-        '<td class="srcCellLegend">line was not covered at all</td>' +
-        '</tr><tr>' +
-        '<td class="lineCount Filtered " align="right">8</td>' +
-        '<td class="coverageCount Filtered" align="right"></td>' +
-        '<td class="srcCellLegend">line was filtered</td>' +
-        '</tr>' +
-        '</tbody></table>' +
-        '<p><b>Source code highlighting</b><br/>' +
-        '<small>Highlighing shows information about contributing tests as well as about code which was not covered or filtered.</small></p>' +
-        '<table class="legend" id="legend" style="padding: 0; border-spacing: 0">' +
-        '<tbody>' +
-        '<tr>' +
-        '<td class="methodToggle"></td>' +
-        '</tr><tr>' +
-        '<td class="srcCellWithSpacer"><span class="srcLine">line not covered by any of the selected tests</span></td>' +
-        '</tr><tr>' +
-        '<td class="srcCellWithSpacer"><span class="srcLine coveredByTest">line hit by more than one of the selected tests</span></td>' +
-        '</tr><tr>' +
-        '<td class="srcCellWithSpacer"><span class="srcLine coveredByTestUniq">line hit by one test only (unique per-test coverage)</span></td>' +
-        '</tr><tr>' +
-        '<td class="srcCellWithSpacer"><span class="srcLine coveredByFailedTest">line hit by one or more of the selected tests that all failed</span></td>' +
-        '</tr><tr>' +
-        '<td class="srcCellWithSpacer"><span class="srcLine srcLineHilight">line was not covered (partially or at all)</span></td>' +
-        '</tr><tr>' +
-        '<td class="srcCellWithSpacer"><span class="srcLine srcLineFiltered">line was filtered</span></td>' +
-        '</tr>' +
-        '</tbody></table>';
+    '<h2>Legend</h2>' +
+    '<p><b>Left margin ruler</b><br/>' +
+    '<small>Left margin ruler shows information about global and per-test coverage</small></p>' +
+    '<table class="legend" id="legend" style="padding: 0; border-spacing: 0;">' +
+    '<tbody>' +
+    '<tr>' +
+    '<td class="methodToggle" align="right">line#</td>' +
+    '<td class="methodToggle" align="right">hit count</td>' +
+    '<td class="methodToggle"></td>' +
+    '</tr><tr>' +
+    '<td class="lineCount Good" align="right">1</td>' +
+    '<td class="coverageCount Good missedByTest" align="right">17</td>' +
+    '<td class="srcCellLegend">line was covered, but not by a test (e.g. by main(), setUp() or tearDown() method)</td>' +
+    '</tr><tr>' +
+    '<td class="lineCount Good" align="right">2</td>' +
+    '<td class="coverageCount Good hitByTest" align="right">86</td>' +
+    '<td class="srcCellLegend">line was covered by test(s) which passed</td>' +
+    '</tr><tr>' +
+    '<td class="lineCount Good" align="right">3</td>' +
+    '<td class="coverageCount Good hitByFailedTest" align="right">7</td>' +
+    '<td class="srcCellLegend">line was covered by test(s) which did not pass (includeFailedTestCoverage=true)</td>' +
+    '</tr><tr>' +
+    '<td class="lineCount Bad" align="right">4</td>' +
+    '<td class="coverageCount Bad hitByFailedTest" align="right">7</td>' +
+    '<td class="srcCellLegend">line was covered by test(s) which did not pass (includeFailedTestCoverage=false)</td>' +
+    '</tr><tr>' +
+    '<td class="lineCount Good" align="right">5</td>' +
+    '<td class="coverageCount Bad hitByTest" align="right">1</td>' +
+    '<td class="srcCellLegend">line is covered partially (i.e some branch or a statement was not covered) and was hit by a test</td>' +
+    '</tr><tr>' +
+    '<td class="lineCount Good" align="right">6</td>' +
+    '<td class="coverageCount Bad missedByTest" align="right">1</td>' +
+    '<td class="srcCellLegend">line is covered partially, but not by a test</td>' +
+    '</tr><tr>' +
+    '<td class="lineCount Bad" align="right">7</td>' +
+    '<td class="coverageCount Bad missedByTest" align="right">0</td>' +
+    '<td class="srcCellLegend">line was not covered at all</td>' +
+    '</tr><tr>' +
+    '<td class="lineCount Filtered " align="right">8</td>' +
+    '<td class="coverageCount Filtered" align="right"></td>' +
+    '<td class="srcCellLegend">line was filtered</td>' +
+    '</tr>' +
+    '</tbody></table>' +
+    '<p><b>Source code highlighting</b><br/>' +
+    '<small>Highlighing shows information about contributing tests as well as about code which was not covered or filtered.</small></p>' +
+    '<table class="legend" id="legend" style="padding: 0; border-spacing: 0">' +
+    '<tbody>' +
+    '<tr>' +
+    '<td class="methodToggle"></td>' +
+    '</tr><tr>' +
+    '<td class="srcCellWithSpacer"><span class="srcLine">line not covered by any of the selected tests</span></td>' +
+    '</tr><tr>' +
+    '<td class="srcCellWithSpacer"><span class="srcLine coveredByTest">line hit by more than one of the selected tests</span></td>' +
+    '</tr><tr>' +
+    '<td class="srcCellWithSpacer"><span class="srcLine coveredByTestUniq">line hit by one test only (unique per-test coverage)</span></td>' +
+    '</tr><tr>' +
+    '<td class="srcCellWithSpacer"><span class="srcLine coveredByFailedTest">line hit by one or more of the selected tests that all failed</span></td>' +
+    '</tr><tr>' +
+    '<td class="srcCellWithSpacer"><span class="srcLine srcLineHilight">line was not covered (partially or at all)</span></td>' +
+    '</tr><tr>' +
+    '<td class="srcCellWithSpacer"><span class="srcLine srcLineFiltered">line was filtered</span></td>' +
+    '</tr>' +
+    '</tbody></table>';
 
 // close a modal dialog with the given id and scroll view
 function closeDialogAndScrollTo(modalDialogId, anchor) {
@@ -235,10 +239,10 @@ function filterTests(tableBodyId, inputFilterId, testColumnNo) {
     } else {
         // walk through all rows and hide those where 3rd td has a href's text matching text
         $("#" + tableBodyId + " > tr")
-            .has("td:nth-child(" + testColumnNo + ") > span:not( :contains('" +  $.trim(searchedText) + "') )")
+            .has("td:nth-child(" + testColumnNo + ") > span:not( :contains('" + $.trim(searchedText) + "') )")
             .hide();
         $("#" + tableBodyId + " > tr")
-            .has("td:nth-child(" + testColumnNo + ") > span:contains('" +  $.trim(searchedText) + "')")
+            .has("td:nth-child(" + testColumnNo + ") > span:contains('" + $.trim(searchedText) + "')")
             .show();
     }
 }
@@ -254,10 +258,10 @@ function filterMethods(tableBodyId, inputFilterId) {
     } else {
         // walk through all rows and hide those where 3rd td has a href's text matching text
         $("#" + tableBodyId + " > tr")
-            .has("td:nth-child(1):not( :contains('" +  $.trim(searchedText) + "') )")
+            .has("td:nth-child(1):not( :contains('" + $.trim(searchedText) + "') )")
             .hide();
         $("#" + tableBodyId + " > tr")
-            .has("td:nth-child(1):contains('" +  $.trim(searchedText) + "')")
+            .has("td:nth-child(1):contains('" + $.trim(searchedText) + "')")
             .show();
     }
 }
@@ -268,10 +272,11 @@ function toggleInlineStats(ele, hiddenEleId) {
     var statsEle = document.getElementById(hiddenEleId);
     var showStats = ele.className.match(/\baui-iconfont-arrows-right\b/);
     statsEle.style.display = showStats ? '' : 'none';
-    var regex = showStats ? /\baui-iconfont-arrows-right\b/ : /\baui-iconfont-arrows-left\b/ ;
+    var regex = showStats ? /\baui-iconfont-arrows-right\b/ : /\baui-iconfont-arrows-left\b/;
     var replacement = showStats ? 'aui-iconfont-arrows-left' : 'aui-iconfont-arrows-right';
     replaceClass(ele, regex, replacement);
 }
+
 function toggleNodeExpansion(ele, collapsed, expanded) {
     toggleNodeEx(document.getElementById(ele), document.getElementById(collapsed), document.getElementById(expanded));
 }
@@ -281,7 +286,7 @@ function toggleNodeEx(ele, collapsed, expanded) {
     collapsed.style.display = expand ? 'none' : '';
     expanded.style.display = expand ? '' : 'none';
 
-    var regex = expand ? /\bexpand\b/ : /\bcollapse\b/ ;
+    var regex = expand ? /\bexpand\b/ : /\bcollapse\b/;
     var replacement = expand ? 'collapse' : 'expand';
     replaceClass(ele, regex, replacement);
 }
@@ -315,7 +320,7 @@ function visitAllSrcLines(visitor) {
 
     var ele;
     var i = 1;
-    while ((ele = document.getElementById("src-" + i)) != undefined){
+    while ((ele = document.getElementById("src-" + i)) != undefined) {
         visitor(ele, i);
         i++;
     }
@@ -333,10 +338,10 @@ function forceToggleSrcRowVis(toggle, start, end, expand) {
     var display = expand ? '' : 'none';
     if (expand) {
         swapExpandImg(toggle);
-        document.getElementById("e"+start).style.display='none';
+        document.getElementById("e" + start).style.display = 'none';
     } else {
         swapCollapseImg(toggle);
-        document.getElementById("e"+start).style.display='';
+        document.getElementById("e" + start).style.display = '';
     }
 
     for (var i = start + 1; i <= end; i++) {
@@ -345,11 +350,11 @@ function forceToggleSrcRowVis(toggle, start, end, expand) {
 }
 
 // Acts as a map: methodStartLine --> hit count
-var methodsToHiLight = new Object();
+var methodsToHiLight = {};
 // srcLine --> hit count
-var linesToHiLight = new Object();
+var linesToHiLight = {};
 // linuNum --> LineTestInfo
-var selectedLinesTestResult = new Object();
+var selectedLinesTestResult = {};
 
 function loadPkgPane(title, fileName) {
     if (parent.packagePane != undefined && fileName != undefined) {
@@ -383,7 +388,7 @@ function onLoad(title) {
 
     var testId = queryArgs["id"];
     var lineNo = queryArgs["line"];
-    
+
     if (testId != undefined) {
         hilightTestOnLoad(testId);
     } else if (lineNo != undefined) {
@@ -404,10 +409,10 @@ function hilightLineOnLoad(lineNo) {
 function flashLine(obj) {
     var originalColor = obj.style.backgroundColor;
     var fade = {
-        full : function() {
+        full: function () {
             obj.style.backgroundColor = '#ffe7c6';
         },
-        clear : function() {
+        clear: function () {
             obj.style.backgroundColor = originalColor;
         }
     };
@@ -428,7 +433,7 @@ function hilightTestOnLoad(testId) {
 function showTestsForLine(ele, startLine, overTitle) {
     var parentTestDiv = createTableForPopup(startLine);
     var inlineDialog = AJS.InlineDialog(ele, "testsForLineDialog",
-        function(content, trigger, showPopup) {
+        function (content, trigger, showPopup) {
             content.html(
                 '<h2 style="margin-bottom:20px;">' + overTitle +
                 '<input id="test-filter-inline-' + startLine + '" class="test-filter text" type="text" name="test-filter" ' +
@@ -443,7 +448,7 @@ function showTestsForLine(ele, startLine, overTitle) {
             width: 700,
             cacheContent: false,
             hideDelay: 60000,
-            hideCallback: function() {
+            hideCallback: function () {
                 $("#inline-dialog-testsForLineDialog").remove();
             }
         }
@@ -459,22 +464,22 @@ function showFailingTestsPopup(element, line, traces) {
         var tid = traces[i][0];
         var fid = traces[i][1];
 
-        var traceDiv = document.getElementById('trace-'+tid);
+        var traceDiv = document.getElementById('trace-' + tid);
         if (traceDiv == undefined) {
             continue;
         }
         var traceControl = document.getElementById('traceControl').cloneNode(true);
         traceControl.className = 'expand';
-        traceControl.id = "traceControl"+tid+'-'+i;
+        traceControl.id = "traceControl" + tid + '-' + i;
 
-        var traceCol = document.getElementById('traceCol'+tid).cloneNode(true);
-        traceCol.id = 'traceCol'+tid+'-'+i;
-        var traceEx = document.getElementById('traceEx'+tid).cloneNode(true);
-        traceEx.id = 'traceEx'+tid+'-'+i;
+        var traceCol = document.getElementById('traceCol' + tid).cloneNode(true);
+        traceCol.id = 'traceCol' + tid + '-' + i;
+        var traceEx = document.getElementById('traceEx' + tid).cloneNode(true);
+        traceEx.id = 'traceEx' + tid + '-' + i;
 
         var traceLines = traceEx.getElementsByTagName('div');
 
-        traceLines[fid].className='errorTraceStrong';
+        traceLines[fid].className = 'errorTraceStrong';
 
         holderDiv.appendChild(traceControl);
         holderDiv.appendChild(traceCol);
@@ -482,15 +487,15 @@ function showFailingTestsPopup(element, line, traces) {
         holderDiv.appendChild(document.createElement('br'));
 
         traceControl.setAttribute(
-                "onclick",
-                "toggleNodeExpansion('"+traceControl.id+"', '"+traceCol.id+"', '"+traceEx.id+"');");
+            "onclick",
+            "toggleNodeExpansion('" + traceControl.id + "', '" + traceCol.id + "', '" + traceEx.id + "');");
     }
 
     var inlineDialog = AJS.InlineDialog(element, "testsForLineDialog",
-        function(content, trigger, showPopup) {
+        function (content, trigger, showPopup) {
             content.html(
-                    '<h2>Test failures at line ' + line + '</h2>')
-                    .append(holderDiv);
+                '<h2>Test failures at line ' + line + '</h2>')
+                .append(holderDiv);
             showPopup();
             return false;
         },
@@ -542,7 +547,7 @@ function createTableForPopup(startLine) {
         // initialize tooltips on all elements with 'title' attribute in the cloned row; we're searching for the
         // 'original-title' (instead of 'title'), because the tooltip was already initialized on the original row
         clonedLinksRow.find("[original-title]").tooltip({
-            aria:true,
+            aria: true,
             html: true,
             hideOnClick: true,
             hoverable: false,
@@ -565,9 +570,9 @@ function createTableForPopup(startLine) {
     if (missingTestCount > 0) {
         var textDiv = $(document.createElement('div'));
         textDiv.html('<small>' + missingTestCount + ' ' +
-                pluralise(missingTestCount, 'test is', 'tests are') +
-                ' not displayed. This report was configured to display the top ' +
-                testsPerFile + ' contributing tests for this file.</small>');
+            pluralise(missingTestCount, 'test is', 'tests are') +
+            ' not displayed. This report was configured to display the top ' +
+            testsPerFile + ' contributing tests for this file.</small>');
         holderDiv.append(textDiv);
     }
 
@@ -593,13 +598,13 @@ function hiLightByTest(testId, checked) {
 
     addHitsToMap(methods, methodsToHiLight, checked, passed);
     // now visit all methods on the page, and highlight or unhighlight as needed
-    var visitor = function(method) {
+    var visitor = function (method) {
         var summTd = document.getElementById('summary-' + method.sl + '-' + method.sc);
 
         if (methodsToHiLight[method.sl] > 0) {
             addCoverageClass(summTd, selectedLinesTestResult[method.sl]);
         } else {
-            removeCoverageClass(summTd, selectedLinesTestResult[method.sl]);            
+            removeCoverageClass(summTd, selectedLinesTestResult[method.sl]);
         }
     };
     visitAllMethods(visitor);
@@ -610,26 +615,26 @@ function hiLightByTest(testId, checked) {
     addHitsToMap(statements, linesToHiLight, checked, passed);
 
 
-    var srcLineVisitor = function(srcEle, lineNumber) {
+    var srcLineVisitor = function (srcEle, lineNumber) {
 
         if (linesToHiLight[lineNumber] > 0 || methodsToHiLight[lineNumber] > 0) {
             addCoverageClass(srcEle, selectedLinesTestResult[lineNumber]);
         } else {
             removeCoverageClass(srcEle, selectedLinesTestResult[lineNumber]);
         }
-        
+
     };
     visitAllSrcLines(srcLineVisitor);
 }
 
 // collects test info for selected tests per line
-var LineTestInfo = function(lineNum) {
+var LineTestInfo = function (lineNum) {
     this.lineNum = lineNum;
     this.passes = 0;
     this.fails = 0;
 };
 
-LineTestInfo.prototype.addResult = function(passed) {
+LineTestInfo.prototype.addResult = function (passed) {
     if (passed) {
         this.passes++;
     } else {
@@ -637,7 +642,7 @@ LineTestInfo.prototype.addResult = function(passed) {
     }
 };
 
-LineTestInfo.prototype.removeResult = function(passed) {
+LineTestInfo.prototype.removeResult = function (passed) {
     if (passed) {
         this.passes--;
     } else {
@@ -645,16 +650,16 @@ LineTestInfo.prototype.removeResult = function(passed) {
     }
 };
 
-LineTestInfo.prototype.isUniqueHit = function() {
+LineTestInfo.prototype.isUniqueHit = function () {
     return clover.srcFileLines[this.lineNum].length == 1;
 };
 
 // Returns true if all selected tests for the line failed
-LineTestInfo.prototype.showFailed = function() {
+LineTestInfo.prototype.showFailed = function () {
     return this.passes <= 0 && this.fails > 0;
 };
 
-LineTestInfo.prototype.calcCoverageClass = function() {
+LineTestInfo.prototype.calcCoverageClass = function () {
     if (this.showFailed()) {
         return "coveredByFailedTest";
     }
@@ -670,7 +675,7 @@ LineTestInfo.prototype.calcCoverageClass = function() {
 
 function addHitsToMap(hitElements, elementsToHiLight, checked, passed) {
 
-    for(var i = 0; i < hitElements.length; i++) {
+    for (var i = 0; i < hitElements.length; i++) {
         var ele = hitElements[i];
         var currCount = elementsToHiLight[ele.sl];
         currCount = currCount == undefined ? 0 : currCount;
@@ -760,14 +765,15 @@ var srcLineHilight = /\bsrcLineHilight\b/; // matches already hilighted src line
 function addCoverageClass(ele, testInfo) {
     if (testInfo != null && !ele.className.match(srcLineHilight)) { // if line already hilighted, nothing to do
         var coverageClass = testInfo.calcCoverageClass();
-        var matchArray = coveredByRegExp.exec(ele.className); 
-        if(matchArray && matchArray.length > 0) { // replace the existing coveredBy class
+        var matchArray = coveredByRegExp.exec(ele.className);
+        if (matchArray && matchArray.length > 0) { // replace the existing coveredBy class
             replaceClass(ele, coveredByRegExp, coverageClass);
         } else { // add a coveredBy class to the existing className
-            ele.className = ele.className + ' ' + testInfo.calcCoverageClass();            
-        }        
+            ele.className = ele.className + ' ' + testInfo.calcCoverageClass();
+        }
     }
 }
+
 // removes the coverageBy class from the existing element
 function removeCoverageClass(ele, testInfo) {
     if (testInfo != null && ele.className.match(coveredByRegExp)) { // do nothing if no coveredBy class
@@ -778,6 +784,7 @@ function removeCoverageClass(ele, testInfo) {
 function replaceClass(ele, regex, newClass) {
     ele.className = ele.className.replace(regex, newClass);
 }
+
 function replaceImg(ele, regex, newClass) {
     ele.src = ele.src.replace(regex, newClass);
 }
@@ -790,13 +797,13 @@ function createTreeMap(json) {
         'setColor': function (json) {
             var x = (json.data.$color - 0);
             if (x > 80) {
-                var alpha = 0.75 - 0.50 * (x - 80.0)/20.0;
+                var alpha = 0.75 - 0.50 * (x - 80.0) / 20.0;
                 return "rgba(20,137,44," + alpha + ")"; // ADG green 75%-25%
             } else if (x > 60) {
-                var alpha = 0.75 - 0.50 * (x - 60.0)/20.0;
+                var alpha = 0.75 - 0.50 * (x - 60.0) / 20.0;
                 return "rgba(246,195,66," + alpha + ")"; // ADG yellow 75%-25%
             } else {
-                var alpha = 0.75 - 0.50 * x/60.0;
+                var alpha = 0.75 - 0.50 * x / 60.0;
                 return "rgba(208,68,55," + alpha + ")"; // ADG red 75%-25%
             }
         }
@@ -841,20 +848,21 @@ function createTreeMap(json) {
             //implement the onShow method to
             //add content to the tooltip when a node
             //is hovered
-            onShow: function(tip, node, isLeaf, domElement) {
+            onShow: function (tip, node, isLeaf, domElement) {
                 tip.innerHTML = node.data.title;
 
-            }}
+            }
+        }
         ,
         // This method is called on each newly created node.
-        onCreateElement: function(content, node, isLeaf, elem1, elem2) {
+        onCreateElement: function (content, node, isLeaf, elem1, elem2) {
             if (isLeaf) {
                 elem1.innerHTML = "";
             }
         },
 
         // Called for each click to a node.
-        request: function(nodeId, level, onComplete) {
+        request: function (nodeId, level, onComplete) {
             var tree = eval(json);
             var subtree = TreeUtil.getSubtree(tree, nodeId);
             TreeUtil.prune(subtree, 1);
@@ -881,9 +889,10 @@ function processTreeMapDashJson(json) {
 
     // customize treemap for the dashboard.
     tm.config.titleHeight = 0;
-    tm.config.onCreateElement = function(content, node, isLeaf, elem1, elem2) { };
+    tm.config.onCreateElement = function (content, node, isLeaf, elem1, elem2) {
+    };
     // Called for each click to a node.
-    tm.config.request = function(nodeId, level, onComplete) {
+    tm.config.request = function (nodeId, level, onComplete) {
         window.location = "treemap.html";
     };
 

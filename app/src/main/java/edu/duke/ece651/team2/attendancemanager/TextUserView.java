@@ -32,6 +32,15 @@ public class TextUserView {
     }
 
     /**
+     * Prints an error message.
+     *
+     * @param error The error message to print.
+     */
+    public void printError(String error) {
+        out.println(error);
+    }
+
+    /**
      * Prints the list of students in a course.
      *
      * @param course The course to print the students for.
