@@ -1,6 +1,5 @@
 package edu.duke.ece651.team2.attendancemanager;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -246,19 +245,6 @@ public class Course {
     /**
      * This function will end the lecture
      *
-     * @param lecture        is the lecture to be ended
-     * @param lateStudentsID is the list of students who are late
-     * @param status         is the list of students' status at the end of the class
-     * @throws IOException if anything happens while recording the students' status at the end of the class
-     */
-    public void endLecture(Lecture lecture, ArrayList<String> lateStudentsID, ArrayList<AttendanceStatus> status) throws IOException {
-        lecture.endLecture(lateStudentsID, status);
-        lectures.add(lecture);
-    }
-
-    /**
-     * This function will end the lecture
-     *
      * @param lecture is the lecture to be ended
      */
     public void endLecture(Lecture lecture) {
@@ -272,16 +258,5 @@ public class Course {
      */
     public List<AttendanceRecord> getLectureRecords(int idx) {
         return lectures.get(idx).getAttendanceSession().getRecords();
-    }
-
-    /**
-     * Generates all attendance records for all lectures in this course.
-     */
-    public void generateWholeReportTillNow() {
-        List<AttendanceRecord> all = new ArrayList<>();
-        for (int i = 0; i < lectureTimes; i++) {
-            all.addAll(lectures.get(i).getAttendanceSession().getRecords());
-        }
-        //may notify!!!!
     }
 }

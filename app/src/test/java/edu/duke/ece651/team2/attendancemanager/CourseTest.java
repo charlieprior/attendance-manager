@@ -1,28 +1,26 @@
 package edu.duke.ece651.team2.attendancemanager;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class CourseTest {
-    
+
     String courseID1 = "0";
     String courseName1 = "ECE 651";
     University university = new University("Duke", true);
-    Professor professor1 = new Professor("Prof A", "ABCDEF", "abc@duke.edu",university);
+    Professor professor1 = new Professor("Prof A", "ABCDEF", "abc@duke.edu", university);
     Student s1 = new Student("Xinyi Li", "1282080", "xl435@duke.edu", "Louise Li");
-    Student s2 = new Student("Some one","98765","so@duke.edu","Someone");
-    Student s3 = new Student("Some one Else","34567","soe@duke.edu","Someoneelse");
+    Student s2 = new Student("Some one", "98765", "so@duke.edu", "Someone");
+    Student s3 = new Student("Some one Else", "34567", "soe@duke.edu", "Someoneelse");
     ArrayList<Student> slst1 = new ArrayList<>();
     String courseID2 = "3";
     String courseName2 = "CS 123";
-    Professor professor2 = new Professor("Prof CS123", "HIJKL", "cs123@duke.edu",university);
+    Professor professor2 = new Professor("Prof CS123", "HIJKL", "cs123@duke.edu", university);
     int lectureTimes2 = 2;
 
   /*BufferedReader provideInput(String data) {
@@ -31,22 +29,22 @@ public class CourseTest {
     }*/
 
     @Test
-    public void testConstructors(){
+    public void testConstructors() {
         slst1.add(s1);
-        Course course1 = new Course(courseID1, courseName1, professor1, slst1,null);
+        Course course1 = new Course(courseID1, courseName1, professor1, slst1, null);
         assertEquals(course1.getCourseID(), "0");
         assertEquals(course1.getName(), "ECE 651");
         assertEquals(course1.getLectureTimes(), 0);
         assertEquals(course1.getProfessor(), "Prof A");
         assertEquals(course1.numberOfStudents(), 1);
         slst1.add(s2);
-        Course course2 = new Course(courseID2, courseName2, professor2, lectureTimes2,slst1,null);
+        Course course2 = new Course(courseID2, courseName2, professor2, lectureTimes2, slst1, null);
         assertEquals(course2.getCourseID(), "3");
         assertEquals(course2.getName(), "CS 123");
         assertEquals(course2.getLectureTimes(), 2);
         assertEquals(course2.getProfessor(), "Prof CS123");
         assertEquals(course2.numberOfStudents(), 2);
-        Course course3 = new Course(courseID2, courseName2, professor2,slst1);
+        Course course3 = new Course(courseID2, courseName2, professor2, slst1);
         assertEquals(course3.getCourseID(), "3");
         assertEquals(course3.getName(), "CS 123");
         assertEquals(course3.getLectureTimes(), 0);
@@ -55,7 +53,7 @@ public class CourseTest {
     }
 
     @Test
-    public void testaddStudents(){
+    public void testaddStudents() {
         ArrayList<Student> slst2 = new ArrayList<>();
         Course course1 = new Course(courseID1, courseName1, professor1, slst1);
         assertEquals(course1.numberOfStudents(), 0);
@@ -73,13 +71,13 @@ public class CourseTest {
     }
 
     @Test
-    public void testStartLecture() throws IOException{
+    public void testStartLecture() throws IOException {
         slst1.add(s1);
         slst1.add(s2);
         slst1.add(s3);
 
         //Course course1 = new Course(courseID2, courseName2, professor2, lectureTimes2,slst1,null,provideInput("y\nN\ny\n"));
-        Course course1 = new Course(courseID2, courseName2, professor2,slst1);
+        Course course1 = new Course(courseID2, courseName2, professor2, slst1);
         ArrayList<AttendanceStatus> status = new ArrayList<>();
         status.add(AttendanceStatus.ABSENT);
         status.add(AttendanceStatus.TARDY);
@@ -90,91 +88,10 @@ public class CourseTest {
         assertEquals(newLec.getCourseName(), "CS 123");
         assertEquals(newLec.getStudents(), slst1);
         Lecture newLec2 = course1.startLecture(status);
-        assertEquals("3_2",newLec2.getLectureID());
+        assertEquals("3_2", newLec2.getLectureID());
         assertEquals(course1.getLectureTimes(), 2);
         assertEquals(newLec2.getCourseName(), "CS 123");
         assertEquals(newLec2.getStudents(), slst1);
         //course1.getLatestLecture();
     }
-
-    @Test
-    public void testEndLecture() throws IOException{
-        slst1.add(s1);
-        slst1.add(s2);
-        slst1.add(s3);
-
-        Course course1 = new Course(courseID2, courseName2, professor2,slst1);
-        ArrayList<AttendanceStatus> status = new ArrayList<>();
-        status.add(AttendanceStatus.ABSENT);
-        status.add(AttendanceStatus.ABSENT);
-        status.add(AttendanceStatus.PRESENT);
-        Lecture newLec = course1.startLecture(status);
-        ArrayList<String> lateStudentsID = new ArrayList<>();
-        lateStudentsID.add("1282080");
-        lateStudentsID.add("98765");
-        ArrayList<AttendanceStatus> lateStatus = new ArrayList<>();
-        lateStatus.add(AttendanceStatus.ABSENT);
-        lateStatus.add(AttendanceStatus.TARDY);
-        course1.endLecture(newLec,lateStudentsID,lateStatus);
-        assertEquals(course1.getLectureTimes(), course1.getLectureSize());
-        assertEquals(course1.getLectureTimes(),1);
-        ArrayList<AttendanceStatus> status2 = new ArrayList<>();
-        status2.add(AttendanceStatus.PRESENT);
-        status2.add(AttendanceStatus.ABSENT);
-        status2.add(AttendanceStatus.ABSENT);
-        Lecture newLec2 = course1.startLecture(status2);
-        ArrayList<String> lateStudentsID2 = new ArrayList<>();
-        lateStudentsID2.add("98765");
-        lateStudentsID2.add("34567");
-        ArrayList<AttendanceStatus> lateStatus2 = new ArrayList<>();
-        lateStatus2.add(AttendanceStatus.TARDY);
-        lateStatus2.add(AttendanceStatus.ABSENT);
-        course1.endLecture(newLec2,lateStudentsID2,lateStatus2);
-        assertEquals(course1.getLectureTimes(), course1.getLectureSize());
-        assertEquals(course1.getLectureTimes(),2);
-        course1.getLectureRecords(1);
-        course1.generateWholeReportTillNow();
-    }
-
-  @Test
-  public void testEndLecture2() throws IOException{
-    slst1.add(s1);
-    slst1.add(s2);
-    slst1.add(s3);
-
-    Course course1 = new Course(courseID2, courseName2, professor2,slst1);
-    ArrayList<AttendanceStatus> status = new ArrayList<>();
-    status.add(AttendanceStatus.ABSENT);
-    status.add(AttendanceStatus.ABSENT);
-    status.add(AttendanceStatus.PRESENT);
-    Lecture newLec = course1.startLecture(status);
-    ArrayList<String> lateStudentsID = new ArrayList<>();
-    lateStudentsID.add("1282080");
-    lateStudentsID.add("98765");
-    ArrayList<AttendanceStatus> lateStatus = new ArrayList<>();
-    lateStatus.add(AttendanceStatus.ABSENT);
-    lateStatus.add(AttendanceStatus.TARDY);
-    course1.endLecture(newLec,lateStudentsID,lateStatus);
-    assertEquals(course1.getLectureTimes(), course1.getLectureSize());
-    assertEquals(course1.getLectureTimes(),1);
-    ArrayList<AttendanceStatus> status2 = new ArrayList<>();
-    status2.add(AttendanceStatus.PRESENT);
-    status2.add(AttendanceStatus.ABSENT);
-    status2.add(AttendanceStatus.ABSENT);
-    Lecture newLec2 = course1.startLecture(status2);
-    ArrayList<String> lateStudentsID2 = new ArrayList<>();
-    lateStudentsID2.add("98765");
-    lateStudentsID2.add("34567");
-    ArrayList<AttendanceStatus> lateStatus2 = new ArrayList<>();
-    lateStatus2.add(AttendanceStatus.TARDY);
-    lateStatus2.add(AttendanceStatus.ABSENT);
-    course1.endLecture(newLec2);
-    assertEquals(course1.getLectureTimes(), course1.getLectureSize());
-    assertEquals(course1.getLectureTimes(),2);
-    course1.getLectureRecords(1);
-    course1.generateWholeReportTillNow();
-    course1.getLatestLecture();
-    course1.getStudents();
-  }
-  
 }
