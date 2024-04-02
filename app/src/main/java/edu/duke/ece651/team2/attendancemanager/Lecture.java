@@ -163,26 +163,6 @@ public class Lecture {
 
     /**
      * Ends the lecture and updates the attendance records.
-     *
-     * @param lateStudentsID The list of student IDs who are late.
-     * @param status         The list of attendance statuses for the students.
-     * @throws IOException We will not handle this exception.
-     */
-    public void endLecture(ArrayList<String> lateStudentsID, ArrayList<AttendanceStatus> status) throws IOException {
-        for (int i = 0; i < lateStudentsID.size(); i++) {
-            if (status.get(i) == AttendanceStatus.TARDY) {
-                attendanceSession.updateAttendanceRecord(lateStudentsID.get(i), AttendanceStatus.TARDY);
-            }
-        }
-        PersistenceManager export = new PersistenceManager();
-        //export.writeRecordsToCSV(courseName+" "+lectureID,attendanceSession);
-        export.writeRecordsToCSV(courseName + " " + lectureID, attendanceSession);
-        export.writeRecordsToJSON(courseName + " " + lectureID, courseName, lectureID, attendanceSession);
-        attendanceSession.endSession();
-    }
-
-    /**
-     * Ends the lecture and updates the attendance records.
      */
     public void endLecture() {
         PersistenceManager export = new PersistenceManager();
