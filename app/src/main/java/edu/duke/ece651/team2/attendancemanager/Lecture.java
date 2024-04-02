@@ -144,24 +144,6 @@ public class Lecture {
     }
 
     /**
-     * Gets the list of student IDs who are late.
-     *
-     * @return The list of student IDs who are late.
-     */
-    public ArrayList<String> getLateStudentsID() {
-        return attendanceSession.lateStudentsID();
-    }
-
-    /**
-     * Gets the list of student names who are late.
-     *
-     * @return The list of student names who are late.
-     */
-    public ArrayList<String> getLateStudentsName() {
-        return attendanceSession.lateStudentsName();
-    }
-
-    /**
      * Ends the lecture and updates the attendance records.
      */
     public void endLecture() {

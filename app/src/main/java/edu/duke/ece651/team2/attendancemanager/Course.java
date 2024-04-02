@@ -259,15 +259,4 @@ public class Course {
     public List<AttendanceRecord> getLectureRecords(int idx) {
         return lectures.get(idx).getAttendanceSession().getRecords();
     }
-
-    /**
-     * Generates all attendance records for all lectures in this course.
-     */
-    public void generateWholeReportTillNow() {
-        List<AttendanceRecord> all = new ArrayList<>();
-        for (int i = 0; i < lectureTimes; i++) {
-            all.addAll(lectures.get(i).getAttendanceSession().getRecords());
-        }
-        //may notify!!!!
-    }
 }
