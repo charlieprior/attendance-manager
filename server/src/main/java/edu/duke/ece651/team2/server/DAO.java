@@ -1,7 +1,8 @@
-package edu.duke.ece651.team2.attendancemanager;
+package edu.duke.ece651.team2.server;
+
+import edu.duke.ece651.team2.shared.*;
 
 import java.sql.*;
-import java.util.Arrays;
 import java.util.List;
 
 public abstract class DAO<T> {

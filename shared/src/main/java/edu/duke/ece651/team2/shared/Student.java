@@ -52,7 +52,7 @@ public class Student {
      *
      * @return The legal name of the student.
      */
-    String getLegalName() {
+    public String getLegalName() {
         return legalName;
     }
 
@@ -70,7 +70,7 @@ public class Student {
      *
      * @return The student ID of the student.
      */
-    String getStudentID() {
+    public String getStudentID() {
         return studentID;
     }
 
@@ -79,7 +79,7 @@ public class Student {
      *
      * @param studentID The student ID of the student.
      */
-    void setStudentID(String studentID) {
+    public void setStudentID(String studentID) {
         this.studentID = studentID;
     }
 
@@ -88,7 +88,7 @@ public class Student {
      *
      * @return The email of the student.
      */
-    String getEmail() {
+    public String getEmail() {
         return email;
     }
 
@@ -106,7 +106,7 @@ public class Student {
      *
      * @return The display name of the student.
      */
-    String getDisplayName() {
+    public String getDisplayName() {
         return displayName;
     }
 

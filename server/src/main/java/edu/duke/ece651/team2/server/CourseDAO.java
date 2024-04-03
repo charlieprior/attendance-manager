@@ -1,4 +1,6 @@
-package edu.duke.ece651.team2.attendancemanager;
+package edu.duke.ece651.team2.server;
+
+import edu.duke.ece651.team2.shared.*;
 
 import java.util.Collections;
 import java.util.List;
