@@ -8,9 +8,6 @@ courseManagement/build
 server/build
 shared/build
 
-shared/export
-
-
 .project
 .settings
 # Ignore backup and lock files
