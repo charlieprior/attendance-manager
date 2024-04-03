@@ -64,3 +64,4 @@ RUN chown juser coverage-out
 
 # compile the code
 RUN ./gradlew  assemble
+CMD ["gradlew", "resolveDependencies"]
