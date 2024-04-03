@@ -124,6 +124,7 @@ java {
 tasks.register("resolveDependencies") {
     dependsOn project('server').getTasksByName('resolveDependencies',false)
     dependsOn project('client').getTasksByName('resolveDependencies',false)
+    dependsOn project('shared').getTasksByName('resolveDependencies',false)
     dependsOn project('admin').getTasksByName('resolveDependencies',false)
     dependsOn project('courseManagement').getTasksByName('resolveDependencies',false)
     group = 'Build'
