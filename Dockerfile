@@ -41,7 +41,7 @@ RUN chmod u+x scripts/coverage_summary.sh
 
 # we are going to do a bit of gradle first, just to speed
 # up future builds
-COPY --chown=juser app/build.gradle gradlew settings.gradle  ./
+COPY --chown=juser build.gradle gradlew settings.gradle  ./
 COPY --chown=juser gradle/wrapper gradle/wrapper
 
 # this will fetch gradle 7.3, and the packages we depend on
@@ -51,12 +51,12 @@ RUN ./gradlew resolveDependencies
 # Now we copy all our source files in.  Note that
 # if we change src, etc, but not our gradle setup,
 # Docker can resume from this point
-#COPY --chown=juser ./ ./
-COPY --chown=juser ./scripts ./scripts
+COPY --chown=juser ./ ./
+# COPY --chown=juser ./scripts ./scripts
 #COPY --chown=juser ./app ./app
-COPY --chown=juser ./app/src ./src
-COPY --chown=juser ./app/import ./import
-COPY --chown=juser ./app/export ./export
+# COPY --chown=juser ./shared/src ./src
+# COPY --chown=juser ./shared/import ./import
+# COPY --chown=juser ./shared/export ./export
 #COPY --chown=juser ./app/build ./build
 
 RUN mkdir -p coverage-out

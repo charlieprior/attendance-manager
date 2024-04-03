@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'AttendanceManager'
-include('app')
+include('client', 'server', 'shared','admin','courseManagement')
