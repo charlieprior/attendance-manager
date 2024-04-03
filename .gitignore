@@ -8,6 +8,8 @@ courseManagement/build
 server/build
 shared/build
 
+shared/export
+
 
 .project
 .settings

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="edu.duke.ece651.team2.shared.AppTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-04-03T22:27:37" hostname="vcm-37925.vm.duke.edu" time="0.029">
-  <properties/>
-  <testcase name="appHasAGreeting()" classname="edu.duke.ece651.team2.shared.AppTest" time="0.029"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
