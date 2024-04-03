@@ -110,6 +110,11 @@ tasks.register("run-admin") {
     group = 'Run Client/Server'
     description = 'Run the Admin'
 }
+tasks.register("run-shared") {
+    dependsOn project('shared').getTasksByName('run', false)
+    group = 'Run Client/Server'
+    description = 'Run the shared'
+}
 tasks.register("run-courseManagement") {
     dependsOn project('courseManagement').getTasksByName('run', false)
     group = 'Run Client/Server'
