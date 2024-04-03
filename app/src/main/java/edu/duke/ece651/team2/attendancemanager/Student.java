@@ -34,16 +34,16 @@ public class Student {
     /**
      * Constructs a new Student object with the specified legal name, student ID, email, and display name.
      *
-     * @param ln The legal name of the student.
-     * @param si The student ID of the student.
-     * @param e  The email of the student.
-     * @param dn The display name of the student.
+     * @param legalName   The legal name of the student.
+     * @param id          The student ID of the student.
+     * @param email       The email of the student.
+     * @param displayName The display name of the student.
      */
-    public Student(String ln, String si, String e, String dn) {
-        this.legalName = ln;
-        this.studentID = si;
-        this.email = e;
-        this.displayName = dn;
+    public Student(String legalName, String id, String email, String displayName) {
+        this.legalName = legalName;
+        this.studentID = id;
+        this.email = email;
+        this.displayName = displayName;
     }
 
     /**

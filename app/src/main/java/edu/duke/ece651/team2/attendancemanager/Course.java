@@ -10,10 +10,6 @@ import java.util.List;
  */
 public class Course {
     /**
-     * The ID of the Course.
-     */
-    private final String courseID;
-    /**
      * The name of the Course.
      */
     private final String courseName;
@@ -30,10 +26,13 @@ public class Course {
      */
     private final ArrayList<Lecture> lectures;
     /**
+     * The ID of the Course.
+     */
+    private String courseID;
+    /**
      * The number of times the Course has been lectured.
      */
     private int lectureTimes;
-
     /**
      * This constructor will create the Course object.
      *
@@ -100,6 +99,10 @@ public class Course {
      */
     public String getCourseID() {
         return courseID;
+    }
+
+    public void setCourseID(String courseID) {
+        this.courseID = courseID;
     }
 
     /**
