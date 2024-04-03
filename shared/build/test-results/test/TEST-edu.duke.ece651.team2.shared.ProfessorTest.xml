@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="edu.duke.ece651.team2.shared.ProfessorTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2024-04-03T02:33:09" hostname="vcm-37925.vm.duke.edu" time="0.005">
+<testsuite name="edu.duke.ece651.team2.shared.ProfessorTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2024-04-03T16:19:26" hostname="vcm-37925.vm.duke.edu" time="0.009">
   <properties/>
-  <testcase name="testGetEmail()" classname="edu.duke.ece651.team2.shared.ProfessorTest" time="0.001"/>
-  <testcase name="testGetProfessorID()" classname="edu.duke.ece651.team2.shared.ProfessorTest" time="0.001"/>
+  <testcase name="testGetEmail()" classname="edu.duke.ece651.team2.shared.ProfessorTest" time="0.002"/>
+  <testcase name="testGetProfessorID()" classname="edu.duke.ece651.team2.shared.ProfessorTest" time="0.004"/>
   <testcase name="testGetName()" classname="edu.duke.ece651.team2.shared.ProfessorTest" time="0.001"/>
   <testcase name="testCourses()" classname="edu.duke.ece651.team2.shared.ProfessorTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>

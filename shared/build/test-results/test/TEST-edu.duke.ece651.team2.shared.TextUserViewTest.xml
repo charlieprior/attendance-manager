@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="edu.duke.ece651.team2.shared.TextUserViewTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2024-04-03T02:33:09" hostname="vcm-37925.vm.duke.edu" time="0.011">
+<testsuite name="edu.duke.ece651.team2.shared.TextUserViewTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2024-04-03T16:19:26" hostname="vcm-37925.vm.duke.edu" time="0.011">
   <properties/>
-  <testcase name="testPrintCourse()" classname="edu.duke.ece651.team2.shared.TextUserViewTest" time="0.004"/>
+  <testcase name="testPrintCourse()" classname="edu.duke.ece651.team2.shared.TextUserViewTest" time="0.007"/>
   <testcase name="testPrintStudentStatuses()" classname="edu.duke.ece651.team2.shared.TextUserViewTest" time="0.001"/>
-  <testcase name="testPrintLectures()" classname="edu.duke.ece651.team2.shared.TextUserViewTest" time="0.003"/>
+  <testcase name="testPrintLectures()" classname="edu.duke.ece651.team2.shared.TextUserViewTest" time="0.001"/>
   <testcase name="testPrintError()" classname="edu.duke.ece651.team2.shared.TextUserViewTest" time="0.001"/>
   <testcase name="testPrintStudents()" classname="edu.duke.ece651.team2.shared.TextUserViewTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
