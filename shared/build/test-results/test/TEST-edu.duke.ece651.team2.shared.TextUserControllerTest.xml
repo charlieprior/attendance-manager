@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="edu.duke.ece651.team2.shared.TextUserControllerTest" tests="25" skipped="0" failures="0" errors="0" timestamp="2024-04-03T16:19:26" hostname="vcm-37925.vm.duke.edu" time="0.068">
+<testsuite name="edu.duke.ece651.team2.shared.TextUserControllerTest" tests="25" skipped="0" failures="0" errors="0" timestamp="2024-04-03T22:27:37" hostname="vcm-37925.vm.duke.edu" time="0.053">
   <properties/>
   <testcase name="testReadNewStudents()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.002"/>
-  <testcase name="testReadStudentStatus()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.002"/>
+  <testcase name="testReadStudentStatus()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
   <testcase name="testUpdateRecordForStudent()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
   <testcase name="testReadActionInvalidThenValidInput()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
   <testcase name="testLogIn()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.002"/>
   <testcase name="testReadNewCourse()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
-  <testcase name="testReadUniversityNo()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.011"/>
+  <testcase name="testReadUniversityNo()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
   <testcase name="testLogInFails()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
-  <testcase name="testReadCSVFiles()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
+  <testcase name="testReadCSVFiles()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.002"/>
   <testcase name="testReadHeaderExists()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
   <testcase name="testKeepAddingStudent()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
-  <testcase name="testPrevious()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
+  <testcase name="testPrevious()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.002"/>
   <testcase name="testReadActionValidInput()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
-  <testcase name="testremoveStudentsFromCourse()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.01"/>
+  <testcase name="testremoveStudentsFromCourse()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
   <testcase name="testChooseCourse()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
-  <testcase name="testReadUniversity()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.004"/>
+  <testcase name="testReadUniversity()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.003"/>
   <testcase name="testLoadStudents()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
   <testcase name="testExtractColumns()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
-  <testcase name="testdisplayAttendanceFromCourse()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
-  <testcase name="testGetStudentsFromCSV()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
-  <testcase name="testGetNumberOfColumns()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.011"/>
+  <testcase name="testdisplayAttendanceFromCourse()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.008"/>
+  <testcase name="testGetStudentsFromCSV()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.002"/>
+  <testcase name="testGetNumberOfColumns()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
   <testcase name="testchangeStudentDisplayName()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
-  <testcase name="testReadCSVFilesNoHeader()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
+  <testcase name="testReadCSVFilesNoHeader()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.002"/>
   <testcase name="testReadNewProfessor()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
   <testcase name="testReadColumnNumber()" classname="edu.duke.ece651.team2.shared.TextUserControllerTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="edu.duke.ece651.team2.shared.PersistenceManagerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2024-04-03T16:19:26" hostname="vcm-37925.vm.duke.edu" time="0.006">
+<testsuite name="edu.duke.ece651.team2.shared.PersistenceManagerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2024-04-03T22:27:37" hostname="vcm-37925.vm.duke.edu" time="0.011">
   <properties/>
-  <testcase name="testGenerateWholeReport()" classname="edu.duke.ece651.team2.shared.PersistenceManagerTest" time="0.002"/>
-  <testcase name="testWriteRecordsToJSON()" classname="edu.duke.ece651.team2.shared.PersistenceManagerTest" time="0.002"/>
-  <testcase name="testWriteRecordsToCSV()" classname="edu.duke.ece651.team2.shared.PersistenceManagerTest" time="0.001"/>
+  <testcase name="testGenerateWholeReport()" classname="edu.duke.ece651.team2.shared.PersistenceManagerTest" time="0.003"/>
+  <testcase name="testWriteRecordsToJSON()" classname="edu.duke.ece651.team2.shared.PersistenceManagerTest" time="0.003"/>
+  <testcase name="testWriteRecordsToCSV()" classname="edu.duke.ece651.team2.shared.PersistenceManagerTest" time="0.003"/>
   <system-out><![CDATA[jdk.internal.loader.ClassLoaders$AppClassLoader@5ffd2b27
 Successfully create and write csv
 jdk.internal.loader.ClassLoaders$AppClassLoader@5ffd2b27

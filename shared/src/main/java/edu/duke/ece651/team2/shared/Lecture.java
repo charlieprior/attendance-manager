@@ -179,7 +179,7 @@ public class Lecture {
         // export.writeRecordsToCSV(courseName+" "+lectureID,attendanceSession);
         export.writeRecordsToCSV(courseName + " " + lectureID, attendanceSession);
         export.writeRecordsToJSON(courseName + " " + lectureID, courseName, lectureID, attendanceSession);
-        attendanceSession.endSession();
+        // attendanceSession.endSession();
     }
 
     /**

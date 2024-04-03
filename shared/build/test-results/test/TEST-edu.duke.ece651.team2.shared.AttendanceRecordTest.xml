@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="edu.duke.ece651.team2.shared.AttendanceRecordTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2024-04-03T16:19:26" hostname="vcm-37925.vm.duke.edu" time="0.017">
+<testsuite name="edu.duke.ece651.team2.shared.AttendanceRecordTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2024-04-03T22:27:37" hostname="vcm-37925.vm.duke.edu" time="0.031">
   <properties/>
-  <testcase name="testSetAttendanceDate()" classname="edu.duke.ece651.team2.shared.AttendanceRecordTest" time="0.005"/>
-  <testcase name="testGetStudentID()" classname="edu.duke.ece651.team2.shared.AttendanceRecordTest" time="0.001"/>
-  <testcase name="testGetAttendanceDate()" classname="edu.duke.ece651.team2.shared.AttendanceRecordTest" time="0.001"/>
+  <testcase name="testSetAttendanceDate()" classname="edu.duke.ece651.team2.shared.AttendanceRecordTest" time="0.011"/>
+  <testcase name="testGetStudentID()" classname="edu.duke.ece651.team2.shared.AttendanceRecordTest" time="0.002"/>
+  <testcase name="testGetAttendanceDate()" classname="edu.duke.ece651.team2.shared.AttendanceRecordTest" time="0.003"/>
   <testcase name="testGetLectureID()" classname="edu.duke.ece651.team2.shared.AttendanceRecordTest" time="0.002"/>
   <testcase name="testSetStudentID()" classname="edu.duke.ece651.team2.shared.AttendanceRecordTest" time="0.001"/>
   <testcase name="testSetStatus()" classname="edu.duke.ece651.team2.shared.AttendanceRecordTest" time="0.001"/>
-  <testcase name="testGetStatus()" classname="edu.duke.ece651.team2.shared.AttendanceRecordTest" time="0.0"/>
+  <testcase name="testGetStatus()" classname="edu.duke.ece651.team2.shared.AttendanceRecordTest" time="0.001"/>
   <testcase name="testSetLectureID()" classname="edu.duke.ece651.team2.shared.AttendanceRecordTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
