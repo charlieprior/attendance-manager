@@ -17,8 +17,9 @@ create table javabase.Instructor
 
 create table javabase.Course
 (
-    id   BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    name varchar(100)    not null,
+    id           BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    name         varchar(100)    not null,
+    universityId bigint unsigned not null,
     primary key (id)
 );
 
@@ -47,10 +48,10 @@ create table javabase.Enrollment
 
 create table javabase.Attendance
 (
-    lectureId bigint unsigned not null,
+    sectionId bigint unsigned not null,
     studentId bigint unsigned not null,
     status    varchar(10)     not null,
-    primary key (lectureId, studentId)
+    primary key (sectionId, studentId)
 );
 
 create table javabase.Passwords
@@ -58,6 +59,14 @@ create table javabase.Passwords
     studentId bigint unsigned not null,
     password  varchar(100)    not null,
     primary key (studentId)
+);
+
+create table javabase.University
+(
+    id         bigint unsigned not null auto_increment,
+    name       varchar(100)    not null,
+    changeName bool            not null,
+    primary key (id)
 );
 
 create table javabase.Notification
