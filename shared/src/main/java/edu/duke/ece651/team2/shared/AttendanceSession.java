@@ -132,12 +132,4 @@ public class AttendanceSession {
         }
         return late;
     }
-
-    /**
-     * Ends the attendance session by clearing all records and call function to
-     * write to CSV.
-     */
-    public void endSession() {
-        records.clear();
-    }
 }
