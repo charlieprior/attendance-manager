@@ -41,7 +41,7 @@ RUN chmod u+x scripts/coverage_summary.sh
 
 # we are going to do a bit of gradle first, just to speed
 # up future builds
-COPY --chown=juser gradle-skeleton/build.gradle gradlew gradle-skeleton/settings.gradle  ./
+COPY --chown=juser build.gradle gradlew settings.gradle  ./
 COPY --chown=juser gradle/wrapper gradle/wrapper
 
 # this will fetch gradle 7.3, and the packages we depend on
@@ -54,9 +54,9 @@ RUN ./gradlew resolveDependencies
 #COPY --chown=juser ./ ./
 COPY --chown=juser ./scripts ./scripts
 #COPY --chown=juser ./app ./app
-COPY --chown=juser ./gradle-skeleton/shared/src ./src
-COPY --chown=juser ./gradle-skeleton/shared/import ./import
-COPY --chown=juser ./gradle-skeleton/shared/export ./export
+COPY --chown=juser ./shared/src ./src
+COPY --chown=juser ./shared/import ./import
+COPY --chown=juser ./shared/export ./export
 #COPY --chown=juser ./app/build ./build
 
 RUN mkdir -p coverage-out
