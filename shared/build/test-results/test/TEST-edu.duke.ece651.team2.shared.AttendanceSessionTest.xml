@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="edu.duke.ece651.team2.shared.AttendanceSessionTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2024-04-03T22:27:37" hostname="vcm-37925.vm.duke.edu" time="0.013">
+  <properties/>
+  <testcase name="testRecordAttendanceNewRecord()" classname="edu.duke.ece651.team2.shared.AttendanceSessionTest" time="0.002"/>
+  <testcase name="testRemoveAttendanceRecord()" classname="edu.duke.ece651.team2.shared.AttendanceSessionTest" time="0.002"/>
+  <testcase name="testRemoveNonexistentAttendanceRecord()" classname="edu.duke.ece651.team2.shared.AttendanceSessionTest" time="0.001"/>
+  <testcase name="testUpdateAttendanceRecord()" classname="edu.duke.ece651.team2.shared.AttendanceSessionTest" time="0.002"/>
+  <testcase name="testUpdateNonexistentAttendanceRecord()" classname="edu.duke.ece651.team2.shared.AttendanceSessionTest" time="0.001"/>
+  <testcase name="testRecordAttendanceDuplicateRecord()" classname="edu.duke.ece651.team2.shared.AttendanceSessionTest" time="0.003"/>
+  <system-out><![CDATA[An attendance record for this student and lecture already exists.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

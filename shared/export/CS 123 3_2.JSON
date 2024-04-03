@@ -1,0 +1,33 @@
+{
+"Course Name": "CS 123",
+"Lecture ID": "3_2",
+"Attendance": {
+"1282080": {
+"Student Name": "Louise Li",
+<<<<<<< HEAD:app/export/CS 123 3_2.JSON
+"Time": "Wed Apr 03 12:51:07 EDT 2024",
+=======
+"Time": "Wed Apr 03 18:27:37 EDT 2024",
+>>>>>>> main:shared/export/CS 123 3_2.JSON
+"Status": "PRESENT"
+},
+"98765": {
+"Student Name": "Someone",
+<<<<<<< HEAD:app/export/CS 123 3_2.JSON
+"Time": "Wed Apr 03 12:51:07 EDT 2024",
+=======
+"Time": "Wed Apr 03 18:27:37 EDT 2024",
+>>>>>>> main:shared/export/CS 123 3_2.JSON
+"Status": "TARDY"
+},
+"34567": {
+"Student Name": "Someoneelse",
+<<<<<<< HEAD:app/export/CS 123 3_2.JSON
+"Time": "Wed Apr 03 12:51:07 EDT 2024",
+=======
+"Time": "Wed Apr 03 18:27:37 EDT 2024",
+>>>>>>> main:shared/export/CS 123 3_2.JSON
+"Status": "ABSENT"
+}
+}
+}
