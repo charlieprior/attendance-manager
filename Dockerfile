@@ -45,7 +45,7 @@ COPY --chown=juser gradle-skeleton/build.gradle gradle-skeleton/gradlew gradle-s
 COPY --chown=juser gradle-skeleton/gradle/wrapper gradle-skeleton/gradle/wrapper
 
 # this will fetch gradle 7.3, and the packages we depend on
-RUN ./gradle-skeleton/gradlew resolveDependencies
+RUN ./gradlew resolveDependencies
 
 
 # Now we copy all our source files in.  Note that
