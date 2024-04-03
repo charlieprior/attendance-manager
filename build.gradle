@@ -39,6 +39,9 @@ subprojects{
     clover{
         compiler{
             additionalArgs = "-g:lines,source,vars"
+            debug = true
+            sourceCompatibility = '1.9'
+            targetCompatibility = '1.9'
         }
     }
     test{

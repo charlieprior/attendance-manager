@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="edu.duke.ece651.team2.shared.CourseTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2024-04-03T02:21:03" hostname="vcm-37925.vm.duke.edu" time="0.023">
+<testsuite name="edu.duke.ece651.team2.shared.CourseTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2024-04-03T02:33:09" hostname="vcm-37925.vm.duke.edu" time="0.025">
   <properties/>
-  <testcase name="testaddStudents()" classname="edu.duke.ece651.team2.shared.CourseTest" time="0.002"/>
+  <testcase name="testaddStudents()" classname="edu.duke.ece651.team2.shared.CourseTest" time="0.001"/>
   <testcase name="testConstructors()" classname="edu.duke.ece651.team2.shared.CourseTest" time="0.001"/>
-  <testcase name="testEndLecture2()" classname="edu.duke.ece651.team2.shared.CourseTest" time="0.012"/>
+  <testcase name="testEndLecture2()" classname="edu.duke.ece651.team2.shared.CourseTest" time="0.017"/>
   <testcase name="testEndLecture()" classname="edu.duke.ece651.team2.shared.CourseTest" time="0.004"/>
   <testcase name="testStartLecture()" classname="edu.duke.ece651.team2.shared.CourseTest" time="0.001"/>
   <system-out><![CDATA[Successfully create and write csv

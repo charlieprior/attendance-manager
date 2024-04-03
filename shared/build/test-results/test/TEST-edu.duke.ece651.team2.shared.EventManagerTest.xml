@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="edu.duke.ece651.team2.shared.EventManagerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2024-04-03T02:21:03" hostname="vcm-37925.vm.duke.edu" time="0.005">
+<testsuite name="edu.duke.ece651.team2.shared.EventManagerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2024-04-03T02:33:09" hostname="vcm-37925.vm.duke.edu" time="0.005">
   <properties/>
-  <testcase name="testUnsubscribe()" classname="edu.duke.ece651.team2.shared.EventManagerTest" time="0.001"/>
+  <testcase name="testUnsubscribe()" classname="edu.duke.ece651.team2.shared.EventManagerTest" time="0.002"/>
   <testcase name="testNotifyAttendanceChanged()" classname="edu.duke.ece651.team2.shared.EventManagerTest" time="0.001"/>
-  <testcase name="testSubscribe()" classname="edu.duke.ece651.team2.shared.EventManagerTest" time="0.002"/>
+  <testcase name="testSubscribe()" classname="edu.duke.ece651.team2.shared.EventManagerTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
