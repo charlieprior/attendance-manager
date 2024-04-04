@@ -35,16 +35,16 @@ public class Student {
      * Constructs a new Student object with the specified legal name, student ID,
      * email, and display name.
      *
-     * @param ln The legal name of the student.
-     * @param si The student ID of the student.
-     * @param e  The email of the student.
-     * @param dn The display name of the student.
+     * @param legalName   The legal name of the student.
+     * @param id          The student ID of the student.
+     * @param email       The email of the student.
+     * @param displayName The display name of the student.
      */
-    public Student(String ln, String si, String e, String dn) {
-        this.legalName = ln;
-        this.studentID = si;
-        this.email = e;
-        this.displayName = dn;
+    public Student(String legalName, String id, String email, String displayName) {
+        this.legalName = legalName;
+        this.studentID = id;
+        this.email = email;
+        this.displayName = displayName;
     }
 
     /**
@@ -52,7 +52,7 @@ public class Student {
      *
      * @return The legal name of the student.
      */
-    String getLegalName() {
+    public String getLegalName() {
         return legalName;
     }
 
@@ -70,7 +70,7 @@ public class Student {
      *
      * @return The student ID of the student.
      */
-    String getStudentID() {
+    public String getStudentID() {
         return studentID;
     }
 
@@ -79,7 +79,7 @@ public class Student {
      *
      * @param studentID The student ID of the student.
      */
-    void setStudentID(String studentID) {
+    public void setStudentID(String studentID) {
         this.studentID = studentID;
     }
 
@@ -88,7 +88,7 @@ public class Student {
      *
      * @return The email of the student.
      */
-    String getEmail() {
+    public String getEmail() {
         return email;
     }
 
@@ -106,7 +106,7 @@ public class Student {
      *
      * @return The display name of the student.
      */
-    String getDisplayName() {
+    public String getDisplayName() {
         return displayName;
     }
 

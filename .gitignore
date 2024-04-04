@@ -1,0 +1,17 @@
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+admin/build
+client/build
+courseManagement/build
+server/build
+shared/build
+
+.project
+.settings
+# Ignore backup and lock files
+*~
+~$*
+.DS_Store
+.idea
