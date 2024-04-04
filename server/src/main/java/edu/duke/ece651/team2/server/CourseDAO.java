@@ -2,6 +2,7 @@ package edu.duke.ece651.team2.server;
 
 import edu.duke.ece651.team2.shared.*;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,12 +16,15 @@ public class CourseDAO extends DAO<Course> {
 
     @Override
     public void create(Course course) {
-        // TODO: Check ID is null, update ID when finished
-        List<Object> values = Collections.singletonList(
+        // TODO: Check if ID already exists?
+        List<Object> values = Arrays.asList(
+                course.getCourseID(),
                 course.getName()
+// TODO: course.getUniversityId
         );
 
-        course.setCourseID(String.valueOf(execute(daoFactory, "INSERT INTO Course (name) VALUES (?)", values)));
+        // TODO FIX
+        execute(daoFactory, "INSERT INTO Course (name) VALUES (?)", values);
     }
 
     @Override

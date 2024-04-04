@@ -16,21 +16,23 @@ public class StudentDAO extends DAO<Student> {
 
     @Override
     public void create(Student student) {
-        // TODO: Check ID is null, update ID when finished
+        // TODO Check if ID already exists?
+
         List<Object> values = Arrays.asList(
+                student.getStudentID(),
                 student.getLegalName(),
                 student.getDisplayName(),
                 student.getEmail()
         );
 
-        student.setStudentID(String.valueOf(execute(daoFactory,
-                "INSERT INTO Student (legalName, displayName, email) VALUES (?, ?, ?)",
-                values))); // TODO Change to long
+        execute(daoFactory,
+                "INSERT INTO Student (id, legalName, displayName, email) VALUES (?, ?, ?, ?)",
+                values);
     }
 
     @Override
     public void update(Student student) {
-        // TODO Check if ID is null (if so don't update)
+        // TODO Check if ID is in table
 
         List<Object> values = Arrays.asList(
                 student.getLegalName(),
@@ -44,7 +46,7 @@ public class StudentDAO extends DAO<Student> {
 
     @Override
     public void remove(Student student) {
-        // TODO Check if ID is null (if so don't remove)
+        // TODO Check if ID is in table
 
         List<Object> values = Collections.singletonList(student.getStudentID());
 
