@@ -16,23 +16,28 @@ public class StudentDAO extends DAO<Student> {
 
     @Override
     public void create(Student student) {
-        // TODO Check if ID already exists?
+        if (student.getStudentID() != null) {
+            // Object already exists in database
+            throw new IllegalArgumentException("Student object already exists in database");
+        }
 
         List<Object> values = Arrays.asList(
-                student.getStudentID(),
                 student.getLegalName(),
                 student.getDisplayName(),
                 student.getEmail()
         );
 
-        execute(daoFactory,
-                "INSERT INTO Student (id, legalName, displayName, email) VALUES (?, ?, ?, ?)",
-                values);
+        student.setStudentID(execute(daoFactory,
+                "INSERT INTO Student (legalName, displayName, email) VALUES (?, ?, ?)",
+                values)); // TODO Fix
     }
 
     @Override
     public void update(Student student) {
-        // TODO Check if ID is in table
+        if (student.getStudentID() == null) {
+            // Object does not exist in database
+            throw new IllegalArgumentException("Student object does not exist in database");
+        }
 
         List<Object> values = Arrays.asList(
                 student.getLegalName(),
@@ -46,10 +51,15 @@ public class StudentDAO extends DAO<Student> {
 
     @Override
     public void remove(Student student) {
-        // TODO Check if ID is in table
+        if (student.getStudentID() == null) {
+            // Object does not exist in database
+            throw new IllegalArgumentException("Student object does not exist in database");
+        }
 
         List<Object> values = Collections.singletonList(student.getStudentID());
 
         execute(daoFactory, "DELETE FROM Student WHERE id = ?", values);
+
+        student.setStudentID(null);
     }
 }

@@ -1,7 +1,7 @@
 drop table if exists javabase.Student;
 create table javabase.Student
 (
-    id          VARCHAR(100) NOT NULL,
+    id          int NOT NULL auto_increment,
     legalName   VARCHAR(100)    NOT NULL,
     displayName VARCHAR(100)    NOT NULL,
     email       VARCHAR(100)    NOT NULL,
@@ -11,7 +11,7 @@ create table javabase.Student
 drop table if exists javabase.Instructor;
 create table javabase.Instructor
 (
-    id    VARCHAR(100) NOT NULL,
+    id   int NOT NULL auto_increment,
     name  VARCHAR(100)    NOT NULL,
     email VARCHAR(100)    NOT NULL,
     PRIMARY KEY (id)
@@ -20,26 +20,26 @@ create table javabase.Instructor
 drop table if exists javabase.Course;
 create table javabase.Course
 (
-    id          VARCHAR(100) NOT NULL,
+    id          int NOT NULL auto_increment,
     name         varchar(100)    not null,
-    universityId VARCHAR(100) NOT NULL,
+    universityId int NOT NULL,
     primary key (id)
 );
 
 drop table if exists javabase.Section;
 create table javabase.Section
 (
-    id           VARCHAR(100) NOT NULL,
-    courseId     VARCHAR(100) NOT NULL,
-    instructorId VARCHAR(100) NOT NULL,
+    id           int NOT NULL auto_increment,
+    courseId     int NOT NULL,
+    instructorId int NOT NULL,
     primary key (id)
 );
 
 drop table if exists javabase.Lecture;
 create table javabase.Lecture
 (
-    id        VARCHAR(100) NOT NULL,
-    sectionId VARCHAR(100) NOT NULL,
+    id        int NOT NULL auto_increment,
+    sectionId int NOT NULL,
     date      date            not null,
     primary key (id)
 );
@@ -47,16 +47,16 @@ create table javabase.Lecture
 drop table if exists javabase.Enrollment;
 create table javabase.Enrollment
 (
-    sectionId VARCHAR(100) NOT NULL,
-    studentId VARCHAR(100) NOT NULL,
+    sectionId int NOT NULL,
+    studentId int NOT NULL,
     primary key (sectionId, studentId)
 );
 
 drop table if exists javabase.Attendance;
 create table javabase.Attendance
 (
-    lectureId VARCHAR(100) NOT NULL,
-    studentId VARCHAR(100) NOT NULL,
+    lectureId int NOT NULL,
+    studentId int NOT NULL,
     status    varchar(10)     not null,
     primary key (lectureId, studentId)
 );
@@ -64,7 +64,7 @@ create table javabase.Attendance
 drop table if exists javabase.Passwords;
 create table javabase.Passwords
 (
-    studentId VARCHAR(100) NOT NULL,
+    studentId int NOT NULL,
     password  varchar(100)    not null,
     primary key (studentId)
 );
@@ -72,7 +72,7 @@ create table javabase.Passwords
 drop table if exists javabase.University;
 create table javabase.University
 (
-    id         VARCHAR(100) NOT NULL,
+    id         int NOT NULL auto_increment,
     name       varchar(100)    not null,
     changeName bool            not null,
     primary key (id)
@@ -81,8 +81,8 @@ create table javabase.University
 drop table if exists javabase.Notification;
 create table javabase.Notification
 (
-    sectionId  VARCHAR(100) NOT NULL,
-    studentId VARCHAR(100) NOT NULL,
+    sectionId  int NOT NULL,
+    studentId int NOT NULL,
     notify    bool            not null,
     primary key (sectionId, studentId)
 );

@@ -12,7 +12,7 @@ public abstract class DAO<T> {
         }
     }
 
-    static long execute(DAOFactory daoFactory, String sql, List<Object> values) {
+    static int execute(DAOFactory daoFactory, String sql, List<Object> values) {
         try (
                 Connection connection = daoFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
@@ -24,7 +24,7 @@ public abstract class DAO<T> {
 
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                return generatedKeys.getLong(1);
+                return generatedKeys.getInt(1);
             }
             else {
                 return -1;
