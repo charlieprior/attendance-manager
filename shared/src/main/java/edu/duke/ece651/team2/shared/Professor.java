@@ -15,16 +15,15 @@ public class Professor {
     /**
      * The unique ID of the professor.
      */
-    private final String professorID;
+    private int professorID;
     /**
      * The email address of the professor.
      */
     private final String email;
+
     private final University university;
-    /**
-     * The list of courses taught by the professor.
-     */
-    private final ArrayList<Course> courses;
+
+    private ArrayList<Section> sections;
 
     /**
      * Constructs a new Professor object with the specified name and professor ID.
@@ -34,10 +33,8 @@ public class Professor {
      * @param email       The email address of the professor.
      * @param university  The university the professor is affiliated with.
      */
-    public Professor(String name, String professorID, String email, University university) {
+    public Professor(String name, String email, University university) {
         this.name = name;
-        this.professorID = professorID;
-        this.courses = new ArrayList<>();
         this.email = email;
         this.university = university;
     }
@@ -65,65 +62,19 @@ public class Professor {
      *
      * @return The professor ID of the professor.
      */
-    public String getProfessorID() {
+    public int getProfessorID() {
         return professorID;
     }
 
-    /**
-     * Returns the list of courses taught by the professor.
-     *
-     * @return The list of courses taught by the professor.
-     */
-    public ArrayList<Course> getCourses() {
-        return courses;
+    public void setProfessorID(int professorID){
+        this.professorID = professorID;
     }
 
-    /**
-     * Returns the course at the specified index in the list of courses taught by
-     * the professor.
-     *
-     * @param index The index of the course to be returned.
-     * @return The course at the specified index in the list of courses taught by
-     *         the professor.
-     */
-    public Course getCourse(int index) {
-        return courses.get(index);
+    public void setSections(ArrayList<Section> sections){
+        this.sections = sections;
     }
 
-    /**
-     * Get the university policy on changing names.
-     *
-     * @return true if the university supports changing names, false otherwise.
-     */
-    public boolean getUniversityPolicy() {
-        return university.getSupportChange();
-    }
-
-    /**
-     * Get the university name.
-     *
-     * @return the name of the university.
-     */
-    public String getUniversityName() {
-        return university.getName();
-    }
-
-    /**
-     * Adds a course to the list of courses taught by the professor.
-     *
-     * @param course The course to be added.
-     */
-    public void addCourse(Course course) {
-        courses.add(course);
-    }
-
-    /**
-     * Removes a course from the list of courses taught by the professor.
-     *
-     * @param course The course to be removed.
-     * @return true if the course was successfully removed, false otherwise.
-     */
-    public boolean removeCourse(Course course) {
-        return courses.remove(course);
+    public ArrayList<Section> getSections(){
+        return this.sections;
     }
 }
