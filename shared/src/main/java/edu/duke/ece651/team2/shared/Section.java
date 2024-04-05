@@ -1,10 +1,14 @@
 package edu.duke.ece651.team2.shared;
 
+import java.util.ArrayList;
+
 public class Section {
     private int SectionID;
     private Course Course;
     private Professor Instructor;
     private String name;//display the name for this Section(not quite the same as Course. Should be CourseName+Section)
+    private ArrayList<Student> students;
+    private ArrayList<Lecture> lectures;
 
     public Section(Course course, Professor professor, String name){
         this.Course = course;
@@ -45,12 +49,20 @@ public class Section {
         this.name = name;
     }
 
-    public void getStudents() {
-        //DAO
+    public ArrayList<Student> getStudents() {
+        return students;
     }
 
-    public void getLectures() {
-        //DAO
+    public void setStudents(ArrayList<Student> s) {
+        this.students = s;
+    }
+
+    public ArrayList<Lecture> getLectures() {
+        return lectures;
+    }
+
+    public void setLecture(ArrayList<Lecture> l) {
+        this.lectures = l;
     }
 
 }

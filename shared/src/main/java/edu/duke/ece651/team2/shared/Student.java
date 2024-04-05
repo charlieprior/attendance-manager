@@ -33,9 +33,8 @@ public class Student {
      * @param email       The email of the student.
      * @param displayName The display name of the student.
      */
-    public Student(String legalName, int id, String email, String displayName) {
+    public Student(String legalName,String email, String displayName) {
         this.legalName = legalName;
-        this.studentID = id;
         this.email = email;
         this.displayName = displayName;
     }
