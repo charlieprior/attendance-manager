@@ -3,16 +3,99 @@
  */
 package edu.duke.ece651.team2.client;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.ArrayList;
+
+import edu.duke.ece651.team2.shared.Professor;
+import edu.duke.ece651.team2.shared.Student;
+
 public class App {
+
+  ClientSideController c = new ClientSideController(new BufferedReader(new InputStreamReader(System.in)),System.out);
+
   public String getMessage() {
     return "Hello from the client.";
   }
 
-  public static void main(String[] args) {
+  public ArrayList<String> logIn(){
+    ArrayList<String> res = new ArrayList<>();
+    res.add("id");
+    res.add("password");
+    return res;
+  }//can change to protecedInfo class if needed
+
+  public void studentLogInPage(Socket s,ObjectOutputStream out, ObjectInputStream in,Student stu) throws IOException{
+    //send requests to server as student
+    
+    int cmd = c.returnStudentCommand("Welcome STudent.");
+    switch (cmd){
+      case 1:
+        //display section names, show preference. If willing to change, send Section ID and choice to server by another function.
+      case 2:
+        //display sections, get a summary report by this Student ID from server.(also can let summary report be students' attribute)
+
+    }
+  }
+
+  public void professorLogInPage(Socket s,ObjectOutputStream out, ObjectInputStream in,Professor p){
+    //send requests to server as professor
+
+    //case 1: add new courses (in a new function)
+    //display all the courses and sections in HashMap<Courses, ArrayList<Sections>>from database sent back by server
+    //choose the section -> send section back -> setProfessor to database
+    
+    //case 2: takeAttendance
+    //display all the courses and sections in HashMap<Courses, ArrayList<Sections>> taught by p.id from database sent back by server
+    //choose the section -> get ArrayList<Student> back -> display  
+    //sent ArrayList<AttendanceStatus> to server and insert to database with a new generated Lecture ID
+
+    //case 3: updateAttendance 
+    //display all the courses and sections in HashMap<Courses, ArrayList<Sections>> taught by p.id from database sent back by server
+    //choose the section -> get Lecture List back -> display  
+    //if want a new lecture, repeat 2.3. but server need to set the lecture date to previous day
+    //else select lecture -> get the student list and then choose the students then send the HashMap<Student,AttendanceStatus> back.
+
+    //case 4: getSummaryReport
+    //display all the courses and sections in HashMap<Courses, ArrayList<Sections>> taught by p.id from database sent back by server
+    //choose the section -> send section back -> get ArrayList<AttendanceRecordSummary> -> display
+  }
+
+  public static void main(String[] args) throws ClassNotFoundException {
     App a = new App();
     System.out.println(a.getMessage());
     for (int i = 0; i < args.length; i++) {
       System.out.println("args[" + i + "]=" + args[i]);
+    }
+
+    try (Socket socket = new Socket("localhost", 8080);
+        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+        ObjectInputStream in = new ObjectInputStream(socket.getInputStream())){
+
+          int response = -1;
+          while(response==-1){
+            out.writeObject(a.logIn());
+            out.flush();
+            response = in.readInt();
+          }
+          if(response==1){
+            Object obj = in.readObject();
+            Student s = (Student) obj;
+            a.studentLogInPage(socket,out,in,s);
+          }
+          else{
+            Object obj = in.readObject();
+            Professor pro = (Professor) obj;
+            a.professorLogInPage(socket, out, in,pro);
+          }
+
+        }
+    catch (IOException e){
+      e.printStackTrace();
     }
   }
 }

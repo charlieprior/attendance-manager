@@ -1,5 +1,6 @@
 package edu.duke.ece651.team2.shared;
 
+import java.util.ArrayList;
 /**
  * The Student class represents a student.
  */
@@ -11,7 +12,7 @@ public class Student {
     /**
      * The student ID of the student.
      */
-    String studentID;
+    int studentID;
     /**
      * The email of the student.
      */
@@ -21,15 +22,7 @@ public class Student {
      */
     String displayName;
 
-    /**
-     * Constructs a new Student object with default values.
-     */
-    public Student() {
-        this.legalName = "";
-        this.studentID = "";
-        this.email = "";
-        this.displayName = "";
-    }
+    ArrayList<Section> sections;
 
     /**
      * Constructs a new Student object with the specified legal name, student ID,
@@ -40,7 +33,7 @@ public class Student {
      * @param email       The email of the student.
      * @param displayName The display name of the student.
      */
-    public Student(String legalName, String id, String email, String displayName) {
+    public Student(String legalName, int id, String email, String displayName) {
         this.legalName = legalName;
         this.studentID = id;
         this.email = email;
@@ -61,7 +54,7 @@ public class Student {
      *
      * @param legalName The legal name of the student.
      */
-    void setLegalName(String legalName) {
+    public void setLegalName(String legalName) {
         this.legalName = legalName;
     }
 
@@ -70,7 +63,7 @@ public class Student {
      *
      * @return The student ID of the student.
      */
-    public String getStudentID() {
+    public int getStudentID() {
         return studentID;
     }
 
@@ -79,7 +72,7 @@ public class Student {
      *
      * @param studentID The student ID of the student.
      */
-    public void setStudentID(String studentID) {
+    public void setStudentID(int studentID) {
         this.studentID = studentID;
     }
 
@@ -118,4 +111,11 @@ public class Student {
     void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
+
+    void addSection(Section... sec){
+        for(Section s:sec){
+            sections.add(s);
+        }
+    }
+
 }
