@@ -13,7 +13,7 @@ class StudentDAOTest {
     @Test
     void testCreate() {
         // TODO How do we get 100% coverage here?
-        Student test = new Student("John Smith", "0", "test@example.com", "John");
+        Student test = new Student("John Smith", "test@example.com", "John");
         studentDAO.create(test);
         assertNotNull(test.getStudentID());
     }

@@ -30,13 +30,13 @@ public class EmailAlertsListener implements EventListener {
      * @throws IOException              If there is an I/O error.
      */
     @Override
-    public void attendanceChanged(Student student, AttendanceRecord record)
-            throws GeneralSecurityException, IOException {
-        String email = student.getEmail();
-        System.out.println("Sending email alert to " + email + "...");
-        gmailSetup.sendEmail(email, "Attendance Changed for Lecture " + record.getLectureID(),
-                "Dear " + student.getDisplayName() + ",\n" +
-                        "Your attendance has been changed to " + record.getStatus() + " in Lecture "
-                        + record.getLectureID());
+    public void attendanceChanged(Student student, AttendanceRecord record) {
+//            throws GeneralSecurityException, IOException {
+//        String email = student.getEmail();
+//        System.out.println("Sending email alert to " + email + "...");
+//        gmailSetup.sendEmail(email, "Attendance Changed for Lecture " + record.getLectureID(),
+//                "Dear " + student.getDisplayName() + ",\n" +
+//                        "Your attendance has been changed to " + record.getStatus() + " in Lecture "
+//                        + record.getLectureID());
     }
 }
