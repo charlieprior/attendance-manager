@@ -1,0 +1,14 @@
+Loading Students From CSV
+Export Records to CSV 
+Professor Register
+Professor Login
+send email
+update Students' Attendance Record
+ask to load student' status for one lecture and a Course
+Change Student Display Name
+add Students to Course manually
+drop Students from Course manually
+start a new Lecture from one Course,then take attenace records
+display attendance records 
+change a student's display name
+print students of a course
