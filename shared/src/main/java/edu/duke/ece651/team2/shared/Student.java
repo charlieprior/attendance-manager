@@ -12,7 +12,7 @@ public class Student {
     /**
      * The student ID of the student.
      */
-    int studentID;
+    Integer studentID;
     /**
      * The email of the student.
      */
@@ -62,7 +62,7 @@ public class Student {
      *
      * @return The student ID of the student.
      */
-    public int getStudentID() {
+    public Integer getStudentID() {
         return studentID;
     }
 
@@ -71,7 +71,7 @@ public class Student {
      *
      * @param studentID The student ID of the student.
      */
-    public void setStudentID(int studentID) {
+    public void setStudentID(Integer studentID) {
         this.studentID = studentID;
     }
 

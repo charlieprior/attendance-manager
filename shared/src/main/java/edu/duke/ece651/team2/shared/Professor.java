@@ -15,7 +15,7 @@ public class Professor {
     /**
      * The unique ID of the professor.
      */
-    private int professorID;
+    private Integer professorID;
     /**
      * The email address of the professor.
      */
@@ -62,11 +62,11 @@ public class Professor {
      *
      * @return The professor ID of the professor.
      */
-    public int getProfessorID() {
+    public Integer getProfessorID() {
         return professorID;
     }
 
-    public void setProfessorID(int professorID){
+    public void setProfessorID(Integer professorID){
         this.professorID = professorID;
     }
 

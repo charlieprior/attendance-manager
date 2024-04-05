@@ -8,8 +8,8 @@ create table javabase.Student
     PRIMARY KEY (id)
 );
 
-drop table if exists javabase.Instructor;
-create table javabase.Instructor
+drop table if exists javabase.Professor;
+create table javabase.Professor
 (
     id   int NOT NULL auto_increment,
     name  VARCHAR(100)    NOT NULL,
