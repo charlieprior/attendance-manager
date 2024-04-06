@@ -1,6 +1,9 @@
 package edu.duke.ece651.team2.server;
 
+import edu.duke.ece651.team2.shared.Student;
+
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class DAO<T> {
@@ -40,7 +43,22 @@ public abstract class DAO<T> {
 
     abstract void remove(T t);
 
-    abstract List<T> list();
+    protected List<T> list(DAOFactory daoFactory, String sql) {
+        List<T> Ts = new ArrayList<>();
+        try (
+                ResultSet resultSet = executeQuery(daoFactory,
+                        sql,
+                        new ArrayList<>());
+        ) {
+            while (resultSet.next()) {
+                Ts.add(map(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Ts;
+    }
 
     protected T get(DAOFactory daoFactory, String sql, List<Object> values) {
         try (

@@ -75,25 +75,11 @@ public class PasswordDAO extends DAO<Password> {
         }
     }
 
-    @Override
-    List<Password> list() {
-        List<Password> passwords = new ArrayList<>();
-        try (
-                ResultSet resultSet = executeQuery(daoFactory,
-                        "SELECT * FROM Passwords ORDER BY studentId",
-                        new ArrayList<>());
-        ) {
-            while (resultSet.next()) {
-                passwords.add(map(resultSet));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return passwords;
+    public List<Password> list() {
+        return super.list(daoFactory, "SELECT * FROM Passwords ORDER BY studentId");
     }
 
-    Password get(Integer studentId) {
+    public Password get(Integer studentId) {
         List<Object> values = Collections.singletonList(studentId);
         return super.get(daoFactory, "SELECT * FROM Passwords WHERE studentId = ?", values);
     }

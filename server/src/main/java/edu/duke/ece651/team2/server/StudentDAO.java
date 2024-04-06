@@ -93,25 +93,11 @@ public class StudentDAO extends DAO<Student> {
         student.setStudentID(null);
     }
 
-    @Override
-    List<Student> list() {
-        List<Student> students = new ArrayList<>();
-        try (
-                ResultSet resultSet = executeQuery(daoFactory,
-                        "SELECT * FROM Student ORDER BY id",
-                        new ArrayList<>());
-        ) {
-            while (resultSet.next()) {
-                students.add(map(resultSet));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return students;
+    public List<Student> list() {
+        return super.list(daoFactory, "SELECT * FROM Student ORDER BY id");
     }
 
-    Student get(Integer id) {
+    public Student get(Integer id) {
         List<Object> values = Collections.singletonList(id);
         return super.get(daoFactory, "SELECT * FROM Student WHERE id = ?", values);
     }

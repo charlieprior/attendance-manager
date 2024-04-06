@@ -92,25 +92,11 @@ public class CourseDAO extends DAO<Course> {
         course.setCourseID(null);
     }
 
-    @Override
-    List<Course> list() {
-        List<Course> courses = new ArrayList<>();
-        try (
-                ResultSet resultSet = executeQuery(daoFactory,
-                        "SELECT * FROM Course ORDER BY id",
-                        new ArrayList<>());
-        ) {
-            while (resultSet.next()) {
-                courses.add(map(resultSet));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return courses;
+    public List<Course> list() {
+        return super.list(daoFactory, "SELECT * FROM Course ORDER BY id");
     }
 
-    Course get(Integer id) {
+    public Course get(Integer id) {
         List<Object> values = Collections.singletonList(id);
         return super.get(daoFactory, "SELECT * FROM Course WHERE id = ?", values);
     }

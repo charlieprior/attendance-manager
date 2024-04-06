@@ -97,22 +97,8 @@ public class ProfessorDAO extends DAO<Professor> {
         professor.setProfessorID(null);
     }
 
-    @Override
     List<Professor> list() {
-        List<Professor> professors = new ArrayList<>();
-        try (
-                ResultSet resultSet = executeQuery(daoFactory,
-                        "SELECT * FROM Professor ORDER BY id",
-                        new ArrayList<>());
-        ) {
-            while (resultSet.next()) {
-                professors.add(map(resultSet));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return professors;
+        return super.list(daoFactory, "SELECT * FROM Professor ORDER BY id");
     }
 
     Professor get(Integer id) {
