@@ -92,4 +92,9 @@ public class PasswordDAO extends DAO<Password> {
 
         return passwords;
     }
+
+    Password get(Integer studentId) {
+        List<Object> values = Collections.singletonList(studentId);
+        return super.get(daoFactory, "SELECT * FROM Passwords WHERE studentId = ?", values);
+    }
 }

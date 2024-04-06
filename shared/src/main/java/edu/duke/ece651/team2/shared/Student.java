@@ -1,6 +1,8 @@
 package edu.duke.ece651.team2.shared;
 
 import java.util.ArrayList;
+import java.util.Objects;
+
 /**
  * The Student class represents a student.
  */
@@ -17,6 +19,20 @@ public class Student {
      * The email of the student.
      */
     String email;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return Objects.equals(legalName, student.legalName) && Objects.equals(studentID, student.studentID) && Objects.equals(email, student.email) && Objects.equals(displayName, student.displayName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(legalName, studentID, email, displayName);
+    }
+
     /**
      * The display name of the student.
      */

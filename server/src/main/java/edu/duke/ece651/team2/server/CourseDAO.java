@@ -109,4 +109,9 @@ public class CourseDAO extends DAO<Course> {
 
         return courses;
     }
+
+    Course get(Integer id) {
+        List<Object> values = Collections.singletonList(id);
+        return super.get(daoFactory, "SELECT * FROM Course WHERE id = ?", values);
+    }
 }

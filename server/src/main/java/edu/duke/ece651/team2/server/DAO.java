@@ -41,4 +41,21 @@ public abstract class DAO<T> {
     abstract void remove(T t);
 
     abstract List<T> list();
+
+    protected T get(DAOFactory daoFactory, String sql, List<Object> values) {
+        try (
+                ResultSet resultSet = executeQuery(daoFactory,
+                        sql,
+                        values)
+        ) {
+            if (resultSet.next()) {
+                return map(resultSet);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
 }

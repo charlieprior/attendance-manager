@@ -114,4 +114,9 @@ public class ProfessorDAO extends DAO<Professor> {
 
         return professors;
     }
+
+    Professor get(Integer id) {
+        List<Object> values = Collections.singletonList(id);
+        return super.get(daoFactory, "SELECT * FROM Professor WHERE id = ?", values);
+    }
 }

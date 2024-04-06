@@ -110,4 +110,9 @@ public class StudentDAO extends DAO<Student> {
 
         return students;
     }
+
+    Student get(Integer id) {
+        List<Object> values = Collections.singletonList(id);
+        return super.get(daoFactory, "SELECT * FROM Student WHERE id = ?", values);
+    }
 }
