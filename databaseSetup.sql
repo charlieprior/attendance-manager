@@ -1,3 +1,5 @@
+SET @@auto_increment_increment=2;
+
 drop table if exists javabase.Student;
 create table javabase.Student
 (
@@ -6,7 +8,7 @@ create table javabase.Student
     displayName VARCHAR(100)    NOT NULL,
     email       VARCHAR(100)    NOT NULL,
     PRIMARY KEY (id)
-);
+) auto_increment=1;
 
 drop table if exists javabase.Professor;
 create table javabase.Professor
@@ -15,7 +17,7 @@ create table javabase.Professor
     name  VARCHAR(100)    NOT NULL,
     email VARCHAR(100)    NOT NULL,
     PRIMARY KEY (id)
-);
+) auto_increment=2;
 
 drop table if exists javabase.Course;
 create table javabase.Course

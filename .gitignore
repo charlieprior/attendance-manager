@@ -15,3 +15,4 @@ shared/build
 ~$*
 .DS_Store
 .idea
+/shared/build/
