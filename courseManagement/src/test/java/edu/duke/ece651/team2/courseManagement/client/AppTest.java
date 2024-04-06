@@ -1,4 +1,4 @@
-package edu.duke.ece651.team2.courseManagement;
+package edu.duke.ece651.team2.courseManagement.client;
 
 import org.junit.jupiter.api.Test;
 

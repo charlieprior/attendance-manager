@@ -21,22 +21,20 @@ public class Professor {
      */
     private final String email;
 
-    private final University university;
+    private University university;
 
     private ArrayList<Section> sections;
 
     /**
      * Constructs a new Professor object with the specified name and professor ID.
      *
-     * @param name        The name of the professor.
      * @param professorID The unique ID of the professor.
+     * @param name        The name of the professor.
      * @param email       The email address of the professor.
-     * @param university  The university the professor is affiliated with.
      */
-    public Professor(String name, String email, University university) {
+    public Professor(String name, String email) {
         this.name = name;
         this.email = email;
-        this.university = university;
     }
 
     /**

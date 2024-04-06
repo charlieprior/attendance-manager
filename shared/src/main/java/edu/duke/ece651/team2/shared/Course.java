@@ -1,7 +1,5 @@
 package edu.duke.ece651.team2.shared;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,7 +13,13 @@ public class Course {
     /**
      * The ID of the Course.
      */
-    private int courseID;
+    private Integer courseID;
+
+    public Integer getUniversityId() {
+        return universityId;
+    }
+
+    private Integer universityId;
 
     private List<Section> sections;
 
@@ -23,10 +27,11 @@ public class Course {
     /**
      * This constructor will create the Course object.
      *
-     * @param name     is the Course's name.
+     * @param name is the Course's name.
      */
-    public Course(String name) {
+    public Course(String name, Integer courseID) {
         this.courseName = name;
+        this.courseID = courseID;
     }
 
 
@@ -40,7 +45,7 @@ public class Course {
     /**
      * @return courseID
      */
-    public int getCourseID() {
+    public Integer getCourseID() {
         return courseID;
     }
 
@@ -48,7 +53,7 @@ public class Course {
         this.sections.add(s);
     }
 
-    public void setCourseID(int courseID) {
+    public void setCourseID(Integer courseID) {
         this.courseID = courseID;
     }
 

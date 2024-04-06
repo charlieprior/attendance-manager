@@ -51,7 +51,7 @@ public class App {
             }
           }
           if(response==0){
-            Professor p = new Professor(null, null, null);
+            Professor p = new Professor(null, null);
             out.writeObject(p); //get a student object by kePair's id 
             a.professorPage(socket,out,in,p);
           }
