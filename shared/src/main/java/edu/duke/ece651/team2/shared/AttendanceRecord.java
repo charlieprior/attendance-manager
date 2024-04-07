@@ -9,7 +9,7 @@ public class AttendanceRecord {
     /**
      * The ID of the student associated with the attendance record.
      */
-    private final Student student;
+    private final Integer studentId;
     /**
      * The status of the student's attendance (true if present, false if absent).
      */
@@ -17,9 +17,7 @@ public class AttendanceRecord {
     /**
      * The ID of the lecture associated with the attendance record.
      */
-    private final Lecture lecture;
-
-    private final Section section;
+    private final Integer lectureId;
 
     private int recordID;
 
@@ -31,24 +29,23 @@ public class AttendanceRecord {
      * @param studentID      The ID of the student associated with the attendance
      *                       record.
      * @param studentName    The name of the student associated with the attendance
-     * @param status         The status of the student's attendance (true if
-     *                       present, false if absent).
      * @param lectureID      The ID of the lecture associated with the attendance
      *                       record.
+     * @param status         The status of the student's attendance (true if
+     *                       present, false if absent).
      */
-    public AttendanceRecord(Student student,AttendanceStatus status,Lecture lec,Section sec) {
-        this.student = student;
+    public AttendanceRecord(Integer studentId, AttendanceStatus status, Integer lec) {
+        this.studentId = studentId;
         this.status = status;
-        this.lecture = lec;
-        this.section = sec;
+        this.lectureId = lec;
     }
 
     public void setRecordID(int id){
         this.recordID = id;
     }
 
-    public Student getStudent() {
-        return student;
+    public Integer getStudentId() {
+        return studentId;
     }
 
     public AttendanceStatus getStatus() {
@@ -59,18 +56,12 @@ public class AttendanceRecord {
         this.status = status;
     }
 
-    public Lecture getLecture() {
-        return lecture;
-    }
-
-    public Section getSection() {
-        return section;
+    public Integer getLectureId() {
+        return lectureId;
     }
 
     public int getRecordID() {
         return recordID;
     }
-
-
 
 }

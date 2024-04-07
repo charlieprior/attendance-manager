@@ -25,18 +25,18 @@ public class AttendanceSummaryReport {
         return score;
     }
     
-    public Student getStudent(){
-        return records.get(0).getStudent();
+    public Integer getStudent(){
+        return records.get(0).getStudentId();
     }
 
     public Section getSection(){
         return records.get(0).getSection();
     }
 
-    public ArrayList<Lecture> getLecture(){
-        ArrayList<Lecture> ans = new ArrayList<>();
+    public ArrayList<Integer> getLecture(){
+        ArrayList<Integer> ans = new ArrayList<>();
         for(AttendanceRecord r:records){
-            ans.add(r.getLecture());
+            ans.add(r.getLectureId());
         }
         return ans;
     }

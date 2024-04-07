@@ -1,5 +1,6 @@
 package edu.duke.ece651.team2.shared;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 /**
@@ -7,17 +8,24 @@ import java.util.Calendar;
  */
 public class Lecture {
     private int LectureID;
-    private Section section;
-    private int year;
-    private int month;
-    private int day;
+    private final Integer sectionId;
+    private final int year;
+    private final int month;
+    private final int day;
 
-    public Lecture(Section sec){
-        section = sec;
+    public Lecture(Integer sectionId){
+        this.sectionId = sectionId;
         Calendar calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH)+1;
         day = calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    public Lecture(Integer sectionId, LocalDate date) {
+        this.sectionId = sectionId;
+        year = date.getYear();
+        month = date.getMonthValue();
+        day = date.getDayOfMonth();
     }
 
     public int getLectureID() {
@@ -28,8 +36,8 @@ public class Lecture {
         LectureID = lectureID;
     }
 
-    public Section getSection() {
-        return section;
+    public Integer getSectionId() {
+        return sectionId;
     }
 
     public int getYear() {
