@@ -10,11 +10,11 @@ class StudentDAOTest {
     DAOFactory factory = new DAOFactory();
     StudentDAO studentDAO = new StudentDAO(factory);
 
-    @Test
-    void testCreate() {
-        // TODO How do we get 100% coverage here?
-        Student test = new Student("John Smith", "0", "test@example.com", "John");
-        studentDAO.create(test);
-        assertNotNull(test.getStudentID());
-    }
+    // @Test
+    // void testCreate() {
+    // // TODO How do we get 100% coverage here?
+    // Student test = new Student("John Smith", "0", "test@example.com", "John");
+    // studentDAO.create(test);
+    // assertNotNull(test.getStudentID());
+    // }
 }

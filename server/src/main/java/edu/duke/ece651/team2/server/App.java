@@ -3,13 +3,46 @@
  */
 package edu.duke.ece651.team2.server;
 
+import java.io.*;
+import java.net.*;
+
 public class App {
-  public String getMessage() {
-    return "Hello from the server.";
+  private ServerSideView serverSideView;
+  private ServerSideController serverSideController;
+  private ServerSocket serverSocket;
+
+  public App() {
+    serverSideView = new ServerSideView();
+    serverSideController = new ServerSideController(serverSideView);
+  }
+
+  public void connectToClients() {
+    try {
+      serverSocket = new ServerSocket(8088);
+      serverSideView.displayMessage("Server started, waiting for client connections...");
+
+      while (true) {
+        Socket clientSocket = serverSocket.accept();
+        serverSideView.displayMessage("Client connected");
+
+        // Send connection status to client
+        serverSideController.sendConnectionStatus(clientSocket);
+
+        // Handle login
+        serverSideController.handleLogin(clientSocket);
+
+        // Create a new thread to handle client requests
+        ClientHandler clientHandler = new ClientHandler(clientSocket, serverSideView, serverSideController);
+        new Thread(clientHandler).start();
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public static void main(String[] args) {
     App a = new App();
-    System.out.println(a.getMessage());
+    a.connectToClients();
   }
+
 }
