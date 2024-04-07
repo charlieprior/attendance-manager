@@ -1,78 +1,90 @@
+SET @@auto_increment_increment=2;
+
+drop table if exists javabase.Student;
 create table javabase.Student
 (
-    id          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id          int NOT NULL auto_increment,
     legalName   VARCHAR(100)    NOT NULL,
     displayName VARCHAR(100)    NOT NULL,
     email       VARCHAR(100)    NOT NULL,
     PRIMARY KEY (id)
-);
+) auto_increment=1;
 
-create table javabase.Instructor
+drop table if exists javabase.Professor;
+create table javabase.Professor
 (
-    id    BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id   int NOT NULL auto_increment,
     name  VARCHAR(100)    NOT NULL,
     email VARCHAR(100)    NOT NULL,
     PRIMARY KEY (id)
-);
+) auto_increment=2;
 
+drop table if exists javabase.Course;
 create table javabase.Course
 (
-    id           BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id          int NOT NULL auto_increment,
     name         varchar(100)    not null,
-    universityId bigint unsigned not null,
+    universityId int NOT NULL,
     primary key (id)
 );
 
+drop table if exists javabase.Section;
 create table javabase.Section
 (
-    id           BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    courseId     BIGINT UNSIGNED not null,
-    instructorId BIGINT unsigned not null,
+    id           int NOT NULL auto_increment,
+    courseId     int NOT NULL,
+    instructorId int NOT NULL,
     primary key (id)
 );
 
+drop table if exists javabase.Lecture;
 create table javabase.Lecture
 (
-    id        BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    sectionId BIGINT unsigned not null,
+    id        int NOT NULL auto_increment,
+    sectionId int NOT NULL,
     date      date            not null,
     primary key (id)
 );
 
+drop table if exists javabase.Enrollment;
 create table javabase.Enrollment
 (
-    sectionId bigint unsigned not null,
-    studentId bigint unsigned not null,
+    sectionId int NOT NULL,
+    studentId int NOT NULL,
     primary key (sectionId, studentId)
 );
 
+drop table if exists javabase.Attendance;
 create table javabase.Attendance
 (
-    sectionId bigint unsigned not null,
-    studentId bigint unsigned not null,
+    lectureId int NOT NULL,
+    studentId int NOT NULL,
     status    varchar(10)     not null,
-    primary key (sectionId, studentId)
+    primary key (lectureId, studentId)
 );
 
+drop table if exists javabase.Passwords;
 create table javabase.Passwords
 (
-    studentId bigint unsigned not null,
+    studentId int NOT NULL,
     password  varchar(100)    not null,
     primary key (studentId)
 );
 
+drop table if exists javabase.University;
 create table javabase.University
 (
-    id         bigint unsigned not null auto_increment,
+    id         int NOT NULL auto_increment,
     name       varchar(100)    not null,
     changeName bool            not null,
     primary key (id)
 );
 
+drop table if exists javabase.Notification;
 create table javabase.Notification
 (
-    courseId  bigint unsigned not null,
-    studentId bigint unsigned not null,
+    sectionId  int NOT NULL,
+    studentId int NOT NULL,
     notify    bool            not null,
-    primary key (courseId, studentId)
+    primary key (sectionId, studentId)
 );

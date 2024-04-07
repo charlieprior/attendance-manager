@@ -1,5 +1,8 @@
 package edu.duke.ece651.team2.shared;
 
+import java.util.ArrayList;
+import java.util.Objects;
+
 /**
  * The Student class represents a student.
  */
@@ -11,25 +14,31 @@ public class Student {
     /**
      * The student ID of the student.
      */
-    String studentID;
+    Integer studentID;
     /**
      * The email of the student.
      */
     String email;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return Objects.equals(legalName, student.legalName) && Objects.equals(studentID, student.studentID) && Objects.equals(email, student.email) && Objects.equals(displayName, student.displayName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(legalName, studentID, email, displayName);
+    }
+
     /**
      * The display name of the student.
      */
     String displayName;
 
-    /**
-     * Constructs a new Student object with default values.
-     */
-    public Student() {
-        this.legalName = "";
-        this.studentID = "";
-        this.email = "";
-        this.displayName = "";
-    }
+    ArrayList<Section> sections;
 
     /**
      * Constructs a new Student object with the specified legal name, student ID,
@@ -40,9 +49,8 @@ public class Student {
      * @param email       The email of the student.
      * @param displayName The display name of the student.
      */
-    public Student(String legalName, String id, String email, String displayName) {
+    public Student(String legalName,String email, String displayName) {
         this.legalName = legalName;
-        this.studentID = id;
         this.email = email;
         this.displayName = displayName;
     }
@@ -61,7 +69,7 @@ public class Student {
      *
      * @param legalName The legal name of the student.
      */
-    void setLegalName(String legalName) {
+    public void setLegalName(String legalName) {
         this.legalName = legalName;
     }
 
@@ -70,7 +78,7 @@ public class Student {
      *
      * @return The student ID of the student.
      */
-    public String getStudentID() {
+    public Integer getStudentID() {
         return studentID;
     }
 
@@ -79,7 +87,7 @@ public class Student {
      *
      * @param studentID The student ID of the student.
      */
-    public void setStudentID(String studentID) {
+    public void setStudentID(Integer studentID) {
         this.studentID = studentID;
     }
 
@@ -118,4 +126,11 @@ public class Student {
     void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
+
+    void addSection(Section... sec){
+        for(Section s:sec){
+            sections.add(s);
+        }
+    }
+
 }

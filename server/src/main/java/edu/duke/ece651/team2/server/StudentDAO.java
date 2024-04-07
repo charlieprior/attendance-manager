@@ -1,7 +1,10 @@
 package edu.duke.ece651.team2.server;
 
-import edu.duke.ece651.team2.shared.*;
+import edu.duke.ece651.team2.shared.Student;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -15,22 +18,47 @@ public class StudentDAO extends DAO<Student> {
     }
 
     @Override
+    Student map(ResultSet resultSet) throws SQLException {
+        Student student = new Student(
+                resultSet.getString("legalName"),
+                resultSet.getString("email"),
+                resultSet.getString("displayName")
+        );
+        student.setStudentID(resultSet.getInt("id"));
+        return student;
+    }
+
+    @Override
     public void create(Student student) {
-        // TODO: Check ID is null, update ID when finished
+        if (student.getStudentID() != null) {
+            // Object already exists in database
+            throw new IllegalArgumentException("Student object already exists in database");
+        }
+
         List<Object> values = Arrays.asList(
                 student.getLegalName(),
                 student.getDisplayName(),
                 student.getEmail()
         );
 
-        student.setStudentID(String.valueOf(execute(daoFactory,
-                "INSERT INTO Student (legalName, displayName, email) VALUES (?, ?, ?)",
-                values))); // TODO Change to long
+        try {
+            ResultSet generatedKeys = executeUpdate(daoFactory,
+                    "INSERT INTO Student (legalName, displayName, email) VALUES (?, ?, ?)",
+                    values);
+            if (generatedKeys.next()) {
+                student.setStudentID(generatedKeys.getInt(1));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void update(Student student) {
-        // TODO Check if ID is null (if so don't update)
+        if (student.getStudentID() == null) {
+            // Object does not exist in database
+            throw new IllegalArgumentException("Student object does not exist in database");
+        }
 
         List<Object> values = Arrays.asList(
                 student.getLegalName(),
@@ -39,15 +67,38 @@ public class StudentDAO extends DAO<Student> {
                 student.getStudentID()
         );
 
-        execute(daoFactory, "UPDATE Student SET legalName = ?, displayName = ?, email = ? WHERE id = ?", values);
+
+        try {
+            executeUpdate(daoFactory, "UPDATE Student SET legalName = ?, displayName = ?, email = ? WHERE id = ?", values);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void remove(Student student) {
-        // TODO Check if ID is null (if so don't remove)
+        if (student.getStudentID() == null) {
+            // Object does not exist in database
+            throw new IllegalArgumentException("Student object does not exist in database");
+        }
 
         List<Object> values = Collections.singletonList(student.getStudentID());
 
-        execute(daoFactory, "DELETE FROM Student WHERE id = ?", values);
+        try {
+            executeUpdate(daoFactory, "DELETE FROM Student WHERE id = ?", values);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        student.setStudentID(null);
+    }
+
+    public List<Student> list() {
+        return super.list(daoFactory, "SELECT * FROM Student ORDER BY id");
+    }
+
+    public Student get(Integer id) {
+        List<Object> values = Collections.singletonList(id);
+        return super.get(daoFactory, "SELECT * FROM Student WHERE id = ?", values);
     }
 }

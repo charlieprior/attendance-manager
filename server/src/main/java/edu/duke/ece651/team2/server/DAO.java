@@ -1,19 +1,19 @@
 package edu.duke.ece651.team2.server;
 
-import edu.duke.ece651.team2.shared.*;
-
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public abstract class DAO<T> {
+
     static void setStatementObjects(PreparedStatement statement, List<Object> values) throws SQLException {
         for (int i = 0; i < values.size(); i++) {
             statement.setObject(i + 1, values.get(i));
         }
     }
 
-    static String execute(DAOFactory daoFactory, String sql, List<Object> values) {
+    static long execute(DAOFactory daoFactory, String sql, List<Object> values) {
         try (
                 Connection connection = daoFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -24,15 +24,16 @@ public abstract class DAO<T> {
 
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                // return generatedKeys.getLong(1);
-                return UUID.randomUUID().toString();
+                return generatedKeys.getLong(1);
             } else {
-                // return -1;
-                throw new RuntimeException("No generated key obtained.");
+                return -1;
             }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        return null;
     }
 
     abstract void create(T t);

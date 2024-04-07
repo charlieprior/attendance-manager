@@ -7,7 +7,7 @@ public class DatabaseTest {
         DAOFactory factory = new DAOFactory();
         StudentDAO studentDAO = new StudentDAO(factory);
 
-        Student test = new Student("John Smith", "0", "test@example.com", "John");
+        Student test = new Student("John Smith", "test@example.com", "John");
 
         studentDAO.create(test);
     }
