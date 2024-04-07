@@ -29,7 +29,6 @@ public class ProfessorDAO extends DAO<Professor> {
         return professor;
     }
 
-    @Override
     void create(Professor professor) {
         if (professor.getProfessorID() != null) {
             // Object already exists in database
@@ -53,7 +52,6 @@ public class ProfessorDAO extends DAO<Professor> {
         }
     }
 
-    @Override
     void update(Professor professor) {
         if (professor.getProfessorID() == null) {
             // Object does not exist in database
@@ -75,7 +73,6 @@ public class ProfessorDAO extends DAO<Professor> {
         }
     }
 
-    @Override
     void remove(Professor professor) {
         if (professor.getProfessorID() == null) {
             // Object does not exist in database

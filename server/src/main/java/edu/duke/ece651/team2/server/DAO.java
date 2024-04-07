@@ -37,12 +37,6 @@ public abstract class DAO<T> {
 
     abstract T map(ResultSet resultSet) throws SQLException;
 
-    abstract void create(T t);
-
-    abstract void update(T t);
-
-    abstract void remove(T t);
-
     protected List<T> list(DAOFactory daoFactory, String sql) {
         List<T> Ts = new ArrayList<>();
         try (

@@ -29,7 +29,6 @@ public class CourseDAO extends DAO<Course> {
         return course;
     }
 
-    @Override
     public void create(Course course) {
         if (course.getCourseID() != null) {
             // Object already exists in database
@@ -53,7 +52,6 @@ public class CourseDAO extends DAO<Course> {
         }
     }
 
-    @Override
     public void update(Course course) {
         if (course.getCourseID() == null) {
             // Object does not exist in database
@@ -74,7 +72,6 @@ public class CourseDAO extends DAO<Course> {
         }
     }
 
-    @Override
     public void remove(Course course) {
         if (course.getCourseID() == null) {
             // Object does not exist in database

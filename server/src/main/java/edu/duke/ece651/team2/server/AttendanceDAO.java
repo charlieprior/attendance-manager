@@ -27,7 +27,6 @@ public class AttendanceDAO extends DAO<AttendanceRecord> {
                 resultSet.getInt("lectureId"));
     }
 
-    @Override
     void create(AttendanceRecord attendanceRecord) {
         List<Object> values = Arrays.asList(
                 attendanceRecord.getLectureId(),
@@ -44,7 +43,6 @@ public class AttendanceDAO extends DAO<AttendanceRecord> {
         }
     }
 
-    @Override
     void update(AttendanceRecord attendanceRecord) {
         List<Object> values = Arrays.asList(
                 attendanceRecord.getStatus().toString(),
@@ -61,7 +59,6 @@ public class AttendanceDAO extends DAO<AttendanceRecord> {
         }
     }
 
-    @Override
     void remove(AttendanceRecord attendanceRecord) {
         List<Object> values = Arrays.asList(
                 attendanceRecord.getLectureId(),
