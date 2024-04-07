@@ -17,6 +17,8 @@ public class ServerSideController {
 
     public int validateLogin(int userID, int password) {
         // implement logic to validate login credentials (check database)
+
+        
         int type = 0;
         if (type == 1) {
             this.userID = userID;
