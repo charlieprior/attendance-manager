@@ -10,30 +10,26 @@ public class Course {
      * The name of the Course.
      */
     private final String courseName;
+    private final Integer universityId;
     /**
      * The ID of the Course.
      */
     private Integer courseID;
-
-    public Integer getUniversityId() {
-        return universityId;
-    }
-
-    private Integer universityId;
-
     private List<Section> sections;
-
 
     /**
      * This constructor will create the Course object.
      *
      * @param name is the Course's name.
      */
-    public Course(String name, Integer courseID) {
+    public Course(String name, Integer universityId) {
         this.courseName = name;
-        this.courseID = courseID;
+        this.universityId = universityId;
     }
 
+    public Integer getUniversityId() {
+        return universityId;
+    }
 
     /**
      * @return course name
@@ -49,20 +45,20 @@ public class Course {
         return courseID;
     }
 
-    public void addSection(Section s){
-        this.sections.add(s);
-    }
-
     public void setCourseID(Integer courseID) {
         this.courseID = courseID;
     }
 
-    public void setSections(List<Section> sec){
-        sections = sec;
+    public void addSection(Section s) {
+        this.sections.add(s);
     }
 
-    public List<Section> getSections(){
+    public List<Section> getSections() {
         return sections;
+    }
+
+    public void setSections(List<Section> sec) {
+        sections = sec;
     }
 
 }
