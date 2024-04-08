@@ -73,8 +73,6 @@ public class ServerSideController {
 
     public void handleLogin(Socket clientSocket) throws ClassNotFoundException {
         try {
-            in = new ObjectInputStream(clientSocket.getInputStream());
-            out = new ObjectOutputStream(clientSocket.getOutputStream());
 
             // Receive user ID and password from client
             Password receivePassword = (Password) in.readObject();
@@ -107,6 +105,8 @@ public class ServerSideController {
 
     public void sendConnectionStatus(Socket clientSocket) {
         try {
+            in = new ObjectInputStream(clientSocket.getInputStream());
+            out = new ObjectOutputStream(clientSocket.getOutputStream());
             out.writeObject(1); // Send connection status 1 to client
         } catch (IOException e) {
             e.printStackTrace();

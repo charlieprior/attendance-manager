@@ -6,8 +6,6 @@ package edu.duke.ece651.team2.client;
 import edu.duke.ece651.team2.shared.Password;
 import java.io.*;
 import java.net.*;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 public class App {
 
@@ -145,7 +143,7 @@ public class App {
         in = new ObjectInputStream(socket.getInputStream());
 
         // Read connection status from server
-        int connectionStatus = in.readInt(); // int type
+        int connectionStatus = (int) in.readObject(); // int type
         if (connectionStatus == 1) {
           clientSideView.displayMessage("Connected to server.");
           connected = true;
