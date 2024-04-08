@@ -3,15 +3,20 @@
  */
 package edu.duke.ece651.team2.client;
 
+import edu.duke.ece651.team2.shared.Password;
 import java.io.*;
 import java.net.*;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class App {
 
   private ClientSideController clientSideController;
   private ClientSideView clientSideView;
-  private BufferedReader in;
-  private PrintWriter out;
+  // private BufferedReader in;
+  // private PrintWriter out;
+  private ObjectInputStream in;
+  private ObjectOutputStream out;
   private Socket socket;
   private boolean connected = false;
 
@@ -24,18 +29,21 @@ public class App {
     return receivedMessage.split(delimiter);
   }
 
-  private int login() {
+  private int login() throws ClassNotFoundException {
     boolean loginSuccess = false;
     int userType = 0;
 
     while (!loginSuccess) {
       try {
         String[] credentials = clientSideController.login();
-        out.println(credentials[0]); // Send userID to server
-        out.println(credentials[1]); // Send password to server
+        int userID = Integer.parseInt(credentials[0]);
+        Password input = new Password(userID, credentials[1]);
+        out.writeObject(input); // Send userID & password to server (default send Password object)
+        out.flush(); // Flush the stream to ensure data is sent immediately
 
-        // Read login result from server
-        String[] response = parseMessage(in.readLine(), ":");
+        // Read login result from server (By default, a string object is sent back.Click
+        // to apply)
+        String[] response = parseMessage((String) in.readObject(), ":");
         String choice = response[0];
         String prompt = response[1];
         if (choice.equals("1")) {
@@ -68,10 +76,12 @@ public class App {
           break;
         } else if (choice == 1) {
           // send to server
-          out.println(choice);
+          out.writeInt(choice); // int type
+          out.flush();
         } else if (choice == 2) {
           // send to server
-          out.println(choice);
+          out.writeInt(choice);
+          out.flush();
         }
 
       } catch (IOException e) {
@@ -91,7 +101,8 @@ public class App {
           break;
         }
         // send to server
-        out.println(choice);
+        out.writeInt(choice); // int type
+        out.flush();
         if (choice == 1) {
 
         } else if (choice == 2) {
@@ -108,7 +119,7 @@ public class App {
     }
   }
 
-  public void start() {
+  public void start() throws ClassNotFoundException {
     boolean connected = connectToServer();
     if (connected) {
       int userType = login();
@@ -124,18 +135,20 @@ public class App {
     }
   }
 
-  private boolean connectToServer() {
+  private boolean connectToServer() throws ClassNotFoundException {
 
     while (!connected) {
       try {
         // Connect to the server
         socket = new Socket("localhost", 8088);
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        out = new PrintWriter(socket.getOutputStream(), true);
+        // in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        // out = new PrintWriter(socket.getOutputStream(), true);
+        out = new ObjectOutputStream(socket.getOutputStream());
+        in = new ObjectInputStream(socket.getInputStream());
 
         // Read connection status from server
-        String connectionStatus = in.readLine();
-        if (connectionStatus.equals("1")) {
+        int connectionStatus = in.readInt(); // int type
+        if (connectionStatus == 1) {
           clientSideView.displayMessage("Connected to server.");
           connected = true;
         } else {
@@ -147,6 +160,7 @@ public class App {
             e.printStackTrace();
           }
         }
+
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -155,7 +169,7 @@ public class App {
     return connected;
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws ClassNotFoundException {
     App a = new App();
     a.start();
   }

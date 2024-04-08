@@ -2,12 +2,15 @@ package edu.duke.ece651.team2.server;
 
 import edu.duke.ece651.team2.shared.Password;
 import java.net.Socket;
-import java.io.PrintWriter;
-import java.io.BufferedReader;
+// import java.io.PrintWriter;
+// import java.io.BufferedReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class ServerSideController {
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
     private ServerSideView serverSideView;
     private int user_id;
     private int status; // whether the user is professor of student; // student - 1, faculty - 2, error
@@ -70,23 +73,35 @@ public class ServerSideController {
         return String.join(delimiter, messageArray);
     }
 
-    public void handleLogin(Socket clientSocket) {
+    public void handleLogin(Socket clientSocket) throws ClassNotFoundException {
         try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            // BufferedReader in = new BufferedReader(new
+            // InputStreamReader(clientSocket.getInputStream()));
+            // PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            in = new ObjectInputStream(clientSocket.getInputStream());
+            out = new ObjectOutputStream(clientSocket.getOutputStream());
 
             // Receive user ID and password from client
-            String userID = in.readLine();
-            String password = in.readLine();
-
-            int userIDNum = Integer.parseInt(userID);
-
-            // Validate login credentials and get user type
-            String[] response = validateLogin(userIDNum, password);
-            String message = packageMessage(response, ":"); // Use ":" as the separator
+            Password receivePassword = (Password) in.readObject();
+            // String userID = in.readLine();
+            // String password = in.readLine();
+            if (receivePassword == null) {
+                String[] response = new String[2];
+                response[0] = "0";
+                response[1] = "Invalid input!";
+                String message = packageMessage(response, ":");
+                out.writeObject(message);
+            } else {
+                int userIDNum = receivePassword.getStudentId();
+                String password = receivePassword.getPassword();
+                // Validate login credentials and get user type
+                String[] response = validateLogin(userIDNum, password);
+                String message = packageMessage(response, ":"); // Use ":" as the separator
+                out.writeObject(message);
+            }
 
             // Send login status to client
-            out.println(message);
+            // format
 
             in.close();
             out.close();
@@ -98,8 +113,7 @@ public class ServerSideController {
 
     public void sendConnectionStatus(Socket clientSocket) {
         try {
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-            out.println("1"); // Send connection status "1" to client
+            out.writeObject(1); // Send connection status 1 to client
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -23,7 +23,8 @@ public class ClientHandler implements Runnable {
         this.status = serverSideController.getStatus();
     }
 
-    private void handleFacultyRequest(String request) {
+    private String handleFacultyRequest(String request) {
+        String response = "";
         if (request.equals("1")) {
             // Execute recording attendance
         } else if (request.equals("2")) {
@@ -35,6 +36,7 @@ public class ClientHandler implements Runnable {
         } else {
 
         }
+        return response;
     }
 
     private String handleStudentRequest(String request) {
