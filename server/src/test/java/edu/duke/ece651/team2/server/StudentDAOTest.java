@@ -4,17 +4,44 @@ import edu.duke.ece651.team2.shared.*;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class StudentDAOTest {
     DAOFactory factory = new DAOFactory();
     StudentDAO studentDAO = new StudentDAO(factory);
 
-    // @Test
-    // void testCreate() {
-    // // TODO How do we get 100% coverage here?
-    // Student test = new Student("John Smith", "0", "test@example.com", "John");
-    // studentDAO.create(test);
-    // assertNotNull(test.getStudentID());
-    // }
+    @Test
+    void testCreateRemoveUpdate() {
+        // TODO How do we get 100% coverage of exceptions?
+        Student test = new Student("John Smith", "test@example.com", "John");
+        studentDAO.create(test);
+        assertNotNull(test.getStudentID());
+        assertThrows(IllegalArgumentException.class, () -> studentDAO.create(test));
+
+        test.setLegalName("Mary Jane");
+        studentDAO.update(test);
+
+        studentDAO.remove(test);
+        assertNull(test.getStudentID());
+        assertThrows(IllegalArgumentException.class, () -> studentDAO.remove(test));
+        assertThrows(IllegalArgumentException.class, () -> studentDAO.update(test));
+    }
+
+    @Test
+    void testList() {
+        List<Student> students = studentDAO.list();
+        for(Student student : students) {
+            System.out.println(student.getDisplayName());
+        }
+    }
+
+    @Test
+    void testGet() {
+        Student test = new Student("John Smith", "test@example.com", "John");
+        studentDAO.create(test);
+        Student got = studentDAO.get(test.getStudentID());
+        assertEquals(test, got);
+    }
 }

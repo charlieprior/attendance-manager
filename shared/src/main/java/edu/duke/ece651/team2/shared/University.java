@@ -6,8 +6,6 @@ package edu.duke.ece651.team2.shared;
  * display name of students.
  */
 public class University {
-    // TODO? may add functions: This class will be asked whether it supports to
-    // change the display name
     /**
      * The name of the university.
      */
@@ -15,19 +13,30 @@ public class University {
     /**
      * Whether the university supports changing the display name of students.
      */
-    private final boolean change;
+    private final boolean changeName;
+    // TODO? may add functions: This class will be asked whether it supports to
+    // change the display name
+    private Integer id;
 
     /**
      * Constructs a new University object with the specified name and whether it
      * supports changing the display name of students.
      *
      * @param name   The name of the university.
-     * @param change Whether the university supports changing the display name of
+     * @param changeName Whether the university supports changing the display name of
      *               students.
      */
-    public University(String name, boolean change) {
+    public University(String name, boolean changeName) {
         this.name = name;
-        this.change = change;
+        this.changeName = changeName;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     /**
@@ -46,7 +55,7 @@ public class University {
      * @return Whether the university supports changing the display name of
      *         students.
      */
-    public boolean getSupportChange() {
-        return this.change;
+    public boolean canChangeName() {
+        return this.changeName;
     }
 }
