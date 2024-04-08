@@ -34,6 +34,7 @@ create table javabase.Section
     id           int NOT NULL auto_increment,
     courseId     int NOT NULL,
     instructorId int NOT NULL,
+    name varchar(100) not null,
     primary key (id)
 );
 

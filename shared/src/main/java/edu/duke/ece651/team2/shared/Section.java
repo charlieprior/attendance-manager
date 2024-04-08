@@ -3,50 +3,37 @@ package edu.duke.ece651.team2.shared;
 import java.util.ArrayList;
 
 public class Section {
-    private int SectionID;
-    private Course Course;
-    private Professor Instructor;
-    private String name;//display the name for this Section(not quite the same as Course. Should be CourseName+Section)
+    private final Integer courseId;
+    private final Integer instructorId;
+    private final String name;//display the name for this Section(not quite the same as Course. Should be CourseName+Section)
+    private Integer SectionID;
     private ArrayList<Student> students;
     private ArrayList<Lecture> lectures;
 
-    public Section(Course course, Professor professor, String name){
-        this.Course = course;
-        this.Instructor = professor;
+    public Section(Integer courseId, Integer instructorId, String name){
+        this.courseId = courseId;
+        this.instructorId = instructorId;
         this.name = name;//how to set name, courseName + len(Section) in Course?
-        course.addSection(this);
     }
 
-    public int getSectionID() {
+    public Integer getSectionID() {
         return SectionID;
     }
 
-    public void setSectionID(int sectionID) {
+    public void setSectionID(Integer sectionID) {
         SectionID = sectionID;
     }
 
-    public Course getCourse() {
-        return Course;
+    public Integer getCourseId() {
+        return courseId;
     }
 
-    public Professor getInstructor() {
-        return Instructor;
+    public Integer getInstructorId() {
+        return instructorId;
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setCourse(Course course) {
-        Course = course;
-    }
-
-    public void setInstructor(Professor instructor) {
-        Instructor = instructor;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public ArrayList<Student> getStudents() {
