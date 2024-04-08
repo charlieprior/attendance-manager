@@ -3,98 +3,167 @@
  */
 package edu.duke.ece651.team2.client;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.util.ArrayList;
-
-import edu.duke.ece651.team2.shared.Professor;
-import edu.duke.ece651.team2.shared.Student;
+import java.io.*;
+import java.net.*;
 
 public class App {
 
-  ClientSideController c = new ClientSideController(new BufferedReader(new InputStreamReader(System.in)),System.out);
+  private ClientSideController clientSideController;
+  private ClientSideView clientSideView;
+  private BufferedReader in;
+  private PrintWriter out;
+  private Socket socket;
+  private boolean connected = false;
 
-  public String getMessage() {
-    return "Hello from the client.";
+  public App() {
+    clientSideView = new ClientSideView();
+    clientSideController = new ClientSideController(clientSideView);
   }
 
-  public ArrayList<String> logIn(){
-    ArrayList<String> res = new ArrayList<>();
-    res.add("id");
-    res.add("password");
-    return res;
-  }//can change to protecedInfo class if needed
+  private int login() {
+    boolean loginSuccess = false;
+    int userType = 0;
 
-  public void studentLogInPage(Socket s,ObjectOutputStream out, ObjectInputStream in,Student stu) throws IOException{
-    //send requests to server as student
-    
-    int cmd = c.returnStudentCommand("Welcome STudent.");
-    switch (cmd){
-      case 1:
-        //display section names, show preference. If willing to change, send Section ID and choice to server by another function.
-      case 2:
-        //display sections, get a summary report by this Student ID from server.(also can let summary report be students' attribute)
+    while (!loginSuccess) {
+      try {
+        String[] credentials = clientSideController.login();
+        out.println(credentials[0]); // Send userID to server
+        out.println(credentials[1]); // Send password to server
 
+        // Read login result from server
+        String response = in.readLine();
+        if (response.equals("1")) {
+          userType = 1; // student
+          // clientSideView.displayMessage("Login successful.");
+          loginSuccess = true;
+        } else if (response.equals("2")) {
+          userType = 2; // Faculty
+          loginSuccess = true;
+          // clientSideView.displayMessage("Login successful.");
+        } else {
+          clientSideView.displayMessage("Login failed. Please try again.");
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+    return userType;
+  }
+
+  // Student-specific functionality
+  private void studentFunctionality() {
+    while (true) {
+      try {
+        int choice = clientSideController.studentOperations();
+        if (choice == 3) {
+          // exit
+          disconnectFromServer();
+          break;
+        } else if (choice == 1) {
+          // send to server
+          out.println(choice);
+        } else if (choice == 2) {
+          // send to server
+          out.println(choice);
+        }
+
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
   }
 
-  public void professorLogInPage(Socket s,ObjectOutputStream out, ObjectInputStream in,Professor p){
-    //send requests to server as professor
+  // Professor-specific functionality
+  private void professorFunctionality() {
+    while (true) {
+      try {
+        int choice = clientSideController.professorOperations();
+        if (choice == 5) {
+          // exit
+          disconnectFromServer();
+          break;
+        }
+        // send to server
+        out.println(choice);
+        if (choice == 1) {
 
-    //case 1: add new courses (in a new function)
-    //display all the courses and sections in HashMap<Courses, ArrayList<Sections>>from database sent back by server
-    //choose the section -> send section back -> setProfessor to database
-    
-    //case 2: takeAttendance
-    //display all the courses and sections in HashMap<Courses, ArrayList<Sections>> taught by p.id from database sent back by server
-    //choose the section -> get ArrayList<Student> back -> display  
-    //sent ArrayList<AttendanceStatus> to server and insert to database with a new generated Lecture ID
+        } else if (choice == 2) {
 
-    //case 3: updateAttendance 
-    //display all the courses and sections in HashMap<Courses, ArrayList<Sections>> taught by p.id from database sent back by server
-    //choose the section -> get Lecture List back -> display  
-    //if want a new lecture, repeat 2.3. but server need to set the lecture date to previous day
-    //else select lecture -> get the student list and then choose the students then send the HashMap<Student,AttendanceStatus> back.
+        } else if (choice == 3) {
 
-    //case 4: getSummaryReport
-    //display all the courses and sections in HashMap<Courses, ArrayList<Sections>> taught by p.id from database sent back by server
-    //choose the section -> send section back -> get ArrayList<AttendanceRecordSummary> -> display
-  }
+        } else if (choice == 4) {
 
-  public static void main(String[] args) throws ClassNotFoundException {
-    App a = new App();
-    System.out.println(a.getMessage());
-    for (int i = 0; i < args.length; i++) {
-      System.out.println("args[" + i + "]=" + args[i]);
-    }
-
-    try (Socket socket = new Socket("localhost", 8080);
-        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-        ObjectInputStream in = new ObjectInputStream(socket.getInputStream())){
-
-          int response = -1;
-          while(response==-1){
-            out.writeObject(a.logIn());
-            out.flush();
-            response = in.readInt();
-          }
-          if(response==1){
-            Object obj = in.readObject();
-            Student s = (Student) obj;
-            a.studentLogInPage(socket,out,in,s);
-          }
-          else{
-            Object obj = in.readObject();
-            Professor pro = (Professor) obj;
-            a.professorLogInPage(socket, out, in,pro);
-          }
+        } else if (choice == 5) {
 
         }
-    catch (IOException e){
+
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  public void start() {
+    boolean connected = connectToServer();
+    if (connected) {
+      int userType = login();
+      if (userType == 1) {
+        clientSideView.displayMessage("Student login successful.");
+        studentFunctionality();
+      } else if (userType == 2) {
+        professorFunctionality();
+        clientSideView.displayMessage("Faculty login successful.");
+      } else {
+        clientSideView.displayMessage("Unknown user type.");
+      }
+    }
+  }
+
+  private boolean connectToServer() {
+
+    while (!connected) {
+      try {
+        // Connect to the server
+        socket = new Socket("localhost", 8088);
+        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        out = new PrintWriter(socket.getOutputStream(), true);
+
+        // Read connection status from server
+        String connectionStatus = in.readLine();
+        if (connectionStatus.equals("1")) {
+          clientSideView.displayMessage("Connected to server.");
+          connected = true;
+        } else {
+          clientSideView.displayMessage("Failed to connect to server.");
+          clientSideView.displayMessage("Trying to connect again...");
+          try {
+            Thread.sleep(2000); // Wait for 2 seconds before retrying
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    return connected;
+  }
+
+  public static void main(String[] args) {
+    App a = new App();
+    a.start();
+  }
+
+  // Disconnect from the server
+  public void disconnectFromServer() {
+    try {
+      if (socket != null && !socket.isClosed()) {
+        socket.close();
+        connected = false;
+        clientSideView.displayMessage("Disconnected from the server.");
+      }
+    } catch (IOException e) {
       e.printStackTrace();
     }
   }

@@ -3,71 +3,46 @@
  */
 package edu.duke.ece651.team2.server;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.ArrayList;
-
-import edu.duke.ece651.team2.shared.Professor;
-import edu.duke.ece651.team2.shared.Student;
+import java.io.*;
+import java.net.*;
 
 public class App {
-  public String getMessage() {
-    return "Hello from the server.";
+  private ServerSideView serverSideView;
+  private ServerSideController serverSideController;
+  private ServerSocket serverSocket;
+
+  public App() {
+    serverSideView = new ServerSideView();
+    serverSideController = new ServerSideController(serverSideView);
   }
 
-  public int checkPair(ArrayList<String> pair){
-    return -1;//-1 if not match, 0 faculty 1 student.
-  }
+  public void connectToClients() {
+    try {
+      serverSocket = new ServerSocket(8088);
+      serverSideView.displayMessage("Server started, waiting for client connections...");
 
-  public void studentPage(Socket s,ObjectOutputStream out, ObjectInputStream in, Student stu){
-    //Handle requests sent by students
-  }
+      while (true) {
+        Socket clientSocket = serverSocket.accept();
+        serverSideView.displayMessage("Client connected");
 
-  public void professorPage(Socket s,ObjectOutputStream out, ObjectInputStream in,Professor p){
-    //Handle requests sent by faculty
+        // Send connection status to client
+        serverSideController.sendConnectionStatus(clientSocket);
+
+        // Handle login
+        serverSideController.handleLogin(clientSocket);
+
+        // Create a new thread to handle client requests
+        ClientHandler clientHandler = new ClientHandler(clientSocket, serverSideView, serverSideController);
+        new Thread(clientHandler).start();
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public static void main(String[] args) {
     App a = new App();
-    System.out.println(a.getMessage());
-
-    try (ServerSocket serverSocket = new ServerSocket(8080)){
-      while (true) {
-        try (Socket socket = serverSocket.accept();
-        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-        ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
-          int response = -1;
-          ArrayList<String> keyPair;
-          while(response==-1){
-            Object obj = in.readObject();
-            if(obj.getClass().equals(ArrayList.class)){
-              keyPair = (ArrayList<String>) obj;
-              response = a.checkPair(keyPair);
-              out.writeInt(response);
-              out.flush();
-            }
-          }
-          if(response==0){
-            Professor p = new Professor(null, null);
-            out.writeObject(p); //get a student object by kePair's id 
-            a.professorPage(socket,out,in,p);
-          }
-          else{
-            Student s = new Student(null, null, null);
-            out.writeObject(s); //get a student object by kePair's id 
-            a.studentPage(socket,out,in,s);
-          }
-        }
-        catch (IOException | ClassNotFoundException e) {
-          e.printStackTrace();
-        }
-      }
-    }
-    catch(IOException e){
-      e.printStackTrace();
-    }
+    a.connectToClients();
   }
+
 }
