@@ -78,12 +78,14 @@ project (':client'){
 project(':admin') {
     dependencies {
         implementation project(':shared')
+        implementation project(':server')
 //        testImplementation project(path: ':shared', configuration: "testPkg")
     }
 }
 project(':courseManagement') {
     dependencies {
         implementation project(':shared')
+        implementation project(':server')
 //        testImplementation project(path: ':shared', configuration: "testPkg")
     }
 }
