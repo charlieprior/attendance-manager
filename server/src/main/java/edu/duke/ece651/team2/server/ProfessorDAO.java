@@ -23,7 +23,8 @@ public class ProfessorDAO extends DAO<Professor> {
     Professor map(ResultSet resultSet) throws SQLException {
         Professor professor = new Professor(
                  resultSet.getString("name"),
-                resultSet.getString("email")
+                resultSet.getString("email"),
+                resultSet.getInt("universityId")
         );
         professor.setProfessorID(resultSet.getInt("id"));
         return professor;
@@ -37,12 +38,13 @@ public class ProfessorDAO extends DAO<Professor> {
 
         List<Object> values = Arrays.asList(
                 professor.getName(),
-                professor.getEmail()
+                professor.getEmail(),
+                professor.getUniversityId()
         );
 
         try {
             ResultSet generatedKeys = executeUpdate(daoFactory,
-                    "INSERT INTO Professor (name, email) VALUES (?, ?)",
+                    "INSERT INTO Professor (name, email, universityId) VALUES (?, ?, ?)",
                     values); // TODO Fix
             if (generatedKeys.next()) {
                 professor.setProfessorID(generatedKeys.getInt(1));
@@ -61,12 +63,13 @@ public class ProfessorDAO extends DAO<Professor> {
         List<Object> values = Arrays.asList(
                 professor.getName(),
                 professor.getEmail(),
+                professor.getUniversityId(),
                 professor.getProfessorID()
         );
 
         try {
             executeUpdate(daoFactory,
-                    "UPDATE Professor SET name = ?, email = ? WHERE id = ?",
+                    "UPDATE Professor SET name = ?, email = ?, universityId = ? WHERE id = ?",
                     values); // TODO Fix
         } catch (SQLException e) {
             throw new RuntimeException(e);
