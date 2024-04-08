@@ -10,15 +10,41 @@ public class Student {
     /**
      * The legal name of the student.
      */
-    String legalName;
+    private final String legalName;
+    /**
+     * The email of the student.
+     */
+    private final String email;
+    private final Integer universityId;
     /**
      * The student ID of the student.
      */
     Integer studentID;
     /**
-     * The email of the student.
+     * The display name of the student.
      */
-    String email;
+    String displayName;
+    ArrayList<Section> sections;
+
+    /**
+     * Constructs a new Student object with the specified legal name, student ID,
+     * email, and display name.
+     *
+     * @param legalName   The legal name of the student.
+     * @param id          The student ID of the student.
+     * @param email       The email of the student.
+     * @param displayName The display name of the student.
+     */
+    public Student(String legalName, String email, Integer universityId, String displayName) {
+        this.legalName = legalName;
+        this.email = email;
+        this.universityId = universityId;
+        this.displayName = displayName;
+    }
+
+    public Integer getUniversityId() {
+        return universityId;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -34,43 +60,12 @@ public class Student {
     }
 
     /**
-     * The display name of the student.
-     */
-    String displayName;
-
-    ArrayList<Section> sections;
-
-    /**
-     * Constructs a new Student object with the specified legal name, student ID,
-     * email, and display name.
-     *
-     * @param legalName   The legal name of the student.
-     * @param id          The student ID of the student.
-     * @param email       The email of the student.
-     * @param displayName The display name of the student.
-     */
-    public Student(String legalName,String email, String displayName) {
-        this.legalName = legalName;
-        this.email = email;
-        this.displayName = displayName;
-    }
-
-    /**
      * Get the legal name of the student.
      *
      * @return The legal name of the student.
      */
     public String getLegalName() {
         return legalName;
-    }
-
-    /**
-     * Set the legal name of the student.
-     *
-     * @param legalName The legal name of the student.
-     */
-    public void setLegalName(String legalName) {
-        this.legalName = legalName;
     }
 
     /**
@@ -105,9 +100,6 @@ public class Student {
      *
      * @param email The email of the student.
      */
-    void setEmail(String email) {
-        this.email = email;
-    }
 
     /**
      * Get the display name of the student.
@@ -123,9 +115,6 @@ public class Student {
      *
      * @param displayName The display name of the student.
      */
-    void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
 
     void addSection(Section... sec){
         for(Section s:sec){

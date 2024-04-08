@@ -11,16 +11,16 @@ public class Professor {
     /**
      * The name of the professor.
      */
-    private String name;
+    private final String name;
+    /**
+     * The email address of the professor.
+     */
+    private final String email;
+    private final Integer universityId;
     /**
      * The unique ID of the professor.
      */
     private Integer professorID;
-    /**
-     * The email address of the professor.
-     */
-    private String email;
-    private University university;
     private ArrayList<Section> sections;
 
     /**
@@ -30,9 +30,14 @@ public class Professor {
      * @param name        The name of the professor.
      * @param email       The email address of the professor.
      */
-    public Professor(String name, String email) {
+    public Professor(String name, String email, Integer universityId) {
         this.name = name;
         this.email = email;
+        this.universityId = universityId;
+    }
+
+    public Integer getUniversityId() {
+        return universityId;
     }
 
     @Override
@@ -40,12 +45,12 @@ public class Professor {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Professor professor = (Professor) o;
-        return Objects.equals(name, professor.name) && Objects.equals(professorID, professor.professorID) && Objects.equals(email, professor.email);
+        return Objects.equals(name, professor.name) && Objects.equals(professorID, professor.professorID) && Objects.equals(email, professor.email) && Objects.equals(universityId, professor.universityId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, professorID, email);
+        return Objects.hash(name, professorID, email, universityId);
     }
 
     /**
@@ -56,11 +61,7 @@ public class Professor {
     public String getName() {
         return name;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    
     /**
      * Returns the email address of the professor.
      *
@@ -68,10 +69,6 @@ public class Professor {
      */
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     /**

@@ -22,6 +22,7 @@ public class StudentDAO extends DAO<Student> {
         Student student = new Student(
                 resultSet.getString("legalName"),
                 resultSet.getString("email"),
+                resultSet.getInt("universityId"),
                 resultSet.getString("displayName")
         );
         student.setStudentID(resultSet.getInt("id"));
@@ -37,12 +38,13 @@ public class StudentDAO extends DAO<Student> {
         List<Object> values = Arrays.asList(
                 student.getLegalName(),
                 student.getDisplayName(),
-                student.getEmail()
+                student.getEmail(),
+                student.getUniversityId()
         );
 
         try {
             ResultSet generatedKeys = executeUpdate(daoFactory,
-                    "INSERT INTO Student (legalName, displayName, email) VALUES (?, ?, ?)",
+                    "INSERT INTO Student (legalName, displayName, email, universityId) VALUES (?, ?, ?, ?)",
                     values);
             if (generatedKeys.next()) {
                 student.setStudentID(generatedKeys.getInt(1));
@@ -62,12 +64,15 @@ public class StudentDAO extends DAO<Student> {
                 student.getLegalName(),
                 student.getDisplayName(),
                 student.getEmail(),
+                student.getUniversityId(),
                 student.getStudentID()
         );
 
 
         try {
-            executeUpdate(daoFactory, "UPDATE Student SET legalName = ?, displayName = ?, email = ? WHERE id = ?", values);
+            executeUpdate(daoFactory,
+                    "UPDATE Student SET legalName = ?, displayName = ?, email = ?, universityId = ? WHERE id = ?",
+                    values);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
