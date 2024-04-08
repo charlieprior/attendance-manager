@@ -7,6 +7,7 @@ create table javabase.Student
     legalName   VARCHAR(100)    NOT NULL,
     displayName VARCHAR(100)    NOT NULL,
     email       VARCHAR(100)    NOT NULL,
+    universityId int not null,
     PRIMARY KEY (id)
 ) auto_increment=1;
 
@@ -16,6 +17,7 @@ create table javabase.Professor
     id   int NOT NULL auto_increment,
     name  VARCHAR(100)    NOT NULL,
     email VARCHAR(100)    NOT NULL,
+    universityId int not null,
     PRIMARY KEY (id)
 ) auto_increment=2;
 
