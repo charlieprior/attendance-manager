@@ -35,12 +35,12 @@ public abstract class DAO<T> {
 
     abstract T map(ResultSet resultSet) throws SQLException;
 
-    protected List<T> list(DAOFactory daoFactory, String sql) {
+    protected List<T> list(DAOFactory daoFactory, String sql, List<Object> values) {
         List<T> Ts = new ArrayList<>();
         try (
                 ResultSet resultSet = executeQuery(daoFactory,
                         sql,
-                        new ArrayList<>());
+                        values);
         ) {
             while (resultSet.next()) {
                 Ts.add(map(resultSet));

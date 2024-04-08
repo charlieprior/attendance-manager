@@ -1,6 +1,7 @@
 package edu.duke.ece651.team2.courseManagement.client;
 
 import edu.duke.ece651.team2.shared.Course;
+import edu.duke.ece651.team2.shared.Section;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,6 +27,23 @@ public class CourseManagementController {
         }
     }
 
+
+    private Course getCourse(String prompt) throws IOException {
+        out.println(prompt);
+        listCourses();
+        Integer courseId = Integer.parseInt(reader.readLine());
+        Course course = model.getCourse(courseId);
+        return course;
+    }
+
+    public void listSections(Course c) {
+        for (Section s : model.getSections(c)) {
+            out.println(s.getSectionID() +
+                    ". " +
+                    s.getName());
+        }
+    }
+
     public void addCourse() throws IOException {
         out.println("Please enter the name of the new course:");
         String courseName = reader.readLine();
@@ -34,10 +52,7 @@ public class CourseManagementController {
     }
 
     public void removeCourse() throws IOException {
-        out.println("Please select the course you would like to delete:");
-        listCourses();
-        Integer courseId = Integer.parseInt(reader.readLine());
-        Course course = model.getCourse(courseId);
+        Course course = getCourse("Please select the course you would like to delete:");
         out.println("Are you sure you want to delete course " + course.getName() + "? Y for yes");
         String confirm = reader.readLine();
         if(!confirm.equals("Y")) {
@@ -48,14 +63,13 @@ public class CourseManagementController {
     }
 
     public void updateCourse() throws IOException {
-        out.println("Please select the course you would like to update:");
-        listCourses();
-        Integer courseId = Integer.parseInt(reader.readLine());
-        Course course = model.getCourse(courseId);
+        Course course = getCourse("Please select the course you would like to update:");
         out.println("Please enter the new name for the course");
         String newName = reader.readLine();
         course.setCourseName(newName);
         model.updateCourse(course);
     }
+
+
 
 }

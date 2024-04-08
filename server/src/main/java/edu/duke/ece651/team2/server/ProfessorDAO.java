@@ -1,7 +1,6 @@
 package edu.duke.ece651.team2.server;
 
 import edu.duke.ece651.team2.shared.Professor;
-import edu.duke.ece651.team2.shared.Student;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -98,7 +97,7 @@ public class ProfessorDAO extends DAO<Professor> {
     }
 
     List<Professor> list() {
-        return super.list(daoFactory, "SELECT * FROM Professor ORDER BY id");
+        return super.list(daoFactory, "SELECT * FROM Professor ORDER BY id", new ArrayList<>());
     }
 
     Professor get(Integer id) {

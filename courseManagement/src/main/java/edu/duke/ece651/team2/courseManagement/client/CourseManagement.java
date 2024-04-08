@@ -2,6 +2,7 @@ package edu.duke.ece651.team2.courseManagement.client;
 
 import edu.duke.ece651.team2.server.*;
 import edu.duke.ece651.team2.shared.Course;
+import edu.duke.ece651.team2.shared.Section;
 import edu.duke.ece651.team2.shared.University;
 
 import java.util.List;
@@ -45,6 +46,10 @@ public class CourseManagement {
 
     public void updateCourse(Course course) {
         courseDAO.update(course);
+    }
+
+    public List<Section> getSections(Course course) {
+        return sectionDAO.listSectionsFromCourse(course.getCourseID());
     }
 
 

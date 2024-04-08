@@ -96,7 +96,7 @@ public class StudentDAO extends DAO<Student> {
     }
 
     public List<Student> list() {
-        return super.list(daoFactory, "SELECT * FROM Student ORDER BY id");
+        return super.list(daoFactory, "SELECT * FROM Student ORDER BY id", new ArrayList<>());
     }
 
     public Student get(Integer id) {

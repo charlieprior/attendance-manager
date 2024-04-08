@@ -1,7 +1,6 @@
 package edu.duke.ece651.team2.server;
 
 import edu.duke.ece651.team2.shared.Password;
-import edu.duke.ece651.team2.shared.Student;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -73,7 +72,7 @@ public class PasswordDAO extends DAO<Password> {
     }
 
     public List<Password> list() {
-        return super.list(daoFactory, "SELECT * FROM Passwords ORDER BY studentId");
+        return super.list(daoFactory, "SELECT * FROM Passwords ORDER BY studentId", new ArrayList<>());
     }
 
     public Password get(Integer studentId) {

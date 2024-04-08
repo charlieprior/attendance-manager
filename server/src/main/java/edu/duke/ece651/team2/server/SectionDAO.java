@@ -1,11 +1,10 @@
 package edu.duke.ece651.team2.server;
 
-import edu.duke.ece651.team2.shared.Lecture;
 import edu.duke.ece651.team2.shared.Section;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -85,8 +84,11 @@ public class SectionDAO extends DAO<Section> {
     }
 
     public List<Section> list() {
-        return super.list(daoFactory, "SELECT * FROM Section ORDER BY courseId");
+        return super.list(daoFactory, "SELECT * FROM Section ORDER BY courseId", new ArrayList<>());
     }
 
-    // Not sure what get methods to write
+    public List<Section> listSectionsFromCourse(Integer courseId) {
+        List<Object> values = Collections.singletonList(courseId);
+        return super.list(daoFactory, "SELECT * FROM Section WHERE courseId = ?", values);
+    }
 }
