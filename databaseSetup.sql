@@ -51,6 +51,7 @@ create table javabase.Enrollment
 (
     sectionId int NOT NULL,
     studentId int NOT NULL,
+    notify bool not null,
     primary key (sectionId, studentId)
 );
 
@@ -78,13 +79,4 @@ create table javabase.University
     name       varchar(100)    not null,
     changeName bool            not null,
     primary key (id)
-);
-
-drop table if exists javabase.Notification;
-create table javabase.Notification
-(
-    sectionId  int NOT NULL,
-    studentId int NOT NULL,
-    notify    bool            not null,
-    primary key (sectionId, studentId)
 );

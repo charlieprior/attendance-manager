@@ -18,18 +18,20 @@ public class EnrollmentDAO extends DAO<Enrollment> {
     @Override
     Enrollment map(ResultSet resultSet) throws SQLException {
         return new Enrollment(resultSet.getInt("sectionId"),
-                resultSet.getInt("studentId"));
+                resultSet.getInt("studentId"),
+                resultSet.getBoolean("notify"));
     }
 
     void create(Enrollment enrollment) {
         List<Object> values = Arrays.asList(
                 enrollment.getSectionId(),
-                enrollment.getStudentId()
+                enrollment.getStudentId(),
+                enrollment.isNotify()
         );
 
         try {
             executeUpdate(daoFactory,
-                    "INSERT INTO Enrollment (sectionId, studentId) VALUES (?, ?)",
+                    "INSERT INTO Enrollment (sectionId, studentId, notify) VALUES (?, ?, ?)",
                     values);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -64,12 +66,21 @@ public class EnrollmentDAO extends DAO<Enrollment> {
      * @param studentId
      * @return true if enrolled, false otherwise
      */
-    public boolean check(Integer sectionId, Integer studentId) {
+    public boolean checkEnrolled(Integer sectionId, Integer studentId) {
         List<Object> values = Arrays.asList(
                 sectionId,
                 studentId
         );
         Enrollment result =  super.get(daoFactory, "SELECT * FROM Enrollment WHERE sectionId = ? AND studentId = ?", values);
         return result != null; // true if enrolled, false otherwise
+    }
+
+    public boolean checkNotify(Integer sectionId, Integer studentId) {
+        List<Object> values = Arrays.asList(
+                sectionId,
+                studentId
+        );
+        Enrollment result =  super.get(daoFactory, "SELECT * FROM Enrollment WHERE sectionId = ? AND studentId = ? AND notify = TRUE", values);
+        return result != null; // true if notified, false otherwise
     }
 }
