@@ -35,9 +35,16 @@ public class CourseManagement {
         courseDAO.deleteAll();
     }
 
-    public void removeCourse(Integer id) {
-        Course course = courseDAO.get(id);
+    public void removeCourse(Course course) {
         courseDAO.remove(course);
+    }
+
+    public Course getCourse(Integer id) {
+        return courseDAO.get(id);
+    }
+
+    public void updateCourse(Course course) {
+        courseDAO.update(course);
     }
 
 

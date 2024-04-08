@@ -37,13 +37,25 @@ public class CourseManagementController {
         out.println("Please select the course you would like to delete:");
         listCourses();
         Integer courseId = Integer.parseInt(reader.readLine());
-        out.println("Are you sure you want to delete course number " + courseId + "? Y for yes");
+        Course course = model.getCourse(courseId);
+        out.println("Are you sure you want to delete course " + course.getName() + "? Y for yes");
         String confirm = reader.readLine();
         if(!confirm.equals("Y")) {
             return;
         }
 
-        model.removeCourse(courseId);
+        model.removeCourse(course);
+    }
+
+    public void updateCourse() throws IOException {
+        out.println("Please select the course you would like to update:");
+        listCourses();
+        Integer courseId = Integer.parseInt(reader.readLine());
+        Course course = model.getCourse(courseId);
+        out.println("Please enter the new name for the course");
+        String newName = reader.readLine();
+        course.setCourseName(newName);
+        model.updateCourse(course);
     }
 
 }
