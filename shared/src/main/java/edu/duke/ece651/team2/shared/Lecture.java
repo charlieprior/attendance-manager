@@ -7,7 +7,7 @@ import java.util.Calendar;
  * The Lecture class represents a lecture for a course.
  */
 public class Lecture {
-    private int LectureID;
+    private Integer LectureID;
     private final Integer sectionId;
     private final int year;
     private final int month;
@@ -28,11 +28,11 @@ public class Lecture {
         day = date.getDayOfMonth();
     }
 
-    public int getLectureID() {
+    public Integer getLectureID() {
         return LectureID;
     }
 
-    public void setLectureID(int lectureID) {
+    public void setLectureID(Integer lectureID) {
         LectureID = lectureID;
     }
 
