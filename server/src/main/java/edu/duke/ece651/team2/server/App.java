@@ -16,7 +16,7 @@ public class App {
     serverSideController = new ServerSideController(serverSideView);
   }
 
-  public void connectToClients() {
+  public void connectToClients() throws ClassNotFoundException {
     try {
       serverSocket = new ServerSocket(8088);
       serverSideView.displayMessage("Server started, waiting for client connections...");
@@ -40,7 +40,7 @@ public class App {
     }
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws ClassNotFoundException {
     App a = new App();
     a.connectToClients();
   }
