@@ -1,7 +1,5 @@
 package edu.duke.ece651.team2.server;
 
-import edu.duke.ece651.team2.shared.Student;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,5 +67,16 @@ public abstract class DAO<T> {
         }
 
         return null;
+    }
+
+    protected void deleteAll(DAOFactory daoFactory, String tableName) {
+        List<Object> values = new ArrayList<>();
+        try {
+            executeQuery(daoFactory,
+                    "DELETE FROM " + tableName,
+                    values);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
