@@ -30,15 +30,15 @@ public class ExportFile {
         try {
             FileWriter writer = new FileWriter("export/" + fileName + ".csv"); // path ???
             writer.append(headers + newLine);
-            for (AttendanceRecord r : records) {
-                writer.write(r.getStudent().getStudentID() + separator);
-                writer.write(r.getStudent().getDisplayName() + separator);
-                writer.write(r.getSection().getName()+ separator);
-                writer.write(r.getLecture().getYear()+ separator);
-                writer.write(r.getLecture().getMonth()+ separator);
-                writer.write(r.getLecture().getDay()+ separator);
-                writer.write(r.getStatus() + newLine);
-            }
+            // for (AttendanceRecord r : records) {
+            //     writer.write(r.getStudent().getStudentID() + separator);
+            //     writer.write(r.getStudent().getDisplayName() + separator);
+            //     writer.write(r.getSection().getName()+ separator);
+            //     writer.write(r.getLecture().getYear()+ separator);
+            //     writer.write(r.getLecture().getMonth()+ separator);
+            //     writer.write(r.getLecture().getDay()+ separator);
+            //     writer.write(r.getStatus() + newLine);
+            // }
             System.out.println("Successfully create and write csv");
             writer.close();
         } catch (IOException e) {
