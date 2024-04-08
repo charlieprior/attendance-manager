@@ -33,4 +33,17 @@ public class CourseManagementController {
         model.addCourse(course);
     }
 
+    public void removeCourse() throws IOException {
+        out.println("Please select the course you would like to delete:");
+        listCourses();
+        Integer courseId = Integer.parseInt(reader.readLine());
+        out.println("Are you sure you want to delete course number " + courseId + "? Y for yes");
+        String confirm = reader.readLine();
+        if(!confirm.equals("Y")) {
+            return;
+        }
+
+        model.removeCourse(courseId);
+    }
+
 }
