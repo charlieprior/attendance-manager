@@ -83,4 +83,10 @@ public class SectionDAO extends DAO<Section> {
 
         section.setSectionID(null);
     }
+
+    public List<Section> list() {
+        return super.list(daoFactory, "SELECT * FROM Section ORDER BY courseId");
+    }
+
+    // Not sure what get methods to write
 }
