@@ -13,8 +13,6 @@ public class App {
 
   private ClientSideController clientSideController;
   private ClientSideView clientSideView;
-  // private BufferedReader in;
-  // private PrintWriter out;
   private ObjectInputStream in;
   private ObjectOutputStream out;
   private Socket socket;

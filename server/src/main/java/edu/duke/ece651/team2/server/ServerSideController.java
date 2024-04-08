@@ -2,8 +2,6 @@ package edu.duke.ece651.team2.server;
 
 import edu.duke.ece651.team2.shared.Password;
 import java.net.Socket;
-// import java.io.PrintWriter;
-// import java.io.BufferedReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.IOException;
@@ -75,16 +73,12 @@ public class ServerSideController {
 
     public void handleLogin(Socket clientSocket) throws ClassNotFoundException {
         try {
-            // BufferedReader in = new BufferedReader(new
-            // InputStreamReader(clientSocket.getInputStream()));
-            // PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new ObjectInputStream(clientSocket.getInputStream());
             out = new ObjectOutputStream(clientSocket.getOutputStream());
 
             // Receive user ID and password from client
             Password receivePassword = (Password) in.readObject();
-            // String userID = in.readLine();
-            // String password = in.readLine();
+
             if (receivePassword == null) {
                 String[] response = new String[2];
                 response[0] = "0";

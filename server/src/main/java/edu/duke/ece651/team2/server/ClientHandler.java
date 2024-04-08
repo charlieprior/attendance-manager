@@ -2,11 +2,13 @@ package edu.duke.ece651.team2.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ClientHandler implements Runnable {
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
     private Socket clientSocket;
     private ServerSideView serverSideView;
     private ServerSideController serverSideController;
@@ -54,42 +56,43 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            in = new ObjectInputStream(clientSocket.getInputStream());
+            out = new ObjectOutputStream(clientSocket.getOutputStream());
 
             // Receive client request and process it
-            String request;
-            while ((request = in.readLine()) != null) {
-                // User authentication failed
+            Object request;
+            while (true) {
+                // User authentication fai
+                request = in.readObject();
                 if (userId == -1 || status == -1) {
                     String response = "User authentication failed!";
-                    out.println(response); // Send response back to client
+                    out.writeObject(response); // Send response back to client
                     break;
                 }
 
                 // Process client request using controller
-                if (request.isEmpty()) {
-                    // If it's empty, continue waiting for user input
-                    continue;
-                }
-                if (status == 1) {
-                    // stuent
-                    String response = handleStudentRequest(request);
-                } else if (status == 2) {
-                    // faculty
-                    handleFacultyRequest(request);
+                if (request != null) {
+                    if (status == 1) {
+                        // stuent
+                        // String response = handleStudentRequest(request);
+                    } else if (status == 2) {
+                        // faculty
+                        // handleFacultyRequest(request);
 
-                } else {
-                    String response = "The request is invalid!";
-                    out.println(response);
+                    } else {
+                        String response = "The request is invalid!";
+                        out.writeObject(response);
+                    }
                 }
-
             }
 
             in.close();
             out.close();
             clientSocket.close();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
