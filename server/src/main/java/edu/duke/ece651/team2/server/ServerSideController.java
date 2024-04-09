@@ -103,7 +103,7 @@ public class ServerSideController {
                 String message = packageMessage(response, ":");
                 out.writeObject(message);
             } else {
-                int userIDNum = receivePassword.getStudentId();
+                int userIDNum = receivePassword.getId();
                 String password = receivePassword.getPassword();
                 // Validate login credentials and get user type
                 String[] response = validateLogin(userIDNum, password);

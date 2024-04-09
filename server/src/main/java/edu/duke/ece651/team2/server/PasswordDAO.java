@@ -21,21 +21,23 @@ public class PasswordDAO extends DAO<Password> {
     @Override
     Password map(ResultSet resultSet) throws SQLException {
         Password password = new Password(
-                resultSet.getInt("studentId"), // TODO fix when column is renamed
-                resultSet.getString("password")
+                resultSet.getInt("id"), // TODO fix when column is renamed
+                resultSet.getString("password"),
+                resultSet.getBoolean("isStudent")
         );
         return password;
     }
 
     void create(Password password) {
         List<Object> values = Arrays.asList(
-                password.getStudentId(),
-                password.getPassword()
+                password.getId(),
+                password.getPassword(),
+                password.isStudent()
         );
 
         try {
             executeUpdate(daoFactory,
-                    "INSERT INTO Passwords (studentId, password) VALUES (?, ?)",
+                    "INSERT INTO Passwords (id, password, isStudent) VALUES (?, ?, ?)",
                     values); // TODO Fix
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -45,12 +47,12 @@ public class PasswordDAO extends DAO<Password> {
     void update(Password password) {
         List<Object> values = Arrays.asList(
                 password.getPassword(),
-                password.getStudentId()
+                password.getId()
         );
 
         try {
             executeUpdate(daoFactory,
-                    "UPDATE Passwords SET password = ? WHERE studentId = ?",
+                    "UPDATE Passwords SET password = ? WHERE id = ?",
                     values); // TODO Fix
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -59,12 +61,12 @@ public class PasswordDAO extends DAO<Password> {
 
     void remove(Password password) {
         List<Object> values = Collections.singletonList(
-                password.getStudentId()
+                password.getId()
         );
 
         try {
             executeUpdate(daoFactory,
-                    "DELETE FROM Passwords WHERE studentId = ?",
+                    "DELETE FROM Passwords WHERE id = ?",
                     values); // TODO Fix
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -72,11 +74,11 @@ public class PasswordDAO extends DAO<Password> {
     }
 
     public List<Password> list() {
-        return super.list(daoFactory, "SELECT * FROM Passwords ORDER BY studentId", new ArrayList<>());
+        return super.list(daoFactory, "SELECT * FROM Passwords ORDER BY id", new ArrayList<>());
     }
 
     public Password get(Integer studentId) {
         List<Object> values = Collections.singletonList(studentId);
-        return super.get(daoFactory, "SELECT * FROM Passwords WHERE studentId = ?", values);
+        return super.get(daoFactory, "SELECT * FROM Passwords WHERE id = ?", values);
     }
 }
