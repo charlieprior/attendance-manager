@@ -22,8 +22,7 @@ public class LectureDAO extends DAO<Lecture> {
     Lecture map(ResultSet resultSet) throws SQLException {
         Lecture lecture = new Lecture(
                 resultSet.getInt("sectionId"),
-                resultSet.getDate("date").toLocalDate()
-        );
+                resultSet.getDate("date").toLocalDate());
         lecture.setLectureID(resultSet.getInt("id"));
         return lecture;
     }
@@ -35,8 +34,7 @@ public class LectureDAO extends DAO<Lecture> {
 
         List<Object> values = Arrays.asList(
                 lecture.getSectionId(),
-                new Date(lecture.getYear(), lecture.getMonth(), lecture.getDay())
-        );
+                new Date(lecture.getYear(), lecture.getMonth(), lecture.getDay()));
 
         try {
             ResultSet generatedKeys = executeUpdate(daoFactory,
@@ -55,13 +53,10 @@ public class LectureDAO extends DAO<Lecture> {
             throw new IllegalArgumentException("Lecture object does not exist in database");
         }
 
-
         List<Object> values = Arrays.asList(
                 lecture.getSectionId(),
                 new Date(lecture.getYear(), lecture.getMonth(), lecture.getDay()),
-                lecture.getLectureID()
-        );
-
+                lecture.getLectureID());
 
         try {
             executeUpdate(daoFactory, "UPDATE Lecture SET sectionId = ?, date = ? WHERE id = ?", values);
