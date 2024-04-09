@@ -9,11 +9,9 @@ public class Section {
     private Integer SectionID;
     private ArrayList<Student> students;
     private ArrayList<Lecture> lectures;
-
-    public Section(){}
-
-    public Section(Integer courseId, String name){
+    public Section(Integer courseId, Integer instructorId, String name){
         this.courseId = courseId;
+        this.instructorId = instructorId;
         this.name = name;//how to set name, courseName + len(Section) in Course?
     }
 
@@ -29,16 +27,24 @@ public class Section {
         return courseId;
     }
 
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
+    }
+
     public Integer getInstructorId() {
         return instructorId;
     }
 
-    public void setInstructorID(Integer insInteger){
-        this.instructorId = insInteger;
+    public void setInstructorId(Integer instructorId) {
+        this.instructorId = instructorId;
     }
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public ArrayList<Student> getStudents() {
