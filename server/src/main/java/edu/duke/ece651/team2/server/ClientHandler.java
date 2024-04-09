@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.List;
+
+import edu.duke.ece651.team2.shared.AttendanceStatus;
+import edu.duke.ece651.team2.shared.Section;
 
 public class ClientHandler implements Runnable {
     private ObjectInputStream in;
@@ -25,28 +29,48 @@ public class ClientHandler implements Runnable {
         this.status = serverSideController.getStatus();
     }
 
-    private String handleFacultyRequest(String request) {
-        String response = "";
-        if (request.equals("1")) {
-            // Execute recording attendance
-        } else if (request.equals("2")) {
-            // Execute updating attendance
-        } else if (request.equals("3")) {
-            // Execute exporting student attendance information
-        } else if (request.equals("4")) {
-            // Handle selecting course to teach
-        } else {
-
-        }
-        return response;
+    public void takeAttendance() throws ClassNotFoundException{
+        List<Section> sections = serverSideController.getInstructSection();
+        Section s_chosen = serverSideController.getChosenSection(sections);
+        //To get List of students
+        //TODO
     }
 
-    private String handleStudentRequest(String request) {
+    public void beFaculty() throws ClassNotFoundException{
+        List<Section> sections = serverSideController.getNoFacultySection();
+        Section s_chosen = serverSideController.getChosenSection(sections);
+        serverSideController.setFaculty(s_chosen);
+    }
+
+    private String handleFacultyRequest(Integer request) throws ClassNotFoundException {
+        System.out.println("you are doing:"+request);
         String res = "";
-        if (request.equals("1")) {
+        if (request==1) {
+            // Execute recording attendance
+        } else if (request==2) {
+            // Execute updating attendance
+        } else if (request==3) {
+            // Execute exporting student attendance information
+        } else if (request==4) {
+            // Handle selecting course to teach
+            beFaculty();
+        } else if (request==5){
+            return "break";
+        }
+        else{
+            res = "Invalid request!";
+        }
+        return res;
+    }
+
+    private String handleStudentRequest(Integer request) {
+        String res = "";
+        if (request==1) {
             // Execute setting email preferences
-        } else if (request.equals("2")) {
+        } else if (request==2) {
             // Execute getting attendance report
+        } else if (request==3){
+            return "break";
         } else {
             res = "Invalid request!";
         }
@@ -56,35 +80,41 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         try {
-            in = new ObjectInputStream(clientSocket.getInputStream());
-            out = new ObjectOutputStream(clientSocket.getOutputStream());
+            // in = new ObjectInputStream(clientSocket.getInputStream());
+            // out = new ObjectOutputStream(clientSocket.getOutputStream());
+            in = serverSideController.getObjectInputStream();
+            out = serverSideController.getObjectOutputStream();
 
             // Receive client request and process it
-            Object request;
             while (true) {
-                // User authentication fai
-                request = in.readObject();
-                if (userId == -1 || status == -1) {
-                    String response = "User authentication failed!";
-                    out.writeObject(response); // Send response back to client
-                    break;
-                }
+                // User authentication fail
+                int request = (int) in.readObject();
+                // if (userId == -1 || status == -1) {
+                //     String response = "User authentication failed!";
+                //     out.writeObject(response); // Send response back to client
+                //     break;
+                // }
 
                 // Process client request using controller
-                if (request != null) {
-                    if (status == 1) {
-                        // stuent
-                        // String response = handleStudentRequest(request);
-                    } else if (status == 2) {
-                        // faculty
-                        // handleFacultyRequest(request);
+                if (status == 1) {
+                    // stuent
+                    String response = handleStudentRequest((int)request);
+                    if(response.equals("break")){
+                        System.out.println("The student is leaving.");
+                        break;
+                    }
+                        
+                } else {
+                    // faculty
+                    // handleFacultyRequest(request);
+                    String response = handleFacultyRequest((int)request);
+                    if(response.equals("break")){
+                        System.out.println("The faculty is leaving.");
+                        break;
+                    }
 
-                    } else {
-                        String response = "The request is invalid!";
-                        out.writeObject(response);
                     }
                 }
-            }
 
             in.close();
             out.close();

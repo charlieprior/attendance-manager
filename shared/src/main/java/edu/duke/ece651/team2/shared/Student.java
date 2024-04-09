@@ -8,15 +8,6 @@ import java.util.Objects;
  */
 public class Student {
     /**
-     * The legal name of the student.
-     */
-    private final String legalName;
-    /**
-     * The email of the student.
-     */
-    private final String email;
-    private final Integer universityId;
-    /**
      * The student ID of the student.
      */
     Integer studentID;
@@ -25,6 +16,15 @@ public class Student {
      */
     String displayName;
     ArrayList<Section> sections;
+    /**
+     * The legal name of the student.
+     */
+    private String legalName;
+    /**
+     * The email of the student.
+     */
+    private String email;
+    private Integer universityId;
 
     /**
      * Constructs a new Student object with the specified legal name, student ID,
@@ -44,6 +44,10 @@ public class Student {
 
     public Integer getUniversityId() {
         return universityId;
+    }
+
+    public void setUniversityId(Integer universityId) {
+        this.universityId = universityId;
     }
 
     @Override
@@ -66,6 +70,10 @@ public class Student {
      */
     public String getLegalName() {
         return legalName;
+    }
+
+    public void setLegalName(String legalName) {
+        this.legalName = legalName;
     }
 
     /**
@@ -95,11 +103,9 @@ public class Student {
         return email;
     }
 
-    /**
-     * Set the email of the student.
-     *
-     * @param email The email of the student.
-     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     /**
      * Get the display name of the student.
@@ -108,6 +114,16 @@ public class Student {
      */
     public String getDisplayName() {
         return displayName;
+    }
+
+    /**
+     * Set the email of the student.
+     *
+     * @param email The email of the student.
+     */
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     /**

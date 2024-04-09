@@ -3,9 +3,19 @@
  */
 package edu.duke.ece651.team2.client;
 
+import edu.duke.ece651.team2.shared.AttendanceRecord;
+import edu.duke.ece651.team2.shared.AttendanceStatus;
 import edu.duke.ece651.team2.shared.Password;
+import edu.duke.ece651.team2.shared.Section;
+import edu.duke.ece651.team2.shared.Student;
+
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class App {
 
@@ -15,6 +25,7 @@ public class App {
   private ObjectOutputStream out;
   private Socket socket;
   private boolean connected = false;
+  private ObjectMapper mapper = new ObjectMapper();
 
   public App() {
     clientSideView = new ClientSideView();
@@ -33,13 +44,14 @@ public class App {
       try {
         String[] credentials = clientSideController.login();
         int userID = Integer.parseInt(credentials[0]);
-        Password input = new Password(userID, credentials[1]);
+        String input = mapper.writeValueAsString(new Password(userID, credentials[1]));
         out.writeObject(input); // Send userID & password to server (default send Password object)
         out.flush(); // Flush the stream to ensure data is sent immediately
 
         // Read login result from server (By default, a string object is sent back.Click
         // to apply)
-        String[] response = parseMessage((String) in.readObject(), ":");
+        String res = (String) in.readObject();
+        String[] response = parseMessage(res, ":");
         String choice = response[0];
         String prompt = response[1];
         if (choice.equals("1")) {
@@ -66,17 +78,16 @@ public class App {
     while (true) {
       try {
         int choice = clientSideController.studentOperations();
+        System.out.println(choice);
         if (choice == 3) {
+          out.writeObject(choice); // int type
+          out.flush();
           // exit
           disconnectFromServer();
           break;
-        } else if (choice == 1) {
+        } else{
           // send to server
-          out.writeInt(choice); // int type
-          out.flush();
-        } else if (choice == 2) {
-          // send to server
-          out.writeInt(choice);
+          out.writeObject(choice); // int type
           out.flush();
         }
 
@@ -86,27 +97,81 @@ public class App {
     }
   }
 
+  private Section chooseSection() throws ClassNotFoundException{
+    try {
+      Section[] sections = mapper.readValue((String)in.readObject(), Section[].class);
+      Section chosen = clientSideController.displayAndChooseSection(sections);
+      return chosen;
+
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  private Student[] getStudentsFromSection(Section s) throws ClassNotFoundException{
+    try {
+      out.writeObject(mapper.writeValueAsString(s));
+      out.flush();
+      Student[] students = mapper.readValue((String)in.readObject(), Student[].class);
+      return students;
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  private void takeAttendance() throws ClassNotFoundException{
+    Section s = chooseSection();
+    Student[] students = getStudentsFromSection(s);
+    //TODO::Lecture
+    // List<AttendanceRecord> status = clientSideController.getStudentsStatus(students);
+    // try {
+    //   String json = mapper.writeValueAsString(status);
+    //   out.writeObject(json);
+    // }
+    // catch (IOException e) {
+    //     // TODO Auto-generated catch block
+    //     e.printStackTrace();
+    // }
+  }
+
+  private void beFaculty() throws ClassNotFoundException{
+    Section s = chooseSection();
+    try {
+      out.writeObject(mapper.writeValueAsString(s));
+      out.flush();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
   // Professor-specific functionality
-  private void professorFunctionality() {
+  private void professorFunctionality() throws ClassNotFoundException {
     while (true) {
       try {
         int choice = clientSideController.professorOperations();
         if (choice == 5) {
+          out.writeObject(choice); // int type
+          out.flush();
           // exit
           disconnectFromServer();
           break;
         }
-        // send to server
-        out.writeInt(choice); // int type
-        out.flush();
         if (choice == 1) {
-
+          takeAttendance();
         } else if (choice == 2) {
 
         } else if (choice == 3) {
 
         } else if (choice == 4) {
-
+          System.out.println("choose 4");
+          out.writeObject(choice); // int type
+          out.flush();
+          beFaculty();
         }
 
       } catch (IOException e) {
@@ -122,9 +187,11 @@ public class App {
       if (userType == 1) {
         clientSideView.displayMessage("Student login successful.");
         studentFunctionality();
+        clientSideView.displayMessage("Student leaving successful.");
       } else if (userType == 2) {
-        professorFunctionality();
         clientSideView.displayMessage("Faculty login successful.");
+        professorFunctionality();
+        clientSideView.displayMessage("Faculty leaving successful.");
       } else {
         clientSideView.displayMessage("Unknown user type.");
       }

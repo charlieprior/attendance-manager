@@ -6,7 +6,6 @@ import edu.duke.ece651.team2.shared.Section;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -86,17 +85,8 @@ public class SectionDAO extends DAO<Section> {
     }
 
     public List<Section> list() {
-        return super.list(daoFactory, "SELECT * FROM Section ORDER BY courseId", new ArrayList<>());
+        return super.list(daoFactory, "SELECT * FROM Section ORDER BY courseId");
     }
-
-    public List<Section> noInstructorSection(){
-        return super.list(daoFactory, "SELECT * FROM Section WHERE instructorId IS NULL", new ArrayList<>());
-    }
-
-    public List<Section> list(Integer userID){
-        return super.list(daoFactory, "SELECT * FROM Section WHERE instructorId = "+userID, new ArrayList<>());
-    }
-
 
     // Not sure what get methods to write
 }

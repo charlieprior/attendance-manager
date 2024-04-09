@@ -4,6 +4,8 @@ public class Password {
     Integer studentId;
     String password;
 
+    public Password(){}
+
     public Password(Integer studentId, String password) {
         this.studentId = studentId;
         this.password = password;
