@@ -22,8 +22,7 @@ public class CourseDAO extends DAO<Course> {
     Course map(ResultSet resultSet) throws SQLException {
         Course course = new Course(
                 resultSet.getString("name"),
-                resultSet.getInt("universityId")
-        );
+                resultSet.getInt("universityId"));
         course.setCourseID(resultSet.getInt("id"));
 
         return course;

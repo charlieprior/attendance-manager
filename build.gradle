@@ -75,13 +75,13 @@ project (':client'){
 //        testImplementation project(path: ':shared', configuration: "testPkg")
     }
 }
-project(':admin') {
-    dependencies {
-        implementation project(':shared')
-        implementation project(':server')
-//        testImplementation project(path: ':shared', configuration: "testPkg")
-    }
-}
+// project(':admin') {
+//     dependencies {
+//         implementation project(':shared')
+//         implementation project(':server')
+// //        testImplementation project(path: ':shared', configuration: "testPkg")
+//     }
+// }
 project(':courseManagement') {
     dependencies {
         implementation project(':shared')
@@ -98,32 +98,28 @@ clover {
 }
 
 tasks.register("run-server") {
-    
     dependsOn project('server').getTasksByName('run',false)
     group = 'Run Client/Server'
     description = 'Run the Server'
 }
 
 tasks.register("run-client") {
-    // dependsOn "run-server" // Make run-server first
     dependsOn project('client').getTasksByName('run',false)
     group = 'Run Client/Server'
     description = 'Run the Client'
 }
 
-tasks.register("run-admin") {
-    dependsOn "run-server" // Make run-server first
-    dependsOn project('admin').getTasksByName('run', false)
-    group = 'Run Client/Server'
-    description = 'Run the Admin'
-}
-// tasks.register("run-shared") {
-//     dependsOn project('shared').getTasksByName('run', false)
+// tasks.register("run-admin") {
+//     dependsOn project('admin').getTasksByName('run', false)
 //     group = 'Run Client/Server'
-//     description = 'Run the shared'
+//     description = 'Run the Admin'
 // }
+tasks.register("run-shared") {
+    dependsOn project('shared').getTasksByName('run', false)
+    group = 'Run Client/Server'
+    description = 'Run the shared'
+}
 tasks.register("run-courseManagement") {
-    dependsOn "run-server" // Make run-server first
     dependsOn project('courseManagement').getTasksByName('run', false)
     group = 'Run Client/Server'
     description = 'Run the courseManagement'
@@ -138,7 +134,7 @@ tasks.register("resolveDependencies") {
     dependsOn project('server').getTasksByName('resolveDependencies',false)
     dependsOn project('client').getTasksByName('resolveDependencies',false)
     dependsOn project('shared').getTasksByName('resolveDependencies',false)
-    dependsOn project('admin').getTasksByName('resolveDependencies',false)
+    // dependsOn project('admin').getTasksByName('resolveDependencies',false)
     dependsOn project('courseManagement').getTasksByName('resolveDependencies',false)
     group = 'Build'
     description = 'Resolve/Download Dependencies'

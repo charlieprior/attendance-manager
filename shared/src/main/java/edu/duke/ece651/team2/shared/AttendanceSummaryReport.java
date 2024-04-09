@@ -3,11 +3,14 @@ import java.util.ArrayList;
 
 public class AttendanceSummaryReport {
 
+    private final Section section;
+
     private ArrayList<AttendanceRecord> records;
 
     private float score;
 
-    public AttendanceSummaryReport(ArrayList<AttendanceRecord> rec){
+    public AttendanceSummaryReport(Section section, ArrayList<AttendanceRecord> rec){
+        this.section = section;
         records = rec;
         score = 0;
         for(AttendanceRecord r:rec){
@@ -30,7 +33,7 @@ public class AttendanceSummaryReport {
     }
 
     public Section getSection(){
-        return records.get(0).getSection();
+        return this.section;
     }
 
     public ArrayList<Integer> getLecture(){
