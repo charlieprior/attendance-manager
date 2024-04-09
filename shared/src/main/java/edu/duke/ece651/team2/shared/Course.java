@@ -17,6 +17,7 @@ public class Course {
     private Integer courseID;
     private List<Section> sections;
 
+
     /**
      * This constructor will create the Course object.
      *

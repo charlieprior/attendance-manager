@@ -47,6 +47,7 @@ public abstract class DAO<T> {
             while (resultSet.next()) {
                 Ts.add(map(resultSet));
             }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
