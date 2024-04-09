@@ -11,12 +11,12 @@ public class Professor {
     /**
      * The name of the professor.
      */
-    private final String name;
+    private String name;
     /**
      * The email address of the professor.
      */
-    private final String email;
-    private final Integer universityId;
+    private String email;
+    private Integer universityId;
     /**
      * The unique ID of the professor.
      */
@@ -40,6 +40,10 @@ public class Professor {
         return universityId;
     }
 
+    public void setUniversityId(Integer universityId) {
+        this.universityId = universityId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -61,7 +65,11 @@ public class Professor {
     public String getName() {
         return name;
     }
-    
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     /**
      * Returns the email address of the professor.
      *
@@ -69,6 +77,10 @@ public class Professor {
      */
     public String getEmail() {
         return email;
+    }
+    
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     /**

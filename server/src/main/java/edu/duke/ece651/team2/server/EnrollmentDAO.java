@@ -1,13 +1,11 @@
 package edu.duke.ece651.team2.server;
 
 import edu.duke.ece651.team2.shared.Enrollment;
-import edu.duke.ece651.team2.shared.Student;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class EnrollmentDAO extends DAO<Enrollment> {
@@ -57,7 +55,7 @@ public class EnrollmentDAO extends DAO<Enrollment> {
     }
 
     public List<Enrollment> list() {
-        return super.list(daoFactory, "SELECT * FROM Enrollment ORDER BY sectionId, studentId");
+        return super.list(daoFactory, "SELECT * FROM Enrollment ORDER BY sectionId, studentId", new ArrayList<>());
     }
 
     public List<Enrollment> findEnrollmentsByStudentId(int studentId) {

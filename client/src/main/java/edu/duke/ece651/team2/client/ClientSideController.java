@@ -6,6 +6,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import edu.duke.ece651.team2.shared.*;
 
 public class ClientSideController {
 
@@ -54,7 +55,7 @@ public class ClientSideController {
                 int choice = Integer.parseInt(choiceStr); // Convert the user's input to an integer
 
                 // Handle the user's choice
-                if (choice == 1 && choice == 3 && choice == 2) {
+                if (1 <= choice && choice <= 3) {
                     return choice;
                 } else {
                     clientSideView.displayMessage("Invalid choice. Please try again.");
@@ -80,7 +81,7 @@ public class ClientSideController {
                 int choice = Integer.parseInt(choiceStr); // Convert the user's input to an integer
 
                 // Handle the user's choice
-                if (choice == 1 || choice == 2 || choice == 3 || choice == 4 || choice == 5) {
+                if (1 <= choice && choice <= 5) {
                     return choice;
                 } else {
                     clientSideView.displayMessage("Invalid choice. Please try again.");
@@ -145,4 +146,46 @@ public class ClientSideController {
     // }
     // return returnStudentCommand("wrong input, please type the command again!\n");
     // }
+
+    public Section displayAndChooseSection(Section[] sec) {
+        for (int i = 0; i < sec.length; i++) {
+            clientSideView.displayMessage(i + 1 + sec[i].getName());
+        }
+        int choice = 0;
+        try {
+            while (choice <= 0 || choice > sec.length) {
+                String ans = clientSideView.promptUser("Choose the valid Section");
+                choice = Integer.parseInt(ans);
+            }
+            return sec[choice - 1];
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<AttendanceRecord> getStudentsStatus(Student[] students, Lecture l) {
+        List<AttendanceRecord> records = new ArrayList<>();
+        try {
+
+            for (Student s : students) {
+                String ans = clientSideView
+                        .promptUser("What is the attendance for " + s.getDisplayName() + "? y for Yes");
+                AttendanceStatus status;
+                if (ans.equals("y")) {
+                    status = AttendanceStatus.PRESENT;
+                } else {
+                    status = AttendanceStatus.ABSENT;
+                }
+                records.add(new AttendanceRecord(s.getStudentID(), status, l.getLectureID()));
+            }
+
+            return records;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

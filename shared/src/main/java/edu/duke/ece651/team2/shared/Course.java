@@ -6,18 +6,16 @@ import java.util.List;
  * The Course class represents a course that students can take.
  */
 public class Course {
+    private final Integer universityId;
     /**
      * The name of the Course.
      */
-    private final String courseName;
-    private final Integer universityId;
+    private String courseName;
     /**
      * The ID of the Course.
      */
     private Integer courseID;
     private List<Section> sections;
-
-
     /**
      * This constructor will create the Course object.
      *
@@ -26,6 +24,10 @@ public class Course {
     public Course(String name, Integer universityId) {
         this.courseName = name;
         this.universityId = universityId;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
     public Integer getUniversityId() {

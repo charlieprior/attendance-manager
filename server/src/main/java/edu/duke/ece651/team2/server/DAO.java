@@ -1,7 +1,5 @@
 package edu.duke.ece651.team2.server;
 
-import edu.duke.ece651.team2.shared.Student;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +35,12 @@ public abstract class DAO<T> {
 
     abstract T map(ResultSet resultSet) throws SQLException;
 
-    protected List<T> list(DAOFactory daoFactory, String sql) {
+    protected List<T> list(DAOFactory daoFactory, String sql, List<Object> values) {
         List<T> Ts = new ArrayList<>();
         try (
                 ResultSet resultSet = executeQuery(daoFactory,
                         sql,
-                        new ArrayList<>());
+                        values);
         ) {
             while (resultSet.next()) {
                 Ts.add(map(resultSet));
@@ -70,5 +68,16 @@ public abstract class DAO<T> {
         }
 
         return null;
+    }
+
+    protected void deleteAll(DAOFactory daoFactory, String tableName) {
+        List<Object> values = new ArrayList<>();
+        try {
+            executeQuery(daoFactory,
+                    "DELETE FROM " + tableName,
+                    values);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

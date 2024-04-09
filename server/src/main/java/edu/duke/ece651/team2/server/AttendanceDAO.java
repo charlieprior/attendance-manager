@@ -2,13 +2,11 @@ package edu.duke.ece651.team2.server;
 
 import edu.duke.ece651.team2.shared.AttendanceRecord;
 import edu.duke.ece651.team2.shared.AttendanceStatus;
-import edu.duke.ece651.team2.shared.Student;
-import org.checkerframework.checker.units.qual.A;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class AttendanceDAO extends DAO<AttendanceRecord> {
@@ -75,7 +73,7 @@ public class AttendanceDAO extends DAO<AttendanceRecord> {
     }
 
     public List<AttendanceRecord> list() {
-        return super.list(daoFactory, "SELECT * FROM Attendance ORDER BY lectureId, studentId");
+        return super.list(daoFactory, "SELECT * FROM Attendance ORDER BY lectureId, studentId", new ArrayList<>());
     }
 
     public AttendanceRecord get(Integer lectureId, Integer studentId) {

@@ -1,7 +1,7 @@
 package edu.duke.ece651.team2.server;
 
-import edu.duke.ece651.team2.shared.Professor;
-import edu.duke.ece651.team2.shared.Student;
+import edu.duke.ece651.team2.shared.*;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -9,40 +9,38 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProfessorDAOTest {
+    DAOFactory factory = new DAOFactory();
+    ProfessorDAO professorDAO = new ProfessorDAO(factory);
 
-    // DAOFactory factory = new DAOFactory();
-    // ProfessorDAO professorDAO = new ProfessorDAO(factory);
+    @Test
+    void testCreateRemoveUpdate() {
+        Professor test = new Professor("John Smith", "test@example.com", 0);
+        professorDAO.create(test);
+        assertNotNull(test.getProfessorID());
+        assertThrows(IllegalArgumentException.class, () -> professorDAO.create(test));
 
-    // @Test
-    // void testCreateRemoveUpdate() {
-    //     // TODO How do we get 100% coverage of exceptions?
-    //     Professor test = new Professor("John Doe", "john.doe@duke.edu");
-    //     professorDAO.create(test);
-    //     assertNotNull(test.getProfessorID());
-    //     assertThrows(IllegalArgumentException.class, () -> professorDAO.create(test));
+        test.setName("Mary Jane");
+        professorDAO.update(test);
 
-    //     test.setName("Mary Jane");
-    //     professorDAO.update(test);
+        professorDAO.remove(test);
+        assertNull(test.getProfessorID());
+        assertThrows(IllegalArgumentException.class, () -> professorDAO.remove(test));
+        assertThrows(IllegalArgumentException.class, () -> professorDAO.update(test));
+    }
 
-    //     professorDAO.remove(test);
-    //     assertNull(test.getProfessorID());
-    //     assertThrows(IllegalArgumentException.class, () -> professorDAO.remove(test));
-    //     assertThrows(IllegalArgumentException.class, () -> professorDAO.update(test));
-    // }
+    @Test
+    void testList() {
+        List<Professor> profs = professorDAO.list();
+        for(Professor prof : profs) {
+            System.out.println(prof.getName());
+        }
+    }
 
-    // @Test
-    // void testList() {
-    //     List<Professor> profs = professorDAO.list();
-    //     for(Professor prof : profs) {
-    //         System.out.println(prof.getName());
-    //     }
-    // }
-
-    // @Test
-    // void testGet() {
-    //     Professor test = new Professor("John Doe", "john.doe@duke.edu");
-    //     professorDAO.create(test);
-    //     Professor got = professorDAO.get(test.getProfessorID());
-    //     assertEquals(test, got);
-    // }
+    @Test
+    void testGet() {
+        Professor prof = new Professor("John Smith", "test@example.com", 0);
+        professorDAO.create(prof);
+        Professor got = professorDAO.get(prof.getProfessorID());
+        assertEquals(prof, got);
+    }
 }

@@ -44,7 +44,7 @@ public class StudentDAO extends DAO<Student> {
 
         try {
             ResultSet generatedKeys = executeUpdate(daoFactory,
-                    "INSERT INTO Student (legalName, displayName, email, universityId) VALUES (?, ?, ?, ?)",
+                    "INSERT INTO Users (legalName, displayName, email, universityId, isStudent) VALUES (?, ?, ?, ?, TRUE)",
                     values);
             if (generatedKeys.next()) {
                 student.setStudentID(generatedKeys.getInt(1));
@@ -71,7 +71,7 @@ public class StudentDAO extends DAO<Student> {
 
         try {
             executeUpdate(daoFactory,
-                    "UPDATE Student SET legalName = ?, displayName = ?, email = ?, universityId = ? WHERE id = ?",
+                    "UPDATE Users SET legalName = ?, displayName = ?, email = ?, universityId = ? WHERE id = ?",
                     values);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -87,7 +87,7 @@ public class StudentDAO extends DAO<Student> {
         List<Object> values = Collections.singletonList(student.getStudentID());
 
         try {
-            executeUpdate(daoFactory, "DELETE FROM Student WHERE id = ?", values);
+            executeUpdate(daoFactory, "DELETE FROM Users WHERE id = ?", values);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -96,11 +96,11 @@ public class StudentDAO extends DAO<Student> {
     }
 
     public List<Student> list() {
-        return super.list(daoFactory, "SELECT * FROM Student ORDER BY id");
+        return super.list(daoFactory, "SELECT * FROM Users WHERE isStudent=TRUE ORDER BY id", new ArrayList<>());
     }
 
     public Student get(Integer id) {
         List<Object> values = Collections.singletonList(id);
-        return super.get(daoFactory, "SELECT * FROM Student WHERE id = ?", values);
+        return super.get(daoFactory, "SELECT * FROM Users WHERE id = ?", values);
     }
 }

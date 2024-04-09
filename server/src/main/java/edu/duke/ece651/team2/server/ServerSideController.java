@@ -1,17 +1,23 @@
 package edu.duke.ece651.team2.server;
 
 import edu.duke.ece651.team2.shared.Password;
+import edu.duke.ece651.team2.shared.Section;
+
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.IOException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServerSideController {
     private ObjectInputStream in;
     private ObjectOutputStream out;
     private ServerSideView serverSideView;
+    ObjectMapper mapper = new ObjectMapper();
+    DAOFactory factory = new DAOFactory();
     private int user_id;
     private int status; // whether the user is professor of student; // student - 1, faculty - 2, error
                         // - 0
@@ -30,11 +36,19 @@ public class ServerSideController {
         return status;
     }
 
+    public ObjectInputStream getObjectInputStream() {
+        return in;
+    }
+
+    public ObjectOutputStream getObjectOutputStream() {
+        return out;
+    }
+
     public String[] validateLogin(int userID, String password) {
         // implement logic to validate login credentials (check database)
         // student - 1, faculty - 2, error - 0
         String[] resultStr = new String[2];
-        PasswordDAO passwordDAO = new PasswordDAO(null);
+        PasswordDAO passwordDAO = new PasswordDAO(factory);
         Password result = passwordDAO.get(userID);
 
         // id not found
@@ -77,7 +91,8 @@ public class ServerSideController {
         try {
 
             // Receive user ID and password from client
-            Password receivePassword = (Password) in.readObject();
+            // Password receivePassword = (Password) in.readObject();
+            Password receivePassword = mapper.readValue((String) in.readObject(), Password.class);
 
             if (receivePassword == null) {
                 String[] response = new String[2];
@@ -86,7 +101,7 @@ public class ServerSideController {
                 String message = packageMessage(response, ":");
                 out.writeObject(message);
             } else {
-                int userIDNum = receivePassword.getStudentId();
+                int userIDNum = receivePassword.getId();
                 String password = receivePassword.getPassword();
                 // Validate login credentials and get user type
                 String[] response = validateLogin(userIDNum, password);
@@ -97,9 +112,9 @@ public class ServerSideController {
             // Send login status to client
             // format
 
-            in.close();
-            out.close();
-            clientSocket.close();
+            // in.close();
+            // out.close();
+            // clientSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -113,6 +128,35 @@ public class ServerSideController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Section> getInstructSection() {
+        SectionDAO sectionDAO = new SectionDAO(factory);
+        return sectionDAO.list(user_id);
+    }
+
+    public List<Section> getNoFacultySection() {
+        SectionDAO sectionDAO = new SectionDAO(factory);
+        return sectionDAO.noInstructorSection();
+    }
+
+    public Section getChosenSection(List<Section> s) throws ClassNotFoundException {
+        try {
+            String json = mapper.writeValueAsString(s);
+            out.writeObject(json);
+            Section chosen = mapper.readValue((String) in.readObject(), Section.class);
+            return chosen;
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void setFaculty(Section s) {
+        SectionDAO sectionDAO = new SectionDAO(factory);
+        s.setInstructorID(user_id);
+        sectionDAO.update(s);
     }
 
     public List<String> getCourseSectionList(List<String> sectionNames, List<String> courseNames) {

@@ -86,12 +86,21 @@ public class CourseDAO extends DAO<Course> {
     }
 
     public List<Course> list() {
-        return super.list(daoFactory, "SELECT * FROM Course ORDER BY id");
+        return super.list(daoFactory, "SELECT * FROM Course ORDER BY id", new ArrayList<>());
     }
 
     public Course get(Integer id) {
         List<Object> values = Collections.singletonList(id);
         return super.get(daoFactory, "SELECT * FROM Course WHERE id = ?", values);
+    }
+
+    public List<Course> listByUniversity(Integer universityId) {
+        List<Object> values = Collections.singletonList(universityId);
+        return super.list(daoFactory, "SELECT * FROM Course WHERE universityId = ? ORDER BY id", new ArrayList<>());
+    }
+
+    public void deleteAll() {
+
     }
 
     public Course getCourseByCourseId(int courseId) {

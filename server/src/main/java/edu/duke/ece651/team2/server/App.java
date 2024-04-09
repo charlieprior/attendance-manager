@@ -29,7 +29,9 @@ public class App {
         serverSideController.sendConnectionStatus(clientSocket);
 
         // Handle login
-        serverSideController.handleLogin(clientSocket);
+        while(serverSideController.getStatus()==-1){
+          serverSideController.handleLogin(clientSocket);
+        }
 
         // Create a new thread to handle client requests
         ClientHandler clientHandler = new ClientHandler(clientSocket, serverSideView, serverSideController);

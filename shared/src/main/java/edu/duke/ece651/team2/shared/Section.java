@@ -3,13 +3,12 @@ package edu.duke.ece651.team2.shared;
 import java.util.ArrayList;
 
 public class Section {
-    private final Integer courseId;
-    private final Integer instructorId;
-    private final String name;//display the name for this Section(not quite the same as Course. Should be CourseName+Section)
+    private Integer courseId;
+    private Integer instructorId;
+    private String name;//display the name for this Section(not quite the same as Course. Should be CourseName+Section)
     private Integer SectionID;
     private ArrayList<Student> students;
     private ArrayList<Lecture> lectures;
-
     public Section(Integer courseId, Integer instructorId, String name){
         this.courseId = courseId;
         this.instructorId = instructorId;
@@ -28,12 +27,24 @@ public class Section {
         return courseId;
     }
 
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
+    }
+
     public Integer getInstructorId() {
         return instructorId;
     }
 
+    public void setInstructorId(Integer instructorId) {
+        this.instructorId = instructorId;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public ArrayList<Student> getStudents() {

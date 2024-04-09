@@ -1,25 +1,35 @@
-SET @@auto_increment_increment=2;
-
-drop table if exists javabase.Student;
-create table javabase.Student
+drop table if exists javabase.Users;
+create table javabase.Users
 (
     id          int NOT NULL auto_increment,
     legalName   VARCHAR(100)    NOT NULL,
-    displayName VARCHAR(100)    NOT NULL,
+    displayName VARCHAR(100) NULL,
     email       VARCHAR(100)    NOT NULL,
     universityId int not null,
+    isStudent bool not null,
     PRIMARY KEY (id)
-) auto_increment=1;
+);
 
+drop table if exists javabase.Student;
+# create table javabase.Student
+# (
+#     id          int NOT NULL auto_increment,
+#     legalName   VARCHAR(100)    NOT NULL,
+#     displayName VARCHAR(100)    NOT NULL,
+#     email       VARCHAR(100)    NOT NULL,
+#     universityId int not null,
+#     PRIMARY KEY (id)
+# ) auto_increment=1;
+#
 drop table if exists javabase.Professor;
-create table javabase.Professor
-(
-    id   int NOT NULL auto_increment,
-    name  VARCHAR(100)    NOT NULL,
-    email VARCHAR(100)    NOT NULL,
-    universityId int not null,
-    PRIMARY KEY (id)
-) auto_increment=2;
+# create table javabase.Professor
+# (
+#     id   int NOT NULL auto_increment,
+#     name  VARCHAR(100)    NOT NULL,
+#     email VARCHAR(100)    NOT NULL,
+#     universityId int not null,
+#     PRIMARY KEY (id)
+# ) auto_increment=2;
 
 drop table if exists javabase.Course;
 create table javabase.Course
@@ -35,7 +45,7 @@ create table javabase.Section
 (
     id           int NOT NULL auto_increment,
     courseId     int NOT NULL,
-    instructorId int NOT NULL,
+    instructorId int,
     name varchar(100) not null,
     primary key (id)
 );
@@ -70,9 +80,10 @@ create table javabase.Attendance
 drop table if exists javabase.Passwords;
 create table javabase.Passwords
 (
-    studentId int NOT NULL,
+    id int NOT NULL,
     password  varchar(100)    not null,
-    primary key (studentId)
+    isStudent bool not null,
+    primary key (id)
 );
 
 drop table if exists javabase.University;
