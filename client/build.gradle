@@ -16,6 +16,10 @@ application {
     mainClassName = 'edu.duke.ece651.team2.client.App'
 }
 
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.8.9'
+}
+
 run{
     standardInput = System.in
 }
