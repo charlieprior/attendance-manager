@@ -52,7 +52,7 @@ public class ClientSideController {
                 int choice = Integer.parseInt(choiceStr); // Convert the user's input to an integer
 
                 // Handle the user's choice
-                if (choice == 1 && choice == 3) {
+                if (1<=choice && choice<=3) {
                     return choice;
                 } else {
                     clientSideView.displayMessage("Invalid choice. Please try again.");

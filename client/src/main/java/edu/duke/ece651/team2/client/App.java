@@ -7,6 +7,8 @@ import edu.duke.ece651.team2.shared.Password;
 import java.io.*;
 import java.net.*;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class App {
 
   private ClientSideController clientSideController;
@@ -15,6 +17,7 @@ public class App {
   private ObjectOutputStream out;
   private Socket socket;
   private boolean connected = false;
+  private ObjectMapper mapper = new ObjectMapper();
 
   public App() {
     clientSideView = new ClientSideView();
@@ -33,13 +36,15 @@ public class App {
       try {
         String[] credentials = clientSideController.login();
         int userID = Integer.parseInt(credentials[0]);
-        Password input = new Password(userID, credentials[1]);
+        String input = mapper.writeValueAsString(new Password(userID, credentials[1]));
         out.writeObject(input); // Send userID & password to server (default send Password object)
         out.flush(); // Flush the stream to ensure data is sent immediately
 
         // Read login result from server (By default, a string object is sent back.Click
         // to apply)
-        String[] response = parseMessage((String) in.readObject(), ":");
+        String res = (String) in.readObject();
+        System.out.println(res);
+        String[] response = parseMessage(res, ":");
         String choice = response[0];
         String prompt = response[1];
         if (choice.equals("1")) {
@@ -66,17 +71,16 @@ public class App {
     while (true) {
       try {
         int choice = clientSideController.studentOperations();
+        System.out.println(choice);
         if (choice == 3) {
+          out.writeObject(choice); // int type
+          out.flush();
           // exit
           disconnectFromServer();
           break;
-        } else if (choice == 1) {
+        } else{
           // send to server
-          out.writeInt(choice); // int type
-          out.flush();
-        } else if (choice == 2) {
-          // send to server
-          out.writeInt(choice);
+          out.writeObject(choice); // int type
           out.flush();
         }
 
