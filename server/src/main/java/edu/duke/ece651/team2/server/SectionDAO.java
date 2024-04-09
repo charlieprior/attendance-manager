@@ -16,9 +16,10 @@ public class SectionDAO extends DAO<Section> {
     public SectionDAO(DAOFactory daoFactory) {
         this.daoFactory = daoFactory;
     }
+
     @Override
     Section map(ResultSet resultSet) throws SQLException {
-        Section section =  new Section(resultSet.getInt("courseId"),
+        Section section = new Section(resultSet.getInt("courseId"),
                 resultSet.getInt("instructorId"),
                 resultSet.getString("name"));
         section.setSectionID(resultSet.getInt("id"));
@@ -33,8 +34,7 @@ public class SectionDAO extends DAO<Section> {
         List<Object> values = Arrays.asList(
                 section.getCourseId(),
                 section.getInstructorId(),
-                section.getName()
-        );
+                section.getName());
 
         try {
             ResultSet generatedKeys = executeUpdate(daoFactory,
@@ -53,16 +53,15 @@ public class SectionDAO extends DAO<Section> {
             throw new IllegalArgumentException("Section object does not exist in database");
         }
 
-
         List<Object> values = Arrays.asList(
                 section.getCourseId(),
                 section.getInstructorId(),
                 section.getName(),
-                section.getSectionID()
-        );
+                section.getSectionID());
 
         try {
-            executeUpdate(daoFactory, "UPDATE Section SET courseId = ?, instructorId = ?, name = ? WHERE id = ?", values);
+            executeUpdate(daoFactory, "UPDATE Section SET courseId = ?, instructorId = ?, name = ? WHERE id = ?",
+                    values);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -89,4 +88,11 @@ public class SectionDAO extends DAO<Section> {
     }
 
     // Not sure what get methods to write
+    public Section getBySectionId(int sectionId) {
+
+        List<Object> values = Collections.singletonList(sectionId);
+        return super.get(daoFactory, "SELECT * FROM Section WHERE id = ?", values);
+
+    }
+
 }

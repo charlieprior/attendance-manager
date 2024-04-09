@@ -5,6 +5,7 @@ import edu.duke.ece651.team2.shared.Student;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +16,7 @@ public class EnrollmentDAO extends DAO<Enrollment> {
     public EnrollmentDAO(DAOFactory daoFactory) {
         this.daoFactory = daoFactory;
     }
+
     @Override
     Enrollment map(ResultSet resultSet) throws SQLException {
         return new Enrollment(resultSet.getInt("sectionId"),
@@ -26,8 +28,7 @@ public class EnrollmentDAO extends DAO<Enrollment> {
         List<Object> values = Arrays.asList(
                 enrollment.getSectionId(),
                 enrollment.getStudentId(),
-                enrollment.isNotify()
-        );
+                enrollment.isNotify());
 
         try {
             executeUpdate(daoFactory,
@@ -44,8 +45,7 @@ public class EnrollmentDAO extends DAO<Enrollment> {
     void remove(Enrollment enrollment) {
         List<Object> values = Arrays.asList(
                 enrollment.getSectionId(),
-                enrollment.getStudentId()
-        );
+                enrollment.getStudentId());
 
         try {
             executeUpdate(daoFactory,
@@ -60,6 +60,17 @@ public class EnrollmentDAO extends DAO<Enrollment> {
         return super.list(daoFactory, "SELECT * FROM Enrollment ORDER BY sectionId, studentId");
     }
 
+    public List<Enrollment> findEnrollmentsByStudentId(int studentId) {
+        List<Enrollment> enrollments = new ArrayList<>();
+        try {
+            List<Object> values = Collections.singletonList(studentId);
+            enrollments = super.list(daoFactory, "SELECT * FROM Enrollment WHERE studentId = ?", values);
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find sectionIds by studentId: " + e.getMessage(), e);
+        }
+        return enrollments;
+    }
+
     /**
      *
      * @param sectionId
@@ -69,18 +80,40 @@ public class EnrollmentDAO extends DAO<Enrollment> {
     public boolean checkEnrolled(Integer sectionId, Integer studentId) {
         List<Object> values = Arrays.asList(
                 sectionId,
-                studentId
-        );
-        Enrollment result =  super.get(daoFactory, "SELECT * FROM Enrollment WHERE sectionId = ? AND studentId = ?", values);
+                studentId);
+        Enrollment result = super.get(daoFactory, "SELECT * FROM Enrollment WHERE sectionId = ? AND studentId = ?",
+                values);
         return result != null; // true if enrolled, false otherwise
     }
 
     public boolean checkNotify(Integer sectionId, Integer studentId) {
         List<Object> values = Arrays.asList(
                 sectionId,
-                studentId
-        );
-        Enrollment result =  super.get(daoFactory, "SELECT * FROM Enrollment WHERE sectionId = ? AND studentId = ? AND notify = TRUE", values);
+                studentId);
+        Enrollment result = super.get(daoFactory,
+                "SELECT * FROM Enrollment WHERE sectionId = ? AND studentId = ? AND notify = TRUE", values);
         return result != null; // true if notified, false otherwise
     }
+
+    public void updateNotifyBySectionIdAndStudentId(int sectionId, int studentId) {
+        try {
+            List<Object> values = Arrays.asList(sectionId, studentId);
+            Enrollment enrollment = super.get(daoFactory,
+                    "SELECT * FROM Enrollment WHERE sectionId = ? AND studentId = ?", values);
+
+            if (enrollment != null) {
+                boolean newNotify = !enrollment.isNotify();
+                List<Object> updateValues = Arrays.asList(newNotify, sectionId, studentId);
+                executeUpdate(daoFactory, "UPDATE Enrollment SET notify = ? WHERE sectionId = ? AND studentId = ?",
+                        updateValues);
+            } else {
+                throw new IllegalArgumentException(
+                        "Enrollment not found for sectionId " + sectionId + " and studentId " + studentId);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to update notify for sectionId " + sectionId + " and studentId "
+                    + studentId + ": " + e.getMessage(), e);
+        }
+    }
+
 }

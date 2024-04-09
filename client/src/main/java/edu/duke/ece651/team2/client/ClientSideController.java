@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class ClientSideController {
 
@@ -52,7 +54,7 @@ public class ClientSideController {
                 int choice = Integer.parseInt(choiceStr); // Convert the user's input to an integer
 
                 // Handle the user's choice
-                if (choice == 1 && choice == 3) {
+                if (choice == 1 && choice == 3 && choice == 2) {
                     return choice;
                 } else {
                     clientSideView.displayMessage("Invalid choice. Please try again.");
@@ -87,6 +89,30 @@ public class ClientSideController {
                 clientSideView.displayMessage("Invalid input. Please enter a number.");
             }
         }
+    }
+
+    public String joinEnrolledSectionPreference(List<String> names) throws IOException {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < names.size(); i++) {
+            builder.append((i + 1)).append(". ").append(names.get(i));
+            if (i < names.size() - 1) {
+                builder.append("\n");
+            }
+        }
+        builder.append("Please select (only one): Example 1, 2, 3");
+        String choice = clientSideView.promptUser(builder.toString());
+        return choice;
+    }
+
+    public boolean isValidIntegerInRange(String str, int min, int max) {
+        // Use regular expressions to check whether it is an integer
+        if (!Pattern.matches("\\d+", str)) {
+            return false;
+        }
+
+        int num = Integer.parseInt(str);
+
+        return num >= min && num <= max;
     }
 
     // /**

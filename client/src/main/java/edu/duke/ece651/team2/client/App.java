@@ -6,6 +6,7 @@ package edu.duke.ece651.team2.client;
 import edu.duke.ece651.team2.shared.Password;
 import java.io.*;
 import java.net.*;
+import java.util.List;
 
 public class App {
 
@@ -74,16 +75,131 @@ public class App {
           // send to server
           out.writeInt(choice); // int type
           out.flush();
+          setEmailPreferences();
         } else if (choice == 2) {
           // send to server
           out.writeInt(choice);
           out.flush();
+          getAttendanceReport();
         }
 
       } catch (IOException e) {
         e.printStackTrace();
       }
     }
+  }
+
+  private void receiveAllEnrolledSectionAndSetChoice(int num) {
+    clientSideView.displayMessage(
+        "Below are all the courses you are enrolled in this semester, please select one to set your email preferences.");
+    try {
+      // get from server
+      Object response = in.readObject();
+      if (response instanceof List) {
+        List<String> responseList = (List<String>) response;
+        int len = responseList.size();
+        int resNum = -1;
+        while (true) {
+          String choice = clientSideController.joinEnrolledSectionPreference(responseList);
+          if (clientSideController.isValidIntegerInRange(choice, 1, len)) {
+            resNum = Integer.parseInt(choice);
+            break;
+          } else {
+            clientSideView.displayMessage("Please enter a valid number!");
+          }
+        }
+        out.writeObject(resNum); // send int type
+        if (num == 1) {
+          changeEmailPreferences();
+        } else {
+          receiveReportResult();
+        }
+
+      } else if (response instanceof List) {
+        String errorMessage = (String) response;
+        clientSideView.displayMessage("An error occurred on the server: " + errorMessage);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  // 1. set email preferences
+  private void setEmailPreferences() {
+    receiveAllEnrolledSectionAndSetChoice(1);
+  }
+
+  private void confirmFromServer() {
+    try {
+      Object response = in.readObject();
+      if (response instanceof String) {
+        String responseStr = (String) response;
+        String[] parts = responseStr.split("\\|\\|");
+        String stateCode = parts[0]; // 0/1 0 - error, 1 - success
+        String prompt = parts[1];
+        if (stateCode.equals("0")) {
+          clientSideView.displayMessage(prompt);
+        } else {
+          // success
+          clientSideView.displayMessage(prompt);
+        }
+      } else {
+        clientSideView.displayMessage("Server failed to send a message!");
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void changeEmailPreferences() {
+    clientSideView.displayMessage("Check Course Subscription Status...");
+    try {
+      // get from server
+      Object response = in.readObject();
+      if (response instanceof String) {
+        String responseStr = (String) response;
+        String[] parts = responseStr.split("\\|\\|");
+        String stateCode = parts[0]; // 0/1 0 - error, 1 - success
+        String prompt = parts[1];
+        if (stateCode.equals("0")) {
+          clientSideView.displayMessage(prompt);
+        } else if (stateCode.equals("1")) {
+          int resNum = -1;
+          while (true) {
+            String choice = clientSideView.promptUser(prompt);
+            if (clientSideController.isValidIntegerInRange(choice, 0, 1)) {
+              resNum = Integer.parseInt(choice);
+              break;
+            } else {
+              clientSideView.displayMessage("Please enter a valid number!");
+            }
+          }
+          // client asked to change status
+          if (resNum == 1) {
+            out.writeObject(resNum);
+            out.flush();
+            // receive msg from server
+            confirmFromServer();
+          }
+        } else {
+          clientSideView.displayMessage("Error request!");
+        }
+      } else {
+        clientSideView.displayMessage("Server failed to send a message!");
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  // 2. get attendance report for a course
+  private void getAttendanceReport() {
+    receiveAllEnrolledSectionAndSetChoice(2);
+  }
+
+  private void receiveReportResult() {
+    clientSideView.displayMessage("Pending report...");
+    confirmFromServer();
   }
 
   // Professor-specific functionality

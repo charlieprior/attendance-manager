@@ -2,6 +2,8 @@ package edu.duke.ece651.team2.server;
 
 import edu.duke.ece651.team2.shared.Password;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.IOException;
@@ -111,6 +113,17 @@ public class ServerSideController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<String> getCourseSectionList(List<String> sectionNames, List<String> courseNames) {
+        List<String> res = new ArrayList<>();
+        for (int i = 0; i < sectionNames.size(); i++) {
+            String sectionName = sectionNames.get(i + 1);
+            String courseName = courseNames.get(i);
+            String combined = sectionName + "_" + courseName;
+            res.add(combined);
+        }
+        return res;
     }
 
 }
