@@ -21,7 +21,7 @@ public class ProfessorDAO extends DAO<Professor> {
     @Override
     Professor map(ResultSet resultSet) throws SQLException {
         Professor professor = new Professor(
-                 resultSet.getString("name"),
+                 resultSet.getString("legalName"),
                 resultSet.getString("email"),
                 resultSet.getInt("universityId")
         );
@@ -43,7 +43,7 @@ public class ProfessorDAO extends DAO<Professor> {
 
         try {
             ResultSet generatedKeys = executeUpdate(daoFactory,
-                    "INSERT INTO Users (name, email, universityId, isStudent) VALUES (?, ?, ?, FALSE)",
+                    "INSERT INTO Users (legalName, email, universityId, isStudent) VALUES (?, ?, ?, FALSE)",
                     values); // TODO Fix
             if (generatedKeys.next()) {
                 professor.setProfessorID(generatedKeys.getInt(1));
@@ -68,7 +68,7 @@ public class ProfessorDAO extends DAO<Professor> {
 
         try {
             executeUpdate(daoFactory,
-                    "UPDATE Users SET name = ?, email = ?, universityId = ? WHERE id = ?",
+                    "UPDATE Users SET legalName = ?, email = ?, universityId = ? WHERE id = ?",
                     values); // TODO Fix
         } catch (SQLException e) {
             throw new RuntimeException(e);
