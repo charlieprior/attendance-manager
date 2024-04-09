@@ -3,7 +3,7 @@ create table javabase.Users
 (
     id          int NOT NULL auto_increment,
     legalName   VARCHAR(100)    NOT NULL,
-    displayName VARCHAR(100),
+    displayName VARCHAR(100) NULL,
     email       VARCHAR(100)    NOT NULL,
     universityId int not null,
     isStudent bool not null,
@@ -80,9 +80,10 @@ create table javabase.Attendance
 drop table if exists javabase.Passwords;
 create table javabase.Passwords
 (
-    studentId int NOT NULL,
+    id int NOT NULL,
     password  varchar(100)    not null,
-    primary key (studentId)
+    isStudent bool not null,
+    primary key (id)
 );
 
 drop table if exists javabase.University;
