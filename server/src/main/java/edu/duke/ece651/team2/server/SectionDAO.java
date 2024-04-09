@@ -19,7 +19,6 @@ public class SectionDAO extends DAO<Section> {
     @Override
     Section map(ResultSet resultSet) throws SQLException {
         Section section =  new Section(resultSet.getInt("courseId"),
-                resultSet.getInt("instructorId"),
                 resultSet.getString("name"));
         section.setSectionID(resultSet.getInt("id"));
         return section;
@@ -87,6 +86,15 @@ public class SectionDAO extends DAO<Section> {
     public List<Section> list() {
         return super.list(daoFactory, "SELECT * FROM Section ORDER BY courseId");
     }
+
+    public List<Section> noInstructorSection(){
+        return super.list(daoFactory, "SELECT * FROM Section WHERE instructorId IS NULL");
+    }
+
+    public List<Section> list(Integer userID){
+        return super.list(daoFactory, "SELECT * FROM Section WHERE instructorId = "+userID);
+    }
+
 
     // Not sure what get methods to write
 }

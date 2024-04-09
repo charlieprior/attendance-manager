@@ -1,8 +1,12 @@
 package edu.duke.ece651.team2.server;
 
 import edu.duke.ece651.team2.shared.Password;
-import java.net.Socket;
+import edu.duke.ece651.team2.shared.Section;
 
+import java.net.Socket;
+import java.util.List;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.ObjectInputStream;
@@ -126,6 +130,35 @@ public class ServerSideController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Section> getInstructSection(){
+        SectionDAO sectionDAO = new SectionDAO(factory);
+        return sectionDAO.list(user_id);
+    }
+
+    public List<Section> getNoFacultySection(){
+        SectionDAO sectionDAO = new SectionDAO(factory);
+        return sectionDAO.noInstructorSection();
+    }
+
+    public Section getChosenSection(List<Section> s) throws ClassNotFoundException{
+        try {
+            String json = mapper.writeValueAsString(s);
+            out.writeObject(json);
+            Section chosen = mapper.readValue((String)in.readObject(), Section.class);
+            return chosen;
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void setFaculty(Section s){
+        SectionDAO sectionDAO = new SectionDAO(factory);
+        s.setInstructorID(user_id);
+        sectionDAO.update(s);
     }
 
 }

@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.List;
+
+import edu.duke.ece651.team2.shared.AttendanceStatus;
+import edu.duke.ece651.team2.shared.Section;
 
 public class ClientHandler implements Runnable {
     private ObjectInputStream in;
@@ -25,8 +29,22 @@ public class ClientHandler implements Runnable {
         this.status = serverSideController.getStatus();
     }
 
-    private String handleFacultyRequest(Integer request) {
-        String response = "";
+    public void takeAttendance() throws ClassNotFoundException{
+        List<Section> sections = serverSideController.getInstructSection();
+        Section s_chosen = serverSideController.getChosenSection(sections);
+        //To get List of students
+        //TODO
+    }
+
+    public void beFaculty() throws ClassNotFoundException{
+        List<Section> sections = serverSideController.getNoFacultySection();
+        Section s_chosen = serverSideController.getChosenSection(sections);
+        serverSideController.setFaculty(s_chosen);
+    }
+
+    private String handleFacultyRequest(Integer request) throws ClassNotFoundException {
+        System.out.println("you are doing:"+request);
+        String res = "";
         if (request==1) {
             // Execute recording attendance
         } else if (request==2) {
@@ -35,10 +53,14 @@ public class ClientHandler implements Runnable {
             // Execute exporting student attendance information
         } else if (request==4) {
             // Handle selecting course to teach
-        } else {
-
+            beFaculty();
+        } else if (request==5){
+            return "break";
         }
-        return response;
+        else{
+            res = "Invalid request!";
+        }
+        return res;
     }
 
     private String handleStudentRequest(Integer request) {
@@ -67,7 +89,6 @@ public class ClientHandler implements Runnable {
             while (true) {
                 // User authentication fail
                 int request = (int) in.readObject();
-                System.out.println(request);
                 // if (userId == -1 || status == -1) {
                 //     String response = "User authentication failed!";
                 //     out.writeObject(response); // Send response back to client
