@@ -1,11 +1,10 @@
 package edu.duke.ece651.team2.server;
 
-import edu.duke.ece651.team2.shared.Lecture;
-import edu.duke.ece651.team2.shared.Section;
 import edu.duke.ece651.team2.shared.University;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -81,7 +80,7 @@ public class UniversityDAO extends DAO<University> {
     }
 
     public List<University> list() {
-        return super.list(daoFactory, "SELECT * FROM University ORDER BY id");
+        return super.list(daoFactory, "SELECT * FROM University ORDER BY id", new ArrayList<>());
     }
 
     public University get(Integer id) {
