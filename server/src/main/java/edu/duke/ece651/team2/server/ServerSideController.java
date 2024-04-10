@@ -155,7 +155,7 @@ public class ServerSideController {
 
     public void setFaculty(Section s) {
         SectionDAO sectionDAO = new SectionDAO(factory);
-        s.setInstructorID(user_id);
+        s.setInstructorId(user_id);
         sectionDAO.update(s);
     }
 

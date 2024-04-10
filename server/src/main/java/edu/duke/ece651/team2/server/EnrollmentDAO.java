@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.*;
 
 public class EnrollmentDAO extends DAO<Enrollment> {
     private final DAOFactory daoFactory;
@@ -60,12 +61,8 @@ public class EnrollmentDAO extends DAO<Enrollment> {
 
     public List<Enrollment> findEnrollmentsByStudentId(int studentId) {
         List<Enrollment> enrollments = new ArrayList<>();
-        try {
-            List<Object> values = Collections.singletonList(studentId);
-            enrollments = super.list(daoFactory, "SELECT * FROM Enrollment WHERE studentId = ?", values);
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to find sectionIds by studentId: " + e.getMessage(), e);
-        }
+        List<Object> values = Collections.singletonList(studentId);
+        enrollments = super.list(daoFactory, "SELECT * FROM Enrollment WHERE studentId = ?", values);
         return enrollments;
     }
 

@@ -44,7 +44,8 @@ public class App {
       try {
         String[] credentials = clientSideController.login();
         int userID = Integer.parseInt(credentials[0]);
-        String input = mapper.writeValueAsString(new Password(userID, credentials[1]));
+        // !!!!!!!!! ERROR I set student by default!!!
+        String input = mapper.writeValueAsString(new Password(userID, credentials[1], false));
         out.writeObject(input); // Send userID & password to server (default send Password object)
         out.flush(); // Flush the stream to ensure data is sent immediately
 
