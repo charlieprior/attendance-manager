@@ -106,6 +106,17 @@ public class ClientSideController {
         return choice;
     }
 
+    public void displayAllClassAttendance(List<String> names) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < names.size(); i++) {
+            builder.append((i + 1)).append(". ").append(names.get(i)).append("     ");
+            if ((i + 1) % 4 == 0 && i != names.size() - 1) {
+                builder.append("\n");
+            }
+        }
+        clientSideView.displayMessage(builder.toString());
+    }
+
     public boolean isValidIntegerInRange(String str, int min, int max) {
         // Use regular expressions to check whether it is an integer
         if (!Pattern.matches("\\d+", str)) {
@@ -115,6 +126,52 @@ public class ClientSideController {
         int num = Integer.parseInt(str);
 
         return num >= min && num <= max;
+    }
+
+    public void displayPromptForStudent(int n) {
+        if (n == 1) {
+            clientSideView.displayMessage(
+                    "Below are all the courses you are enrolled in this semester, please select one to set your email preferences.");
+        } else if (n == 2) {
+            clientSideView.displayMessage(
+                    "Below are all the courses you are enrolled in this semester, please select one to get your attendance report.");
+        }
+    }
+
+    public void displayPromptForFacultyGetSections(int n) {
+        if (n == 1) {
+            clientSideView.displayMessage(
+                    "Below are the courses you are teaching this semester, please select a course to record your attendance.");
+        } else if (n == 2) {
+            clientSideView.displayMessage(
+                    "Below are the courses you are teaching this semester, please select a course to update your attendance.");
+        } else if (n == 3) {
+            clientSideView.displayMessage(
+                    "Below are the courses you are teaching this semester, please select a course to export students attendance info.");
+        }
+    }
+
+    public void displayPromptForFacultyGetLectures(int n) {
+        if (n == 1) {
+            clientSideView.displayMessage(
+                    "Below are the lectures you are teaching this semester, please select a course to record your attendance.");
+        } else if (n == 2) {
+            clientSideView.displayMessage(
+                    "Below are the lectures you are teaching this semester, please select a course to update your attendance.");
+        } else if (n == 3) {
+            clientSideView.displayMessage(
+                    "Below are the lectures you are teaching this semester, please select a course to export students attendance info.");
+        }
+    }
+
+    public void displayPromptForFacultyGetConfirm(int n) {
+        if (n == 1) {
+            clientSideView.displayMessage(
+                    "Waiting for an record......");
+        } else if (n == 2) {
+            clientSideView.displayMessage(
+                    "Waiting for an update......");
+        }
     }
 
     // /**
@@ -194,6 +251,14 @@ public class ClientSideController {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(input);
         return matcher.matches();
+    }
+
+    public boolean isValidStringForRecord(String input) {
+        if (input == null || input.length() != 1) {
+            return false;
+        }
+        char ch = input.charAt(0);
+        return ch == 'A' || ch == 'T' || ch == 'P';
     }
 
 }

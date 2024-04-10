@@ -82,18 +82,22 @@ public class App {
         int choice = clientSideController.studentOperations();
         System.out.println(choice);
         if (choice == 3) {
-          out.writeObject(choice); // int type
-          out.flush();
           // exit
+          out.writeObject(mapper.writeValueAsString(choice));
+          out.flush();
           disconnectFromServer();
           break;
-        } else {
-          // send to server
-          out.writeObject(choice); // int type
+        } else if (choice == 2) {
+          // get report
+          out.writeObject(mapper.writeValueAsString(choice)); // int type to String
           out.flush();
           getAttendanceReport();
+        } else if (choice == 1) {
+          // set preferences
+          out.writeObject(mapper.writeValueAsString(choice)); // int type to String
+          out.flush();
+          setEmailPreferences();
         }
-
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -153,42 +157,39 @@ public class App {
     }
   }
 
-  // student helper function (1,2)
   private void receiveAllEnrolledSectionAndSetChoice(int num) {
-    if (num == 1) {
-      clientSideView.displayMessage(
-          "Below are all the courses you are enrolled in this semester, please select one to set your email preferences.");
-    } else if (num == 2) {
-      clientSideView.displayMessage(
-          "Below are all the courses you are enrolled in this semester, please select one to get your attendance report");
-    }
-
+    clientSideController.displayPromptForStudent(num);
     try {
       // get from server
-      Object response = in.readObject();
-      if (response instanceof List) {
-        List<String> responseList = (List<String>) response;
-        int len = responseList.size();
-        int resNum = -1;
-        while (true) {
-          String choice = clientSideController.listSectionCourseName(responseList);
-          if (clientSideController.isValidIntegerInRange(choice, 1, len)) {
-            resNum = Integer.parseInt(choice);
-            break;
+      List<String> responseList = mapper.readValue((String) in.readObject(), new TypeReference<List<String>>() {
+      });
+      if (responseList.isEmpty()) {
+        clientSideView.displayMessage("You haven't taken any classes this semester!");
+        return;
+      } else {
+        if (responseList.get(0).equals("ERROR")) {
+          clientSideView.displayMessage(responseList.get(1));
+          return;
+        } else {
+          int len = responseList.size();
+          int resNum = -1;
+          while (true) {
+            String choice = clientSideController.listSectionCourseName(responseList);
+            if (clientSideController.isValidIntegerInRange(choice, 1, len)) {
+              resNum = Integer.parseInt(choice);
+              break;
+            } else {
+              clientSideView.displayMessage("Please enter a valid number!");
+            }
+          }
+          out.writeObject(mapper.writeValueAsString(resNum)); // send int type to String
+          if (num == 1) {
+            changeEmailPreferences();
           } else {
-            clientSideView.displayMessage("Please enter a valid number!");
+            // num == 2
+            receiveReportResult();
           }
         }
-        out.writeObject(resNum); // send int type
-        if (num == 1) {
-          changeEmailPreferences();
-        } else {
-          receiveReportResult();
-        }
-
-      } else if (response instanceof List) {
-        String errorMessage = (String) response;
-        clientSideView.displayMessage("An error occurred on the server: " + errorMessage);
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -200,12 +201,10 @@ public class App {
     receiveAllEnrolledSectionAndSetChoice(1);
   }
 
-  // student helper function (1,2)
   private void confirmFromServer() {
     try {
-      Object response = in.readObject();
-      if (response instanceof String) {
-        String responseStr = (String) response;
+      String responseStr = mapper.readValue((String) in.readObject(), String.class);
+      if (!responseStr.isEmpty()) {
         String[] parts = responseStr.split("\\|\\|");
         String stateCode = parts[0]; // 0/1 0 - error, 1 - success
         String prompt = parts[1];
@@ -223,14 +222,12 @@ public class App {
     }
   }
 
-  // student helper function (1)
   private void changeEmailPreferences() {
     clientSideView.displayMessage("Check Course Subscription Status...");
     try {
       // get from server
-      Object response = in.readObject();
-      if (response instanceof String) {
-        String responseStr = (String) response;
+      String responseStr = mapper.readValue((String) in.readObject(), String.class);
+      if (!responseStr.isEmpty()) {
         String[] parts = responseStr.split("\\|\\|");
         String stateCode = parts[0]; // 0/1 0 - error, 1 - success
         String prompt = parts[1];
@@ -249,7 +246,7 @@ public class App {
           }
           // client asked to change status
           if (resNum == 1) {
-            out.writeObject(resNum);
+            out.writeObject(mapper.writeValueAsString(resNum));
             out.flush();
             // receive msg from server
             confirmFromServer();
@@ -270,16 +267,13 @@ public class App {
     receiveAllEnrolledSectionAndSetChoice(2);
   }
 
-  // student helper function (2)
   private void receiveReportResult() {
     clientSideView.displayMessage("Pending report...");
     confirmFromServer();
   }
 
-  // faculty helper function (2)
-  private void receiveAttendanceUpdateResult() throws ClassNotFoundException {
-    clientSideView.displayMessage(
-        "Waiting for an update......");
+  private void receiveAttendanceUpdateAndRecordResult(int n) throws ClassNotFoundException {
+    clientSideController.displayPromptForFacultyGetConfirm(n);
     try {
       List<String> response = mapper.readValue((String) in.readObject(), new TypeReference<List<String>>() {
       });
@@ -294,8 +288,51 @@ public class App {
     }
   }
 
+  private void receiveAllStudentInfoByLectureIdForRecord() throws ClassNotFoundException {
+    clientSideView.displayMessage(
+        "Below are all students and their attendance status for this lecture,  please record their attendances in turn.\n");
+    try {
+      List<String> response = mapper.readValue((String) in.readObject(), new TypeReference<List<String>>() {
+      });
+      if (response.get(0).equals("ERROR")) {
+        // handle error (format we set response[0] = "ERROR")
+        clientSideView.displayMessage(response.get(1));
+      } else {
+        int len = response.size();
+        // display all student
+        clientSideController.displayAllClassAttendance(response);
+        // Ask users for input
+        List<Character> inputAttendance = new ArrayList<>();
+        for (int i = 0; i < len; i++) {
+          clientSideView.displayMessage(response.get(i));
+          String choice = "";
+          clientSideView.displayMessage(
+              "You can only input A,T,P (A-absent,P-present,T-tardy), you can only input it once.\n"
+                  + "Please confirm it before entering, otherwise, please select 'update attendance' to modify it.");
+          while (true) {
+            if (clientSideController.isValidStringForRecord(choice)) {
+              break;
+            } else {
+              clientSideView.displayMessage("Please enter a valid input!");
+            }
+          }
+          inputAttendance.add(choice.charAt(0));
+
+        }
+        out.writeObject(mapper.writeValueAsString(inputAttendance)); // send string type e.g. {'A','T','P'...}
+        out.flush();
+
+        // receive from server
+        receiveAttendanceUpdateAndRecordResult(1);
+
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
   // faculty helper function (2)
-  private void receiveAllStudentInfoByLectureId() throws ClassNotFoundException {
+  private void receiveAllStudentInfoByLectureIdForUpdate() throws ClassNotFoundException {
     clientSideView.displayMessage(
         "Below are all students and their attendance status for this lecture, please select one to update your attendance.\n"
             + "Please enter a number and a letter (A-absent, T-tardy, P-present), e.g. for 1. Qianyi(1222) you can enter '1A'.");
@@ -314,12 +351,12 @@ public class App {
           if (clientSideController.isValidStringForAttendance(choice, len)) {
             break;
           } else {
-            clientSideView.displayMessage("Please enter a valid number!");
+            clientSideView.displayMessage("Please enter a valid input!");
           }
         }
         out.writeObject(mapper.writeValueAsString(choice)); // send string type e.g. (1A, 2P, 3T)
         out.flush();
-        receiveAttendanceUpdateResult();
+        receiveAttendanceUpdateAndRecordResult(2);
       }
     } catch (IOException e) {
       e.printStackTrace();
@@ -327,9 +364,8 @@ public class App {
   }
 
   // faculty helper function (2)
-  private void receiveAllLectureBySectionId() throws ClassNotFoundException {
-    clientSideView.displayMessage(
-        "Below are all the lectures for this course, please select one to update your attendance.");
+  private void receiveAllLectureBySectionId(int n) throws ClassNotFoundException {
+    clientSideController.displayPromptForFacultyGetLectures(n);
     try {
       List<String> response = mapper.readValue((String) in.readObject(), new TypeReference<List<String>>() {
       });
@@ -351,7 +387,16 @@ public class App {
         }
         out.writeObject(mapper.writeValueAsString(resNum)); // send int type
         out.flush();
-        receiveAllStudentInfoByLectureId();
+        if (n == 2) {
+          // update
+          receiveAllStudentInfoByLectureIdForUpdate();
+        } else if (n == 1) {
+          // record
+          receiveAllStudentInfoByLectureIdForRecord();
+        } else if (n == 3) {
+          // export
+        }
+
       }
     } catch (IOException e) {
       e.printStackTrace();
@@ -359,9 +404,8 @@ public class App {
   }
 
   // faculty helper function (2)
-  private void receiveAllTakenSectionAndSetChoice() throws ClassNotFoundException {
-    clientSideView.displayMessage(
-        "Below are the courses you are teaching this semester, please select a course to update your attendance.");
+  private void receiveAllTakenSectionAndSendChoice(int n) throws ClassNotFoundException {
+    clientSideController.displayPromptForFacultyGetSections(n);
     try {
       List<String> response = mapper.readValue((String) in.readObject(), new TypeReference<List<String>>() {
       });
@@ -382,7 +426,7 @@ public class App {
           }
         }
         out.writeObject(mapper.writeValueAsString(resNum)); // send int type
-        receiveAllLectureBySectionId();
+        receiveAllLectureBySectionId(n);
       }
     } catch (IOException e) {
       e.printStackTrace();
@@ -395,21 +439,23 @@ public class App {
     // 2. choose a lecture to update
     // 3. choose a student to update
     // 4. change his attendance status
-    receiveAllTakenSectionAndSetChoice();
+    receiveAllTakenSectionAndSendChoice(2);
 
   }
 
   // 3. export student attendance for a lecture
-  private void exportStuentAttendance() {
+  private void exportStuentAttendance() throws ClassNotFoundException {
     // 1. choose a section to export
     // 2. choose a lecture to export
+    receiveAllTakenSectionAndSendChoice(3);
   }
 
   // 1. record attendance for a lecture
-  private void recordAttendance() {
+  private void recordAttendance() throws ClassNotFoundException {
     // 1. choose a section to record
     // 2. choose a lecture to record
     // 3. show all students in turn
+    receiveAllTakenSectionAndSendChoice(1);
   }
 
   // Professor-specific functionality
@@ -423,20 +469,28 @@ public class App {
           // exit
           disconnectFromServer();
           break;
-        }
-        if (choice == 1) {
-          takeAttendance();
+        } else if (choice == 1) {
+          // record attendance
+          out.writeObject(mapper.writeValueAsString(choice)); // int type to String
+          out.flush();
+          recordAttendance();
         } else if (choice == 2) {
+          // update attendance
+          out.writeObject(mapper.writeValueAsString(choice)); // int type to String
+          out.flush();
           updateAttendance();
         } else if (choice == 3) {
-
+          // export file
+          out.writeObject(mapper.writeValueAsString(choice)); // int type to String
+          out.flush();
+          exportStuentAttendance();
         } else if (choice == 4) {
+          // select courses
           System.out.println("choose 4");
-          out.writeObject(choice); // int type
+          out.writeObject(mapper.writeValueAsString(choice));
           out.flush();
           beFaculty();
         }
-
       } catch (IOException e) {
         e.printStackTrace();
       }

@@ -15,5 +15,7 @@ public enum AttendanceStatus {
     /**
      * The student is tardy.
      */
-    TARDY
+    TARDY,
+
+    UNRECORDED
 }

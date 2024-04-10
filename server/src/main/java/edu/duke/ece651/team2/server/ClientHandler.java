@@ -6,12 +6,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.List;
-import java.util.ArrayList;
 import java.util.*;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ClientHandler implements Runnable {
@@ -52,12 +49,13 @@ public class ClientHandler implements Runnable {
         String res = "";
         if (request == 1) {
             // Execute recording attendance
+            handleRecordAttendance();
         } else if (request == 2) {
             // Execute updating attendance
             handleUpdateAttendance();
         } else if (request == 3) {
             // Execute exporting student attendance information
-
+            handleExportAttendanceInfo();
         } else if (request == 4) {
             // Handle selecting course to teach
             beFaculty();
@@ -105,6 +103,8 @@ public class ClientHandler implements Runnable {
                 AttendanceRecord attendanceRecord = new AttendanceRecord(studentId, attendanceStatus, lectureId);
                 attendanceDAO.update(attendanceRecord);
                 resList.add("Updated successfully!");
+                out.writeObject(mapper.writeValueAsString(resList));
+                out.flush();
             }
         } catch (Exception e) {
             try {
@@ -120,7 +120,64 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    private void sendALLStudentsEnrolled(List<Integer> lectureIdList, int sectionId) {
+    private void receiveReocrdAttendanceResult(int lectureId, List<Integer> studentIds) {
+        serverSideView.displayMessage("Waiting for attendance recorded information....");
+        try {
+            List<Character> response = mapper.readValue((String) in.readObject(), new TypeReference<List<Character>>() {
+            });
+            List<String> resList = new ArrayList<>();
+            if (response == null) {
+                resList.add("ERROR");
+                resList.add("Users send an invalid choice!");
+                out.writeObject(mapper.writeValueAsString(resList));
+                out.flush();
+            } else {
+                // confirm that response and studentIds are equal in size
+                for (int i = 0; i < response.size(); i++) {
+                    char status = response.get(i);
+                    int studentId = studentIds.get(i);
+                    AttendanceStatus attendanceStatus;
+                    switch (status) {
+                        case 'A':
+                            attendanceStatus = AttendanceStatus.ABSENT;
+                            break;
+                        case 'T':
+                            attendanceStatus = AttendanceStatus.TARDY;
+                            break;
+                        case 'P':
+                            attendanceStatus = AttendanceStatus.PRESENT;
+                            break;
+                        default:
+                            resList.add("ERROR");
+                            resList.add("Database error: can not get correct attendance status!");
+                            out.writeObject(mapper.writeValueAsString(resList));
+                            out.flush();
+                            return;
+                    }
+                    AttendanceDAO attendanceDAO = new AttendanceDAO(null);
+                    AttendanceRecord attendanceRecord = new AttendanceRecord(studentId, attendanceStatus, lectureId);
+                    attendanceDAO.update(attendanceRecord);
+                }
+                resList.add("Recorded successfully!");
+                out.writeObject(mapper.writeValueAsString(resList));
+                out.flush();
+            }
+        } catch (Exception e) {
+            try {
+                List<String> errorList = new ArrayList<>();
+                // send exception to client
+                errorList.add("ERROR");
+                errorList.add(e.getMessage());
+                out.writeObject(mapper.writeValueAsString(errorList));
+                out.flush();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+    }
+
+    private void sendALLStudentsEnrolled(List<Integer> lectureIdList, int n) {
         serverSideView.displayMessage("Professor's choice of lecture received....");
         try {
             Integer choice = mapper.readValue((String) in.readObject(), Integer.class);
@@ -161,7 +218,15 @@ public class ClientHandler implements Runnable {
                     out.flush();
 
                     // receive string type e.g. (1A, 2P, 3T)
-                    receiveUpdateAttendanceResult(lectureId, studentIds);
+                    if (n == 2) {
+                        // update
+                        receiveUpdateAttendanceResult(lectureId, studentIds);
+                    } else {
+                        // n == 1 & record
+                        receiveReocrdAttendanceResult(lectureId, studentIds);
+
+                    }
+
                 }
             }
         } catch (Exception e) {
@@ -178,8 +243,8 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    private void sendLectureListBySectionId(Map<Integer, String> map)
-            throws JsonParseException, JsonMappingException, ClassNotFoundException, IOException {
+    private void sendLectureListBySectionId(Map<Integer, String> map, int n)
+            throws ClassNotFoundException, IOException {
         // receive choice (int) from client
         serverSideView.displayMessage("Professor's choice of setcion received....");
         try {
@@ -218,7 +283,13 @@ public class ClientHandler implements Runnable {
                     // we don't set name for each lecture.
                     out.writeObject(mapper.writeValueAsString(resList));
                     out.flush();
-                    sendALLStudentsEnrolled(lectureIdList, sectionId);
+                    if (n == 2 || n == 1) {
+                        // update & record
+                        sendALLStudentsEnrolled(lectureIdList, n);
+                    } else {
+                        // n == 3
+                    }
+
                 }
             }
 
@@ -237,7 +308,7 @@ public class ClientHandler implements Runnable {
 
     }
 
-    private void sendAllTeachedSectionNames() {
+    private void sendAllTeachedSectionNames(int n) {
         SectionDAO sectionDAO = new SectionDAO(null);
         try {
             Map<Integer, String> namesWithSectionId = sectionDAO.getCourseAndSectionNamesByInstructorId(userId);
@@ -259,7 +330,7 @@ public class ClientHandler implements Runnable {
             out.writeObject(mapper.writeValueAsString(resList));
             out.flush();
 
-            sendLectureListBySectionId(namesWithSectionId);
+            sendLectureListBySectionId(namesWithSectionId, n);
         } catch (Exception e) {
             try {
                 List<String> errorList = new ArrayList<>();
@@ -276,15 +347,38 @@ public class ClientHandler implements Runnable {
     }
 
     private void handleUpdateAttendance() {
-        sendAllTeachedSectionNames();
+        // 1. send all course and section and get user's choice
+        // 2. send all lecture and get user's choice
+        // 3. send all enrolled students'info and status and get user's choice
+        // 4. return updated successfully
+        sendAllTeachedSectionNames(2);
+    }
+
+    private void handleRecordAttendance() {
+        // 1. send all course and section and get user's choice
+        // 2. send all lecture and get user's choice
+        // 3. send all enrolled students'info and status and get user's all choice
+        // 4. return recorded successfully
+        sendAllTeachedSectionNames(1);
+    }
+
+    private void handleExportAttendanceInfo() {
+        // 1. send all course and section and get user's choice
+        // 2. send all lecture and get user's choice
+        // 3. generate file and send file
+        sendAllTeachedSectionNames(3);
     }
 
     private List<Section> sendAllEnrolledSectionNames() throws IOException {
         EnrollmentDAO enrollmentDAO = new EnrollmentDAO(null);
         try {
             List<Enrollment> enrollments = enrollmentDAO.findEnrollmentsByStudentId(userId);
+            List<String> errorList = new ArrayList<>();
             if (enrollments.isEmpty()) {
-                out.writeObject("You are not enrolled in any classes this semester!");
+                errorList.add("ERROR");
+                errorList.add("You are not enrolled in any classes this semester!");
+                out.writeObject(errorList);
+                out.flush();
             } else {
                 List<String> sectionNames = new ArrayList<>();
                 List<String> courseNames = new ArrayList<>();
@@ -311,15 +405,20 @@ public class ClientHandler implements Runnable {
 
                 }
                 List<String> response = serverSideController.getCourseSectionList(sectionNames, courseNames);
-                out.writeObject(response);
+                out.writeObject(mapper.writeValueAsString(response));
+                out.flush();
                 return sections;
             }
             // out.writeObject(sectionIdResult);
             return null;
         } catch (Exception e) {
+            List<String> errorList = new ArrayList<>();
+            errorList.add("ERROR");
             try {
                 // send exception to client
-                out.writeObject(e.getMessage());
+                errorList.add(e.getMessage());
+                out.writeObject(errorList);
+                out.flush();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -330,19 +429,21 @@ public class ClientHandler implements Runnable {
     private void receiveEmailPreferenceFromClient(int sectionId) {
         // get result from client
         try {
-            Object response = in.readObject();
-            if (response instanceof Integer) {
-                int num = (Integer) response; // 1-change, 0-change
-                if (num == 1) {
+            Integer num = mapper.readValue((String) in.readObject(), Integer.class);
+            if (num != null) {
+                if (num == 1) {// 1-change, 0-change
                     EnrollmentDAO enrollmentDAO = new EnrollmentDAO(null);
                     // write in the db
                     enrollmentDAO.updateNotifyBySectionIdAndStudentId(sectionId, userId);
-                    out.writeObject("1||" + "Update Successfully!");
+                    out.writeObject(mapper.writeValueAsString("1||" + "Update Successfully!"));
+                    out.flush();
                 } else {
-                    out.writeObject("0||" + "Invalid Input from Client!");
+                    out.writeObject(mapper.writeValueAsString("0||" + "Invalid Input from Client!"));
+                    out.flush();
                 }
             } else {
                 out.writeObject("0||" + "Invalid Input from Client!");
+                out.flush();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -354,9 +455,8 @@ public class ClientHandler implements Runnable {
         if (!parseSections.isEmpty()) {
             // get result from client
             try {
-                Object response = in.readObject();
-                if (response instanceof Integer) {
-                    int num = (Integer) response;
+                Integer num = mapper.readValue((String) in.readObject(), Integer.class);
+                if (num != null) {
                     // Default eligible
                     EnrollmentDAO enrollmentDAO = new EnrollmentDAO(null);
                     Integer sectionId = parseSections.get(num - 1).getSectionID();
@@ -364,18 +464,23 @@ public class ClientHandler implements Runnable {
                     String subscriptionStatus = isSubscribed ? "Subscribed" : "Unsubscribed";
                     // send to client
                     // 1 here is valid, 0 is invalid
-                    out.writeObject("1||" + "The current state of the course is: " + subscriptionStatus + "\n"
-                            + "Do you want to change it (change -1, no change -0)");
-
+                    String sendMsg = "1||" + "The current state of the course is: " + subscriptionStatus + "\n"
+                            + "Do you want to change it (change -1, no change -0)";
+                    out.writeObject(mapper.writeValueAsString(sendMsg));
+                    out.flush();
                     // receive msg from client
                     receiveEmailPreferenceFromClient(sectionId);
 
                 } else {
-                    out.writeObject("0||" + "Invalid request format (please input a number)!");
+                    String sendMsg = "0||" + "Invalid request format (please input a number)!";
+                    out.writeObject(mapper.writeValueAsString(sendMsg));
+                    out.flush();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            return;
         }
 
     }
@@ -407,7 +512,6 @@ public class ClientHandler implements Runnable {
         if (request == 1) {
             // Execute setting email preferences
             handleChangeEmailPreference();
-
         } else if (request == 2) {
             // Execute getting attendance report
             handleGetAttendanceReport();
