@@ -70,14 +70,14 @@ public class ServerSideController {
             return resultStr;
         } else {
             // pass verification
-            if (userID % 2 == 1) {
+            if (result.isStudent()) {
                 // studentId is odd
                 resultStr[0] = "1";
                 resultStr[1] = "Welcome to xxx system!";
                 user_id = userID;
                 status = 1;
                 return resultStr;
-            } else if (userID % 2 == 0) {
+            } else {
                 // facultyId is even
                 resultStr[0] = "2";
                 resultStr[1] = "Welcome to xxx system!";
@@ -86,7 +86,6 @@ public class ServerSideController {
                 return resultStr;
             }
         }
-        return resultStr;
     }
 
     public String packageMessage(String[] messageArray, String delimiter) {

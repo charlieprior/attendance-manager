@@ -42,7 +42,7 @@ public class App {
         String[] credentials = clientSideController.login();
         int userID = Integer.parseInt(credentials[0]);
         // !!!!!!!!! ERROR I set student by default!!!
-        String input = mapper.writeValueAsString(new Password(userID, credentials[1], false));
+        String input = mapper.writeValueAsString(new Password(userID, credentials[1]));
         out.writeObject(input); // Send userID & password to server (default send Password object)
         out.flush(); // Flush the stream to ensure data is sent immediately
 
@@ -76,21 +76,20 @@ public class App {
     while (true) {
       try {
         int choice = clientSideController.studentOperations();
-        System.out.println(choice);
         if (choice == 3) {
           // exit
-          out.writeObject(mapper.writeValueAsString(choice));
+          out.writeObject(choice);
           out.flush();
           disconnectFromServer();
           break;
         } else if (choice == 2) {
           // get report
-          out.writeObject(mapper.writeValueAsString(choice)); // int type to String
+          out.writeObject(choice); // int type to String
           out.flush();
           getAttendanceReport();
         } else if (choice == 1) {
           // set preferences
-          out.writeObject(mapper.writeValueAsString(choice)); // int type to String
+          out.writeObject(choice); // int type to String
           out.flush();
           setEmailPreferences();
         }
@@ -484,23 +483,22 @@ public class App {
           break;
         } else if (choice == 1) {
           // record attendance
-          out.writeObject(mapper.writeValueAsString(choice)); // int type to String
+          out.writeObject(choice); // int type to String
           out.flush();
           recordAttendance();
         } else if (choice == 2) {
           // update attendance
-          out.writeObject(mapper.writeValueAsString(choice)); // int type to String
+          out.writeObject(choice); // int type to String
           out.flush();
           updateAttendance();
         } else if (choice == 3) {
           // export file
-          out.writeObject(mapper.writeValueAsString(choice)); // int type to String
+          out.writeObject(choice); // int type to String
           out.flush();
           exportStuentAttendance();
         } else if (choice == 4) {
           // select courses
-          System.out.println("choose 4");
-          out.writeObject(mapper.writeValueAsString(choice));
+          out.writeObject(choice);
           out.flush();
           beFaculty();
         }

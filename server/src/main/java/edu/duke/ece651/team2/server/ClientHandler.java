@@ -550,7 +550,6 @@ public class ClientHandler implements Runnable {
 
                 }
             }
-
             in.close();
             out.close();
             clientSocket.close();
