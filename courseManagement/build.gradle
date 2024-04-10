@@ -16,5 +16,9 @@ application {
     mainClassName = 'edu.duke.ece651.team2.courseManagement.App'
 }
 
+run {
+    standardInput = System.in
+}
+
 
 

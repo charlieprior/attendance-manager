@@ -3,16 +3,32 @@
  */
 package edu.duke.ece651.team2.courseManagement;
 
-public class App {
-  public String getMessage() {
-    return "Hello from the Admin.";
-  }
+import edu.duke.ece651.team2.shared.University;
 
-  public static void main(String[] args) {
-    App a = new App();
-    System.out.println(a.getMessage());
-    for (int i = 0; i < args.length; i++) {
-      System.out.println("args[" + i + "]=" + args[i]);
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class App {
+
+    private final CourseManagementController controller;
+
+    public App(CourseManagementController controller) {
+        this.controller = controller;
     }
-  }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        SelectUniversity select = new SelectUniversity(System.out, input);
+        University university = select.readUniversity();
+        CourseManagement model = new CourseManagement(university);
+        CourseManagementController controller = new CourseManagementController(model, System.out, input);
+
+        App app = new App(controller);
+        app.run();
+    }
+
+    public void run() {
+        controller.listCourses();
+    }
 }

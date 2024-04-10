@@ -99,10 +99,10 @@ public class CourseDAO extends DAO<Course> {
 
     public List<Course> listByUniversity(Integer universityId) {
         List<Object> values = Collections.singletonList(universityId);
-        return super.list(daoFactory, "SELECT * FROM Course WHERE universityId = ? ORDER BY id", new ArrayList<>());
+        return super.list(daoFactory, "SELECT * FROM Course WHERE universityId = ? ORDER BY id", values);
     }
 
     public void deleteAll() {
-
+        super.deleteAll(daoFactory, "Course");
     }
 }
