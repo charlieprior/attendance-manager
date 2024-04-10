@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 public class SectionDAO extends DAO<Section> {
     private final DAOFactory daoFactory;
@@ -88,14 +90,13 @@ public class SectionDAO extends DAO<Section> {
         return super.list(daoFactory, "SELECT * FROM Section ORDER BY courseId", new ArrayList<>());
     }
 
-    public List<Section> noInstructorSection(){
+    public List<Section> noInstructorSection() {
         return super.list(daoFactory, "SELECT * FROM Section WHERE instructorId IS NULL", new ArrayList<>());
     }
 
-    public List<Section> list(Integer userID){
-        return super.list(daoFactory, "SELECT * FROM Section WHERE instructorId = "+userID, new ArrayList<>());
+    public List<Section> list(Integer userID) {
+        return super.list(daoFactory, "SELECT * FROM Section WHERE instructorId = " + userID, new ArrayList<>());
     }
-
 
     // Not sure what get methods to write
     public Section getBySectionId(int sectionId) {
@@ -103,6 +104,30 @@ public class SectionDAO extends DAO<Section> {
         List<Object> values = Collections.singletonList(sectionId);
         return super.get(daoFactory, "SELECT * FROM Section WHERE id = ?", values);
 
+    }
+
+    public Map<Integer, String> getCourseAndSectionNamesByInstructorId(int instructorId) {
+        Map<Integer, String> namesMap = new HashMap<>();
+        String sql = "SELECT s.id AS sectionId, c.name AS courseName, s.name AS sectionName " +
+                "FROM Section s " +
+                "JOIN Course c ON s.courseId = c.id " +
+                "WHERE s.instructorId = ?";
+
+        List<Object> values = new ArrayList<>();
+        values.add(instructorId);
+
+        try (ResultSet resultSet = executeQuery(daoFactory, sql, values)) {
+            while (resultSet.next()) {
+                String combinedName = resultSet.getString("courseName") + " - " +
+                        resultSet.getString("sectionName") + " (Section ID: " +
+                        resultSet.getInt("sectionId") + ")";
+                namesMap.put(resultSet.getInt("sectionId"), combinedName);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return namesMap;
     }
 
 }

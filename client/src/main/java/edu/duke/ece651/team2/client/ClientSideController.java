@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import edu.duke.ece651.team2.shared.*;
 
@@ -92,7 +93,7 @@ public class ClientSideController {
         }
     }
 
-    public String joinEnrolledSectionPreference(List<String> names) throws IOException {
+    public String listSectionCourseName(List<String> names) throws IOException {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < names.size(); i++) {
             builder.append((i + 1)).append(". ").append(names.get(i));
@@ -186,6 +187,13 @@ public class ClientSideController {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public boolean isValidStringForAttendance(String input, int num) {
+        String regex = "^[1-" + num + "][ATP]$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(input);
+        return matcher.matches();
     }
 
 }
