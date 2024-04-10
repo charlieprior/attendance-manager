@@ -399,6 +399,19 @@ public class App {
 
   }
 
+  // 3. export student attendance for a lecture
+  private void exportStuentAttendance() {
+    // 1. choose a section to export
+    // 2. choose a lecture to export
+  }
+
+  // 1. record attendance for a lecture
+  private void recordAttendance() {
+    // 1. choose a section to record
+    // 2. choose a lecture to record
+    // 3. show all students in turn
+  }
+
   // Professor-specific functionality
   private void professorFunctionality() throws ClassNotFoundException {
     while (true) {
