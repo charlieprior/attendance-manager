@@ -94,7 +94,13 @@ public class SectionDAO extends DAO<Section> {
     }
 
     public List<Section> list(Integer userID){
-        return super.list(daoFactory, "SELECT * FROM Section WHERE instructorId = "+userID, new ArrayList<>());
+        List<Object> values = Collections.singletonList(userID);
+        return super.list(daoFactory, "SELECT * FROM Section WHERE instructorId = ?", values);
+    }
+
+    public List<Section> listSectionsFromCourse(Integer courseID) {
+        List<Object> values = Collections.singletonList(courseID);
+        return super.list(daoFactory, "SELECT * FROM Section WHERE courseId = ?", values);
     }
 
 

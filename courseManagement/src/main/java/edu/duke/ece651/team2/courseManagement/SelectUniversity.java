@@ -29,7 +29,7 @@ public class SelectUniversity {
 
     public University readUniversity() throws IOException {
         while(true) {
-            out.println("Please select a university to modify: ");
+            out.println("Please select a university to modify:");
             listUniversities();
 
             try {

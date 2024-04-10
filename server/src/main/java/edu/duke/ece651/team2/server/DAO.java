@@ -73,7 +73,7 @@ public abstract class DAO<T> {
     protected void deleteAll(DAOFactory daoFactory, String tableName) {
         List<Object> values = new ArrayList<>();
         try {
-            executeQuery(daoFactory,
+            executeUpdate(daoFactory,
                     "DELETE FROM " + tableName,
                     values);
         } catch (SQLException e) {
