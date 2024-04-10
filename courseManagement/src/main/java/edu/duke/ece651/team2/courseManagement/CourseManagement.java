@@ -1,4 +1,4 @@
-package edu.duke.ece651.team2.courseManagement.client;
+package edu.duke.ece651.team2.courseManagement;
 
 import edu.duke.ece651.team2.server.*;
 import edu.duke.ece651.team2.shared.Course;

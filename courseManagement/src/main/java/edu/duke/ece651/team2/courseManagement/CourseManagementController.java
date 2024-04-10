@@ -1,5 +1,6 @@
-package edu.duke.ece651.team2.courseManagement.client;
+package edu.duke.ece651.team2.courseManagement;
 
+import edu.duke.ece651.team2.courseManagement.CourseManagement;
 import edu.duke.ece651.team2.shared.Course;
 import edu.duke.ece651.team2.shared.Section;
 

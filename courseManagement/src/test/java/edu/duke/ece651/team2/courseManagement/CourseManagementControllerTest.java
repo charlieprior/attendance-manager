@@ -1,7 +1,8 @@
-package edu.duke.ece651.team2.courseManagement.client;
+package edu.duke.ece651.team2.courseManagement;
 
+import edu.duke.ece651.team2.courseManagement.CourseManagement;
+import edu.duke.ece651.team2.courseManagement.CourseManagementController;
 import edu.duke.ece651.team2.shared.University;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
