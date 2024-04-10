@@ -17,9 +17,7 @@ public abstract class DAO<T> {
         PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
         DAO.setStatementObjects(statement, values);
-        if (statement.executeUpdate() == 0) {
-            throw new RuntimeException("Execution failed: " + statement);
-        }
+        statement.executeUpdate();
 
         return statement.getGeneratedKeys();
     }

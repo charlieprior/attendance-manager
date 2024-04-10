@@ -28,7 +28,13 @@ public class App {
         app.run();
     }
 
-    public void run() {
-        controller.listCourses();
+    public void run() throws IOException {
+        while(!controller.isShouldExit()) {
+            try {
+                controller.chooseOption();
+            } catch (IllegalArgumentException e) {
+                controller.invalidSelection();
+            }
+        }
     }
 }
