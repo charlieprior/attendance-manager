@@ -1,8 +1,6 @@
 package edu.duke.ece651.team2.client;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -10,28 +8,6 @@ import java.util.regex.Pattern;
 import edu.duke.ece651.team2.shared.*;
 
 public class ClientSideController {
-
-    // /**
-    // * The BufferedReader used to read input from the user.
-    // */
-    // private final BufferedReader reader;
-    // /**
-    // * The PrintStream used to write output to the user.
-    // */
-    // private final PrintStream out;
-
-    // /**
-    // * Constructs a new TextUserController object with the specified
-    // BufferedReader
-    // * and PrintStream.
-    // *
-    // * @param reader The BufferedReader used to read input from the user.
-    // * @param out The PrintStream used to write output to the user.
-    // */
-    // // public ClientSideController(BufferedReader reader, PrintStream out) {
-    // // this.reader = reader;
-    // // this.out = out;
-    // // }
     private ClientSideView clientSideView;
 
     public ClientSideController(ClientSideView clientSideView) {

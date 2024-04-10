@@ -2,6 +2,8 @@ package edu.duke.ece651.team2.server;
 
 import edu.duke.ece651.team2.shared.*;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -73,10 +75,7 @@ public class ClientHandler implements Runnable {
             String choice = mapper.readValue((String) in.readObject(), String.class);
             List<String> resList = new ArrayList<>();
             if (choice == null) {
-                resList.add("ERROR");
-                resList.add("Users send an invalid choice!");
-                out.writeObject(mapper.writeValueAsString(resList));
-                out.flush();
+                throw new IllegalStateException("Users send an invalid choice!");
             } else {
                 int num = Character.getNumericValue(choice.charAt(0));
                 char status = choice.charAt(1);
@@ -93,11 +92,7 @@ public class ClientHandler implements Runnable {
                         attendanceStatus = AttendanceStatus.PRESENT;
                         break;
                     default:
-                        resList.add("ERROR");
-                        resList.add("Database error: can not get correct attendance status!");
-                        out.writeObject(mapper.writeValueAsString(resList));
-                        out.flush();
-                        return;
+                        throw new IllegalStateException("Database error: can not get correct attendance status!");
                 }
                 AttendanceDAO attendanceDAO = new AttendanceDAO(null);
                 AttendanceRecord attendanceRecord = new AttendanceRecord(studentId, attendanceStatus, lectureId);
@@ -127,10 +122,7 @@ public class ClientHandler implements Runnable {
             });
             List<String> resList = new ArrayList<>();
             if (response == null) {
-                resList.add("ERROR");
-                resList.add("Users send an invalid choice!");
-                out.writeObject(mapper.writeValueAsString(resList));
-                out.flush();
+                throw new IllegalStateException("Users send an invalid choice!");
             } else {
                 // confirm that response and studentIds are equal in size
                 for (int i = 0; i < response.size(); i++) {
@@ -148,11 +140,7 @@ public class ClientHandler implements Runnable {
                             attendanceStatus = AttendanceStatus.PRESENT;
                             break;
                         default:
-                            resList.add("ERROR");
-                            resList.add("Database error: can not get correct attendance status!");
-                            out.writeObject(mapper.writeValueAsString(resList));
-                            out.flush();
-                            return;
+                            throw new IllegalStateException("Database error: can not get correct attendance status!");
                     }
                     AttendanceDAO attendanceDAO = new AttendanceDAO(null);
                     AttendanceRecord attendanceRecord = new AttendanceRecord(studentId, attendanceStatus, lectureId);
@@ -183,28 +171,15 @@ public class ClientHandler implements Runnable {
             Integer choice = mapper.readValue((String) in.readObject(), Integer.class);
             List<String> resList = new ArrayList<>();
             if (choice == null) {
-                resList.add("ERROR");
-                resList.add("Users send an invalid choice!");
-                out.writeObject(mapper.writeValueAsString(resList));
-                out.flush();
+                throw new IllegalStateException("Users send an invalid choice!");
             } else {
                 // get lectureId of the choice
-                int count = 0;
-                int lectureId = -1;
-                for (Integer id : lectureIdList) {
-                    if (count == choice - 1) {
-                        lectureId = id;
-                    }
-                    count++;
-                }
+                int lectureId = serverSideController.getLectureIdSelected(lectureIdList, choice);
                 // get student list and attendance status
                 StudentDAO studentDAO = new StudentDAO(null);
                 Map<Student, String> resMap = studentDAO.getAttendanceByLectureId(lectureId);
                 if (resMap.isEmpty()) {
-                    resList.add("ERROR");
-                    resList.add("Database error: can not get student list!");
-                    out.writeObject(mapper.writeValueAsString(resList));
-                    out.flush();
+                    throw new IllegalStateException("Database error: can not get student list!");
                 } else {
                     List<Integer> studentIds = new ArrayList<>();
                     for (Map.Entry<Student, String> entry : resMap.entrySet()) {
@@ -224,9 +199,44 @@ public class ClientHandler implements Runnable {
                     } else {
                         // n == 1 & record
                         receiveReocrdAttendanceResult(lectureId, studentIds);
-
                     }
+                }
+            }
+        } catch (Exception e) {
+            try {
+                List<String> errorList = new ArrayList<>();
+                // send exception to client
+                errorList.add("ERROR");
+                errorList.add(e.getMessage());
+                out.writeObject(mapper.writeValueAsString(errorList));
+                out.flush();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 
+    private void sendAttendanceFILE(int sectionId, List<Integer> lectureIdList) {
+        serverSideView.displayMessage("Professor's choice of lecture received....");
+        try {
+            Integer choice = mapper.readValue((String) in.readObject(), Integer.class);
+            if (choice == null) {
+                throw new IllegalStateException("Users send an invalid choice!");
+            } else {
+                // get lectureId of the choice
+                int lectureId = serverSideController.getLectureIdSelected(lectureIdList, choice);
+                // get student list and attendance status
+                List<AttendanceReport> attendanceReports = serverSideController
+                        .getAttendanceReportForLecture(lectureId);
+                PersistenceManager persistenceManager = new PersistenceManager();
+                persistenceManager.writeRecordsToCSV(lectureId + "-attendance-report", attendanceReports);
+                // send file to client
+                File fileToSend = new File("export/" + lectureId + "-attendance-report" + ".csv");
+                try (FileInputStream fileInputStream = new FileInputStream(fileToSend)) {
+
+                    out.writeObject(fileToSend);
+                    out.flush();
+                    serverSideView.displayMessage("File sent.");
                 }
             }
         } catch (Exception e) {
@@ -251,27 +261,14 @@ public class ClientHandler implements Runnable {
             Integer choice = mapper.readValue((String) in.readObject(), Integer.class);
             List<String> resList = new ArrayList<>();
             if (choice == null) {
-                resList.add("ERROR");
-                resList.add("Users send an invalid choice!");
-                out.writeObject(mapper.writeValueAsString(resList));
-                out.flush();
+                throw new IllegalStateException("Users send an invalid choice!");
             } else {
                 // get sectionId of the choice
-                int count = 0;
-                int sectionId = -1;
-                for (Integer key : map.keySet()) {
-                    if (count == choice - 1) {
-                        sectionId = key;
-                    }
-                    count++;
-                }
+                int sectionId = serverSideController.getSectionIdSelected(map.keySet(), choice);
                 LectureDAO lectureDAO = new LectureDAO(null);
                 List<Lecture> lectures = lectureDAO.getLecturesBySectionId(sectionId);
                 if (lectures.isEmpty()) {
-                    resList.add("ERROR");
-                    resList.add("Database error: can not get lectures!");
-                    out.writeObject(mapper.writeValueAsString(resList));
-                    out.flush();
+                    throw new IllegalStateException("Database error: can not get lectures!");
                 } else {
                     List<Integer> lectureIdList = new ArrayList<>();
                     int i = 0;
@@ -288,8 +285,8 @@ public class ClientHandler implements Runnable {
                         sendALLStudentsEnrolled(lectureIdList, n);
                     } else {
                         // n == 3
+                        sendAttendanceFILE(sectionId, lectureIdList);
                     }
-
                 }
             }
 
@@ -314,8 +311,7 @@ public class ClientHandler implements Runnable {
             Map<Integer, String> namesWithSectionId = sectionDAO.getCourseAndSectionNamesByInstructorId(userId);
             List<String> resList = new ArrayList<>();
             if (namesWithSectionId.isEmpty()) {
-                resList.add("ERROR");
-                resList.add("Failed to query database!");
+                throw new IllegalStateException("Failed to query database!");
             } else {
                 for (Integer key : namesWithSectionId.keySet()) {
                     String value = namesWithSectionId.get(key);
@@ -329,7 +325,6 @@ public class ClientHandler implements Runnable {
             }
             out.writeObject(mapper.writeValueAsString(resList));
             out.flush();
-
             sendLectureListBySectionId(namesWithSectionId, n);
         } catch (Exception e) {
             try {
@@ -375,10 +370,7 @@ public class ClientHandler implements Runnable {
             List<Enrollment> enrollments = enrollmentDAO.findEnrollmentsByStudentId(userId);
             List<String> errorList = new ArrayList<>();
             if (enrollments.isEmpty()) {
-                errorList.add("ERROR");
-                errorList.add("You are not enrolled in any classes this semester!");
-                out.writeObject(errorList);
-                out.flush();
+                throw new IllegalStateException("You are not enrolled in any classes this semester!");
             } else {
                 List<String> sectionNames = new ArrayList<>();
                 List<String> courseNames = new ArrayList<>();
@@ -390,14 +382,12 @@ public class ClientHandler implements Runnable {
                     if (section == null) {
                         // throw
                         throw new Exception("Section not found for sectionId: " + enrollment.getSectionId());
-                        // continue;
                     }
                     CourseDAO courseDAO = new CourseDAO(null);
                     Course course = courseDAO.getCourseByCourseId(section.getCourseId());
                     if (course == null) {
                         // throw
                         throw new Exception("Course not found for courseId: " + section.getCourseId());
-                        // continue;
                     }
                     sectionNames.add(section.getName());
                     courseNames.add(course.getName());
@@ -410,7 +400,6 @@ public class ClientHandler implements Runnable {
                 return sections;
             }
             // out.writeObject(sectionIdResult);
-            return null;
         } catch (Exception e) {
             List<String> errorList = new ArrayList<>();
             errorList.add("ERROR");

@@ -1,7 +1,11 @@
 package edu.duke.ece651.team2.server;
 
+import edu.duke.ece651.team2.shared.AttendanceRecord;
+import edu.duke.ece651.team2.shared.AttendanceReport;
+import edu.duke.ece651.team2.shared.Lecture;
 import edu.duke.ece651.team2.shared.Password;
 import edu.duke.ece651.team2.shared.Section;
+import edu.duke.ece651.team2.shared.Student;
 
 import java.net.Socket;
 import java.io.ObjectInputStream;
@@ -11,6 +15,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ServerSideController {
     private ObjectInputStream in;
@@ -170,4 +176,75 @@ public class ServerSideController {
         return res;
     }
 
+    public int getLectureIdSelected(List<Integer> lectureIdList, int choice) {
+        int lectureId = -1;
+        int count = 0;
+        for (Integer id : lectureIdList) {
+            if (count == choice - 1) {
+                lectureId = id;
+            }
+            count++;
+        }
+
+        return lectureId;
+    }
+
+    public int getSectionIdSelected(Set<Integer> mapset, int choice) {
+        int count = 0;
+        int sectionId = -1;
+        for (Integer key : mapset) {
+            if (count == choice - 1) {
+                sectionId = key;
+            }
+            count++;
+        }
+        return sectionId;
+    }
+
+    public List<AttendanceReport> getAttendanceReportForLecture(int lectureId) {
+        StudentDAO studentDAO = new StudentDAO(null);
+        Map<Student, String> resMap = studentDAO.getAttendanceByLectureId(lectureId);
+        if (resMap == null) {
+            throw new IllegalStateException("No student data found for lecture with ID: " + lectureId);
+        }
+        LectureDAO lectureDAO = new LectureDAO(null);
+        Lecture lecture = lectureDAO.get(lectureId);
+        if (lecture == null) {
+            throw new IllegalArgumentException("Lecture with ID " + lectureId + " not found.");
+        }
+
+        int year = lecture.getYear();
+        int month = lecture.getMonth();
+        int day = lecture.getDay();
+
+        String dateStr = String.format("%04d-%02d-%02d", year, month, day);
+
+        AttendanceDAO attendanceDAO = new AttendanceDAO(null);
+        List<AttendanceRecord> attendanceRecords = attendanceDAO.getAllAttendancesForLecture(lectureId);
+        if (attendanceRecords.isEmpty()) {
+
+            throw new IllegalStateException("No attendance records found for lecture with ID: " + lectureId);
+        }
+        if (attendanceRecords.size() != resMap.size()) {
+
+            throw new IllegalStateException(
+                    "Mismatch between attendance data and records for lecture with ID: " + lectureId);
+        }
+        List<AttendanceReport> attendanceReports = new ArrayList<>();
+        for (Student student : resMap.keySet()) {
+            int studentId = student.getStudentID();
+            for (AttendanceRecord attendanceRecord : attendanceRecords) {
+                int studentId2 = attendanceRecord.getStudentId();
+
+                if (studentId == studentId2) {
+                    attendanceReports.add(new AttendanceReport(attendanceRecord, student.getLegalName(), dateStr));
+                }
+            }
+        }
+        if (attendanceReports.isEmpty()) {
+            throw new IllegalStateException(
+                    "Failed to generate report for lecture with ID: " + lectureId);
+        }
+        return attendanceReports;
+    }
 }

@@ -3,11 +3,7 @@
  */
 package edu.duke.ece651.team2.client;
 
-import edu.duke.ece651.team2.shared.AttendanceRecord;
-import edu.duke.ece651.team2.shared.AttendanceStatus;
-import edu.duke.ece651.team2.shared.Password;
-import edu.duke.ece651.team2.shared.Section;
-import edu.duke.ece651.team2.shared.Student;
+import edu.duke.ece651.team2.shared.*;
 
 import java.io.*;
 import java.net.*;
@@ -331,7 +327,6 @@ public class App {
     }
   }
 
-  // faculty helper function (2)
   private void receiveAllStudentInfoByLectureIdForUpdate() throws ClassNotFoundException {
     clientSideView.displayMessage(
         "Below are all students and their attendance status for this lecture, please select one to update your attendance.\n"
@@ -363,7 +358,25 @@ public class App {
     }
   }
 
-  // faculty helper function (2)
+  private void receiveExportFileForAttendance() throws ClassNotFoundException, IOException {
+    clientSideView.displayMessage("Waiting for the exported file...");
+    try {
+      File receivedFile = (File) in.readObject();
+      String savePath = "your/desired/path/";
+      try (FileOutputStream fileOutputStream = new FileOutputStream(savePath + receivedFile.getName())) {
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = in.read(buffer)) != -1) {
+          fileOutputStream.write(buffer, 0, bytesRead);
+        }
+        clientSideView.displayMessage("File received and saved as " + savePath + receivedFile.getName());
+      }
+    } catch (Exception e) {
+      clientSideView.displayMessage(e.getMessage());
+    }
+
+  }
+
   private void receiveAllLectureBySectionId(int n) throws ClassNotFoundException {
     clientSideController.displayPromptForFacultyGetLectures(n);
     try {
@@ -395,6 +408,7 @@ public class App {
           receiveAllStudentInfoByLectureIdForRecord();
         } else if (n == 3) {
           // export
+          receiveExportFileForAttendance();
         }
 
       }
@@ -403,7 +417,6 @@ public class App {
     }
   }
 
-  // faculty helper function (2)
   private void receiveAllTakenSectionAndSendChoice(int n) throws ClassNotFoundException {
     clientSideController.displayPromptForFacultyGetSections(n);
     try {
