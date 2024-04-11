@@ -2,6 +2,7 @@ package edu.duke.ece651.team2.courseManagement;
 
 import edu.duke.ece651.team2.shared.Course;
 import edu.duke.ece651.team2.shared.Section;
+import edu.duke.ece651.team2.shared.Student;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,8 +32,9 @@ public class CourseManagementController {
 
     /**
      * Creates a new course management controller
-     * @param model the model for the course management app
-     * @param out the output stream
+     *
+     * @param model  the model for the course management app
+     * @param out    the output stream
      * @param reader the input stream
      */
     public CourseManagementController(CourseManagement model, PrintStream out, BufferedReader reader) {
@@ -43,6 +45,7 @@ public class CourseManagementController {
 
     /**
      * Returns whether the controller should exit
+     *
      * @return true if the controller should exit, false otherwise
      */
     public boolean isShouldExit() {
@@ -51,6 +54,7 @@ public class CourseManagementController {
 
     /**
      * Lists all courses in the database
+     *
      * @return the number of courses in the database
      */
     public int listCourses() {
@@ -68,6 +72,7 @@ public class CourseManagementController {
 
     /**
      * Prompts the user to select a course
+     *
      * @param prompt the prompt to display to the user
      * @return the course selected by the user, or null if no course is selected
      * @throws IOException if there is an error reading input
@@ -88,6 +93,7 @@ public class CourseManagementController {
 
     /**
      * Lists all sections for a given course
+     *
      * @param c the course to list sections for
      * @return the number of sections in the course
      */
@@ -104,6 +110,7 @@ public class CourseManagementController {
 
     /**
      * Prompts the user to add a new course
+     *
      * @return the course ID of the new course
      * @throws IOException if there is an error reading input
      */
@@ -121,6 +128,7 @@ public class CourseManagementController {
 
     /**
      * Prompts the user to remove a course
+     *
      * @throws IOException if there is an error reading input
      */
     public void removeCourse() throws IOException {
@@ -138,6 +146,7 @@ public class CourseManagementController {
 
     /**
      * Prompts the user to update a course
+     *
      * @throws IOException if there is an error reading input
      */
     public void updateCourse() throws IOException {
@@ -152,6 +161,7 @@ public class CourseManagementController {
 
     /**
      * Prompts the user to choose an option and performs the corresponding action
+     *
      * @throws IOException if there is an error reading input
      */
     public void chooseOption() throws IOException {
@@ -191,5 +201,39 @@ public class CourseManagementController {
      */
     public void invalidSelection() {
         out.println("Please enter a valid selection!");
+    }
+
+    public void readStudentsFromCSV() throws IOException {
+        CSVLoader csvLoader = new CSVLoader();
+        out.println("Please enter the name of the file to load:");
+        String filename = reader.readLine();
+        out.println("Does the file have a header? Y for yes");
+        boolean hasHeader = reader.readLine().equals("Y");
+        out.println("What is the delimiter?");
+        String delimiter = reader.readLine();
+        while(true) {
+            try {
+                out.println("What column is the legal name in? (starting from 0)");
+                int legalNameIndex = Integer.parseInt(reader.readLine());
+                out.println("What column is the email in? (starting from 0)");
+                int emailIndex = Integer.parseInt(reader.readLine());
+                out.println("What column is the display name in? (starting from 0)");
+                int displayNameIndex = Integer.parseInt(reader.readLine());
+
+                try {
+                    List<String> lines = csvLoader.getLines(filename, hasHeader);
+                    List<Student> students = csvLoader.getStudents(lines, ",", legalNameIndex, emailIndex, displayNameIndex, model.getUniversity().getId());
+                    for (Student s : students) {
+                        model.addStudent(s);
+                    }
+                } catch (IOException e) {
+                    out.println("Error reading file");
+                }
+                return;
+
+            } catch (NumberFormatException e) {
+                out.println("Invalid column number");
+            }
+        }
     }
 }

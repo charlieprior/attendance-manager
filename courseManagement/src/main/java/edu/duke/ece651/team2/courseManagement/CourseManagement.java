@@ -3,6 +3,7 @@ package edu.duke.ece651.team2.courseManagement;
 import edu.duke.ece651.team2.server.*;
 import edu.duke.ece651.team2.shared.Course;
 import edu.duke.ece651.team2.shared.Section;
+import edu.duke.ece651.team2.shared.Student;
 import edu.duke.ece651.team2.shared.University;
 
 import java.util.List;
@@ -53,4 +54,7 @@ public class CourseManagement {
     }
 
 
+    public void addStudent(Student s) {
+        studentDAO.create(s);
+    }
 }
