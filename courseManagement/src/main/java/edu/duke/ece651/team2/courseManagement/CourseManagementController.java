@@ -1,13 +1,11 @@
 package edu.duke.ece651.team2.courseManagement;
 
-import edu.duke.ece651.team2.shared.Course;
-import edu.duke.ece651.team2.shared.Professor;
-import edu.duke.ece651.team2.shared.Section;
-import edu.duke.ece651.team2.shared.Student;
+import edu.duke.ece651.team2.shared.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -331,8 +329,22 @@ public class CourseManagementController {
         if (section == null) {
             return;
         }
-        model.addLecture(section);
-        out.println("Lecture added successfully");
+
+        out.println("Please enter the date of the lecture (YYYY-MM-DD):");
+        String dateString = reader.readLine();
+        String[] dateParts = dateString.split("-");
+        if (dateParts.length != 3) {
+            out.println("Invalid date format");
+            return;
+        }
+        try {
+            LocalDate date = LocalDate.of(Integer.parseInt(dateParts[0]), Integer.parseInt(dateParts[1]), Integer.parseInt(dateParts[2]));
+            Lecture lecture = new Lecture(section.getSectionID(), date);
+            model.addLecture(lecture);
+            out.println("Lecture added successfully");
+        } catch (NumberFormatException e) {
+            out.println("Invalid date format");
+        }
     }
 
     /**
