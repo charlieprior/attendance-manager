@@ -161,6 +161,7 @@ public class CourseManagementController {
         if (!courseName.isEmpty()) {
             Course course = new Course(courseName, model.getUniversity().getId());
             model.addCourse(course);
+            out.println("Course added successfully");
             return course.getCourseID();
         }
 
@@ -184,6 +185,7 @@ public class CourseManagementController {
         if (!sectionName.isEmpty()) {
             Section section = new Section(course.getCourseID(), professor.getProfessorID(), sectionName);
             model.addSection(section);
+            out.println("Section added successfully");
             return section.getSectionID();
         }
 
@@ -201,10 +203,12 @@ public class CourseManagementController {
             out.println("Are you sure you want to delete course " + course.getName() + "? Y for yes");
             String confirm = reader.readLine();
             if (!confirm.equals("Y")) {
+                out.println("Deletion cancelled");
                 return;
             }
 
             model.removeCourse(course);
+            out.println("Course deleted successfully");
         }
     }
 
@@ -219,10 +223,12 @@ public class CourseManagementController {
             out.println("Are you sure you want to delete section " + section.getName() + "? Y for yes");
             String confirm = reader.readLine();
             if (!confirm.equals("Y")) {
+                out.println("Deletion cancelled");
                 return;
             }
 
             model.removeSection(section);
+            out.println("Section deleted successfully");
         }
     }
 
@@ -238,6 +244,7 @@ public class CourseManagementController {
             String newName = reader.readLine();
             course.setCourseName(newName);
             model.updateCourse(course);
+            out.println("Course updated successfully");
         }
     }
 
@@ -253,6 +260,7 @@ public class CourseManagementController {
             String newName = reader.readLine();
             section.setName(newName);
             model.updateSection(section);
+            out.println("Section updated successfully");
         }
     }
 
@@ -324,6 +332,7 @@ public class CourseManagementController {
             return;
         }
         model.addLecture(section);
+        out.println("Lecture added successfully");
     }
 
     /**
@@ -350,8 +359,10 @@ public class CourseManagementController {
             for (Student student : students) {
                 model.addStudentToSection(student, section);
             }
+            out.println("Students added successfully");
         } else {
             model.addStudentToSection(readStudent(), section);
+            out.println("Student added successfully");
         }
     }
 
