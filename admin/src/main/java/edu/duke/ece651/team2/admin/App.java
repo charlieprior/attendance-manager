@@ -1,4 +1,4 @@
-package edu.duke.ece651.team2.client;
+package edu.duke.ece651.team2.admin;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,21 +1,17 @@
-package edu.duke.ece651.team2.client;
+package edu.duke.ece651.team2.admin;
 
-import edu.duke.ece651.team2.server.App;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceAccessMode;
+import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.api.parallel.Resources;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import edu.duke.ece651.team2.shared.*;
-import edu.duke.ece651.team2.server.*;
-import org.junit.jupiter.api.parallel.ResourceLock;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.parallel.ResourceAccessMode;
-import org.junit.jupiter.api.parallel.Resources;
-
-import java.io.*;
 
 class AppTest {
 

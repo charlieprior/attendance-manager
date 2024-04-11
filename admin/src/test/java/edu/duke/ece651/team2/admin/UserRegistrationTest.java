@@ -1,5 +1,6 @@
-package edu.duke.ece651.team2.client;
+package edu.duke.ece651.team2.admin;
 
+import edu.duke.ece651.team2.admin.UserRegistration;
 import org.junit.jupiter.api.Test;
 import edu.duke.ece651.team2.shared.*;
 

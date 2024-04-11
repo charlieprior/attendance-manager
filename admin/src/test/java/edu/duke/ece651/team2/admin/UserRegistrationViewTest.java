@@ -1,5 +1,7 @@
-package edu.duke.ece651.team2.client;
+package edu.duke.ece651.team2.admin;
 
+import edu.duke.ece651.team2.admin.UserRegistration;
+import edu.duke.ece651.team2.admin.UserRegistrationView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
