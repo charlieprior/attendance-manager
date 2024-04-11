@@ -77,7 +77,7 @@ public class ClientSideController {
                 builder.append("\n");
             }
         }
-        builder.append("Please select (only one): Example 1, 2, 3");
+        builder.append("\nPlease select (only one): Example 1, 2, 3");
         String choice = clientSideView.promptUser(builder.toString());
         return choice;
     }

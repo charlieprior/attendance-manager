@@ -2,6 +2,8 @@ package edu.duke.ece651.team2.server;
 
 import edu.duke.ece651.team2.shared.AttendanceRecord;
 import edu.duke.ece651.team2.shared.AttendanceReport;
+import edu.duke.ece651.team2.shared.Course;
+import edu.duke.ece651.team2.shared.Enrollment;
 import edu.duke.ece651.team2.shared.Lecture;
 import edu.duke.ece651.team2.shared.Password;
 import edu.duke.ece651.team2.shared.Section;
@@ -11,6 +13,8 @@ import java.net.Socket;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
@@ -135,6 +139,135 @@ public class ServerSideController {
         }
     }
 
+    public List<String> getCourseSectionList(List<String> sectionNames, List<String> courseNames) {
+        List<String> res = new ArrayList<>();
+        for (int i = 0; i < sectionNames.size(); i++) {
+            String sectionName = sectionNames.get(i);
+            String courseName = courseNames.get(i);
+            String combined =  courseName+ " :"+sectionName;
+            res.add(combined);
+        }
+        return res;
+    }
+
+    public List<Section> sendAllEnrolledSectionNames(Integer userId) throws IOException {
+        EnrollmentDAO enrollmentDAO = new EnrollmentDAO(factory);
+        try {
+            List<Enrollment> enrollments = enrollmentDAO.findEnrollmentsByStudentId(userId);
+            if (enrollments.isEmpty()) {
+                throw new IllegalStateException("You are not enrolled in any classes this semester!"); //TODO:testit
+            } else {
+                List<String> sectionNames = new ArrayList<>();
+                List<String> courseNames = new ArrayList<>();
+                List<Section> sections = new ArrayList<>();
+                for (Enrollment enrollment : enrollments) {
+                    // get Section
+                    SectionDAO sectionDAO = new SectionDAO(factory);
+                    Section section = sectionDAO.getBySectionId(enrollment.getSectionId());
+                    // if (section == null) {
+                    //     // throw
+                    //     throw new Exception("Section not found for sectionId: " + enrollment.getSectionId());
+                    // }
+                    CourseDAO courseDAO = new CourseDAO(factory);
+                    Course course = courseDAO.getCourseByCourseId(section.getCourseId());
+                    // if (course == null) {
+                    //     // throw
+                    //     throw new Exception("Course not found for courseId: " + section.getCourseId());
+                    // }
+                    sectionNames.add(section.getName());
+                    courseNames.add(course.getName());
+                    sections.add(section);
+                }
+                List<String> response = getCourseSectionList(sectionNames, courseNames);
+                out.writeObject(mapper.writeValueAsString(response));
+                out.flush();
+                return sections;
+            }
+            // out.writeObject(sectionIdResult);
+        } catch (Exception e) {
+            List<String> errorList = new ArrayList<>();
+            errorList.add("ERROR");
+            try {
+                // send exception to client
+                errorList.add(e.getMessage());
+                out.writeObject(errorList);
+                out.flush();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    public String checkEnrollmentStatus(List<Section> parseSections,int num,int userId){
+        EnrollmentDAO enrollmentDAO = new EnrollmentDAO(factory);
+        Integer sectionId = parseSections.get(num - 1).getSectionID();
+        boolean isSubscribed = enrollmentDAO.checkNotify(sectionId, userId);
+        String subscriptionStatus = isSubscribed ? "Subscribed" : "Unsubscribed";
+        return subscriptionStatus;
+    }
+
+    private void receiveEmailPreferenceFromClient(int sectionId,int userId) {
+        // get result from client
+        try {
+            Integer num = (Integer) in.readObject();
+            if (num != null) {
+                if (num == 1) {// 1-change, 0-change
+                    EnrollmentDAO enrollmentDAO = new EnrollmentDAO(factory);
+                    // write in the db
+                    enrollmentDAO.updateNotifyBySectionIdAndStudentId(sectionId, userId);
+                    out.writeObject(mapper.writeValueAsString("1||" + "Update Successfully!"));
+                    out.flush();
+                } 
+                else {
+                    out.writeObject(mapper.writeValueAsString("0||" + "No update."));
+                    out.flush();
+                }
+            } else {
+                out.writeObject("0||" + "Invalid Input from Client!");
+                out.flush();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void handleChangeEmailPreference(int userId) throws IOException {
+        List<Section> parseSections = sendAllEnrolledSectionNames(userId);
+        if (parseSections!=null) {
+            // get result from client
+            try {
+                Integer num = (Integer) in.readObject();
+                if (num != null) {
+                    // Default eligible
+                    EnrollmentDAO enrollmentDAO = new EnrollmentDAO(factory);
+                    Integer sectionId = parseSections.get(num - 1).getSectionID();
+                    boolean isSubscribed = enrollmentDAO.checkNotify(sectionId, userId);
+                    String subscriptionStatus = isSubscribed ? "Subscribed" : "Unsubscribed";
+                    // send to client
+                    // 1 here is valid, 0 is invalid
+                    String sendMsg = "1||" + "The current state of the course is: " + subscriptionStatus
+                            + "\nDo you want to change it (change :1, no change :0)";
+                    out.writeObject(sendMsg);
+                    out.flush();
+                    // receive msg from client
+                    receiveEmailPreferenceFromClient(sectionId,userId);
+
+                } 
+                // else {
+                //     String sendMsg = "0||" + "Invalid request format (please input a number)!";
+                //     out.writeObject(mapper.writeValueAsString(sendMsg));
+                //     out.flush();
+                // }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            return;
+        }
+
+    }
+
     public List<Section> getInstructSection() {
         SectionDAO sectionDAO = new SectionDAO(factory);
         return sectionDAO.list(user_id);
@@ -162,17 +295,6 @@ public class ServerSideController {
         SectionDAO sectionDAO = new SectionDAO(factory);
         s.setInstructorId(user_id);
         sectionDAO.update(s);
-    }
-
-    public List<String> getCourseSectionList(List<String> sectionNames, List<String> courseNames) {
-        List<String> res = new ArrayList<>();
-        for (int i = 0; i < sectionNames.size(); i++) {
-            String sectionName = sectionNames.get(i + 1);
-            String courseName = courseNames.get(i);
-            String combined = sectionName + "_" + courseName;
-            res.add(combined);
-        }
-        return res;
     }
 
     public int getLectureIdSelected(List<Integer> lectureIdList, int choice) {

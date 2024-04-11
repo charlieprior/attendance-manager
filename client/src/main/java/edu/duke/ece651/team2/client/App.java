@@ -156,7 +156,7 @@ public class App {
     clientSideController.displayPromptForStudent(num);
     try {
       // get from server
-      List<String> responseList = mapper.readValue((String) in.readObject(), new TypeReference<List<String>>() {
+      List<String> responseList = mapper.readValue((String) in.readObject(), new TypeReference<ArrayList<String>>() {
       });
       if (responseList.isEmpty()) {
         clientSideView.displayMessage("You haven't taken any classes this semester!");
@@ -177,7 +177,7 @@ public class App {
               clientSideView.displayMessage("Please enter a valid number!");
             }
           }
-          out.writeObject(mapper.writeValueAsString(resNum)); // send int type to String
+          out.writeObject(resNum); // send int type to String
           if (num == 1) {
             changeEmailPreferences();
           } else {
@@ -221,7 +221,7 @@ public class App {
     clientSideView.displayMessage("Check Course Subscription Status...");
     try {
       // get from server
-      String responseStr = mapper.readValue((String) in.readObject(), String.class);
+      String responseStr = (String)in.readObject();
       if (!responseStr.isEmpty()) {
         String[] parts = responseStr.split("\\|\\|");
         String stateCode = parts[0]; // 0/1 0 - error, 1 - success
@@ -240,12 +240,15 @@ public class App {
             }
           }
           // client asked to change status
-          if (resNum == 1) {
-            out.writeObject(mapper.writeValueAsString(resNum));
-            out.flush();
-            // receive msg from server
-            confirmFromServer();
-          }
+          out.writeObject(resNum);
+          out.flush();
+          confirmFromServer();
+          // if (resNum == 1) {
+          //   out.writeObject(resNum);
+          //   out.flush();
+          //   // receive msg from server
+          //   confirmFromServer();
+          // }
         } else {
           clientSideView.displayMessage("Error request!");
         }
@@ -569,6 +572,8 @@ public class App {
   public void disconnectFromServer() {
     try {
       if (socket != null && !socket.isClosed()) {
+        in.close();
+        out.close();
         socket.close();
         connected = false;
         clientSideView.displayMessage("Disconnected from the server.");
