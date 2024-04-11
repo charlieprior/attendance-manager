@@ -7,10 +7,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Objects;
-
+import java.util.List;
 public class UserRegistrationView {
     final PrintStream out;
-    private final UniversityDAO universityDAO;
+    UniversityDAO universityDAO;
     private final BufferedReader reader;
     private final UserRegistration userRegistration;
 
@@ -44,6 +44,20 @@ public class UserRegistrationView {
         return reader.readLine();
     }
 
+    /**
+     * Method to list the universities in our database for selection
+     * @return the amount of universities as options
+     */
+    public int listUniversities(){
+        List<University> universities = universityDAO.list();
+        for (University u : universities) {
+            String str = u.getId() + ". " +
+                    u.getName();
+            out.println(str);
+        }
+        return universities.size();
+    }
+
     public int addProfessorView() throws IOException {
         // add it to table password, get UniversityID from University
         String prompt = "What's your legal name:";
@@ -52,7 +66,9 @@ public class UserRegistrationView {
         String email = printPromptAndRead(prompt);
         prompt = "What's Your University?";
         print(prompt);
-        prompt = String.valueOf(universityDAO.list());
+        //prompt = String.valueOf(universityDAO.list());
+        listUniversities();
+        prompt = "Please choose from above from the list above";
         String id = printPromptAndRead(prompt);
         Integer uniID = Integer.valueOf(id);
         prompt = "What would you like to set as your password?";
@@ -60,15 +76,15 @@ public class UserRegistrationView {
         Professor professor = new Professor(name, email, uniID);
         userRegistration.addProfessor(professor, passkey);
         Integer ID = professor.getProfessorID();
-        // String professorID = String.valueOf(ID);
-        // prompt = "The faculty's id is: " + professorID + "\n";
-        // print(prompt);
+        //String professorID = String.valueOf(ID);
+        //prompt = "The faculty's id is: " + professorID + "\n";
+        //print(prompt);
         return ID;
     }
 
     public void removeProfessorView() throws IOException {
         String prompt = "You are removing an existing faculty member, please provide the required info:\n" +
-                "Whats the faculty's ID number:";
+                "What's the faculty's ID number:";
         String choiceTwo = printPromptAndRead(prompt);
         Integer id = Integer.valueOf(choiceTwo);
         if (userRegistration.getProfessorID(id) != null) {
@@ -80,7 +96,7 @@ public class UserRegistrationView {
 
     public void updateProfessorView() throws IOException {
         String prompt = "You are updating an existing faculty member, please provide the required info:\n" +
-                "Whats the faculty's ID number:";
+                "What's the faculty's ID number:";
         String choiceThree = printPromptAndRead(prompt);
         Integer id = Integer.valueOf(choiceThree);
         if (userRegistration.getProfessorID(id) != null) {
@@ -93,15 +109,17 @@ public class UserRegistrationView {
     }
 
     public int addStudentView() throws IOException {
-        String prompt = "You are adding a new Student, please provide the required info:\nWhats the student's legal name:";
+        String prompt = "You are adding a new Student, please provide the required info:\nWhat's the student's legal name:";
         String legalName = printPromptAndRead(prompt);
-        prompt = "Whats the student's display name:";
+        prompt = "What's the student's display name:";
         String displayName = printPromptAndRead(prompt);
-        prompt = "Whats the student's E-Mail:";
+        prompt = "What's the student's E-Mail:";
         String email = printPromptAndRead(prompt);
         prompt = "What's the University of the Student?";
         print(prompt);
-        prompt = String.valueOf(universityDAO.list());
+        //prompt = String.valueOf(universityDAO.list());
+        listUniversities();
+        prompt = "Please choose from above from the list above";
         String id = printPromptAndRead(prompt);
         Integer uniID = Integer.valueOf(id);
         prompt = "What would you like to set as your password?";
@@ -117,7 +135,7 @@ public class UserRegistrationView {
 
     public void removeStudentView() throws IOException {
         String prompt = "You are removing an existing Student, please provide the required info:\n" +
-                "Whats the student's ID number:";
+                "What's the student's ID number:";
         String choiceTwo = printPromptAndRead(prompt);
         Integer id = Integer.valueOf(choiceTwo);
         if (userRegistration.getStudentID(id) != null) {
@@ -129,7 +147,7 @@ public class UserRegistrationView {
 
     public void updateStudentView() throws IOException {
         String prompt = "You are updating an existing Student, please provide the required info:\n" +
-                "Whats the student's ID number:";
+                "What's the student's ID number:";
         String choiceThree = printPromptAndRead(prompt);
         Integer id = Integer.valueOf(choiceThree);
         if (userRegistration.getStudentID(id) != null) {
@@ -145,7 +163,7 @@ public class UserRegistrationView {
      * View method for the student's options in the UserRegistration portal
      */
     public void studentOptions() throws IOException {
-        String prompt = "Welcome Student, What Would You Like to Do?\n" +
+        String prompt = "Welcome, What Student-Option Would You Like?\n" +
                 "   1. Register New Account\n" +
                 "   2. Remove Existing Account\n" +
                 "   3. Update Existing Account\n";
@@ -200,20 +218,23 @@ public class UserRegistrationView {
      */
     public void menuOptions() throws IOException {
         String prompt = "Welcome to the User Registration Portal.\n" +
-                "Are you a Faculty Member or a Student?:\n" +
+                "Would You Like to Work With a Faculty Member or a Student?:\n" +
                 "   1. Student\n" +
-                "   2. Faculty Member\n";
+                "   2. Faculty Member\n" +
+                "   3. Quit Program\n";
         while (true) {
             String choiceOne = printPromptAndRead(prompt);
             if (Objects.equals(choiceOne, "1")) {
                 studentOptions();
-                break;
             } else if (Objects.equals(choiceOne, "2")) {
                 professorOptions();
+            }
+            else if(Objects.equals(choiceOne, "3")){
                 break;
             }
-            print("Invalid Selection, please try again!");
-
+            else {
+                print("Invalid Selection, please try again!");
+            }
         }
     }
 

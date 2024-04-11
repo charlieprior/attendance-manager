@@ -20,7 +20,6 @@ public class UserRegistrationTest {
 
     @Test
     void testRemoveAndUpdate(){
-
         UserRegistration userRegistration = new UserRegistration();
         Student student = new Student("Kenan Colak", "kc566@duke.edu",1,
                 "kencolak");

@@ -1,9 +1,9 @@
 Welcome to the User Registration Portal.
-Are you a Faculty Member or a Student?:
+Would You Like to Work With a Faculty Member or a Student?:
    1. Student
    2. Faculty Member
 
-Welcome Student, What Would You Like to Do?
+Welcome, What Student-Option Would You Like?
    1. Register New Account
    2. Remove Existing Account
    3. Update Existing Account
@@ -11,9 +11,9 @@ Welcome Student, What Would You Like to Do?
 Account Registration Portal:
 
 You are adding a new Student, please provide the required info:
-Whats the student's legal name:
-Whats the student's display name:
-Whats the student's E-Mail:
+What's the student's legal name:
+What's the student's display name:
+What's the student's E-Mail:
 What's the University of the Student?
-[]
+Please choose from above from the list above
 What would you like to set as your password?
