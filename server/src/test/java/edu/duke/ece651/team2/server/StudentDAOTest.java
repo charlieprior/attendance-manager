@@ -42,6 +42,7 @@ class StudentDAOTest {
          studentDAO.create(test);
          Student got = studentDAO.get(test.getStudentID());
          assertEquals(test, got);
+         studentDAO.remove(got);
      }
 
     //  @Test

@@ -50,9 +50,10 @@ public class UserRegistrationView {
      */
     public int listUniversities(){
         List<University> universities = universityDAO.list();
-        for (University u : universities) {
-            String str = u.getId() + ". " +
-                    u.getName();
+        for (int i =0;i<universities.size();i++) {
+            String str = i+1+". "+universities.get(i).getName();
+            // String str = u.getId() + ". " +
+            //         u.getName();
             out.println(str);
         }
         return universities.size();
@@ -67,10 +68,12 @@ public class UserRegistrationView {
         prompt = "What's Your University?";
         print(prompt);
         //prompt = String.valueOf(universityDAO.list());
+        List<University> universities = universityDAO.list();
         listUniversities();
         prompt = "Please choose from above from the list above";
         String id = printPromptAndRead(prompt);
-        Integer uniID = Integer.valueOf(id);
+        University u = universities.get(Integer.valueOf(id)-1);
+        Integer uniID = u.getId();
         prompt = "What would you like to set as your password?";
         String passkey = printPromptAndRead(prompt);
         Professor professor = new Professor(name, email, uniID);

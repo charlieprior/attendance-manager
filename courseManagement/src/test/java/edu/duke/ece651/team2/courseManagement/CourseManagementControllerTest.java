@@ -30,8 +30,9 @@ class CourseManagementControllerTest {
         controller.addCourse();
         Integer id = controller.addCourse();
         controller.listCourses();
-        assertEquals("Please enter the name of the new course (blank to exit):\n" +
-                "Please enter the name of the new course (blank to exit):\n" +
+        assertEquals("Please enter the name of the new course (blank to exit):\n" +      
+        "Please enter the name of the new course (blank to exit):\n" +
+        "Course added successfully\n"+
                 id + ". ECE651\n", bytes.toString());
     }
 }

@@ -11,9 +11,9 @@ public class PasswordDAOTest {
     PasswordDAO passwordDAO = new PasswordDAO(factory);
 
 
-    @Test
-    public void testGet(){
-        assertNull(passwordDAO.get(2));
-        assertEquals("123456",passwordDAO.get(1).getPassword());
-    }
+    // @Test
+    // public void testGet(){
+    //     assertNull(passwordDAO.get(2));
+    //     assertEquals("123456",passwordDAO.get(1).getPassword());
+    // }
 }

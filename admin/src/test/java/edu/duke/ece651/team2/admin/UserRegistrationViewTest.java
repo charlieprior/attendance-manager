@@ -72,11 +72,14 @@ public class UserRegistrationViewTest {
         BufferedReader reader8 = new BufferedReader(new StringReader(simulatedInputs8));
         UserRegistrationView userRegistrationView8 = new UserRegistrationView(System.out, userRegistration, reader8);
         userRegistrationView8.menuOptions();
+
+        userRegistrationView1.universityDAO.remove(university);
     }
 
     @Test
     public void testAddUpdateStudentAndProfessorViews() throws IOException {
         UserRegistration userRegistration = new UserRegistration();
+        
 
         // registering student
         String simulatedInputs1 = "Kenan Colak\nkencolak\nkc566@duke.edu\n1\npassword\n";
@@ -84,6 +87,9 @@ public class UserRegistrationViewTest {
         UserRegistrationView userRegistrationView1 = new UserRegistrationView(System.out, userRegistration, reader1);
         int id = userRegistrationView1.addStudentView();
         String studentID = String.valueOf(id);
+
+        University university = new University("University 1", true);
+        userRegistrationView1.universityDAO.create(university);
 
         // successfully updating student password
         String simulatedInputs2 = "4\n1\n4\n3\n" + studentID + "\n" + "newpassword\n" + "3\n";
@@ -115,6 +121,8 @@ public class UserRegistrationViewTest {
         BufferedReader reader6 = new BufferedReader(new StringReader(simulatedInputs6));
         UserRegistrationView userRegistrationView6 = new UserRegistrationView(System.out, userRegistration, reader6);
         userRegistrationView6.menuOptions();
+
+        userRegistrationView1.universityDAO.remove(university);
     }
 
 }

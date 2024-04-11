@@ -1,9 +1,14 @@
 package edu.duke.ece651.team2.admin;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceAccessMode;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.api.parallel.Resources;
+
+import edu.duke.ece651.team2.server.DAOFactory;
+import edu.duke.ece651.team2.server.UniversityDAO;
+import edu.duke.ece651.team2.shared.University;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,10 +20,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class AppTest {
 
-  // @Disabled
   @Test
   @ResourceLock(value = Resources.SYSTEM_OUT, mode = ResourceAccessMode.READ_WRITE)
   public void testApp() throws IOException, ClassNotFoundException {
+    DAOFactory factory = new DAOFactory();
+    UniversityDAO universityDAO = new UniversityDAO(factory);
+    University u = new University("University 1", true);
+    universityDAO.create(u);
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     PrintStream out = new PrintStream(bytes, true);
     InputStream input = getClass().getClassLoader().getResourceAsStream("input.txt");
@@ -35,6 +43,7 @@ class AppTest {
       System.setIn(oldIn);
       System.setOut(oldOut);
     }
+    universityDAO.remove(u);
     String expected = new String(expectedStream.readAllBytes());
     String actual = bytes.toString();
     assertEquals(expected, actual);
