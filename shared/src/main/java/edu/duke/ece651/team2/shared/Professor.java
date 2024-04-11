@@ -21,7 +21,6 @@ public class Professor {
      * The unique ID of the professor.
      */
     private Integer professorID;
-    private ArrayList<Section> sections;
 
     /**
      * Constructs a new Professor object with the specified name and professor ID.
@@ -96,11 +95,4 @@ public class Professor {
         this.professorID = professorID;
     }
 
-    public ArrayList<Section> getSections() {
-        return this.sections;
-    }
-
-    public void setSections(ArrayList<Section> sections) {
-        this.sections = sections;
-    }
 }

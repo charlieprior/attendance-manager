@@ -36,8 +36,7 @@ public class CourseDAO extends DAO<Course> {
 
         List<Object> values = Arrays.asList(
                 course.getName(),
-                course.getUniversityId()
-        );
+                course.getUniversityId());
 
         try {
             ResultSet generatedKeys = executeUpdate(daoFactory,
@@ -60,9 +59,7 @@ public class CourseDAO extends DAO<Course> {
         List<Object> values = Arrays.asList(
                 course.getName(),
                 course.getUniversityId(),
-                course.getCourseID()
-        );
-
+                course.getCourseID());
 
         try {
             executeUpdate(daoFactory, "UPDATE Course SET name = ?, universityId = ? WHERE id = ?", values);
@@ -105,4 +102,12 @@ public class CourseDAO extends DAO<Course> {
     public void deleteAll() {
         super.deleteAll(daoFactory, "Course");
     }
+
+    public Course getCourseByCourseId(int courseId) {
+        List<Object> values = Collections.singletonList(courseId);
+        return super.get(daoFactory, "SELECT * FROM Course WHERE id = ?", values);
+
+    }
+
+
 }

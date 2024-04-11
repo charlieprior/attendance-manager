@@ -29,8 +29,7 @@ public class AttendanceDAO extends DAO<AttendanceRecord> {
         List<Object> values = Arrays.asList(
                 attendanceRecord.getLectureId(),
                 attendanceRecord.getStudentId(),
-                attendanceRecord.getStatus().toString()
-        );
+                attendanceRecord.getStatus().toString());
 
         try {
             executeUpdate(daoFactory,
@@ -45,8 +44,7 @@ public class AttendanceDAO extends DAO<AttendanceRecord> {
         List<Object> values = Arrays.asList(
                 attendanceRecord.getStatus().toString(),
                 attendanceRecord.getLectureId(),
-                attendanceRecord.getStudentId()
-        );
+                attendanceRecord.getStudentId());
 
         try {
             executeUpdate(daoFactory,
@@ -60,8 +58,7 @@ public class AttendanceDAO extends DAO<AttendanceRecord> {
     void remove(AttendanceRecord attendanceRecord) {
         List<Object> values = Arrays.asList(
                 attendanceRecord.getLectureId(),
-                attendanceRecord.getStudentId()
-        );
+                attendanceRecord.getStudentId());
 
         try {
             executeUpdate(daoFactory,
@@ -79,8 +76,12 @@ public class AttendanceDAO extends DAO<AttendanceRecord> {
     public AttendanceRecord get(Integer lectureId, Integer studentId) {
         List<Object> values = Arrays.asList(
                 lectureId,
-                studentId
-        );
+                studentId);
         return super.get(daoFactory, "SELECT * FROM Attendance WHERE lectureId = ? AND studentId = ?", values);
+    }
+
+    public List<AttendanceRecord> getAllAttendancesForLecture(Integer lectureId) {
+        List<Object> values = Arrays.asList(lectureId);
+        return super.list(daoFactory, "SELECT * FROM Attendance WHERE lectureId = ? ORDER BY studentId", values);
     }
 }

@@ -8,6 +8,11 @@ public class Password {
 
     public Password(){}
 
+    public Password(Integer id, String password){
+        this.id = id;
+        this.password = password;
+    }
+
     public Password(Integer id, String password, boolean isStudent) {
         this.id = id;
         this.password = password;

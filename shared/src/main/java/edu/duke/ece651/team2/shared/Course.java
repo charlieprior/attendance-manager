@@ -15,7 +15,6 @@ public class Course {
      * The ID of the Course.
      */
     private Integer courseID;
-    private List<Section> sections;
     /**
      * This constructor will create the Course object.
      *
@@ -50,18 +49,6 @@ public class Course {
 
     public void setCourseID(Integer courseID) {
         this.courseID = courseID;
-    }
-
-    public void addSection(Section s) {
-        this.sections.add(s);
-    }
-
-    public List<Section> getSections() {
-        return sections;
-    }
-
-    public void setSections(List<Section> sec) {
-        sections = sec;
     }
 
 }

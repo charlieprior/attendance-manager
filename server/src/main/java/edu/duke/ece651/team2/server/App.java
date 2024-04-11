@@ -13,7 +13,6 @@ public class App {
 
   public App() {
     serverSideView = new ServerSideView();
-    serverSideController = new ServerSideController(serverSideView);
   }
 
   public void connectToClients() throws ClassNotFoundException {
@@ -23,6 +22,7 @@ public class App {
 
       while (true) {
         Socket clientSocket = serverSocket.accept();
+        serverSideController = new ServerSideController(serverSideView);
         serverSideView.displayMessage("Client connected");
 
         // Send connection status to client

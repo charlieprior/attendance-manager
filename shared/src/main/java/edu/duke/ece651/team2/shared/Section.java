@@ -5,14 +5,18 @@ import java.util.ArrayList;
 public class Section {
     private Integer courseId;
     private Integer instructorId;
-    private String name;//display the name for this Section(not quite the same as Course. Should be CourseName+Section)
+    private String name;// display the name for this Section(not quite the same as Course. Should be
+                        // CourseName+Section)
     private Integer SectionID;
     private ArrayList<Student> students;
     private ArrayList<Lecture> lectures;
-    public Section(Integer courseId, Integer instructorId, String name){
+
+    public Section(){}
+
+    public Section(Integer courseId, Integer instructorId, String name) {
         this.courseId = courseId;
         this.instructorId = instructorId;
-        this.name = name;//how to set name, courseName + len(Section) in Course?
+        this.name = name;// how to set name, courseName + len(Section) in Course?
     }
 
     public Integer getSectionID() {

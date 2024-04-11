@@ -4,10 +4,7 @@ import edu.duke.ece651.team2.shared.Student;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class StudentDAO extends DAO<Student> {
 
@@ -23,8 +20,7 @@ public class StudentDAO extends DAO<Student> {
                 resultSet.getString("legalName"),
                 resultSet.getString("email"),
                 resultSet.getInt("universityId"),
-                resultSet.getString("displayName")
-        );
+                resultSet.getString("displayName"));
         student.setStudentID(resultSet.getInt("id"));
         return student;
     }
@@ -39,8 +35,7 @@ public class StudentDAO extends DAO<Student> {
                 student.getLegalName(),
                 student.getDisplayName(),
                 student.getEmail(),
-                student.getUniversityId()
-        );
+                student.getUniversityId());
 
         try {
             ResultSet generatedKeys = executeUpdate(daoFactory,
@@ -65,9 +60,7 @@ public class StudentDAO extends DAO<Student> {
                 student.getDisplayName(),
                 student.getEmail(),
                 student.getUniversityId(),
-                student.getStudentID()
-        );
-
+                student.getStudentID());
 
         try {
             executeUpdate(daoFactory,
@@ -103,4 +96,50 @@ public class StudentDAO extends DAO<Student> {
         List<Object> values = Collections.singletonList(id);
         return super.get(daoFactory, "SELECT * FROM Users WHERE id = ?", values);
     }
+
+    public Integer getUniversityID(Integer id){
+        List<Object> values = Collections.singletonList(id);
+        String sql = "SELECT universityId FROM Users WHERE id = ?";
+        try(ResultSet resultSet = executeQuery(daoFactory, sql, values)){
+            if (resultSet.next()){
+                return resultSet.getInt("universityId");
+            }
+            else{
+                return null;
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException("Failed to fetch attendance for UniversityID for student: " + id, e);
+        }
+
+
+    }
+
+    public Map<Student, String> getAttendanceByLectureId(int lectureId) {
+        Map<Student, String> attendanceMap = new HashMap<>();
+        String sql = "SELECT u.id, u.legalName, u.displayName, a.status " +
+                "FROM Enrollment e " +
+                "JOIN Attendance a ON e.studentId = a.studentId " +
+                "JOIN Users u ON e.studentId = u.id " +
+                "WHERE a.lectureId = ?";
+        List<Object> values = Collections.singletonList(lectureId);
+
+        try (ResultSet resultSet = executeQuery(daoFactory, sql, values)) {
+            while (resultSet.next()) {
+                Student student = new Student(
+                        resultSet.getString("legalName"),
+                        resultSet.getString("email"),
+                        resultSet.getInt("universityId"),
+                        resultSet.getString("displayName"));
+                student.setStudentID(resultSet.getInt("id"));
+                String status = resultSet.getString("status");
+                attendanceMap.put(student, status);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to fetch attendance for lectureId: " + lectureId, e);
+        }
+
+        return attendanceMap;
+    }
+
 }

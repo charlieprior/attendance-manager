@@ -1,40 +1,13 @@
 package edu.duke.ece651.team2.client;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import edu.duke.ece651.team2.shared.AttendanceRecord;
-import edu.duke.ece651.team2.shared.AttendanceStatus;
-import edu.duke.ece651.team2.shared.Lecture;
-import edu.duke.ece651.team2.shared.Section;
-import edu.duke.ece651.team2.shared.Student;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import edu.duke.ece651.team2.shared.*;
 
 public class ClientSideController {
-
-    // /**
-    // * The BufferedReader used to read input from the user.
-    // */
-    // private final BufferedReader reader;
-    // /**
-    // * The PrintStream used to write output to the user.
-    // */
-    // private final PrintStream out;
-
-    // /**
-    // * Constructs a new TextUserController object with the specified
-    // BufferedReader
-    // * and PrintStream.
-    // *
-    // * @param reader The BufferedReader used to read input from the user.
-    // * @param out The PrintStream used to write output to the user.
-    // */
-    // // public ClientSideController(BufferedReader reader, PrintStream out) {
-    // // this.reader = reader;
-    // // this.out = out;
-    // // }
     private ClientSideView clientSideView;
 
     public ClientSideController(ClientSideView clientSideView) {
@@ -59,7 +32,7 @@ public class ClientSideController {
                 int choice = Integer.parseInt(choiceStr); // Convert the user's input to an integer
 
                 // Handle the user's choice
-                if (1<=choice && choice<=3) {
+                if (1 <= choice && choice <= 3) {
                     return choice;
                 } else {
                     clientSideView.displayMessage("Invalid choice. Please try again.");
@@ -85,7 +58,7 @@ public class ClientSideController {
                 int choice = Integer.parseInt(choiceStr); // Convert the user's input to an integer
 
                 // Handle the user's choice
-                if (1<=choice && choice<=5) {
+                if (1 <= choice && choice <= 5) {
                     return choice;
                 } else {
                     clientSideView.displayMessage("Invalid choice. Please try again.");
@@ -93,6 +66,87 @@ public class ClientSideController {
             } catch (NumberFormatException e) {
                 clientSideView.displayMessage("Invalid input. Please enter a number.");
             }
+        }
+    }
+
+    public String listSectionCourseName(List<String> names) throws IOException {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < names.size(); i++) {
+            builder.append((i + 1)).append(". ").append(names.get(i));
+            if (i < names.size() - 1) {
+                builder.append("\n");
+            }
+        }
+        builder.append("\nPlease select (only one): Example 1, 2, 3");
+        String choice = clientSideView.promptUser(builder.toString());
+        return choice;
+    }
+
+    public void displayAllClassAttendance(List<String> names) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < names.size(); i++) {
+            builder.append((i + 1)).append(". ").append(names.get(i)).append("     ");
+            if ((i + 1) % 4 == 0 && i != names.size() - 1) {
+                builder.append("\n");
+            }
+        }
+        clientSideView.displayMessage(builder.toString());
+    }
+
+    public boolean isValidIntegerInRange(String str, int min, int max) {
+        // Use regular expressions to check whether it is an integer
+        if (!Pattern.matches("\\d+", str)) {
+            return false;
+        }
+
+        int num = Integer.parseInt(str);
+
+        return num >= min && num <= max;
+    }
+
+    public void displayPromptForStudent(int n) {
+        if (n == 1) {
+            clientSideView.displayMessage(
+                    "Below are all the courses you are enrolled in this semester, please select one to set your email preferences.");
+        } else if (n == 2) {
+            clientSideView.displayMessage(
+                    "Below are all the courses you are enrolled in this semester, please select one to get your attendance report.");
+        }
+    }
+
+    public void displayPromptForFacultyGetSections(int n) {
+        if (n == 1) {
+            clientSideView.displayMessage(
+                    "Below are the courses you are teaching this semester, please select a course to record your attendance.");
+        } else if (n == 2) {
+            clientSideView.displayMessage(
+                    "Below are the courses you are teaching this semester, please select a course to update your attendance.");
+        } else if (n == 3) {
+            clientSideView.displayMessage(
+                    "Below are the courses you are teaching this semester, please select a course to export students attendance info.");
+        }
+    }
+
+    public void displayPromptForFacultyGetLectures(int n) {
+        if (n == 1) {
+            clientSideView.displayMessage(
+                    "Below are the lectures you are teaching this semester, please select a course to record your attendance.");
+        } else if (n == 2) {
+            clientSideView.displayMessage(
+                    "Below are the lectures you are teaching this semester, please select a course to update your attendance.");
+        } else if (n == 3) {
+            clientSideView.displayMessage(
+                    "Below are the lectures you are teaching this semester, please select a course to export students attendance info.");
+        }
+    }
+
+    public void displayPromptForFacultyGetConfirm(int n) {
+        if (n == 1) {
+            clientSideView.displayMessage(
+                    "Waiting for an record......");
+        } else if (n == 2) {
+            clientSideView.displayMessage(
+                    "Waiting for an update......");
         }
     }
 
@@ -127,17 +181,21 @@ public class ClientSideController {
     // return returnStudentCommand("wrong input, please type the command again!\n");
     // }
 
-    public Section displayAndChooseSection(Section[] sec){
-        for(int i =0;i<sec.length;i++){
-            clientSideView.displayMessage(i+1+sec[i].getName());
+    public Section displayAndChooseSection(Section[] sec) {
+        for (int i = 0; i < sec.length; i++) {
+            clientSideView.displayMessage(i + 1 + ". "+sec[i].getName());
         }
-        int choice = 0;
+        clientSideView.displayMessage("0 will return back.\n");
+        int choice = -1;
         try {
-            while(choice<=0 || choice>sec.length){
-                String ans = clientSideView.promptUser("Choose the valid Section");
+            while (choice < 0 || choice > sec.length) {
+                String ans = clientSideView.promptUser("Choose a valid Section:");
                 choice = Integer.parseInt(ans);
             }
-            return sec[choice-1];
+            if(choice==0){
+                return null;
+            }
+            return sec[choice - 1];
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -145,28 +203,42 @@ public class ClientSideController {
         }
     }
 
-    public List<AttendanceRecord> getStudentsStatus(Student[] students,Lecture l){
+    public List<AttendanceRecord> getStudentsStatus(Student[] students, Lecture l) {
         List<AttendanceRecord> records = new ArrayList<>();
-        try{
+        try {
 
-            for(Student s:students){
-                String ans = clientSideView.promptUser("What is the attendance for "+s.getDisplayName()+"? y for Yes");
+            for (Student s : students) {
+                String ans = clientSideView
+                        .promptUser("What is the attendance for " + s.getDisplayName() + "? y for Yes");
                 AttendanceStatus status;
-                if(ans.equals("y")){
+                if (ans.equals("y")) {
                     status = AttendanceStatus.PRESENT;
-                }
-                else{
+                } else {
                     status = AttendanceStatus.ABSENT;
                 }
                 records.add(new AttendanceRecord(s.getStudentID(), status, l.getLectureID()));
             }
 
             return records;
-        }
-        catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public boolean isValidStringForAttendance(String input, int num) {
+        String regex = "^[1-" + num + "][ATP]$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(input);
+        return matcher.matches();
+    }
+
+    public boolean isValidStringForRecord(String input) {
+        if (input == null || input.length() != 1) {
+            return false;
+        }
+        char ch = input.charAt(0);
+        return ch == 'A' || ch == 'T' || ch == 'P';
     }
 
 }

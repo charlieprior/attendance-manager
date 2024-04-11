@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 public class SectionDAO extends DAO<Section> {
     private final DAOFactory daoFactory;
@@ -17,9 +19,10 @@ public class SectionDAO extends DAO<Section> {
     public SectionDAO(DAOFactory daoFactory) {
         this.daoFactory = daoFactory;
     }
+
     @Override
     Section map(ResultSet resultSet) throws SQLException {
-        Section section =  new Section(resultSet.getInt("courseId"),
+        Section section = new Section(resultSet.getInt("courseId"),
                 resultSet.getInt("instructorId"),
                 resultSet.getString("name"));
         section.setSectionID(resultSet.getInt("id"));
@@ -34,8 +37,7 @@ public class SectionDAO extends DAO<Section> {
         List<Object> values = Arrays.asList(
                 section.getCourseId(),
                 section.getInstructorId(),
-                section.getName()
-        );
+                section.getName());
 
         try {
             ResultSet generatedKeys = executeUpdate(daoFactory,
@@ -54,16 +56,15 @@ public class SectionDAO extends DAO<Section> {
             throw new IllegalArgumentException("Section object does not exist in database");
         }
 
-
         List<Object> values = Arrays.asList(
                 section.getCourseId(),
                 section.getInstructorId(),
                 section.getName(),
-                section.getSectionID()
-        );
+                section.getSectionID());
 
         try {
-            executeUpdate(daoFactory, "UPDATE Section SET courseId = ?, instructorId = ?, name = ? WHERE id = ?", values);
+            executeUpdate(daoFactory, "UPDATE Section SET courseId = ?, instructorId = ?, name = ? WHERE id = ?",
+                    values);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -89,10 +90,10 @@ public class SectionDAO extends DAO<Section> {
         return super.list(daoFactory, "SELECT * FROM Section ORDER BY courseId", new ArrayList<>());
     }
 
-    public List<Section> noInstructorSection(){
-        return super.list(daoFactory, "SELECT * FROM Section WHERE instructorId IS NULL", new ArrayList<>());
+    public List<Section> noInstructorSection(Integer courseId) {
+        return super.list(daoFactory, "SELECT * FROM Section WHERE instructorId IS NULL AND courseId = "+courseId, new ArrayList<>());
     }
-
+    
     public List<Section> list(Integer userID){
         List<Object> values = Collections.singletonList(userID);
         return super.list(daoFactory, "SELECT * FROM Section WHERE instructorId = ?", values);
@@ -108,6 +109,36 @@ public class SectionDAO extends DAO<Section> {
         return super.get(daoFactory, "SELECT * FROM Section WHERE id = ?", values);
     }
 
-
     // Not sure what get methods to write
+    public Section getBySectionId(int sectionId) {
+
+        List<Object> values = Collections.singletonList(sectionId);
+        return super.get(daoFactory, "SELECT * FROM Section WHERE id = ?", values);
+
+    }
+
+    public Map<Integer, String> getCourseAndSectionNamesByInstructorId(int instructorId) {
+        Map<Integer, String> namesMap = new HashMap<>();
+        String sql = "SELECT s.id AS sectionId, c.name AS courseName, s.name AS sectionName " +
+                "FROM Section s " +
+                "JOIN Course c ON s.courseId = c.id " +
+                "WHERE s.instructorId = ?";
+
+        List<Object> values = new ArrayList<>();
+        values.add(instructorId);
+
+        try (ResultSet resultSet = executeQuery(daoFactory, sql, values)) {
+            while (resultSet.next()) {
+                String combinedName = resultSet.getString("courseName") + " - " +
+                        resultSet.getString("sectionName") + " (Section ID: " +
+                        resultSet.getInt("sectionId") + ")";
+                namesMap.put(resultSet.getInt("sectionId"), combinedName);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return namesMap;
+    }
+
 }
