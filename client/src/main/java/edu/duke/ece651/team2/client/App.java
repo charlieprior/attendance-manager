@@ -267,7 +267,7 @@ public class App {
 
   private void receiveReportResult() {
     clientSideView.displayMessage("Pending report...");
-    confirmFromServer();
+    // confirmFromServer();
   }
 
   private void receiveAttendanceUpdateAndRecordResult(int n) throws ClassNotFoundException {

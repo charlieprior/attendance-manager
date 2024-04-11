@@ -5,6 +5,7 @@ package edu.duke.ece651.team2.server;
 
 import java.io.*;
 import java.net.*;
+import java.security.GeneralSecurityException;
 
 public class App {
   private ServerSideView serverSideView;
@@ -15,7 +16,7 @@ public class App {
     serverSideView = new ServerSideView();
   }
 
-  public void connectToClients() throws ClassNotFoundException {
+  public void connectToClients() throws ClassNotFoundException, GeneralSecurityException {
     try {
       serverSocket = new ServerSocket(8088);
       serverSideView.displayMessage("Server started, waiting for client connections...");
@@ -42,7 +43,7 @@ public class App {
     }
   }
 
-  public static void main(String[] args) throws ClassNotFoundException {
+  public static void main(String[] args) throws ClassNotFoundException, GeneralSecurityException {
     App a = new App();
     a.connectToClients();
   }

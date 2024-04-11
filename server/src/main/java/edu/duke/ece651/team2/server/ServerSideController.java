@@ -5,6 +5,7 @@ import edu.duke.ece651.team2.shared.AttendanceReport;
 import edu.duke.ece651.team2.shared.AttendanceStatus;
 import edu.duke.ece651.team2.shared.Course;
 import edu.duke.ece651.team2.shared.Enrollment;
+import edu.duke.ece651.team2.shared.GmailSetup;
 import edu.duke.ece651.team2.shared.Lecture;
 import edu.duke.ece651.team2.shared.Password;
 import edu.duke.ece651.team2.shared.PersistenceManager;
@@ -12,6 +13,7 @@ import edu.duke.ece651.team2.shared.Section;
 import edu.duke.ece651.team2.shared.Student;
 
 import java.net.Socket;
+import java.security.GeneralSecurityException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -22,6 +24,7 @@ import java.io.InputStream;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.services.gmail.Gmail;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse.File;
 
 import java.util.ArrayList;
@@ -41,11 +44,13 @@ public class ServerSideController {
     private int status; // whether the user is professor of student; // student - 1, faculty - 2, error
                         // - 0
     private Integer universityID;
+    private final GmailSetup gmailSetup;
 
-    public ServerSideController(ServerSideView serverSideView) {
+    public ServerSideController(ServerSideView serverSideView) throws IOException, GeneralSecurityException {
         this.serverSideView = serverSideView;
         user_id = -1;
         status = -1;
+        gmailSetup = new GmailSetup();
     }
 
     public int getUserId() {
@@ -742,4 +747,85 @@ public class ServerSideController {
         // }
         return attendanceReports;
     }
+
+    public void handleGetAttendanceReport(Integer userId) throws IOException {
+        List<Section> parseSections = sendAllEnrolledSectionNames(userId);
+        if (!parseSections.isEmpty()) {
+            // get result from client (choice)
+            try {
+                Integer num = (Integer) in.readObject();
+                if (num != null) {
+                    // Default eligible
+                    // assume num is eligible
+                    // sending report function
+                    // ...
+                    Integer sectionId = parseSections.get(num - 1).getSectionID();
+
+                    // loop up all lectures for this setcion
+                    sendEmailToClient(sectionId);
+
+                    // finished sending
+                } else {
+                    out.writeObject("0||" + "Invalid request format (please input a number)!");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void sendEmailToClient(int sectionId) throws IOException, GeneralSecurityException {
+        LectureDAO lectureDAO = new LectureDAO(factory);
+        AttendanceDAO attendanceDAO = new AttendanceDAO(factory);
+        StudentDAO studentDAO = new StudentDAO(factory);
+        SectionDAO sectionDAO = new SectionDAO(factory);
+        CourseDAO courseDAO = new CourseDAO(factory);
+        List<Lecture> lectures = lectureDAO.getLecturesBySectionId(sectionId);
+        if (lectures.isEmpty()) {
+            throw new IllegalStateException("No lectures found for section with ID: " + sectionId);
+        }
+        String result = "";
+        for (Lecture lecture : lectures) {
+            int lectureId = lecture.getLectureID();
+            AttendanceRecord attendanceRecord = attendanceDAO.get(lectureId, user_id);
+            int year = lecture.getYear();
+            int month = lecture.getMonth();
+            int day = lecture.getDay();
+            String dateStr = String.format("%04d-%02d-%02d", year, month, day);
+            if (attendanceRecord == null) {
+                // throw new IllegalStateException("No attendance record found for lecture with ID: " + lectureId);
+                attendanceRecord = new AttendanceRecord(user_id, AttendanceStatus.UNRECORDED,lecture.getLectureID());
+            }
+            String statuString = attendanceRecord.getStatus().toString();
+            result += String.format("Lecture ID: %d, Date: %s, Status: %s", lectureId, dateStr, statuString) + "\n";
+        }
+
+        // get student's email
+
+        Student student = studentDAO.get(user_id);
+        // if (student == null) {
+        //     throw new IllegalStateException("Student not found with ID: " + user_id);
+        // }
+
+        Section section = sectionDAO.getBySectionId(sectionId);
+        // if (section == null) {
+        //     throw new IllegalStateException("Section not found with ID: " + sectionId);
+        // }
+
+        Course course = courseDAO.getCourseByCourseId(section.getCourseId());
+        // if (course == null) {
+        //     throw new IllegalStateException("Course not found with ID: " + section.getCourseId());
+        // }
+
+        String email = student.getEmail();
+        serverSideView.displayMessage("Sending email alert to " + email + "...");
+        String prompt = "Attendance Records for " + course.getName() + "_" + section.getName()+
+        "Dear " + student.getDisplayName() + "\n" + "Here is your attendance record for " + course.getName()
+                + "_" + section.getName() + "this semester.\n" + result;
+        System.out.println(prompt);
+        gmailSetup.sendEmail(email, "Attendance Records for " + course.getName() + "_" + section.getName(),
+                "Dear " + student.getDisplayName() + "\n" + "Here is your attendance record for " + course.getName()
+                        + "_" + section.getName() + "this semester.\n" + result);
+    }
+
 }

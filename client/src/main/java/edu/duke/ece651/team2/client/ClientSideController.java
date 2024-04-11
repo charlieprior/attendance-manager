@@ -1,6 +1,7 @@
 package edu.duke.ece651.team2.client;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;

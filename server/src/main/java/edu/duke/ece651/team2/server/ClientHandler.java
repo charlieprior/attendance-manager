@@ -93,27 +93,27 @@ public class ClientHandler implements Runnable {
         serverSideController.sendAllTeachedSectionNames(3,userId);
     }
 
-    private void handleGetAttendanceReport() throws IOException {
-        List<Section> parseSections = serverSideController.sendAllEnrolledSectionNames(userId);
-        if (!parseSections.isEmpty()) {
-            // get result from client (choice)
-            try {
-                Object response = in.readObject();
-                if (response instanceof Integer) {
-                    int num = (Integer) response;
-                    // assume num is eligible
-                    // sending report function
-                    // ...
+    // private void handleGetAttendanceReport() throws IOException {
+    //     List<Section> parseSections = serverSideController.sendAllEnrolledSectionNames(userId);
+    //     if (!parseSections.isEmpty()) {
+    //         // get result from client (choice)
+    //         try {
+    //             Object response = in.readObject();
+    //             if (response instanceof Integer) {
+    //                 int num = (Integer) response;
+    //                 // assume num is eligible
+    //                 // sending report function
+    //                 // ...
 
-                    // finished sending
-                } else {
-                    out.writeObject("0||" + "Invalid request format (please input a number)!");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
+    //                 // finished sending
+    //             } else {
+    //                 out.writeObject("0||" + "Invalid request format (please input a number)!");
+    //             }
+    //         } catch (Exception e) {
+    //             e.printStackTrace();
+    //         }
+    //     }
+    // }
 
     private String handleStudentRequest(Integer request) throws IOException, ClassNotFoundException {
         String res = "";
@@ -122,7 +122,7 @@ public class ClientHandler implements Runnable {
             serverSideController.handleChangeEmailPreference(userId);
         } else if (request == 2) {
             // Execute getting attendance report
-            handleGetAttendanceReport();
+            serverSideController.handleGetAttendanceReport(userId);
         } else if (request == 3) {
             return "break";
         } else {
