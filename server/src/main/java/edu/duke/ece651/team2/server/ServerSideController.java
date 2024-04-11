@@ -530,7 +530,7 @@ public class ServerSideController {
         }
     }
 
-    private void sendAttendanceFILE(int sectionId, List<Integer> lectureIdList) {
+    //private void sendAttendanceFILE(int sectionId, List<Integer> lectureIdList) {
         // serverSideView.displayMessage("Professor's choice of lecture received....");
         // try {
         //     Integer choice = mapper.readValue((String) in.readObject(), Integer.class);
@@ -564,7 +564,7 @@ public class ServerSideController {
         //         ex.printStackTrace();
         //     }
         // }
-    }
+    //}
 
     private void sendLectureListBySectionId(Map<Integer, String> map, int n) throws ClassNotFoundException, IOException {
         // receive choice (int) from client
@@ -722,7 +722,7 @@ public class ServerSideController {
         for(Integer id:students){
             if(!attendanceReports.containsKey(id)){
                 String legal_name = studentDAO.get(id).getLegalName();
-                AttendanceRecord attendanceRecord = new AttendanceRecord(id, AttendanceStatus.ABSENT, lectureId);
+                AttendanceRecord attendanceRecord = new AttendanceRecord(id, AttendanceStatus.UNRECORDED, lectureId);
                 attendanceReports.put(id,new AttendanceReport(attendanceRecord, legal_name, dateStr));
             }
         }
