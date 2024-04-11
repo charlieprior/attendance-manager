@@ -19,7 +19,7 @@ public class ProfessorDAO extends DAO<Professor> {
     }
 
     @Override
-    Professor map(ResultSet resultSet) throws SQLException {
+    public Professor map(ResultSet resultSet) throws SQLException {
         Professor professor = new Professor(
                  resultSet.getString("legalName"),
                 resultSet.getString("email"),
@@ -29,7 +29,7 @@ public class ProfessorDAO extends DAO<Professor> {
         return professor;
     }
 
-    void create(Professor professor) {
+    public void create(Professor professor) {
         if (professor.getProfessorID() != null) {
             // Object already exists in database
             throw new IllegalArgumentException("Professor object already exists in database");
@@ -53,7 +53,7 @@ public class ProfessorDAO extends DAO<Professor> {
         }
     }
 
-    void update(Professor professor) {
+    public void update(Professor professor) {
         if (professor.getProfessorID() == null) {
             // Object does not exist in database
             throw new IllegalArgumentException("Professor object does not exist in database");
@@ -75,7 +75,7 @@ public class ProfessorDAO extends DAO<Professor> {
         }
     }
 
-    void remove(Professor professor) {
+    public void remove(Professor professor) {
         if (professor.getProfessorID() == null) {
             // Object does not exist in database
             throw new IllegalArgumentException("Professor object does not exist in database");
@@ -96,13 +96,19 @@ public class ProfessorDAO extends DAO<Professor> {
         professor.setProfessorID(null);
     }
 
-    List<Professor> list() {
+    public List<Professor> list() {
         return super.list(daoFactory, "SELECT * FROM Users WHERE isStudent=FALSE ORDER BY id", new ArrayList<>());
     }
 
-    Professor get(Integer id) {
+    public Professor get(Integer id) {
         List<Object> values = Collections.singletonList(id);
         return super.get(daoFactory, "SELECT * FROM Users WHERE id = ?", values);
+    }
+
+
+    public List<Professor> listByUniversity(Integer universityId) {
+        List<Object> values = Collections.singletonList(universityId);
+        return super.list(daoFactory, "SELECT * FROM Users WHERE universityId = ? AND isStudent=FALSE ORDER BY id", values);
     }
 
     public Integer getUniversityID(Integer id){

@@ -22,7 +22,8 @@ public class LectureDAO extends DAO<Lecture> {
     Lecture map(ResultSet resultSet) throws SQLException {
         Lecture lecture = new Lecture(
                 resultSet.getInt("sectionId"),
-                resultSet.getDate("date").toLocalDate());
+                resultSet.getDate("date").toLocalDate()
+        );
         lecture.setLectureID(resultSet.getInt("id"));
         return lecture;
     }
@@ -34,7 +35,8 @@ public class LectureDAO extends DAO<Lecture> {
 
         List<Object> values = Arrays.asList(
                 lecture.getSectionId(),
-                new Date(lecture.getYear(), lecture.getMonth(), lecture.getDay()));
+                new Date(lecture.getYear()-1900, lecture.getMonth()-1, lecture.getDay())
+        );
 
         try {
             ResultSet generatedKeys = executeUpdate(daoFactory,
@@ -53,10 +55,13 @@ public class LectureDAO extends DAO<Lecture> {
             throw new IllegalArgumentException("Lecture object does not exist in database");
         }
 
+
         List<Object> values = Arrays.asList(
                 lecture.getSectionId(),
-                new Date(lecture.getYear(), lecture.getMonth(), lecture.getDay()),
-                lecture.getLectureID());
+                new Date(lecture.getYear()-1900, lecture.getMonth()-1, lecture.getDay()),
+                lecture.getLectureID()
+        );
+
 
         try {
             executeUpdate(daoFactory, "UPDATE Lecture SET sectionId = ?, date = ? WHERE id = ?", values);
@@ -91,13 +96,9 @@ public class LectureDAO extends DAO<Lecture> {
     }
 
     public List<Lecture> getLecturesBySectionId(int sectionId) {
-        List<Lecture> lectures = new ArrayList<>();
-        String sql = "SELECT * FROM Lecture WHERE sectionId = ? ORDER BY date ASC";
         List<Object> values = Collections.singletonList(sectionId);
-
-        lectures = super.list(daoFactory, sql, values);
-
-        return lectures;
+        String sql = "SELECT * FROM Lecture WHERE sectionId = ? ORDER BY date ASC";
+        return super.list(daoFactory, sql, values);
     }
 
 }

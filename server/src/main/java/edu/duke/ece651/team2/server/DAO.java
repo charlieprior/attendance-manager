@@ -17,9 +17,7 @@ public abstract class DAO<T> {
         PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
         DAO.setStatementObjects(statement, values);
-        if (statement.executeUpdate() == 0) {
-            throw new RuntimeException("Execution failed: " + statement);
-        }
+        statement.executeUpdate();
 
         return statement.getGeneratedKeys();
     }
@@ -73,7 +71,7 @@ public abstract class DAO<T> {
     protected void deleteAll(DAOFactory daoFactory, String tableName) {
         List<Object> values = new ArrayList<>();
         try {
-            executeQuery(daoFactory,
+            executeUpdate(daoFactory,
                     "DELETE FROM " + tableName,
                     values);
         } catch (SQLException e) {

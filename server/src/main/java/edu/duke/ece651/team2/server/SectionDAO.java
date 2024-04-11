@@ -93,9 +93,20 @@ public class SectionDAO extends DAO<Section> {
     public List<Section> noInstructorSection(Integer courseId) {
         return super.list(daoFactory, "SELECT * FROM Section WHERE instructorId IS NULL AND courseId = "+courseId, new ArrayList<>());
     }
+    
+    public List<Section> list(Integer userID){
+        List<Object> values = Collections.singletonList(userID);
+        return super.list(daoFactory, "SELECT * FROM Section WHERE instructorId = ?", values);
+    }
 
-    public List<Section> list(Integer userID) {
-        return super.list(daoFactory, "SELECT * FROM Section WHERE instructorId = " + userID, new ArrayList<>());
+    public List<Section> listSectionsFromCourse(Integer courseID) {
+        List<Object> values = Collections.singletonList(courseID);
+        return super.list(daoFactory, "SELECT * FROM Section WHERE courseId = ?", values);
+    }
+
+    public Section get(Integer sectionID) {
+        List<Object> values = Collections.singletonList(sectionID);
+        return super.get(daoFactory, "SELECT * FROM Section WHERE id = ?", values);
     }
 
     // Not sure what get methods to write

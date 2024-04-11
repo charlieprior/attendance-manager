@@ -87,4 +87,8 @@ public class UniversityDAO extends DAO<University> {
         List<Object> values = Collections.singletonList(id);
         return super.get(daoFactory, "SELECT * FROM University WHERE id = ?", values);
     }
+
+    public void deleteAll() {
+        super.deleteAll(daoFactory, "University");
+    }
 }
