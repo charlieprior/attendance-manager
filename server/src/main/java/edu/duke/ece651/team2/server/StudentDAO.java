@@ -115,6 +115,7 @@ public class StudentDAO extends DAO<Student> {
 
     }
 
+    //use for taking new record
     public Map<Student, String> getStudentsBySectionID(int sectionID) {
         Map<Student, String> attendanceMap = new HashMap<>();
         String sql = "SELECT u.id, u.legalName, u.displayName, u.email, u.universityId " +
@@ -140,6 +141,7 @@ public class StudentDAO extends DAO<Student> {
         return attendanceMap;
     }
 
+    //use for updating old records
     public Map<Student, String> getAttendanceByLectureId(int lectureId) {
         Map<Student, String> attendanceMap = new HashMap<>();
         String sql = "SELECT u.id, u.legalName, u.displayName, a.status, u.email, u.universityId " +

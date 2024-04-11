@@ -125,21 +125,21 @@ public class App {
     }
   }
 
-  private void takeAttendance() throws ClassNotFoundException {
-    Section s = chooseSection();
-    Student[] students = getStudentsFromSection(s);
-    // TODO::Lecture
-    // List<AttendanceRecord> status =
-    // clientSideController.getStudentsStatus(students);
-    // try {
-    // String json = mapper.writeValueAsString(status);
-    // out.writeObject(json);
-    // }
-    // catch (IOException e) {
-    // // TODO Auto-generated catch block
-    // e.printStackTrace();
-    // }
+  private void generateSectionAttendanceReport(String fileName){
+    clientSideView.displayMessage("Waiting for the exported file...");
+    try{
+      String output = (String)in.readObject();
+      System.out.println(output);
+      FileWriter writer = new FileWriter("export/" + fileName + ".csv");
+      writer.write(output);
+      clientSideView.displayMessage("Write successfully!");
+      writer.close();
+    }
+    catch (Exception e){
+      e.printStackTrace();
+    }
   }
+
 
   private void beFaculty() throws ClassNotFoundException {
     Section s = chooseSection();
@@ -410,10 +410,11 @@ public class App {
         } else if (n == 1) {
           // record
           receiveAllStudentInfoByLectureIdForRecord();
-        } else if (n == 3) {
-          // export
-          receiveExportFileForAttendance();
-        }
+        } 
+        // else if (n == 3) {
+        //   // export
+        //   receiveExportFileForAttendance();
+        // }
 
       }
     } catch (IOException e) {
@@ -443,7 +444,13 @@ public class App {
           }
         }
         out.writeObject(resNum); // send int type
-        receiveAllLectureBySectionId(n);
+        out.flush();
+        if(n==3){
+          generateSectionAttendanceReport(response.get(resNum));
+        }
+        else{
+          receiveAllLectureBySectionId(n);
+        }
       }
     } catch (IOException e) {
       e.printStackTrace();

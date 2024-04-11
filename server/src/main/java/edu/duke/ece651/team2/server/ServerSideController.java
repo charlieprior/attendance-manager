@@ -14,6 +14,8 @@ import edu.duke.ece651.team2.shared.Student;
 import java.net.Socket;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -23,6 +25,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse.File;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -467,6 +471,65 @@ public class ServerSideController {
         }
     }
 
+    private void writeRecordsToCSV(HashMap<Integer,List<AttendanceReport>> reports){
+        StringBuffer whole = new StringBuffer();
+        String header = "Student ID,Student Name,Date,Status,Score";
+        whole.append(header+"\n");
+        for(Integer id:reports.keySet()){
+            for(AttendanceReport report:reports.get(id)){
+                whole.append(id.toString()+",");
+                whole.append(report.getStudentLegalName()+",");
+                whole.append(report.getAttendanceDate()+",");
+                whole.append(report.getRecord().getStatus()+",");
+                whole.append(report.getScore());
+                whole.append("\n");
+            }
+            whole.append("\n");
+        }
+        try {
+            out.writeObject(whole.toString());
+            out.flush();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    private void sendAttendanceRecord(Map<Integer, String> map) {
+        serverSideView.displayMessage("Professor's choice of setcion received....");
+        try {
+            Integer choice = (int) in.readObject();
+            // get sectionId of the choice
+            int sectionId = getSectionIdSelected(map.keySet(), choice);
+            StudentDAO studentDAO = new StudentDAO(factory);
+            Map<Student, String> students = studentDAO.getStudentsBySectionID(sectionId);
+            HashSet<Integer> studentID = new HashSet<>();
+            for(Student s:students.keySet()){
+                studentID.add(s.getStudentID());
+            }
+            LectureDAO lectureDAO = new LectureDAO(factory);
+            List<Lecture> lectures = lectureDAO.getLecturesBySectionId(sectionId);
+            if (lectures.isEmpty()) {
+                throw new IllegalStateException("Database error: can not get lectures!");
+            }
+            HashMap<Integer,List<AttendanceReport>> wholeReport = new HashMap<>();
+            for(Lecture l:lectures){
+                HashMap<Integer,AttendanceReport> attendanceReports = getAttendanceReportForLecture(l.getLectureID(),studentID);
+                for(Integer id:attendanceReports.keySet()){
+                    List<AttendanceReport> list = wholeReport.getOrDefault(id, new ArrayList<>());
+                    list.add(attendanceReports.get(id));
+                    wholeReport.put(id,list);
+                }
+            }
+            writeRecordsToCSV(wholeReport);
+            // out.writeObject(mapper.writeValueAsString(reports));
+            // out.flush();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void sendAttendanceFILE(int sectionId, List<Integer> lectureIdList) {
         // serverSideView.displayMessage("Professor's choice of lecture received....");
         // try {
@@ -526,13 +589,14 @@ public class ServerSideController {
                 // we don't set name for each lecture.
                 out.writeObject(mapper.writeValueAsString(resList));
                 out.flush();
-                if (n == 2 || n == 1) {
-                    // update & record
-                    sendALLStudentsEnrolled(lectureIdList, sectionId,n);
-                } else {
-                    // n == 3
-                    sendAttendanceFILE(sectionId, lectureIdList);
-                }
+                sendALLStudentsEnrolled(lectureIdList, sectionId,n);
+                // if (n == 2 || n == 1) {
+                //     // update & record
+                //     sendALLStudentsEnrolled(lectureIdList, sectionId,n);
+                // } else {
+                //     // n == 3
+                //     sendAttendanceFILE(sectionId, lectureIdList);
+                // }
             }
 
         } catch (Exception e) {
@@ -571,7 +635,12 @@ public class ServerSideController {
             }
             out.writeObject(mapper.writeValueAsString(resList));
             out.flush();
-            sendLectureListBySectionId(namesWithSectionId, n);
+            if(n==1||n==2){
+                sendLectureListBySectionId(namesWithSectionId, n);
+            }
+            else{
+                sendAttendanceRecord(namesWithSectionId);
+            }
         } catch (Exception e) {
             try {
                 List<String> errorList = new ArrayList<>();
@@ -612,50 +681,65 @@ public class ServerSideController {
         return sectionId;
     }
 
-    public List<AttendanceReport> getAttendanceReportForLecture(int lectureId) {
-        StudentDAO studentDAO = new StudentDAO(null);
-        Map<Student, String> resMap = studentDAO.getAttendanceByLectureId(lectureId);
-        if (resMap == null) {
-            throw new IllegalStateException("No student data found for lecture with ID: " + lectureId);
-        }
-        LectureDAO lectureDAO = new LectureDAO(null);
+    public HashMap<Integer,AttendanceReport> getAttendanceReportForLecture(int lectureId,HashSet<Integer> students) {
+        StudentDAO studentDAO = new StudentDAO(factory);
+        // Map<Student, String> resMap = studentDAO.getAttendanceByLectureId(lectureId);
+        // if (resMap == null) {
+        //     //throw new IllegalStateException("No student data found for lecture with ID: " + lectureId);
+        //     return null;
+        // }
+        LectureDAO lectureDAO = new LectureDAO(factory);
         Lecture lecture = lectureDAO.get(lectureId);
-        if (lecture == null) {
-            throw new IllegalArgumentException("Lecture with ID " + lectureId + " not found.");
-        }
-
+        // if (lecture == null) {
+        //     throw new IllegalArgumentException("Lecture with ID " + lectureId + " not found.");
+        // }
         int year = lecture.getYear();
         int month = lecture.getMonth();
         int day = lecture.getDay();
 
         String dateStr = String.format("%04d-%02d-%02d", year, month, day);
 
-        AttendanceDAO attendanceDAO = new AttendanceDAO(null);
+        AttendanceDAO attendanceDAO = new AttendanceDAO(factory);
         List<AttendanceRecord> attendanceRecords = attendanceDAO.getAllAttendancesForLecture(lectureId);
-        if (attendanceRecords.isEmpty()) {
+        // if (attendanceRecords.isEmpty()) {
+        //     // throw new IllegalStateException("No attendance records found for lecture with ID: " + lectureId);
+        //     return null;
+        // }
+        // if (attendanceRecords.size() != resMap.size()) {
 
-            throw new IllegalStateException("No attendance records found for lecture with ID: " + lectureId);
+        //     throw new IllegalStateException(
+        //             "Mismatch between attendance data and records for lecture with ID: " + lectureId);
+        // }
+
+        HashMap<Integer,AttendanceReport> attendanceReports = new HashMap<>();
+        for (AttendanceRecord attendanceRecord : attendanceRecords) {
+            if(!students.contains(attendanceRecord.getStudentId())){
+                continue;//removed the student before
+            }
+            String legal_name = studentDAO.get(attendanceRecord.getStudentId()).getLegalName();
+            attendanceReports.put(attendanceRecord.getStudentId(),new AttendanceReport(attendanceRecord, legal_name, dateStr));
         }
-        if (attendanceRecords.size() != resMap.size()) {
-
-            throw new IllegalStateException(
-                    "Mismatch between attendance data and records for lecture with ID: " + lectureId);
-        }
-        List<AttendanceReport> attendanceReports = new ArrayList<>();
-        for (Student student : resMap.keySet()) {
-            int studentId = student.getStudentID();
-            for (AttendanceRecord attendanceRecord : attendanceRecords) {
-                int studentId2 = attendanceRecord.getStudentId();
-
-                if (studentId == studentId2) {
-                    attendanceReports.add(new AttendanceReport(attendanceRecord, student.getLegalName(), dateStr));
-                }
+        for(Integer id:students){
+            if(!attendanceReports.containsKey(id)){
+                String legal_name = studentDAO.get(id).getLegalName();
+                AttendanceRecord attendanceRecord = new AttendanceRecord(id, AttendanceStatus.ABSENT, lectureId);
+                attendanceReports.put(id,new AttendanceReport(attendanceRecord, legal_name, dateStr));
             }
         }
-        if (attendanceReports.isEmpty()) {
-            throw new IllegalStateException(
-                    "Failed to generate report for lecture with ID: " + lectureId);
-        }
+        // for (Student student : resMap.keySet()) {
+        //     int studentId = student.getStudentID();
+        //     for (AttendanceRecord attendanceRecord : attendanceRecords) {
+        //         int studentId2 = attendanceRecord.getStudentId();
+
+        //         if (studentId == studentId2) {
+        //             attendanceReports.add(new AttendanceReport(attendanceRecord, student.getLegalName(), dateStr));
+        //         }
+        //     }
+        // }
+        // if (attendanceReports.isEmpty()) {
+        //     throw new IllegalStateException(
+        //             "Failed to generate report for lecture with ID: " + lectureId);
+        // }
         return attendanceReports;
     }
 }

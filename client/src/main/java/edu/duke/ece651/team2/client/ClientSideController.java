@@ -49,8 +49,8 @@ public class ClientSideController {
                     "1. Record attendance.\n" +
                             "2. Update attendance.\n" +
                             "3. Export student attendance information.\n" +
-                            "4. Select courses to teach that are not yet assigned.\n " +
-                            "5.Exit.");
+                            "4. Select courses to teach that are not yet assigned.\n" +
+                            "5. Exit.");
 
             // Process professor's choice
             String choiceStr = clientSideView.promptUser("Please enter your choice: ");
