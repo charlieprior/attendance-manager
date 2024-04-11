@@ -4,9 +4,6 @@ import edu.duke.ece651.team2.shared.Student;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.*;
 
 public class StudentDAO extends DAO<Student> {
@@ -98,6 +95,24 @@ public class StudentDAO extends DAO<Student> {
     public Student get(Integer id) {
         List<Object> values = Collections.singletonList(id);
         return super.get(daoFactory, "SELECT * FROM Users WHERE id = ?", values);
+    }
+
+    public Integer getUniversityID(Integer id){
+        List<Object> values = Collections.singletonList(id);
+        String sql = "SELECT universityId FROM Users WHERE id = ?";
+        try(ResultSet resultSet = executeQuery(daoFactory, sql, values)){
+            if (resultSet.next()){
+                return resultSet.getInt("universityId");
+            }
+            else{
+                return null;
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException("Failed to fetch attendance for UniversityID for student: " + id, e);
+        }
+
+
     }
 
     public Map<Student, String> getAttendanceByLectureId(int lectureId) {

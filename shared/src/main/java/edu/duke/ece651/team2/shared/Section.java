@@ -11,6 +11,8 @@ public class Section {
     private ArrayList<Student> students;
     private ArrayList<Lecture> lectures;
 
+    public Section(){}
+
     public Section(Integer courseId, Integer instructorId, String name) {
         this.courseId = courseId;
         this.instructorId = instructorId;

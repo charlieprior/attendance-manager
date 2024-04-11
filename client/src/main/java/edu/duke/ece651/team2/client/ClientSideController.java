@@ -183,13 +183,17 @@ public class ClientSideController {
 
     public Section displayAndChooseSection(Section[] sec) {
         for (int i = 0; i < sec.length; i++) {
-            clientSideView.displayMessage(i + 1 + sec[i].getName());
+            clientSideView.displayMessage(i + 1 + ". "+sec[i].getName());
         }
-        int choice = 0;
+        clientSideView.displayMessage("0 will return back.\n");
+        int choice = -1;
         try {
-            while (choice <= 0 || choice > sec.length) {
-                String ans = clientSideView.promptUser("Choose the valid Section");
+            while (choice < 0 || choice > sec.length) {
+                String ans = clientSideView.promptUser("Choose a valid Section:");
                 choice = Integer.parseInt(ans);
+            }
+            if(choice==0){
+                return null;
             }
             return sec[choice - 1];
         } catch (IOException e) {

@@ -43,11 +43,12 @@ public class ClientHandler implements Runnable {
     public void beFaculty() throws ClassNotFoundException {
         List<Section> sections = serverSideController.getNoFacultySection();
         Section s_chosen = serverSideController.getChosenSection(sections);
-        serverSideController.setFaculty(s_chosen);
+        if(s_chosen!=null){
+            serverSideController.setFaculty(s_chosen);
+        }
     }
 
     private String handleFacultyRequest(Integer request) throws ClassNotFoundException {
-        System.out.println("you are doing:" + request);
         String res = "";
         if (request == 1) {
             // Execute recording attendance
@@ -363,120 +364,6 @@ public class ClientHandler implements Runnable {
         // 3. generate file and send file
         sendAllTeachedSectionNames(3);
     }
-
-    // private List<Section> sendAllEnrolledSectionNames() throws IOException {
-    //     EnrollmentDAO enrollmentDAO = new EnrollmentDAO(null);
-    //     try {
-    //         List<Enrollment> enrollments = enrollmentDAO.findEnrollmentsByStudentId(userId);
-    //         List<String> errorList = new ArrayList<>();
-    //         if (enrollments.isEmpty()) {
-    //             throw new IllegalStateException("You are not enrolled in any classes this semester!");
-    //         } else {
-    //             List<String> sectionNames = new ArrayList<>();
-    //             List<String> courseNames = new ArrayList<>();
-    //             List<Section> sections = new ArrayList<>();
-    //             for (Enrollment enrollment : enrollments) {
-    //                 // get Section
-    //                 SectionDAO sectionDAO = new SectionDAO(null);
-    //                 Section section = sectionDAO.getBySectionId(enrollment.getSectionId());
-    //                 if (section == null) {
-    //                     // throw
-    //                     throw new Exception("Section not found for sectionId: " + enrollment.getSectionId());
-    //                 }
-    //                 CourseDAO courseDAO = new CourseDAO(null);
-    //                 Course course = courseDAO.getCourseByCourseId(section.getCourseId());
-    //                 if (course == null) {
-    //                     // throw
-    //                     throw new Exception("Course not found for courseId: " + section.getCourseId());
-    //                 }
-    //                 sectionNames.add(section.getName());
-    //                 courseNames.add(course.getName());
-    //                 sections.add(section);
-
-    //             }
-    //             List<String> response = serverSideController.getCourseSectionList(sectionNames, courseNames);
-    //             out.writeObject(mapper.writeValueAsString(response));
-    //             out.flush();
-    //             return sections;
-    //         }
-    //         // out.writeObject(sectionIdResult);
-    //     } catch (Exception e) {
-    //         List<String> errorList = new ArrayList<>();
-    //         errorList.add("ERROR");
-    //         try {
-    //             // send exception to client
-    //             errorList.add(e.getMessage());
-    //             out.writeObject(errorList);
-    //             out.flush();
-    //         } catch (IOException ex) {
-    //             ex.printStackTrace();
-    //         }
-    //     }
-    //     return null;
-    // }
-
-    // private void receiveEmailPreferenceFromClient(int sectionId) {
-    //     // get result from client
-    //     try {
-    //         Integer num = mapper.readValue((String) in.readObject(), Integer.class);
-    //         if (num != null) {
-    //             if (num == 1) {// 1-change, 0-change
-    //                 EnrollmentDAO enrollmentDAO = new EnrollmentDAO(null);
-    //                 // write in the db
-    //                 enrollmentDAO.updateNotifyBySectionIdAndStudentId(sectionId, userId);
-    //                 out.writeObject(mapper.writeValueAsString("1||" + "Update Successfully!"));
-    //                 out.flush();
-    //             } else {
-    //                 out.writeObject(mapper.writeValueAsString("0||" + "Invalid Input from Client!"));
-    //                 out.flush();
-    //             }
-    //         } else {
-    //             out.writeObject("0||" + "Invalid Input from Client!");
-    //             out.flush();
-    //         }
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    // }
-
-    // private void handleChangeEmailPreference() throws IOException {
-    //     List<Section> parseSections = serverSideController.sendAllEnrolledSectionNames(userId);
-    //     if (!parseSections.isEmpty()) {
-    //         // get result from client
-    //         try {
-    //             Integer num = (Integer) in.readObject();
-    //             if (num != null) {
-    //                 // Default eligible
-
-    //                 // EnrollmentDAO enrollmentDAO = new EnrollmentDAO(null);
-    //                 // Integer sectionId = parseSections.get(num - 1).getSectionID();
-    //                 // boolean isSubscribed = enrollmentDAO.checkNotify(sectionId, userId);
-    //                 // String subscriptionStatus = isSubscribed ? "Subscribed" : "Unsubscribed";
-
-    //                 String subscriptionStatus = serverSideController.checkEnrollmentStatus(parseSections,num,userId);
-    //                 // send to client
-    //                 // 1 here is valid, 0 is invalid
-    //                 String sendMsg = "1||" + "The current state of the course is: " + subscriptionStatus + "\n"
-    //                         + "Do you want to change it (change -1, no change -0)";
-    //                 out.writeObject(mapper.writeValueAsString(sendMsg));
-    //                 out.flush();
-    //                 // receive msg from client
-    //                 receiveEmailPreferenceFromClient(sectionId);
-
-    //             } 
-    //             // else {
-    //             //     String sendMsg = "0||" + "Invalid request format (please input a number)!";
-    //             //     out.writeObject(mapper.writeValueAsString(sendMsg));
-    //             //     out.flush();
-    //             // }
-    //         } catch (Exception e) {
-    //             e.printStackTrace();
-    //         }
-    //     } else {
-    //         return;
-    //     }
-
-    // }
 
     private void handleGetAttendanceReport() throws IOException {
         List<Section> parseSections = serverSideController.sendAllEnrolledSectionNames(userId);

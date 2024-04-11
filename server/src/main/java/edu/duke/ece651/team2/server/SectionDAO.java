@@ -90,8 +90,8 @@ public class SectionDAO extends DAO<Section> {
         return super.list(daoFactory, "SELECT * FROM Section ORDER BY courseId", new ArrayList<>());
     }
 
-    public List<Section> noInstructorSection() {
-        return super.list(daoFactory, "SELECT * FROM Section WHERE instructorId IS NULL", new ArrayList<>());
+    public List<Section> noInstructorSection(Integer courseId) {
+        return super.list(daoFactory, "SELECT * FROM Section WHERE instructorId IS NULL AND courseId = "+courseId, new ArrayList<>());
     }
 
     public List<Section> list(Integer userID) {

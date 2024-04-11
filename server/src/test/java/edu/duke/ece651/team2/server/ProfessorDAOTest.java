@@ -43,4 +43,10 @@ class ProfessorDAOTest {
         Professor got = professorDAO.get(prof.getProfessorID());
         assertEquals(prof, got);
     }
+
+    // @Test
+    // void testGetUniversityID(){
+    //    Integer id = professorDAO.getUniversityID(2);
+    //    assertEquals(1, id);
+    // }
 }

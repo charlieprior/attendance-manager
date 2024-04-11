@@ -15,7 +15,6 @@ public class Student {
      * The display name of the student.
      */
     String displayName;
-    ArrayList<Section> sections;
     /**
      * The legal name of the student.
      */
@@ -126,16 +125,5 @@ public class Student {
         this.displayName = displayName;
     }
 
-    /**
-     * Set the display name of the student.
-     *
-     * @param displayName The display name of the student.
-     */
-
-    void addSection(Section... sec){
-        for(Section s:sec){
-            sections.add(s);
-        }
-    }
 
 }

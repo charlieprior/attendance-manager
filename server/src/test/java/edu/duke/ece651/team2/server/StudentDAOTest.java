@@ -43,4 +43,10 @@ class StudentDAOTest {
          Student got = studentDAO.get(test.getStudentID());
          assertEquals(test, got);
      }
+
+    //  @Test
+    //  void testGetUniversityID(){
+    //     Integer id = studentDAO.getUniversityID(1);
+    //     assertEquals(1, id);
+    //  }
 }

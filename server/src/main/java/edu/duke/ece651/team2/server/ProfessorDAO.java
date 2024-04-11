@@ -104,4 +104,20 @@ public class ProfessorDAO extends DAO<Professor> {
         List<Object> values = Collections.singletonList(id);
         return super.get(daoFactory, "SELECT * FROM Users WHERE id = ?", values);
     }
+
+    public Integer getUniversityID(Integer id){
+        List<Object> values = Collections.singletonList(id);
+        String sql = "SELECT universityId FROM Users WHERE id = ?";
+        try(ResultSet resultSet = executeQuery(daoFactory, sql, values)){
+            if (resultSet.next()){
+                return resultSet.getInt("universityId");
+            }
+            else{
+                return null;
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException("Failed to fetch attendance for UniversityID for student: " + id, e);
+        }
+    }
 }

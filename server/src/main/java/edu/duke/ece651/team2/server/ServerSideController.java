@@ -31,6 +31,7 @@ public class ServerSideController {
     private int user_id;
     private int status; // whether the user is professor of student; // student - 1, faculty - 2, error
                         // - 0
+    private Integer universityID;
 
     public ServerSideController(ServerSideView serverSideView) {
         this.serverSideView = serverSideView;
@@ -80,6 +81,8 @@ public class ServerSideController {
                 resultStr[1] = "Welcome to xxx system!";
                 user_id = userID;
                 status = 1;
+                StudentDAO studentDAO = new StudentDAO(factory);
+                universityID = studentDAO.getUniversityID(user_id);
                 return resultStr;
             } else {
                 // facultyId is even
@@ -87,6 +90,8 @@ public class ServerSideController {
                 resultStr[1] = "Welcome to xxx system!";
                 status = 2;
                 user_id = userID;
+                ProfessorDAO professorDAO = new ProfessorDAO(factory);
+                universityID = professorDAO.getUniversityID(user_id);
                 return resultStr;
             }
         }
@@ -274,8 +279,14 @@ public class ServerSideController {
     }
 
     public List<Section> getNoFacultySection() {
+        CourseDAO courseDAO = new CourseDAO(factory);
+        List<Course> courses = courseDAO.listByUniversity(universityID);
         SectionDAO sectionDAO = new SectionDAO(factory);
-        return sectionDAO.noInstructorSection();
+        List<Section> ans = new ArrayList<>();
+        for(Course c:courses){
+            ans.addAll(sectionDAO.noInstructorSection(c.getCourseID()));
+        }
+        return ans;
     }
 
     public Section getChosenSection(List<Section> s) throws ClassNotFoundException {
