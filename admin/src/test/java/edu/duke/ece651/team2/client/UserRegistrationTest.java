@@ -1,4 +1,4 @@
-package edu.duke.ece651.team2.admin;
+package edu.duke.ece651.team2.client;
 
 import org.junit.jupiter.api.Test;
 import edu.duke.ece651.team2.shared.*;

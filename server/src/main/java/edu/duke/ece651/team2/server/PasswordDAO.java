@@ -28,7 +28,7 @@ public class PasswordDAO extends DAO<Password> {
         return password;
     }
 
-    void create(Password password) {
+    public void create(Password password) {
         List<Object> values = Arrays.asList(
                 password.getId(),
                 password.getPassword(),
@@ -44,7 +44,7 @@ public class PasswordDAO extends DAO<Password> {
         }
     }
 
-    void update(Password password) {
+    public void update(Password password) {
         List<Object> values = Arrays.asList(
                 password.getPassword(),
                 password.getId()
@@ -59,7 +59,7 @@ public class PasswordDAO extends DAO<Password> {
         }
     }
 
-    void remove(Password password) {
+    public void remove(Password password) {
         List<Object> values = Collections.singletonList(
                 password.getId()
         );
