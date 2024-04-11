@@ -15,13 +15,13 @@ public class EnrollmentDAO extends DAO<Enrollment> {
         this.daoFactory = daoFactory;
     }
     @Override
-    Enrollment map(ResultSet resultSet) throws SQLException {
+    public Enrollment map(ResultSet resultSet) throws SQLException {
         return new Enrollment(resultSet.getInt("sectionId"),
                 resultSet.getInt("studentId"),
                 resultSet.getBoolean("notify"));
     }
 
-    void create(Enrollment enrollment) {
+    public void create(Enrollment enrollment) {
         List<Object> values = Arrays.asList(
                 enrollment.getSectionId(),
                 enrollment.getStudentId(),
@@ -40,7 +40,7 @@ public class EnrollmentDAO extends DAO<Enrollment> {
     // NO Update because enrollment is composed only of stable keys
     // If enrollment changes, should only need to remove
 
-    void remove(Enrollment enrollment) {
+    public void remove(Enrollment enrollment) {
         List<Object> values = Arrays.asList(
                 enrollment.getSectionId(),
                 enrollment.getStudentId()

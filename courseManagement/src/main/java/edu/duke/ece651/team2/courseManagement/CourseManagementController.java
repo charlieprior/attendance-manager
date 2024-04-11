@@ -1,6 +1,7 @@
 package edu.duke.ece651.team2.courseManagement;
 
 import edu.duke.ece651.team2.shared.Course;
+import edu.duke.ece651.team2.shared.Professor;
 import edu.duke.ece651.team2.shared.Section;
 import edu.duke.ece651.team2.shared.Student;
 
@@ -69,6 +70,18 @@ public class CourseManagementController {
         return courses.size();
     }
 
+    public int listProfessors() {
+        List<Professor> professors = model.listProfessors();
+        for (Professor p : professors) {
+            String str = p.getProfessorID() +
+                    ". " +
+                    p.getName();
+            out.println(str);
+        }
+
+        return professors.size();
+    }
+
 
     /**
      * Prompts the user to select a course
@@ -86,6 +99,34 @@ public class CourseManagementController {
         try {
             Integer courseId = Integer.parseInt(reader.readLine());
             return model.getCourse(courseId);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private Section getSection(String prompt, Course course) throws IOException {
+        out.println(prompt);
+        if (listSections(course) == 0) {
+            out.println("No sections in course!");
+            return null;
+        }
+        try {
+            Integer sectionId = Integer.parseInt(reader.readLine());
+            return model.getSection(sectionId);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private Professor getProfessor(String prompt) throws IOException {
+        out.println(prompt);
+        if (listProfessors() == 0) {
+            out.println("No professors in database!");
+            return null;
+        }
+        try {
+            Integer professorId = Integer.parseInt(reader.readLine());
+            return model.getProfessor(professorId);
         } catch (NumberFormatException e) {
             return null;
         }
@@ -126,6 +167,29 @@ public class CourseManagementController {
         return null;
     }
 
+    public Integer addSection() throws IOException {
+        Course course = getCourse("Please select the course you would like to add a section to (blank to exit):");
+        if (course == null) {
+            return null;
+        }
+
+        out.println("Please enter the name of the new section (blank to exit):");
+        String sectionName = reader.readLine();
+
+        Professor professor = getProfessor("Please select the professor for the section (blank to exit):");
+        if (professor == null) {
+            return null;
+        }
+
+        if (!sectionName.isEmpty()) {
+            Section section = new Section(course.getCourseID(), professor.getProfessorID(), sectionName);
+            model.addSection(section);
+            return section.getSectionID();
+        }
+
+        return null;
+    }
+
     /**
      * Prompts the user to remove a course
      *
@@ -144,6 +208,24 @@ public class CourseManagementController {
         }
     }
 
+    public void removeSection() throws IOException {
+        Course course = getCourse("Please select the course whose section you would like to delete (blank to exit):");
+        if (course == null) {
+            return;
+        }
+
+        Section section = getSection("Please select the section you would like to delete (blank to exit):", course);
+        if (section != null) {
+            out.println("Are you sure you want to delete section " + section.getName() + "? Y for yes");
+            String confirm = reader.readLine();
+            if (!confirm.equals("Y")) {
+                return;
+            }
+
+            model.removeSection(section);
+        }
+    }
+
     /**
      * Prompts the user to update a course
      *
@@ -159,6 +241,21 @@ public class CourseManagementController {
         }
     }
 
+    public void updateSection() throws IOException {
+        Course course = getCourse("Please select the course whose section you would like to update (blank to exit):");
+        if (course == null) {
+            return;
+        }
+
+        Section section = getSection("Please select the section you would like to update (blank to exit):", course);
+        if (section != null) {
+            out.println("Please enter the new name for the section");
+            String newName = reader.readLine();
+            section.setName(newName);
+            model.updateSection(section);
+        }
+    }
+
     /**
      * Prompts the user to choose an option and performs the corresponding action
      *
@@ -169,10 +266,14 @@ public class CourseManagementController {
                 "1. Update an existing course\n" +
                 "2. Delete an existing course\n" +
                 "3. Add a new course\n" +
-                "4. Exit");
+                "4. Update an existing section\n" +
+                "5. Delete an existing section\n" +
+                "6. Add a new section\n" +
+                "7. Add students to a section\n" +
+                "8. Exit");
         try {
             int option = Integer.parseInt(reader.readLine());
-            if (option < 1 || option > 4) {
+            if (option < 1 || option > 8) {
                 throw new IllegalArgumentException();
             }
 
@@ -187,6 +288,18 @@ public class CourseManagementController {
                     addCourse();
                     break;
                 case 4:
+                    updateSection();
+                    break;
+                case 5:
+                    removeSection();
+                    break;
+                case 6:
+                    addSection();
+                    break;
+                case 7:
+                    addStudents();
+                    break;
+                case 8:
                     shouldExit = true;
                     break;
             }
@@ -203,7 +316,29 @@ public class CourseManagementController {
         out.println("Please enter a valid selection!");
     }
 
-    public void readStudentsFromCSV() throws IOException {
+    public void addStudents() throws IOException {
+        Course course = getCourse("Please select the course you would like to add students to (blank to exit):");
+        if (course == null) {
+            return;
+        }
+
+        Section section = getSection("Please select the section you would like to add students to (blank to exit):", course);
+        if (section == null) {
+            return;
+        }
+
+        out.println("Would you like to load students from a CSV file? Y for yes");
+        if (reader.readLine().equals("Y")) {
+            List<Student> students = readStudentsFromCSV();
+            for (Student student : students) {
+                model.addStudentToSection(student, section);
+            }
+        } else {
+            model.addStudentToSection(readStudent(), section);
+        }
+    }
+
+    public List<Student> readStudentsFromCSV() throws IOException {
         CSVLoader csvLoader = new CSVLoader();
         out.println("Please enter the name of the file to load:");
         String filename = reader.readLine();
@@ -211,7 +346,7 @@ public class CourseManagementController {
         boolean hasHeader = reader.readLine().equals("Y");
         out.println("What is the delimiter?");
         String delimiter = reader.readLine();
-        while(true) {
+        while (true) {
             try {
                 out.println("What column is the legal name in? (starting from 0)");
                 int legalNameIndex = Integer.parseInt(reader.readLine());
@@ -222,18 +357,24 @@ public class CourseManagementController {
 
                 try {
                     List<String> lines = csvLoader.getLines(filename, hasHeader);
-                    List<Student> students = csvLoader.getStudents(lines, ",", legalNameIndex, emailIndex, displayNameIndex, model.getUniversity().getId());
-                    for (Student s : students) {
-                        model.addStudent(s);
-                    }
+                    return csvLoader.getStudents(lines, ",", legalNameIndex, emailIndex, displayNameIndex, model.getUniversity().getId());
                 } catch (IOException e) {
                     out.println("Error reading file");
                 }
-                return;
 
             } catch (NumberFormatException e) {
                 out.println("Invalid column number");
             }
         }
+    }
+
+    Student readStudent() throws IOException {
+        out.println("Please enter the legal name of the student:");
+        String legalName = reader.readLine();
+        out.println("Please enter the email of the student:");
+        String email = reader.readLine();
+        out.println("Please enter the display name of the student:");
+        String displayName = reader.readLine();
+        return new Student(legalName, email, model.getUniversity().getId(), displayName);
     }
 }

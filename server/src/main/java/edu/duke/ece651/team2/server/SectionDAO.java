@@ -103,6 +103,11 @@ public class SectionDAO extends DAO<Section> {
         return super.list(daoFactory, "SELECT * FROM Section WHERE courseId = ?", values);
     }
 
+    public Section get(Integer sectionID) {
+        List<Object> values = Collections.singletonList(sectionID);
+        return super.get(daoFactory, "SELECT * FROM Section WHERE id = ?", values);
+    }
+
 
     // Not sure what get methods to write
 }
