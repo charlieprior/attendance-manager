@@ -1,0 +1,220 @@
+package edu.duke.ece651.team2.admin;
+
+import edu.duke.ece651.team2.shared.*;
+import edu.duke.ece651.team2.server.*;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.Objects;
+
+public class UserRegistrationView {
+    final PrintStream out;
+    private final UniversityDAO universityDAO;
+    private final BufferedReader reader;
+    private final UserRegistration userRegistration;
+
+    /**
+     * Constructs a new UserRegistrationView object
+     * 
+     * @param out              The PrintStream used to write the output
+     * @param userRegistration the userRegistration class initialization
+     * @param reader           initialization for the reader taking for user input
+     */
+    public UserRegistrationView(PrintStream out, UserRegistration userRegistration,
+            BufferedReader reader) {
+        this.userRegistration = userRegistration;
+        this.out = out;
+        this.reader = reader;
+        DAOFactory factory = new DAOFactory();
+        this.universityDAO = new UniversityDAO(factory);
+    }
+
+    /**
+     * Prints the specified prompt to the user.
+     *
+     * @param prompt The prompt to print to the user.
+     */
+    public void print(String prompt) {
+        out.println(prompt);
+    }
+
+    protected String printPromptAndRead(String prompt) throws IOException {
+        out.println(prompt);
+        return reader.readLine();
+    }
+
+    public int addProfessorView() throws IOException {
+        // add it to table password, get UniversityID from University
+        String prompt = "What's your legal name:";
+        String name = printPromptAndRead(prompt);
+        prompt = "What's your E-Mail:";
+        String email = printPromptAndRead(prompt);
+        prompt = "What's Your University?";
+        print(prompt);
+        prompt = String.valueOf(universityDAO.list());
+        String id = printPromptAndRead(prompt);
+        Integer uniID = Integer.valueOf(id);
+        prompt = "What would you like to set as your password?";
+        String passkey = printPromptAndRead(prompt);
+        Professor professor = new Professor(name, email, uniID);
+        userRegistration.addProfessor(professor, passkey);
+        Integer ID = professor.getProfessorID();
+        // String professorID = String.valueOf(ID);
+        // prompt = "The faculty's id is: " + professorID + "\n";
+        // print(prompt);
+        return ID;
+    }
+
+    public void removeProfessorView() throws IOException {
+        String prompt = "You are removing an existing faculty member, please provide the required info:\n" +
+                "Whats the faculty's ID number:";
+        String choiceTwo = printPromptAndRead(prompt);
+        Integer id = Integer.valueOf(choiceTwo);
+        if (userRegistration.getProfessorID(id) != null) {
+            userRegistration.removeProfessor(id);
+        } else {
+            print("This faculty member does not seem to be in the registry...\n");
+        }
+    }
+
+    public void updateProfessorView() throws IOException {
+        String prompt = "You are updating an existing faculty member, please provide the required info:\n" +
+                "Whats the faculty's ID number:";
+        String choiceThree = printPromptAndRead(prompt);
+        Integer id = Integer.valueOf(choiceThree);
+        if (userRegistration.getProfessorID(id) != null) {
+            prompt = "What would you like to set as your new password?\n";
+            String newPassword = printPromptAndRead(prompt);
+            userRegistration.updateProfessor(id, newPassword);
+        } else {
+            print("This faculty member does not seem to be in the registry...\n");
+        }
+    }
+
+    public int addStudentView() throws IOException {
+        String prompt = "You are adding a new Student, please provide the required info:\nWhats the student's legal name:";
+        String legalName = printPromptAndRead(prompt);
+        prompt = "Whats the student's display name:";
+        String displayName = printPromptAndRead(prompt);
+        prompt = "Whats the student's E-Mail:";
+        String email = printPromptAndRead(prompt);
+        prompt = "What's the University of the Student?";
+        print(prompt);
+        prompt = String.valueOf(universityDAO.list());
+        String id = printPromptAndRead(prompt);
+        Integer uniID = Integer.valueOf(id);
+        prompt = "What would you like to set as your password?";
+        String passkey = printPromptAndRead(prompt);
+        Student student = new Student(legalName, email, uniID, displayName);
+        userRegistration.addStudent(student, passkey);
+        Integer ID = student.getStudentID();
+        // String studentID = String.valueOf(ID);
+        // prompt = "The student's id is: " + studentID + "\n";
+        // print(prompt);
+        return ID;
+    }
+
+    public void removeStudentView() throws IOException {
+        String prompt = "You are removing an existing Student, please provide the required info:\n" +
+                "Whats the student's ID number:";
+        String choiceTwo = printPromptAndRead(prompt);
+        Integer id = Integer.valueOf(choiceTwo);
+        if (userRegistration.getStudentID(id) != null) {
+            userRegistration.removeStudent(id);
+        } else {
+            print("This student does not seem to be in the registry...\n");
+        }
+    }
+
+    public void updateStudentView() throws IOException {
+        String prompt = "You are updating an existing Student, please provide the required info:\n" +
+                "Whats the student's ID number:";
+        String choiceThree = printPromptAndRead(prompt);
+        Integer id = Integer.valueOf(choiceThree);
+        if (userRegistration.getStudentID(id) != null) {
+            prompt = "What would you like to set as your new password?\n";
+            String newPassword = printPromptAndRead(prompt);
+            userRegistration.updateStudent(id, newPassword);
+        } else {
+            print("This student does not seem to be in the registry...\n");
+        }
+    }
+
+    /**
+     * View method for the student's options in the UserRegistration portal
+     */
+    public void studentOptions() throws IOException {
+        String prompt = "Welcome Student, What Would You Like to Do?\n" +
+                "   1. Register New Account\n" +
+                "   2. Remove Existing Account\n" +
+                "   3. Update Existing Account\n";
+        while (true) {
+            String choiceOne = printPromptAndRead(prompt);
+            if (Objects.equals(choiceOne, "1")) {
+                print("Account Registration Portal:\n");
+                addStudentView();
+                break;
+            } else if (Objects.equals(choiceOne, "2")) {
+                print("Account Deletion Portal:\n");
+                removeStudentView();
+                break;
+            } else if (Objects.equals(choiceOne, "3")) {
+                print("Account Update Portal:\n");
+                updateStudentView();
+                break;
+            }
+            print("Invalid Selection, please try again!");
+        }
+    }
+
+    /**
+     * View method for the professor's options in the UserRegistration portal
+     */
+    public void professorOptions() throws IOException {
+        String prompt = "Welcome Faculty, What Would You Like to Do?\n" +
+                "   1. Register New Account\n" +
+                "   2. Remove Existing Account\n" +
+                "   3. Update Existing Account\n";
+        while (true) {
+            String choiceOne = printPromptAndRead(prompt);
+            if (Objects.equals(choiceOne, "1")) {
+                print("Account Registration Portal:\n");
+                addProfessorView();
+                break;
+            } else if (Objects.equals(choiceOne, "2")) {
+                print("Account Deletion Portal:\n");
+                removeProfessorView();
+                break;
+            } else if (Objects.equals(choiceOne, "3")) {
+                print("Account Update Portal:\n");
+                updateProfessorView();
+                break;
+            }
+            print("Invalid Selection, please try again!");
+        }
+    }
+
+    /**
+     * View method for the general options in the UserRegistration portal
+     */
+    public void menuOptions() throws IOException {
+        String prompt = "Welcome to the User Registration Portal.\n" +
+                "Are you a Faculty Member or a Student?:\n" +
+                "   1. Student\n" +
+                "   2. Faculty Member\n";
+        while (true) {
+            String choiceOne = printPromptAndRead(prompt);
+            if (Objects.equals(choiceOne, "1")) {
+                studentOptions();
+                break;
+            } else if (Objects.equals(choiceOne, "2")) {
+                professorOptions();
+                break;
+            }
+            print("Invalid Selection, please try again!");
+
+        }
+    }
+
+}
