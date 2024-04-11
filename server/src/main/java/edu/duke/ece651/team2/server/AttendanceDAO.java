@@ -48,7 +48,7 @@ public class AttendanceDAO extends DAO<AttendanceRecord> {
 
         try {
             executeUpdate(daoFactory,
-                    "UPDATE Attendance SET (status) VALUES (?) WHERE lectureId = ? AND studentId = ?",
+                    "UPDATE Attendance SET status = ? WHERE lectureId = ? AND studentId = ?",
                     values);
         } catch (SQLException e) {
             throw new RuntimeException(e);

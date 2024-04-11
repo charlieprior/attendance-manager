@@ -299,6 +299,7 @@ public class App {
         int len = response.size();
         // display all student
         clientSideController.displayAllClassAttendance(response);
+        clientSideView.displayMessage("=============");
         // Ask users for input
         List<Character> inputAttendance = new ArrayList<>();
         for (int i = 0; i < len; i++) {
@@ -311,7 +312,8 @@ public class App {
             if (clientSideController.isValidStringForRecord(choice)) {
               break;
             } else {
-              clientSideView.displayMessage("Please enter a valid input!");
+              choice = clientSideView.promptUser("Please enter a valid input!");
+              //clientSideView.displayMessage("Please enter a valid input!");
             }
           }
           inputAttendance.add(choice.charAt(0));
@@ -440,7 +442,7 @@ public class App {
             clientSideView.displayMessage("Please enter a valid number!");
           }
         }
-        out.writeObject(mapper.writeValueAsString(resNum)); // send int type
+        out.writeObject(resNum); // send int type
         receiveAllLectureBySectionId(n);
       }
     } catch (IOException e) {

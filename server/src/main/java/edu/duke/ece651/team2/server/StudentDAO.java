@@ -115,9 +115,34 @@ public class StudentDAO extends DAO<Student> {
 
     }
 
+    public Map<Student, String> getStudentsBySectionID(int sectionID) {
+        Map<Student, String> attendanceMap = new HashMap<>();
+        String sql = "SELECT u.id, u.legalName, u.displayName, u.email, u.universityId " +
+                "FROM Enrollment e " +
+                "JOIN Users u ON e.studentId = u.id " +
+                "WHERE e.sectionId = ?";
+        List<Object> values = Collections.singletonList(sectionID);
+
+        try (ResultSet resultSet = executeQuery(daoFactory, sql, values)) {
+            while (resultSet.next()) {
+                Student student = new Student(
+                        resultSet.getString("legalName"),
+                        resultSet.getString("email"),
+                        resultSet.getInt("universityId"),
+                        resultSet.getString("displayName"));
+                student.setStudentID(resultSet.getInt("id"));
+                attendanceMap.put(student, null);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to fetch attendance for sectionID: " + sectionID, e);
+        }
+
+        return attendanceMap;
+    }
+
     public Map<Student, String> getAttendanceByLectureId(int lectureId) {
         Map<Student, String> attendanceMap = new HashMap<>();
-        String sql = "SELECT u.id, u.legalName, u.displayName, a.status " +
+        String sql = "SELECT u.id, u.legalName, u.displayName, a.status, u.email, u.universityId " +
                 "FROM Enrollment e " +
                 "JOIN Attendance a ON e.studentId = a.studentId " +
                 "JOIN Users u ON e.studentId = u.id " +

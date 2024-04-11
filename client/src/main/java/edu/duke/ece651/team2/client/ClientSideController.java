@@ -85,7 +85,7 @@ public class ClientSideController {
     public void displayAllClassAttendance(List<String> names) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < names.size(); i++) {
-            builder.append((i + 1)).append(". ").append(names.get(i)).append("     ");
+            builder.append((i + 1)).append(". ").append(names.get(i));
             if ((i + 1) % 4 == 0 && i != names.size() - 1) {
                 builder.append("\n");
             }

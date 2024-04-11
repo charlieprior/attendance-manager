@@ -2,10 +2,12 @@ package edu.duke.ece651.team2.server;
 
 import edu.duke.ece651.team2.shared.AttendanceRecord;
 import edu.duke.ece651.team2.shared.AttendanceReport;
+import edu.duke.ece651.team2.shared.AttendanceStatus;
 import edu.duke.ece651.team2.shared.Course;
 import edu.duke.ece651.team2.shared.Enrollment;
 import edu.duke.ece651.team2.shared.Lecture;
 import edu.duke.ece651.team2.shared.Password;
+import edu.duke.ece651.team2.shared.PersistenceManager;
 import edu.duke.ece651.team2.shared.Section;
 import edu.duke.ece651.team2.shared.Student;
 
@@ -16,7 +18,10 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse.File;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -306,6 +311,280 @@ public class ServerSideController {
         SectionDAO sectionDAO = new SectionDAO(factory);
         s.setInstructorId(user_id);
         sectionDAO.update(s);
+    }
+
+    private void receiveUpdateAttendanceResult(int lectureId, List<Integer> studentIds) {
+        serverSideView.displayMessage("Waiting for attendance updated information....");
+        try {
+            String choice = mapper.readValue((String) in.readObject(), String.class);
+            List<String> resList = new ArrayList<>();
+            if (choice == null) {
+                throw new IllegalStateException("Users send an invalid choice!");
+            } else {
+                int num = Integer.parseInt(choice.substring(0, choice.length()-1));
+                char status = choice.charAt(choice.length()-1);
+                int studentId = studentIds.get(num - 1);
+                AttendanceStatus attendanceStatus;
+                switch (status) {
+                    case 'A':
+                        attendanceStatus = AttendanceStatus.ABSENT;
+                        break;
+                    case 'T':
+                        attendanceStatus = AttendanceStatus.TARDY;
+                        break;
+                    case 'P':
+                        attendanceStatus = AttendanceStatus.PRESENT;
+                        break;
+                    default:
+                        throw new IllegalStateException("Database error: can not get correct attendance status!");
+                }
+                AttendanceDAO attendanceDAO = new AttendanceDAO(factory);
+                AttendanceRecord attendanceRecord = new AttendanceRecord(studentId, attendanceStatus, lectureId);
+                attendanceDAO.update(attendanceRecord);
+                resList.add("Updated successfully!");
+                out.writeObject(mapper.writeValueAsString(resList));
+                out.flush();
+            }
+        } catch (Exception e) {
+            try {
+                List<String> errorList = new ArrayList<>();
+                // send exception to client
+                errorList.add("ERROR");
+                errorList.add(e.getMessage());
+                out.writeObject(mapper.writeValueAsString(errorList));
+                out.flush();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private void receiveReocrdAttendanceResult(int lectureId, List<Integer> studentIds) {
+        serverSideView.displayMessage("Waiting for attendance recorded information....");
+        try {
+            List<Character> response = mapper.readValue((String) in.readObject(), new TypeReference<List<Character>>() {
+            });
+            List<String> resList = new ArrayList<>();
+            if (response == null) {
+                throw new IllegalStateException("Users send an invalid choice!");
+            } else {
+                // confirm that response and studentIds are equal in size
+                for (int i = 0; i < response.size(); i++) {
+                    char status = response.get(i);
+                    int studentId = studentIds.get(i);
+                    AttendanceStatus attendanceStatus;
+                    switch (status) {
+                        case 'A':
+                            attendanceStatus = AttendanceStatus.ABSENT;
+                            break;
+                        case 'T':
+                            attendanceStatus = AttendanceStatus.TARDY;
+                            break;
+                        case 'P':
+                            attendanceStatus = AttendanceStatus.PRESENT;
+                            break;
+                        default:
+                            throw new IllegalStateException("Database error: can not get correct attendance status!");
+                    }
+                    AttendanceDAO attendanceDAO = new AttendanceDAO(factory);
+                    AttendanceRecord attendanceRecord = new AttendanceRecord(studentId, attendanceStatus, lectureId);
+                    attendanceDAO.create(attendanceRecord);
+                }
+                resList.add("Recorded successfully!");
+                out.writeObject(mapper.writeValueAsString(resList));
+                out.flush();
+            }
+        } catch (Exception e) {
+            try {
+                List<String> errorList = new ArrayList<>();
+                // send exception to client
+                errorList.add("ERROR");
+                errorList.add(e.getMessage());
+                out.writeObject(mapper.writeValueAsString(errorList));
+                out.flush();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+    }
+
+
+    private void sendALLStudentsEnrolled(List<Integer> lectureIdList, int sectionId, int n) {
+        serverSideView.displayMessage("Professor's choice of lecture received....");
+        try {
+            Integer choice = mapper.readValue((String) in.readObject(), Integer.class);
+            List<String> resList = new ArrayList<>();
+            if (choice == null) {
+                throw new IllegalStateException("Users send an invalid choice!");
+            } else {
+                // get lectureId of the choice
+                int lectureId = getLectureIdSelected(lectureIdList, choice);
+                // get student list and attendance status
+                StudentDAO studentDAO = new StudentDAO(factory);
+                Map<Student, String> resMap;
+                if(n==2){
+                    resMap = studentDAO.getAttendanceByLectureId(lectureId);
+                }
+                else{
+                    resMap = studentDAO.getStudentsBySectionID(sectionId);
+                }
+                if (resMap.isEmpty()) {
+                    throw new IllegalStateException("Database error: can not get student list!");
+                } else {
+                    List<Integer> studentIds = new ArrayList<>();
+                    for (Map.Entry<Student, String> entry : resMap.entrySet()) {
+                        Student student = entry.getKey();
+                        String value = entry.getValue();
+                        String resultString = student.getDisplayName() + " (" + student.getStudentID() + ") Status:" + value+"\n";
+                        resList.add(resultString);
+                        studentIds.add(student.getStudentID());
+                    }
+                    out.writeObject(mapper.writeValueAsString(resList));
+                    out.flush();
+
+                    // receive string type e.g. (1A, 2P, 3T)
+                    if (n == 2) {
+                        // update
+                        receiveUpdateAttendanceResult(lectureId, studentIds);
+                    } else {
+                        // n == 1 & record
+                        receiveReocrdAttendanceResult(lectureId, studentIds);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            try {
+                List<String> errorList = new ArrayList<>();
+                // send exception to client
+                errorList.add("ERROR");
+                errorList.add(e.getMessage());
+                out.writeObject(mapper.writeValueAsString(errorList));
+                out.flush();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private void sendAttendanceFILE(int sectionId, List<Integer> lectureIdList) {
+        // serverSideView.displayMessage("Professor's choice of lecture received....");
+        // try {
+        //     Integer choice = mapper.readValue((String) in.readObject(), Integer.class);
+        //     if (choice == null) {
+        //         throw new IllegalStateException("Users send an invalid choice!");
+        //     } else {
+        //         // get lectureId of the choice
+        //         int lectureId = getLectureIdSelected(lectureIdList, choice);
+        //         // get student list and attendance status
+        //         List<AttendanceReport> attendanceReports = getAttendanceReportForLecture(lectureId);
+        //         PersistenceManager persistenceManager = new PersistenceManager();
+        //         persistenceManager.writeRecordsToCSV(lectureId + "-attendance-report", attendanceReports);
+        //         // send file to client
+        //         File fileToSend = new File("export/" + lectureId + "-attendance-report" + ".csv");
+        //         try (FileInputStream fileInputStream = new FileInputStream(fileToSend)) {
+
+        //             out.writeObject(fileToSend);
+        //             out.flush();
+        //             serverSideView.displayMessage("File sent.");
+        //         }
+        //     }
+        // } catch (Exception e) {
+        //     try {
+        //         List<String> errorList = new ArrayList<>();
+        //         // send exception to client
+        //         errorList.add("ERROR");
+        //         errorList.add(e.getMessage());
+        //         out.writeObject(mapper.writeValueAsString(errorList));
+        //         out.flush();
+        //     } catch (IOException ex) {
+        //         ex.printStackTrace();
+        //     }
+        // }
+    }
+
+    private void sendLectureListBySectionId(Map<Integer, String> map, int n) throws ClassNotFoundException, IOException {
+        // receive choice (int) from client
+        serverSideView.displayMessage("Professor's choice of setcion received....");
+        try {
+            Integer choice = (int) in.readObject();
+            List<String> resList = new ArrayList<>();
+            // get sectionId of the choice
+            int sectionId = getSectionIdSelected(map.keySet(), choice);
+            LectureDAO lectureDAO = new LectureDAO(factory);
+            List<Lecture> lectures = lectureDAO.getLecturesBySectionId(sectionId);
+            if (lectures.isEmpty()) {
+                throw new IllegalStateException("Database error: can not get lectures!");
+            } else {
+                List<Integer> lectureIdList = new ArrayList<>();
+                int i = 0;
+                for (Lecture lecture : lectures) {
+                    lectureIdList.add(lecture.getLectureID());
+                    resList.add("Lecture_" + (i + 1)+" Date: "+lecture.getYear()+"-"+lecture.getMonth()+"-"+lecture.getDay());
+                    i++;
+                }
+                // we don't set name for each lecture.
+                out.writeObject(mapper.writeValueAsString(resList));
+                out.flush();
+                if (n == 2 || n == 1) {
+                    // update & record
+                    sendALLStudentsEnrolled(lectureIdList, sectionId,n);
+                } else {
+                    // n == 3
+                    sendAttendanceFILE(sectionId, lectureIdList);
+                }
+            }
+
+        } catch (Exception e) {
+            try {
+                List<String> errorList = new ArrayList<>();
+                // send exception to client
+                errorList.add("ERROR");
+                errorList.add(e.getMessage());
+                out.writeObject(mapper.writeValueAsString(errorList));
+                out.flush();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+}
+
+    public void sendAllTeachedSectionNames(int n,int userId) {
+        SectionDAO sectionDAO = new SectionDAO(factory);
+        try {
+            Map<Integer, String> namesWithSectionId = sectionDAO.getCourseAndSectionNamesByInstructorId(userId);
+            List<String> resList = new ArrayList<>();
+            if (namesWithSectionId.isEmpty()) {
+                throw new IllegalStateException("Failed to query database!");
+            } else {
+                for (Integer key : namesWithSectionId.keySet()) {
+                    String value = namesWithSectionId.get(key);
+                    resList.add(value);
+                    // if (!value.isEmpty()) {
+                    //     resList.add(value);
+                    // } else {
+                    //     // throw exception
+                    //     throw new RuntimeException("Database error: can not get course and section name!");
+                    // }
+                }
+            }
+            out.writeObject(mapper.writeValueAsString(resList));
+            out.flush();
+            sendLectureListBySectionId(namesWithSectionId, n);
+        } catch (Exception e) {
+            try {
+                List<String> errorList = new ArrayList<>();
+                // send exception to client
+                errorList.add("ERROR");
+                errorList.add(e.getMessage());
+                out.writeObject(mapper.writeValueAsString(errorList));
+                out.flush();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
     }
 
     public int getLectureIdSelected(List<Integer> lectureIdList, int choice) {
