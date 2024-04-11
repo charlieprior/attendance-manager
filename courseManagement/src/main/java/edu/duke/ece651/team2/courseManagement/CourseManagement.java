@@ -12,6 +12,7 @@ public class CourseManagement {
     private static final SectionDAO sectionDAO = new SectionDAO(daoFactory);
     private static final StudentDAO studentDAO = new StudentDAO(daoFactory);
     private static final ProfessorDAO professorDAO = new ProfessorDAO(daoFactory);
+    private static final LectureDAO lectureDAO = new LectureDAO(daoFactory);
     private final University university;
 
     public CourseManagement(University university) {
@@ -79,5 +80,9 @@ public class CourseManagement {
 
     public void addSection(Section section) {
         sectionDAO.create(section);
+    }
+
+    public void addLecture(Section section) {
+        lectureDAO.create(new Lecture(section.getSectionID()));
     }
 }

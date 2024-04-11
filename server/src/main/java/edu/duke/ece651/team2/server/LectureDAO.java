@@ -35,7 +35,7 @@ public class LectureDAO extends DAO<Lecture> {
 
         List<Object> values = Arrays.asList(
                 lecture.getSectionId(),
-                new Date(lecture.getYear(), lecture.getMonth(), lecture.getDay())
+                new Date(lecture.getYear()-1900, lecture.getMonth()-1, lecture.getDay())
         );
 
         try {
@@ -58,7 +58,7 @@ public class LectureDAO extends DAO<Lecture> {
 
         List<Object> values = Arrays.asList(
                 lecture.getSectionId(),
-                new Date(lecture.getYear(), lecture.getMonth(), lecture.getDay()),
+                new Date(lecture.getYear()-1900, lecture.getMonth()-1, lecture.getDay()),
                 lecture.getLectureID()
         );
 

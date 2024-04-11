@@ -270,10 +270,11 @@ public class CourseManagementController {
                 "5. Delete an existing section\n" +
                 "6. Add a new section\n" +
                 "7. Add students to a section\n" +
-                "8. Exit");
+                "8. Add a lecture to a section\n" +
+                "9. Exit");
         try {
             int option = Integer.parseInt(reader.readLine());
-            if (option < 1 || option > 8) {
+            if (option < 1 || option > 9) {
                 throw new IllegalArgumentException();
             }
 
@@ -300,6 +301,9 @@ public class CourseManagementController {
                     addStudents();
                     break;
                 case 8:
+                    addLecture();
+                    break;
+                case 9:
                     shouldExit = true;
                     break;
             }
@@ -307,6 +311,19 @@ public class CourseManagementController {
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    private void addLecture() throws IOException {
+        Course course = getCourse("Please select the course you would like to add a lecture to (blank to exit):");
+        if (course == null) {
+            return;
+        }
+
+        Section section = getSection("Please select the section you would like to add a lecture to (blank to exit):", course);
+        if (section == null) {
+            return;
+        }
+        model.addLecture(section);
     }
 
     /**
