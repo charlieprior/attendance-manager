@@ -95,4 +95,10 @@ public class LectureDAO extends DAO<Lecture> {
         return super.get(daoFactory, "SELECT * FROM Lecture WHERE id = ?", values);
     }
 
+    public List<Lecture> getLecturesBySectionId(int sectionId) {
+        List<Object> values = Collections.singletonList(sectionId);
+        String sql = "SELECT * FROM Lecture WHERE sectionId = ? ORDER BY date ASC";
+        return super.list(daoFactory, sql, values);
+    }
+
 }
