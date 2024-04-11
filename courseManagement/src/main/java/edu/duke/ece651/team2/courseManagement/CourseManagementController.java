@@ -1,13 +1,11 @@
 package edu.duke.ece651.team2.courseManagement;
 
-import edu.duke.ece651.team2.shared.Course;
-import edu.duke.ece651.team2.shared.Professor;
-import edu.duke.ece651.team2.shared.Section;
-import edu.duke.ece651.team2.shared.Student;
+import edu.duke.ece651.team2.shared.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -161,6 +159,7 @@ public class CourseManagementController {
         if (!courseName.isEmpty()) {
             Course course = new Course(courseName, model.getUniversity().getId());
             model.addCourse(course);
+            out.println("Course added successfully");
             return course.getCourseID();
         }
 
@@ -184,6 +183,7 @@ public class CourseManagementController {
         if (!sectionName.isEmpty()) {
             Section section = new Section(course.getCourseID(), professor.getProfessorID(), sectionName);
             model.addSection(section);
+            out.println("Section added successfully");
             return section.getSectionID();
         }
 
@@ -201,10 +201,12 @@ public class CourseManagementController {
             out.println("Are you sure you want to delete course " + course.getName() + "? Y for yes");
             String confirm = reader.readLine();
             if (!confirm.equals("Y")) {
+                out.println("Deletion cancelled");
                 return;
             }
 
             model.removeCourse(course);
+            out.println("Course deleted successfully");
         }
     }
 
@@ -219,10 +221,12 @@ public class CourseManagementController {
             out.println("Are you sure you want to delete section " + section.getName() + "? Y for yes");
             String confirm = reader.readLine();
             if (!confirm.equals("Y")) {
+                out.println("Deletion cancelled");
                 return;
             }
 
             model.removeSection(section);
+            out.println("Section deleted successfully");
         }
     }
 
@@ -238,6 +242,7 @@ public class CourseManagementController {
             String newName = reader.readLine();
             course.setCourseName(newName);
             model.updateCourse(course);
+            out.println("Course updated successfully");
         }
     }
 
@@ -253,6 +258,7 @@ public class CourseManagementController {
             String newName = reader.readLine();
             section.setName(newName);
             model.updateSection(section);
+            out.println("Section updated successfully");
         }
     }
 
@@ -323,7 +329,22 @@ public class CourseManagementController {
         if (section == null) {
             return;
         }
-        model.addLecture(section);
+
+        out.println("Please enter the date of the lecture (YYYY-MM-DD):");
+        String dateString = reader.readLine();
+        String[] dateParts = dateString.split("-");
+        if (dateParts.length != 3) {
+            out.println("Invalid date format");
+            return;
+        }
+        try {
+            LocalDate date = LocalDate.of(Integer.parseInt(dateParts[0]), Integer.parseInt(dateParts[1]), Integer.parseInt(dateParts[2]));
+            Lecture lecture = new Lecture(section.getSectionID(), date);
+            model.addLecture(lecture);
+            out.println("Lecture added successfully");
+        } catch (NumberFormatException e) {
+            out.println("Invalid date format");
+        }
     }
 
     /**
@@ -350,8 +371,10 @@ public class CourseManagementController {
             for (Student student : students) {
                 model.addStudentToSection(student, section);
             }
+            out.println("Students added successfully");
         } else {
             model.addStudentToSection(readStudent(), section);
+            out.println("Student added successfully");
         }
     }
 

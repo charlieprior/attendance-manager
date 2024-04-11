@@ -82,7 +82,7 @@ public class CourseManagement {
         sectionDAO.create(section);
     }
 
-    public void addLecture(Section section) {
-        lectureDAO.create(new Lecture(section.getSectionID()));
+    public void addLecture(Lecture lecture) {
+        lectureDAO.create(lecture);
     }
 }
