@@ -50,10 +50,9 @@ public class UserRegistrationView {
      */
     public int listUniversities(){
         List<University> universities = universityDAO.list();
-        for (int i =0;i<universities.size();i++) {
-            String str = i+1+". "+universities.get(i).getName();
-            // String str = u.getId() + ". " +
-            //         u.getName();
+        for (University u : universities) {
+             String str = u.getId() + ". " +
+                     u.getName();
             out.println(str);
         }
         return universities.size();
