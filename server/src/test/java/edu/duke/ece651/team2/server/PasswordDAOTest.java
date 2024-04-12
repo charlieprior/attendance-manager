@@ -17,6 +17,7 @@ public class PasswordDAOTest {
 
     @Test
     public void testCreate(){
+        passwordDAO.deleteAll();
         Password p = new Password(1, "123456", true);
         passwordDAO.create(p);
         assertEquals("123456", passwordDAO.get(1).getPassword());
@@ -25,9 +26,9 @@ public class PasswordDAOTest {
 
     @Test
     public void testupdate(){
+        passwordDAO.deleteAll();
         Password p = new Password(1, "23456", true);
-        List<Password> l = passwordDAO.list();
-        assertEquals(1, l.size());
+        passwordDAO.create(p);
         passwordDAO.update(p);
         assertEquals("23456", passwordDAO.get(1).getPassword());
         passwordDAO.remove(p);

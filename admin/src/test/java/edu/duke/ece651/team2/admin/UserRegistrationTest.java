@@ -16,6 +16,8 @@ public class UserRegistrationTest {
         userRegistration.addProfessor(professor,"passwords");
         userRegistration.getStudentID(student.getStudentID());
         userRegistration.getProfessorID(professor.getProfessorID());
+        userRegistration.removeStudent(student.getStudentID());
+        userRegistration.removeProfessor(professor.getProfessorID());
     }
 
     @Test
