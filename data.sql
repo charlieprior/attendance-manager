@@ -11,8 +11,6 @@ INSERT INTO Passwords (id, password, isStudent) VALUES (3, 123456, TRUE);
 INSERT INTO Passwords (id, password, isStudent) VALUES (4, 123456, TRUE);
 INSERT INTO Passwords (id, password, isStudent) VALUES (5, 123456, TRUE);
 
-#I deleted a user(id=3) by mistake so Stu2 is id=4,Stu3 id = 5
-
 INSERT INTO Enrollment (sectionId, studentId, notify) VALUES (1, 1, TRUE);
 INSERT INTO Enrollment (sectionId, studentId, notify) VALUES (2, 1, FALSE);
 INSERT INTO Enrollment (sectionId, studentId, notify) VALUES (1, 3, TRUE);
@@ -35,5 +33,3 @@ INSERT INTO Lecture (sectionId,date) VALUES (1,'2024-01-03');
 INSERT INTO Lecture (sectionId,date) VALUES (1,'2024-01-05');
 INSERT INTO Lecture (sectionId,date) VALUES (2,'2024-01-03');
 INSERT INTO Lecture (sectionId,date) VALUES (2,'2024-01-05');
-
-DELETE FROM Enrollment WHERE sectionId=1 and studentId=1;

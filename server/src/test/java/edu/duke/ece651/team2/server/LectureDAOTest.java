@@ -48,8 +48,8 @@ public class LectureDAOTest {
         lectureDAO.create(lecture);
 
         // Update the lecture's date
-        LocalDate newDate = LocalDate.of(2024, 4, 12);
-        lecture.setDate(newDate);
+        // LocalDate newDate = LocalDate.of(2024, 4, 12);
+        // lecture.setDate(newDate);
 
         // Update the lecture in the database
         lectureDAO.update(lecture);

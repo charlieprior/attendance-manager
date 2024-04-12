@@ -33,12 +33,12 @@ public class ClientHandler implements Runnable {
         this.status = serverSideController.getStatus();
     }
 
-    // public void takeAttendance() throws ClassNotFoundException {
-    //     List<Section> sections = serverSideController.getInstructSection();
-    //     Section s_chosen = serverSideController.getChosenSection(sections);
-    //     // To get List of students
-    //     // TODO
-    // }
+    public void takeAttendance() throws ClassNotFoundException {
+        List<Section> sections = serverSideController.getInstructSection();
+        Section s_chosen = serverSideController.getChosenSection(sections);
+        // To get List of students
+        // TODO
+    }
 
     public void beFaculty() throws ClassNotFoundException {
         List<Section> sections = serverSideController.getNoFacultySection();
@@ -93,6 +93,7 @@ public class ClientHandler implements Runnable {
         serverSideController.sendAllTeachedSectionNames(3,userId);
     }
 
+    
 
     private String handleStudentRequest(Integer request) throws IOException, ClassNotFoundException {
         String res = "";
@@ -122,7 +123,7 @@ public class ClientHandler implements Runnable {
             while (true) {
                 // User authentication fail
                 int request = (int) in.readObject();
-                //serverSideController.executePeriodicTask();
+                serverSideController.executePeriodicTask();
                 // if (userId == -1 || status == -1) {
                 // String response = "User authentication failed!";
                 // out.writeObject(response); // Send response back to client
