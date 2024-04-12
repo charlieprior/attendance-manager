@@ -1,0 +1,23 @@
+
+On Server side,
+
+Use Admin to add University, students, and Faculty;
+
+Use CourManagement to add courses, sections, and Lectures;
+
+A server that can support multi- clients’ requests. (Multi-threading).
+
+On Client Side,
+
+For Students:
+a. Login: Users can log in to their accounts.
+b. Set Email Preferences: Students can customize their email preferences specifically for course sections.
+
+For Faculty:
+a. Login: Faculty members can access their accounts.
+b. Take Attendance: Faculty can mark attendance for a particular lecture.
+c. Update Attendance: Faculty can modify attendance records.
+d. Export Attendance File: Faculty can export attendance data into a file. (including Attendance Scores)
+e. Set Attendance Scoring: Faculty can set the maximum score for attending a class. Attending a class on time can earn a student full marks, while being tardy results in 80% of the maximum score.
+
+A weekly reporting functionality needs to be implemented based on a timer.
