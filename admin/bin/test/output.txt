@@ -16,7 +16,9 @@ What's the student's legal name:
 What's the student's display name:
 What's the student's E-Mail:
 What's the University of the Student?
-1. University 1
+1. Duke University
+2. UNC
+3. NC State
 Please choose from above from the list above
 What would you like to set as your password?
 Welcome to the User Registration Portal.

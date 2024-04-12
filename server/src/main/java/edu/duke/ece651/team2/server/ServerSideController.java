@@ -33,6 +33,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ServerSideController {
     private ObjectInputStream in;
@@ -819,13 +821,87 @@ public class ServerSideController {
 
         String email = student.getEmail();
         serverSideView.displayMessage("Sending email alert to " + email + "...");
-        String prompt = "Attendance Records for " + course.getName() + "_" + section.getName()+
-        "Dear " + student.getDisplayName() + "\n" + "Here is your attendance record for " + course.getName()
-                + "_" + section.getName() + "this semester.\n" + result;
-        System.out.println(prompt);
         gmailSetup.sendEmail(email, "Attendance Records for " + course.getName() + "_" + section.getName(),
                 "Dear " + student.getDisplayName() + "\n" + "Here is your attendance record for " + course.getName()
                         + "_" + section.getName() + "this semester.\n" + result);
+    }
+
+
+    public void sendWeeklyReport() throws IOException, GeneralSecurityException {
+        // assume we can get date
+        StudentDAO studentDAO = new StudentDAO(factory);
+        EnrollmentDAO enrollmentDAO = new EnrollmentDAO(factory);
+        List<Student> studentList = studentDAO.list();
+        AttendanceDAO attendanceDAO = new AttendanceDAO(factory);
+        LectureDAO lectureDAO = new LectureDAO(factory);
+
+        if (studentList.isEmpty()) {
+            serverSideView.displayMessage("Please notice admin user to import student data first!");
+            return;
+        }
+        for (Student student : studentList) {
+            int studentId = student.getStudentID();
+            // get all section they take
+            List<Enrollment> enrollments = enrollmentDAO.findEnrollmentsByStudentId(studentId);
+            if (enrollments.isEmpty())
+                continue;
+            else {
+                String sendMsg = "";
+                for (Enrollment enrollment : enrollments) {
+                    int sectionId = enrollment.getSectionId();
+                    boolean notified = enrollment.isNotify();
+                    if (!notified)
+                        continue;
+                    // get the latest lecture
+                    List<Lecture> lectures = lectureDAO.getLecturesBySectionIdDECS(sectionId);
+
+                    if (lectures.isEmpty())
+                        continue;
+                    int lectureId = lectures.get(0).getLectureID();
+
+                    int year = lectures.get(0).getYear();
+                    int month = lectures.get(0).getMonth();
+                    int day = lectures.get(0).getDay();
+
+                    String dateStr = String.format("%04d-%02d-%02d", year, month, day);
+
+                    AttendanceRecord attendanceRecord = attendanceDAO.get(lectureId, studentId);
+
+                    sendMsg += String.format("Lecture ID: %d, Date: %s, Status: %s", lectureId, dateStr,
+                            attendanceRecord.getStatus().toString())
+                            + "\n";
+
+                }
+
+                // send Email
+                serverSideView.displayMessage("Sending weekly report to " + student.getEmail() + "...");
+                GmailSetup gmailSetup = new GmailSetup();
+                gmailSetup.sendEmail(student.getEmail(),
+                        "Weekly Attendance Report for " + student.getDisplayName(),
+                        "Dear " + student.getDisplayName() + "\n" + "Here is your attendance report for this week.\n"
+                                + sendMsg);
+
+            }
+        }
+    }
+
+    public void executePeriodicTask() {
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            public void run() {
+                try {
+                    sendWeeklyReport();
+                } catch (IOException e) {
+                    serverSideView.displayMessage(e.getMessage());
+                    e.printStackTrace();
+                } catch (GeneralSecurityException e) {
+                    serverSideView.displayMessage(e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        };
+        // execute it every 10 minutes
+        timer.scheduleAtFixedRate(task, 0, 10 * 60 * 1000);
     }
 
 }

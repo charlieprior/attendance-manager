@@ -397,7 +397,7 @@ public class CourseManagementController {
 
                 try {
                     List<String> lines = csvLoader.getLines(filename, hasHeader);
-                    return csvLoader.getStudents(lines, ",", legalNameIndex, emailIndex, displayNameIndex, model.getUniversity().getId());
+                    return csvLoader.getStudents(lines, delimiter, legalNameIndex, emailIndex, displayNameIndex, model.getUniversity().getId());
                 } catch (IOException e) {
                     out.println("Error reading file");
                 }

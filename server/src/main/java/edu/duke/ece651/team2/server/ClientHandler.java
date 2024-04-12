@@ -33,12 +33,12 @@ public class ClientHandler implements Runnable {
         this.status = serverSideController.getStatus();
     }
 
-    public void takeAttendance() throws ClassNotFoundException {
-        List<Section> sections = serverSideController.getInstructSection();
-        Section s_chosen = serverSideController.getChosenSection(sections);
-        // To get List of students
-        // TODO
-    }
+    // public void takeAttendance() throws ClassNotFoundException {
+    //     List<Section> sections = serverSideController.getInstructSection();
+    //     Section s_chosen = serverSideController.getChosenSection(sections);
+    //     // To get List of students
+    //     // TODO
+    // }
 
     public void beFaculty() throws ClassNotFoundException {
         List<Section> sections = serverSideController.getNoFacultySection();
@@ -93,27 +93,6 @@ public class ClientHandler implements Runnable {
         serverSideController.sendAllTeachedSectionNames(3,userId);
     }
 
-    // private void handleGetAttendanceReport() throws IOException {
-    //     List<Section> parseSections = serverSideController.sendAllEnrolledSectionNames(userId);
-    //     if (!parseSections.isEmpty()) {
-    //         // get result from client (choice)
-    //         try {
-    //             Object response = in.readObject();
-    //             if (response instanceof Integer) {
-    //                 int num = (Integer) response;
-    //                 // assume num is eligible
-    //                 // sending report function
-    //                 // ...
-
-    //                 // finished sending
-    //             } else {
-    //                 out.writeObject("0||" + "Invalid request format (please input a number)!");
-    //             }
-    //         } catch (Exception e) {
-    //             e.printStackTrace();
-    //         }
-    //     }
-    // }
 
     private String handleStudentRequest(Integer request) throws IOException, ClassNotFoundException {
         String res = "";
@@ -143,6 +122,7 @@ public class ClientHandler implements Runnable {
             while (true) {
                 // User authentication fail
                 int request = (int) in.readObject();
+                //serverSideController.executePeriodicTask();
                 // if (userId == -1 || status == -1) {
                 // String response = "User authentication failed!";
                 // out.writeObject(response); // Send response back to client

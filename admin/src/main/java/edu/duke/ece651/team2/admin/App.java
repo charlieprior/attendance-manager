@@ -1,8 +1,13 @@
 package edu.duke.ece651.team2.admin;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import edu.duke.ece651.team2.server.DAOFactory;
+import edu.duke.ece651.team2.server.UniversityDAO;
+import edu.duke.ece651.team2.shared.University;
 
 public class App {
   private final UserRegistrationView userRegistrationView;
@@ -16,12 +21,31 @@ public class App {
     this.userRegistrationView = userRegistrationView;
   }
 
+  public void readUniversities(String filename) throws IOException{
+      UniversityDAO universityDAO = new UniversityDAO(new DAOFactory());
+      BufferedReader br = new BufferedReader(new FileReader(filename));
+      String line = br.readLine();
+      while ((line = br.readLine()) != null) {
+        // Split the line by comma
+        String[] data = line.split(",");
+        boolean support;
+        if(data[1].equals("False")){
+          support = false;
+        }
+        else{
+          support = true;
+        }
+        universityDAO.create(new University(data[0], support));
+    }
+  }
+
   /**
    * The userRegistration method for the Attendance Manager application.
    * 
    * @throws IOException We will not handle this exception.
    */
   public void userRegistrationApp() throws IOException {
+    readUniversities("universities.csv");
     userRegistrationView.menuOptions();
   }
 

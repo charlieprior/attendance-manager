@@ -101,4 +101,10 @@ public class LectureDAO extends DAO<Lecture> {
         return super.list(daoFactory, sql, values);
     }
 
+
+    public List<Lecture> getLecturesBySectionIdDECS(int sectionId) {
+        List<Object> values = Collections.singletonList(sectionId);
+        String sql = "SELECT * FROM Lecture WHERE sectionId = ? ORDER BY date DeSC";
+        return super.list(daoFactory, sql, values);
+    }
 }
