@@ -36,5 +36,7 @@ class SelectUniversityTest {
         assertEquals(expected +
                 "Invalid selection. Please try again\n" +
                 expected, bytes.toString());
+        uniDAO.remove(uni2);
+        uniDAO.remove(uni1);
     }
 }
