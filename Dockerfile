@@ -63,5 +63,4 @@ RUN mkdir -p coverage-out
 RUN chown juser coverage-out
 
 # compile the code
-RUN mysql -u java -ppassword javabase < databaseSetup.sql
 RUN ./gradlew  assemble

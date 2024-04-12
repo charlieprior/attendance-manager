@@ -40,6 +40,10 @@ public class Course {
         return courseName;
     }
 
+    public void setName(String name){
+        courseName = name;
+    }
+
     /**
      * @return courseID
      */
