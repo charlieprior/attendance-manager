@@ -52,10 +52,10 @@ public class Lecture {
         return day;
     }
 
-    public void setDate(LocalDate d){
-        year = d.getYear();
-        month = d.getMonthValue();
-        day = d.getDayOfMonth();
-    }
+    // public void setDate(LocalDate d){
+    //     year = d.getYear();
+    //     month = d.getMonthValue();
+    //     day = d.getDayOfMonth();
+    // }
 
 }

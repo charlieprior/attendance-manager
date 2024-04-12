@@ -799,7 +799,16 @@ public class ServerSideController {
                 attendanceRecord = new AttendanceRecord(user_id, AttendanceStatus.UNRECORDED,lecture.getLectureID());
             }
             String statuString = attendanceRecord.getStatus().toString();
-            result += String.format("Lecture ID: %d, Date: %s, Status: %s", lectureId, dateStr, statuString) + "\n";
+            float f = 0;
+            if(attendanceRecord!=null){
+                if(attendanceRecord.getStatus()==AttendanceStatus.PRESENT){
+                    f=1;
+                }
+                else if (attendanceRecord.getStatus()==AttendanceStatus.TARDY){
+                    f+=0.8;
+                }
+            }
+            result += String.format("Lecture ID: %d, Date: %s, Status: %s,Score %f", lectureId, dateStr, statuString,f) + "\n";
         }
 
         // get student's email
@@ -866,10 +875,23 @@ public class ServerSideController {
                     String dateStr = String.format("%04d-%02d-%02d", year, month, day);
 
                     AttendanceRecord attendanceRecord = attendanceDAO.get(lectureId, studentId);
-
-                    sendMsg += String.format("Lecture ID: %d, Date: %s, Status: %s", lectureId, dateStr,
-                            attendanceRecord.getStatus().toString())
+                    float f = 0;
+                    if(attendanceRecord!=null){
+                        if(attendanceRecord.getStatus()==AttendanceStatus.PRESENT){
+                            f=1;
+                        }
+                        else if (attendanceRecord.getStatus()==AttendanceStatus.TARDY){
+                            f+=0.8;
+                        }
+                        sendMsg += String.format("Lecture ID: %d, Date: %s, Status: %s, Score %f", lectureId, dateStr,
+                            attendanceRecord.getStatus().toString(),f)
                             + "\n";
+                    }
+                    else{
+                        sendMsg += String.format("Lecture ID: %d, Date: %s, Status: %s, Score %f", lectureId, dateStr,
+                            AttendanceStatus.UNRECORDED.toString(),f)
+                            + "\n";
+                    }
 
                 }
 
@@ -901,7 +923,7 @@ public class ServerSideController {
             }
         };
         // execute it every 10 minutes
-        timer.scheduleAtFixedRate(task, 0, 10 * 60 * 1000);
+        timer.scheduleAtFixedRate(task, 0, 1 * 60 * 1000);
     }
 
 }
