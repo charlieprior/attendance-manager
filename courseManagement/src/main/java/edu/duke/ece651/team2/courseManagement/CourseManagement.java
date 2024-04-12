@@ -85,4 +85,8 @@ public class CourseManagement {
     public void addLecture(Lecture lecture) {
         lectureDAO.create(lecture);
     }
+
+    public void deleteAllSections() {
+        sectionDAO.deleteAll();
+    }
 }
