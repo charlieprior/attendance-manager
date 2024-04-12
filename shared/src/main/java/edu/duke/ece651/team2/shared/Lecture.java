@@ -9,9 +9,9 @@ import java.util.Calendar;
 public class Lecture {
     private Integer LectureID;
     private final Integer sectionId;
-    private final int year;
-    private final int month;
-    private final int day;
+    private int year;
+    private int month;
+    private int day;
 
     public Lecture(Integer sectionId){
         this.sectionId = sectionId;
@@ -50,6 +50,12 @@ public class Lecture {
 
     public int getDay() {
         return day;
+    }
+
+    public void setDate(LocalDate d){
+        year = d.getYear();
+        month = d.getMonthValue();
+        day = d.getDayOfMonth();
     }
 
 }

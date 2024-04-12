@@ -81,4 +81,8 @@ public class PasswordDAO extends DAO<Password> {
         List<Object> values = Collections.singletonList(studentId);
         return super.get(daoFactory, "SELECT * FROM Passwords WHERE id = ?", values);
     }
+
+    public void deleteAll() {
+        super.deleteAll(daoFactory, "Passwords");
+    }
 }

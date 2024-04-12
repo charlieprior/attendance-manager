@@ -88,7 +88,7 @@ public class CourseManagementController {
      * @return the course selected by the user, or null if no course is selected
      * @throws IOException if there is an error reading input
      */
-    private Course getCourse(String prompt) throws IOException {
+    Course getCourse(String prompt) throws IOException {
         out.println(prompt);
         if (listCourses() == 0) {
             out.println("No courses in database!");
@@ -102,7 +102,7 @@ public class CourseManagementController {
         }
     }
 
-    private Section getSection(String prompt, Course course) throws IOException {
+    Section getSection(String prompt, Course course) throws IOException {
         out.println(prompt);
         if (listSections(course) == 0) {
             out.println("No sections in course!");
@@ -116,7 +116,7 @@ public class CourseManagementController {
         }
     }
 
-    private Professor getProfessor(String prompt) throws IOException {
+    Professor getProfessor(String prompt) throws IOException {
         out.println(prompt);
         if (listProfessors() == 0) {
             out.println("No professors in database!");
@@ -175,19 +175,19 @@ public class CourseManagementController {
         out.println("Please enter the name of the new section (blank to exit):");
         String sectionName = reader.readLine();
 
+        if (sectionName.isEmpty()) {
+            return null;
+        }
+
         Professor professor = getProfessor("Please select the professor for the section (blank to exit):");
         if (professor == null) {
             return null;
         }
 
-        if (!sectionName.isEmpty()) {
-            Section section = new Section(course.getCourseID(), professor.getProfessorID(), sectionName);
-            model.addSection(section);
-            out.println("Section added successfully");
-            return section.getSectionID();
-        }
-
-        return null;
+        Section section = new Section(course.getCourseID(), professor.getProfessorID(), sectionName);
+        model.addSection(section);
+        out.println("Section added successfully");
+        return section.getSectionID();
     }
 
     /**

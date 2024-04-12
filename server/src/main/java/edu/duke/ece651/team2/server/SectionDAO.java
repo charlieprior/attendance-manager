@@ -141,4 +141,7 @@ public class SectionDAO extends DAO<Section> {
         return namesMap;
     }
 
+    public void deleteAll() {
+        super.deleteAll(daoFactory, "Section");
+    }
 }
