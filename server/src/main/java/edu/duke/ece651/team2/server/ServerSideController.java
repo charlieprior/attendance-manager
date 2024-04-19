@@ -200,6 +200,7 @@ public class ServerSideController {
                     sections.add(section);
                 }
                 List<String> response = getCourseSectionList(sectionNames, courseNames);
+                System.out.println("Going to send!!");
                 out.writeObject(mapper.writeValueAsString(response));
                 out.flush();
                 return sections;
@@ -761,7 +762,7 @@ public class ServerSideController {
                     // assume num is eligible
                     // sending report function
                     // ...
-                    Integer sectionId = parseSections.get(num - 1).getSectionID();
+                    Integer sectionId = parseSections.get(num).getSectionID();
 
                     // loop up all lectures for this setcion
                     sendEmailToClient(sectionId);

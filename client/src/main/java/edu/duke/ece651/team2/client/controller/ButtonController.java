@@ -1,5 +1,11 @@
 package edu.duke.ece651.team2.client.controller;
 
+import java.io.IOException;
+import java.util.List;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,6 +13,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.stage.Stage;
@@ -17,10 +25,18 @@ public class ButtonController {
     @FXML
     TextField logInFieldPassword;
 
+    @FXML
+    ComboBox<String> chooseSection;
+
     GeneralController controller;
 
 
     public ButtonController(GeneralController controller) {
+        this.controller = controller;
+    }
+
+
+    public void setGeneralController(GeneralController controller){
         this.controller = controller;
     }
 
@@ -80,6 +96,72 @@ public class ButtonController {
         }
         else{
             showAlert("Log In fail, please check and type again!");
+        }
+    }
+
+    public void onReturnStudent(ActionEvent ae){
+        Object source = ae.getSource();
+        StudentLogIn(source);
+    }
+
+
+    public void onSubmitSection(ActionEvent ae) throws IOException{
+        int selectedIndex = chooseSection.getSelectionModel().getSelectedIndex();
+        System.out.println(""+selectedIndex);
+        controller.sendObject(selectedIndex);
+    }
+
+    public void helperShowSection(List<String> res, Object source){
+        Button b = (Button) source;
+        Stage stage= (Stage) b.getScene().getWindow();
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/SectionChoice.fxml"));
+            loader.setControllerFactory(controller -> new ButtonController(this.controller));
+            TitledPane page =(TitledPane) loader.load();  
+            ButtonController bcontroller = loader.getController();
+            ComboBox<String> chooseSection = bcontroller.chooseSection;
+            if (chooseSection != null) {
+                // Set items for the ComboBox
+                ObservableList<String> sections = FXCollections.observableArrayList(res);
+                chooseSection.setItems(sections);
+                Scene newScene = new Scene(page);
+                stage.setScene(newScene);
+
+
+                // int selectedIndex = chooseSection.getSelectionModel().getSelectedIndex();
+                // controller.sendObject(selectedIndex);
+            } else {
+                System.out.println("ComboBox not found in FXML file.");
+            }
+            // loader.setControllerFactory(controller -> new ButtonController(this.controller));          
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void onGetEmailPreference(ActionEvent ae){
+        controller.studentFunctionality(1);
+        List<String> res = controller.receiveAllEnrolledSectionAndSetChoice(1);
+        if(res!=null && res.get(0).equals("ERROR")){
+            showAlert(res.get(1));
+        }
+        else{
+            Object source = ae.getSource();
+            helperShowSection(res,source);
+        }
+    }
+
+    @FXML
+    public void onGetReport(ActionEvent ae){
+        controller.studentFunctionality(2);
+        List<String> res = controller.receiveAllEnrolledSectionAndSetChoice(2);
+        if(res!=null && res.get(0).equals("ERROR")){
+            showAlert(res.get(1));
+        }
+        else{
+            Object source = ae.getSource();
+            helperShowSection(res,source);
         }
     }
 

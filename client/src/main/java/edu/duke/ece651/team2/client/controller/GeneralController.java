@@ -7,6 +7,8 @@ import java.net.*;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Object;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,11 @@ public class GeneralController {
     }
     public boolean getConnected(){
         return this.connected;
+    }
+
+    public void sendObject(int choice) throws IOException{
+        out.writeObject(choice);
+        out.flush();
     }
 
     public int login(String []credentials) throws ClassNotFoundException {
@@ -65,29 +72,31 @@ public class GeneralController {
 
     // Student-specific functionality
     public void studentFunctionality(int choice) {
-        while (true) {
         try {
             if (choice == 3) {
             // exit
             out.writeObject(choice);
             out.flush();
             disconnectFromServer();
-            break;
             } else if (choice == 2) {
             // get report
             out.writeObject(choice); // int type to String
             out.flush();
-            getAttendanceReport();
+            // getAttendanceReport();
             } else if (choice == 1) {
             // set preferences
             out.writeObject(choice); // int type to String
             out.flush();
-            setEmailPreferences();
+            // setEmailPreferences();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        }
+    }
+
+    private void generateButtonFXMLPage(List<String> choices,String fileName){
+        String path = "client/src/main/resources/ui/"+fileName;
+
     }
 
     private Section chooseSection() throws ClassNotFoundException {
@@ -143,44 +152,71 @@ public class GeneralController {
         }
     }
 
-    private void receiveAllEnrolledSectionAndSetChoice(int num) {
+    public List<String> receiveAllEnrolledSectionAndSetChoice(int num) {
+        clientSideView.displayMessage("waiting");
         clientSideController.displayPromptForStudent(num);
         try {
         // get from server
         List<String> responseList = mapper.readValue((String) in.readObject(), new TypeReference<ArrayList<String>>() {
         });
+        clientSideView.displayMessage(""+responseList.size());
         if (responseList.isEmpty()) {
             clientSideView.displayMessage("You haven't taken any classes this semester!");
-            return;
+            responseList.add("ERROR");
+            responseList.add("You haven't taken any classes this semester!");
+            return responseList; 
         } else {
             if (responseList.get(0).equals("ERROR")) {
-            clientSideView.displayMessage(responseList.get(1));
-            return;
+                clientSideView.displayMessage(responseList.get(1));
+                return responseList;
             } else {
-            int len = responseList.size();
-            int resNum = -1;
-            while (true) {
-                String choice = clientSideController.listSectionCourseName(responseList);
-                if (clientSideController.isValidIntegerInRange(choice, 1, len)) {
-                resNum = Integer.parseInt(choice);
-                break;
-                } else {
-                clientSideView.displayMessage("Please enter a valid number!");
-                }
-            }
-            out.writeObject(resNum); // send int type to String
-            if (num == 1) {
-                changeEmailPreferences();
-            } else {
-                // num == 2
-                receiveReportResult();
-            }
+                return responseList;
             }
         }
         } catch (Exception e) {
-        e.printStackTrace();
+            e.printStackTrace();
+            return null;
         }
     }
+
+    // private void receiveAllEnrolledSectionAndSetChoice(int num) {
+    //     clientSideController.displayPromptForStudent(num);
+    //     try {
+    //     // get from server
+    //     List<String> responseList = mapper.readValue((String) in.readObject(), new TypeReference<ArrayList<String>>() {
+    //     });
+    //     if (responseList.isEmpty()) {
+    //         clientSideView.displayMessage("You haven't taken any classes this semester!");
+    //         return;
+    //     } else {
+    //         if (responseList.get(0).equals("ERROR")) {
+    //         clientSideView.displayMessage(responseList.get(1));
+    //         return;
+    //         } else {
+    //         int len = responseList.size();
+    //         int resNum = -1;
+    //         while (true) {
+    //             String choice = clientSideController.listSectionCourseName(responseList);
+    //             if (clientSideController.isValidIntegerInRange(choice, 1, len)) {
+    //             resNum = Integer.parseInt(choice);
+    //             break;
+    //             } else {
+    //             clientSideView.displayMessage("Please enter a valid number!");
+    //             }
+    //         }
+    //         out.writeObject(resNum); // send int type to String
+    //         if (num == 1) {
+    //             changeEmailPreferences();
+    //         } else {
+    //             // num == 2
+    //             receiveReportResult();
+    //         }
+    //         }
+    //     }
+    //     } catch (Exception e) {
+    //     e.printStackTrace();
+    //     }
+    // }
 
     // 1. set email preferences
     private void setEmailPreferences() {
