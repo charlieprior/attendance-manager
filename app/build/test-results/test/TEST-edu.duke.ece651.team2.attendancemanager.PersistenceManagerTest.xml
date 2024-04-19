@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="edu.duke.ece651.team2.attendancemanager.PersistenceManagerTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2024-03-27T19:47:26" hostname="Louises-MBP.wired.duke.local" time="0.001">
+  <properties/>
+  <testcase name="testWriteRecordsToJSON()" classname="edu.duke.ece651.team2.attendancemanager.PersistenceManagerTest" time="0.001"/>
+  <testcase name="testWriteRecordsToCSV()" classname="edu.duke.ece651.team2.attendancemanager.PersistenceManagerTest" time="0.0"/>
+  <system-out><![CDATA[jdk.internal.loader.ClassLoaders$AppClassLoader@5ffd2b27
+Succesfully create and write csv
+./app/export/CS101_Lecture1.csv (No such file or directory)
+jdk.internal.loader.ClassLoaders$AppClassLoader@5ffd2b27
+./app/export/CS101_Lecture1.csv (No such file or directory)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
