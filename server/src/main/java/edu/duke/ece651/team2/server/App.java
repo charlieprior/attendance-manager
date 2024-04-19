@@ -12,15 +12,16 @@ public class App {
   private ServerSideController serverSideController;
   private ServerSocket serverSocket;
 
-  public App() {
+  public App() throws IOException, GeneralSecurityException {
     serverSideView = new ServerSideView();
+    serverSideController = new ServerSideController(serverSideView);
   }
 
   public void connectToClients() throws ClassNotFoundException, GeneralSecurityException {
     try {
       serverSocket = new ServerSocket(8088);
       serverSideView.displayMessage("Server started, waiting for client connections...");
-
+      serverSideController.executePeriodicTask();
       while (true) {
         Socket clientSocket = serverSocket.accept();
         serverSideController = new ServerSideController(serverSideView);
@@ -43,7 +44,7 @@ public class App {
     }
   }
 
-  public static void main(String[] args) throws ClassNotFoundException, GeneralSecurityException {
+  public static void main(String[] args) throws ClassNotFoundException, GeneralSecurityException, IOException {
     App a = new App();
     a.connectToClients();
   }

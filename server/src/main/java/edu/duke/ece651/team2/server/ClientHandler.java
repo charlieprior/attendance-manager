@@ -123,7 +123,7 @@ public class ClientHandler implements Runnable {
             while (true) {
                 // User authentication fail
                 int request = (int) in.readObject();
-                serverSideController.executePeriodicTask();
+                // serverSideController.executePeriodicTask();
                 // if (userId == -1 || status == -1) {
                 // String response = "User authentication failed!";
                 // out.writeObject(response); // Send response back to client

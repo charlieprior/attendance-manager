@@ -223,67 +223,73 @@ public class GeneralController {
         receiveAllEnrolledSectionAndSetChoice(1);
     }
 
-    private void confirmFromServer() {
+    public String confirmFromServer() {
         try {
         String responseStr = mapper.readValue((String) in.readObject(), String.class);
         if (!responseStr.isEmpty()) {
             String[] parts = responseStr.split("\\|\\|");
-            String stateCode = parts[0]; // 0/1 0 - error, 1 - success
+            // String stateCode = parts[0]; // 0/1 0 - error, 1 - success
             String prompt = parts[1];
-            if (stateCode.equals("0")) {
-            clientSideView.displayMessage(prompt);
-            } else {
-            // success
-            clientSideView.displayMessage(prompt);
-            }
+            // if (stateCode.equals("0")) {
+            // clientSideView.displayMessage(prompt);
+            // } else {
+            // // success
+            // clientSideView.displayMessage(prompt);
+            // }
+            return prompt;
         } else {
-            clientSideView.displayMessage("Server failed to send a message!");
+            return "Server failed to send a message!";
+            //clientSideView.displayMessage("Server failed to send a message!");
         }
         } catch (Exception e) {
         e.printStackTrace();
+        return "Some error happens";
         }
     }
 
-    private void changeEmailPreferences() {
+    public String changeEmailPreferences() {
         clientSideView.displayMessage("Check Course Subscription Status...");
         try {
         // get from server
         String responseStr = (String)in.readObject();
         if (!responseStr.isEmpty()) {
             String[] parts = responseStr.split("\\|\\|");
-            String stateCode = parts[0]; // 0/1 0 - error, 1 - success
+            // String stateCode = parts[0]; // 0/1 0 - error, 1 - success
             String prompt = parts[1];
-            if (stateCode.equals("0")) {
-            clientSideView.displayMessage(prompt);
-            } else if (stateCode.equals("1")) {
-            int resNum = -1;
-            while (true) {
-                String choice = clientSideView.promptUser(prompt);
-                if (clientSideController.isValidIntegerInRange(choice, 0, 1)) {
-                resNum = Integer.parseInt(choice);
-                break;
-                } else {
-                clientSideView.displayMessage("Please enter a valid number!");
-                }
-            }
-            // client asked to change status
-            out.writeObject(resNum);
-            out.flush();
-            confirmFromServer();
-            // if (resNum == 1) {
-            //   out.writeObject(resNum);
-            //   out.flush();
-            //   // receive msg from server
-            //   confirmFromServer();
-            // }
-            } else {
-            clientSideView.displayMessage("Error request!");
-            }
-        } else {
-            clientSideView.displayMessage("Server failed to send a message!");
+            return prompt;
+        //     if (stateCode.equals("0")) {
+        //     clientSideView.displayMessage(prompt);
+        //     } else if (stateCode.equals("1")) {
+        //     int resNum = -1;
+        //     while (true) {
+        //         String choice = clientSideView.promptUser(prompt);
+        //         if (clientSideController.isValidIntegerInRange(choice, 0, 1)) {
+        //         resNum = Integer.parseInt(choice);
+        //         break;
+        //         } else {
+        //         clientSideView.displayMessage("Please enter a valid number!");
+        //         }
+        //     }
+        //     // client asked to change status
+        //     out.writeObject(resNum);
+        //     out.flush();
+        //     confirmFromServer();
+        //     // if (resNum == 1) {
+        //     //   out.writeObject(resNum);
+        //     //   out.flush();
+        //     //   // receive msg from server
+        //     //   confirmFromServer();
+        //     // }
+        //     } else {
+        //     clientSideView.displayMessage("Error request!");
+        //     }
+        // } else {
+        //     clientSideView.displayMessage("Server failed to send a message!");
         }
+            return "Some Error happens ,maybe you dont have a course";
         } catch (Exception e) {
-        e.printStackTrace();
+            e.printStackTrace();
+            return "Some Error happens";
         }
     }
 

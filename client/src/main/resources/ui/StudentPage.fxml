@@ -9,7 +9,8 @@ fx:controller="edu.duke.ece651.team2.client.controller.ButtonController">
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
          <children>
-            <Button layoutX="176.0" layoutY="60.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="227.0" text="1. Set Email Preference" />
+            <Button layoutX="176.0" layoutY="60.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="227.0" text="1. Set Email Preference" 
+            onAction="#onGetEmailPreference"/>
             <Button layoutX="178.0" layoutY="149.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="228.0" text="2. Get Attendance Report" 
             onAction="#onGetReport"/>
             <Button layoutX="178.0" layoutY="242.0" mnemonicParsing="false" prefHeight="66.0" prefWidth="232.0" text="3. Exit the Program" 

@@ -3,6 +3,8 @@ package edu.duke.ece651.team2.client.controller;
 import java.io.IOException;
 import java.util.List;
 
+import com.fasterxml.jackson.core.io.IOContext;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
@@ -13,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -75,6 +78,31 @@ public class ButtonController {
         alert.showAndWait();
     }
 
+    public void showAlertTF(String prompt){
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Alert Message");
+        alert.setContentText(prompt);
+        ButtonType buttonTrue = new ButtonType("True");
+        ButtonType buttonFalse = new ButtonType("False");
+        alert.getButtonTypes().setAll(buttonTrue, buttonFalse);
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType == buttonTrue) {
+                try {
+                    controller.sendObject(1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } 
+            else if (buttonType == buttonFalse) {
+                try {
+                    controller.sendObject(0);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
 
 
     @FXML
@@ -85,7 +113,6 @@ public class ButtonController {
         String[] credentials = new String[2];
         credentials[0] = logInFieldID.getText();
         credentials[1] = logInFieldPassword.getText();
-        // System.out.println(credentials[0]+" ,"+credentials[1]);
         int res = controller.login(credentials);
         Object source = ae.getSource();
         if(res==1){
@@ -99,23 +126,37 @@ public class ButtonController {
         }
     }
 
-    public void onReturnStudent(ActionEvent ae){
+    @FXML
+    //havent handled the case on server!
+    public void onReturnStudent(ActionEvent ae) throws IOException{
+        controller.sendObject(-1);
         Object source = ae.getSource();
         StudentLogIn(source);
     }
 
 
+    @FXML
     public void onSubmitSection(ActionEvent ae) throws IOException{
         int selectedIndex = chooseSection.getSelectionModel().getSelectedIndex();
-        System.out.println(""+selectedIndex);
         controller.sendObject(selectedIndex);
     }
 
-    public void helperShowSection(List<String> res, Object source){
+    @FXML
+    public void onSubmitSectionReceivePrompt(ActionEvent ae) throws IOException{
+        onSubmitSection(ae);
+        String prompt = controller.changeEmailPreferences();
+        showAlertTF(prompt);
+        prompt = controller.confirmFromServer();
+        showAlert(prompt);
+        onReturnStudent(ae);
+    }
+
+    public void helperShowSection(List<String> res, Object source,String file){
+        System.out.println("Showing section...");
         Button b = (Button) source;
         Stage stage= (Stage) b.getScene().getWindow();
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/SectionChoice.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(file));
             loader.setControllerFactory(controller -> new ButtonController(this.controller));
             TitledPane page =(TitledPane) loader.load();  
             ButtonController bcontroller = loader.getController();
@@ -147,8 +188,9 @@ public class ButtonController {
             showAlert(res.get(1));
         }
         else{
+            System.out.println("Get Sections email Pre");
             Object source = ae.getSource();
-            helperShowSection(res,source);
+            helperShowSection(res,source,"/ui/SectionChoice1.fxml");
         }
     }
 
@@ -161,7 +203,7 @@ public class ButtonController {
         }
         else{
             Object source = ae.getSource();
-            helperShowSection(res,source);
+            helperShowSection(res,source,"/ui/SectionChoice.fxml");
         }
     }
 
