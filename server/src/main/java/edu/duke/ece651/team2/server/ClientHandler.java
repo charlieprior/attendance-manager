@@ -132,8 +132,8 @@ public class ClientHandler implements Runnable {
 
                 // Process client request using controller
                 if (status == 1) {
-                    // stuent
-                    String response = handleStudentRequest((int) request);
+                    // student
+                    String response = handleStudentRequest(request);
                     if (response.equals("break")) {
                         System.out.println("The student is leaving.");
                         break;

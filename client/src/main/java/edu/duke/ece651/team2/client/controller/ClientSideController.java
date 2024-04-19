@@ -1,4 +1,4 @@
-package edu.duke.ece651.team2.client;
+package edu.duke.ece651.team2.client.controller;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import edu.duke.ece651.team2.shared.*;
 
 public class ClientSideController {
