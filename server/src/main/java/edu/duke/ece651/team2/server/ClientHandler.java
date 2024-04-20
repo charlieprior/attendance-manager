@@ -123,7 +123,7 @@ public class ClientHandler implements Runnable {
             while (true) {
                 // User authentication fail
                 int request = (int) in.readObject();
-                serverSideController.executePeriodicTask();
+                // serverSideController.executePeriodicTask();
                 // if (userId == -1 || status == -1) {
                 // String response = "User authentication failed!";
                 // out.writeObject(response); // Send response back to client
@@ -132,8 +132,8 @@ public class ClientHandler implements Runnable {
 
                 // Process client request using controller
                 if (status == 1) {
-                    // stuent
-                    String response = handleStudentRequest((int) request);
+                    // student
+                    String response = handleStudentRequest(request);
                     if (response.equals("break")) {
                         System.out.println("The student is leaving.");
                         break;

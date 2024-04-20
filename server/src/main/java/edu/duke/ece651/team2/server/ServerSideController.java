@@ -200,6 +200,7 @@ public class ServerSideController {
                     sections.add(section);
                 }
                 List<String> response = getCourseSectionList(sectionNames, courseNames);
+                System.out.println("Going to send!!");
                 out.writeObject(mapper.writeValueAsString(response));
                 out.flush();
                 return sections;
@@ -262,7 +263,7 @@ public class ServerSideController {
                 if (num != null) {
                     // Default eligible
                     EnrollmentDAO enrollmentDAO = new EnrollmentDAO(factory);
-                    Integer sectionId = parseSections.get(num - 1).getSectionID();
+                    Integer sectionId = parseSections.get(num).getSectionID();
                     boolean isSubscribed = enrollmentDAO.checkNotify(sectionId, userId);
                     String subscriptionStatus = isSubscribed ? "Subscribed" : "Unsubscribed";
                     // send to client
@@ -756,20 +757,21 @@ public class ServerSideController {
             // get result from client (choice)
             try {
                 Integer num = (Integer) in.readObject();
-                if (num != null) {
+                if (num != -1) {
                     // Default eligible
                     // assume num is eligible
                     // sending report function
                     // ...
-                    Integer sectionId = parseSections.get(num - 1).getSectionID();
+                    Integer sectionId = parseSections.get(num).getSectionID();
 
                     // loop up all lectures for this setcion
                     sendEmailToClient(sectionId);
 
                     // finished sending
-                } else {
-                    out.writeObject("0||" + "Invalid request format (please input a number)!");
-                }
+                } 
+                // else {
+                //     out.writeObject("0||" + "Invalid request format (please input a number)!");
+                // }
             } catch (Exception e) {
                 e.printStackTrace();
             }

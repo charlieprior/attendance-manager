@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="edu.duke.ece651.team2.attendancemanager.TextUserControllerTest" tests="12" skipped="2" failures="0" errors="0" timestamp="2024-03-27T19:47:26" hostname="Louises-MBP.wired.duke.local" time="0.009">
+  <properties/>
+  <testcase name="testFileColumns()" classname="edu.duke.ece651.team2.attendancemanager.TextUserControllerTest" time="0.001"/>
+  <testcase name="testReadNewStudents()" classname="edu.duke.ece651.team2.attendancemanager.TextUserControllerTest" time="0.0"/>
+  <testcase name="testAskHeader()" classname="edu.duke.ece651.team2.attendancemanager.TextUserControllerTest" time="0.0"/>
+  <testcase name="testReadStudentStatus()" classname="edu.duke.ece651.team2.attendancemanager.TextUserControllerTest" time="0.001"/>
+  <testcase name="testReadActionInvalidThenValidInput()" classname="edu.duke.ece651.team2.attendancemanager.TextUserControllerTest" time="0.001"/>
+  <testcase name="testReadNewCourse()" classname="edu.duke.ece651.team2.attendancemanager.TextUserControllerTest" time="0.0"/>
+  <testcase name="testReadCSVFiles()" classname="edu.duke.ece651.team2.attendancemanager.TextUserControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="testReadActionValidInput()" classname="edu.duke.ece651.team2.attendancemanager.TextUserControllerTest" time="0.001"/>
+  <testcase name="testReadLines()" classname="edu.duke.ece651.team2.attendancemanager.TextUserControllerTest" time="0.0"/>
+  <testcase name="testReadColumns()" classname="edu.duke.ece651.team2.attendancemanager.TextUserControllerTest" time="0.0"/>
+  <testcase name="testReadNewProfessor()" classname="edu.duke.ece651.team2.attendancemanager.TextUserControllerTest" time="0.001"/>
+  <testcase name="testReadStudents()" classname="edu.duke.ece651.team2.attendancemanager.TextUserControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
