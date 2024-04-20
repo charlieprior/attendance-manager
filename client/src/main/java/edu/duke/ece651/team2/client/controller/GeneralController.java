@@ -142,7 +142,7 @@ public class GeneralController {
         }
     }
 
-    private void generateSectionAttendanceReport(String fileName){
+    public void generateSectionAttendanceReport(String fileName){
         clientSideView.displayMessage("Waiting for the exported file...");
         try{
         String output = (String)in.readObject();
@@ -472,40 +472,66 @@ public class GeneralController {
         }
     }
 
-    private void receiveAllTakenSectionAndSendChoice(int n) throws ClassNotFoundException {
-        clientSideController.displayPromptForFacultyGetSections(n);
+    public List<String> receiveAllTakenSectionAndSendChoice(int num) {
+        clientSideController.displayPromptForFacultyGetSections(num);
         try {
-        List<String> response = mapper.readValue((String) in.readObject(), new TypeReference<List<String>>() {
+        // get from server
+        List<String> responseList = mapper.readValue((String) in.readObject(), new TypeReference<ArrayList<String>>() {
         });
-        if (response.get(0).equals("ERROR")) {
-            // handle error (format we set response[0] = "ERROR")
-            clientSideView.displayMessage(response.get(1));
+        clientSideView.displayMessage(""+responseList.size());
+        if (responseList.isEmpty()) {
+            clientSideView.displayMessage("You haven't taught any classes this semester!");
+            responseList.add("ERROR");
+            responseList.add("You haven't taught any classes this semester!");
+            return responseList; 
         } else {
-            int len = response.size();
-            int resNum = -1;
-            // Ask users for input
-            while (true) {
-            String choice = clientSideController.listSectionCourseName(response);
-            if (clientSideController.isValidIntegerInRange(choice, 1, len)) {
-                resNum = Integer.parseInt(choice);
-                break;
+            if (responseList.get(0).equals("ERROR")) {
+                clientSideView.displayMessage(responseList.get(1));
+                return responseList;
             } else {
-                clientSideView.displayMessage("Please enter a valid number!");
-            }
-            }
-            out.writeObject(resNum); // send int type
-            out.flush();
-            if(n==3){
-            generateSectionAttendanceReport(response.get(resNum));
-            }
-            else{
-            receiveAllLectureBySectionId(n);
+                return responseList;
             }
         }
-        } catch (IOException e) {
-        e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
+
+    // private void receiveAllTakenSectionAndSendChoice(int n) throws ClassNotFoundException {
+    //     clientSideController.displayPromptForFacultyGetSections(n);
+    //     try {
+    //     List<String> response = mapper.readValue((String) in.readObject(), new TypeReference<List<String>>() {
+    //     });
+    //     if (response.get(0).equals("ERROR")) {
+    //         // handle error (format we set response[0] = "ERROR")
+    //         clientSideView.displayMessage(response.get(1));
+    //     } else {
+    //         int len = response.size();
+    //         int resNum = -1;
+    //         // Ask users for input
+    //         while (true) {
+    //         String choice = clientSideController.listSectionCourseName(response);
+    //         if (clientSideController.isValidIntegerInRange(choice, 1, len)) {
+    //             resNum = Integer.parseInt(choice);
+    //             break;
+    //         } else {
+    //             clientSideView.displayMessage("Please enter a valid number!");
+    //         }
+    //         }
+    //         out.writeObject(resNum); // send int type
+    //         out.flush();
+    //         if(n==3){
+    //         generateSectionAttendanceReport(response.get(resNum));
+    //         }
+    //         else{
+    //         receiveAllLectureBySectionId(n);
+    //         }
+    //     }
+    //     } catch (IOException e) {
+    //     e.printStackTrace();
+    //     }
+    // }
 
     // 2. update attendance
     private void updateAttendance() throws ClassNotFoundException {

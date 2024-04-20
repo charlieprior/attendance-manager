@@ -170,6 +170,15 @@ public class ButtonController {
         onReturnStudent(ae);
     }
 
+    @FXML
+    public void onSubmitReceiveCSV(ActionEvent ae) throws IOException{
+        int selectedIndex = chooseSection.getSelectionModel().getSelectedIndex();
+        controller.sendObject(selectedIndex);
+        controller.generateSectionAttendanceReport(chooseSection.getValue());
+        Object source = ae.getSource();
+        ProfessorLogIn(source);
+    }
+
     public void helperShowSection(List<String> res, Object source,String file){
         System.out.println("Showing section...");
         Button b = (Button) source;
@@ -228,6 +237,21 @@ public class ButtonController {
             res.add("ID: "+s.getSectionID()+" Name: "+s.getName());
         }
         return res;
+    }
+
+
+    @FXML
+    public void onGetAttendance(ActionEvent ae) throws IOException, ClassNotFoundException{
+        controller.professorFunctionality(3);
+        List<String> res = controller.receiveAllTakenSectionAndSendChoice(3);
+        if(res!=null && res.get(0).equals("ERROR")){
+            showAlert(res.get(1));
+            controller.sendObject(-1);
+        }
+        else{
+            Object source = ae.getSource();
+            helperShowSection(res,source,"/ui/SectionChoice3.fxml");
+        }
     }
 
     @FXML

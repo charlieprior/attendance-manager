@@ -510,6 +510,9 @@ public class ServerSideController {
         serverSideView.displayMessage("Professor's choice of setcion received....");
         try {
             Integer choice = (int) in.readObject();
+            if(choice==-1){
+                return;
+            }
             // get sectionId of the choice
             int sectionId = getSectionIdSelected(map.keySet(), choice);
             StudentDAO studentDAO = new StudentDAO(factory);
@@ -630,8 +633,8 @@ public class ServerSideController {
         try {
             Map<Integer, String> namesWithSectionId = sectionDAO.getCourseAndSectionNamesByInstructorId(userId);
             List<String> resList = new ArrayList<>();
-            if (namesWithSectionId.isEmpty()) {
-                throw new IllegalStateException("Failed to query database!");
+            if (namesWithSectionId==null) {
+                throw new IllegalStateException("Failed to query database, or you dont have any Course!");
             } else {
                 for (Integer key : namesWithSectionId.keySet()) {
                     String value = namesWithSectionId.get(key);
@@ -684,7 +687,7 @@ public class ServerSideController {
         int count = 0;
         int sectionId = -1;
         for (Integer key : mapset) {
-            if (count == choice - 1) {
+            if (count == choice) {
                 sectionId = key;
             }
             count++;
