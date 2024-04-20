@@ -306,16 +306,19 @@ public class ServerSideController {
         return ans;
     }
 
-    public Section getChosenSection(List<Section> s) throws ClassNotFoundException {
+    public int getChosenSection(List<Section> s) throws ClassNotFoundException {
         try {
             String json = mapper.writeValueAsString(s);
             out.writeObject(json);
-            Section chosen = mapper.readValue((String) in.readObject(), Section.class);
+            int chosen = (int) in.readObject();
             return chosen;
+            // Section chosen = mapper.readValue((String) in.readObject(), Section.class);
+            // return chosen;
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            return null;
+            return -1;
+            // return null;
         }
     }
 

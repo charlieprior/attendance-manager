@@ -11,6 +11,7 @@ import com.mysql.cj.x.protobuf.MysqlxDatatypes.Object;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 public class GeneralController {
     private ClientSideController clientSideController;
@@ -35,6 +36,11 @@ public class GeneralController {
 
     public void sendObject(int choice) throws IOException{
         out.writeObject(choice);
+        out.flush();
+    }
+
+    public void sendObject(Object obj) throws IOException{
+        out.writeObject(obj);
         out.flush();
     }
 
@@ -99,18 +105,29 @@ public class GeneralController {
 
     }
 
-    private Section chooseSection() throws ClassNotFoundException {
+    public List<Section> chooseSection() throws ClassNotFoundException {
         try {
-        Section[] sections = mapper.readValue((String) in.readObject(), Section[].class);
-        Section chosen = clientSideController.displayAndChooseSection(sections);
-        return chosen;
+            Section[] sections = mapper.readValue((String) in.readObject(), Section[].class);
+            return Arrays.asList(sections);
 
         } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-        return null;
+            e.printStackTrace();
+            return null;
         }
     }
+
+    // private Section chooseSection() throws ClassNotFoundException {
+    //     try {
+    //     Section[] sections = mapper.readValue((String) in.readObject(), Section[].class);
+    //     Section chosen = clientSideController.displayAndChooseSection(sections);
+    //     return chosen;
+
+    //     } catch (IOException e) {
+    //     // TODO Auto-generated catch block
+    //     e.printStackTrace();
+    //     return null;
+    //     }
+    // }
 
     private Student[] getStudentsFromSection(Section s) throws ClassNotFoundException {
         try {
@@ -141,16 +158,16 @@ public class GeneralController {
     }
 
 
-    private void beFaculty() throws ClassNotFoundException {
-        Section s = chooseSection();
-        try {
-        out.writeObject(mapper.writeValueAsString(s));
-        out.flush();
-        } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-        }
-    }
+    // private void beFaculty() throws ClassNotFoundException {
+    //     Section s = chooseSection();
+    //     try {
+    //     out.writeObject(mapper.writeValueAsString(s));
+    //     out.flush();
+    //     } catch (IOException e) {
+    //     // TODO Auto-generated catch block
+    //     e.printStackTrace();
+    //     }
+    // }
 
     public List<String> receiveAllEnrolledSectionAndSetChoice(int num) {
         clientSideView.displayMessage("waiting");
@@ -517,38 +534,35 @@ public class GeneralController {
 
     // Professor-specific functionality
     public void professorFunctionality(int choice) throws ClassNotFoundException {
-        while (true) {
         try {
             if (choice == 5) {
             out.writeObject(choice); // int type
             out.flush();
             // exit
             disconnectFromServer();
-            break;
             } else if (choice == 1) {
             // record attendance
             out.writeObject(choice); // int type to String
             out.flush();
-            recordAttendance();
+            // recordAttendance();
             } else if (choice == 2) {
             // update attendance
             out.writeObject(choice); // int type to String
             out.flush();
-            updateAttendance();
+            // updateAttendance();
             } else if (choice == 3) {
             // export file
             out.writeObject(choice); // int type to String
             out.flush();
-            exportStuentAttendance();
+            // exportStuentAttendance();
             } else if (choice == 4) {
             // select courses
             out.writeObject(choice);
             out.flush();
-            beFaculty();
+            // beFaculty();
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
         }
     }
 

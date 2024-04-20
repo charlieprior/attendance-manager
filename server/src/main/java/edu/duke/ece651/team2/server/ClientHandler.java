@@ -33,18 +33,18 @@ public class ClientHandler implements Runnable {
         this.status = serverSideController.getStatus();
     }
 
-    public void takeAttendance() throws ClassNotFoundException {
-        List<Section> sections = serverSideController.getInstructSection();
-        Section s_chosen = serverSideController.getChosenSection(sections);
-        // To get List of students
-        // TODO
-    }
+    // public void takeAttendance() throws ClassNotFoundException {
+    //     List<Section> sections = serverSideController.getInstructSection();
+    //     Section s_chosen = serverSideController.getChosenSection(sections);
+    //     // To get List of students
+    //     // TODO
+    // }
 
     public void beFaculty() throws ClassNotFoundException {
         List<Section> sections = serverSideController.getNoFacultySection();
-        Section s_chosen = serverSideController.getChosenSection(sections);
-        if(s_chosen!=null){
-            serverSideController.setFaculty(s_chosen);
+        int s_chosen = serverSideController.getChosenSection(sections);
+        if(s_chosen!=-1){
+            serverSideController.setFaculty(sections.get(s_chosen));
         }
     }
 

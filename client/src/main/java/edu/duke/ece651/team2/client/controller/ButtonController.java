@@ -2,9 +2,11 @@ package edu.duke.ece651.team2.client.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
 
 import com.fasterxml.jackson.core.io.IOContext;
 
+import edu.duke.ece651.team2.shared.Section;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
@@ -134,11 +136,28 @@ public class ButtonController {
         StudentLogIn(source);
     }
 
+    @FXML
+    public void onReturnFaculty(ActionEvent ae) throws IOException{
+        controller.sendObject(-1);
+        Object source = ae.getSource();
+        ProfessorLogIn(source);
+    }
+
 
     @FXML
     public void onSubmitSection(ActionEvent ae) throws IOException{
         int selectedIndex = chooseSection.getSelectionModel().getSelectedIndex();
         controller.sendObject(selectedIndex);
+        Object source = ae.getSource();
+        StudentLogIn(source);
+    }
+
+    @FXML
+    public void onSubmitSectionFaculty(ActionEvent ae) throws IOException{
+        int selectedIndex = chooseSection.getSelectionModel().getSelectedIndex();
+        controller.sendObject(selectedIndex);
+        Object source = ae.getSource();
+        ProfessorLogIn(source);
     }
 
     @FXML
@@ -162,19 +181,13 @@ public class ButtonController {
             ButtonController bcontroller = loader.getController();
             ComboBox<String> chooseSection = bcontroller.chooseSection;
             if (chooseSection != null) {
-                // Set items for the ComboBox
                 ObservableList<String> sections = FXCollections.observableArrayList(res);
                 chooseSection.setItems(sections);
                 Scene newScene = new Scene(page);
                 stage.setScene(newScene);
-
-
-                // int selectedIndex = chooseSection.getSelectionModel().getSelectedIndex();
-                // controller.sendObject(selectedIndex);
             } else {
                 System.out.println("ComboBox not found in FXML file.");
-            }
-            // loader.setControllerFactory(controller -> new ButtonController(this.controller));          
+            }        
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -205,6 +218,23 @@ public class ButtonController {
             Object source = ae.getSource();
             helperShowSection(res,source,"/ui/SectionChoice.fxml");
         }
+    }
+
+    public List<String> helperReadName(List<Section> sec){
+        List<String> res = new ArrayList<>();
+        for(Section s:sec){
+            res.add("ID: "+s.getSectionID()+" Name: "+s.getName());
+        }
+        return res;
+    }
+
+    @FXML
+    public void onSetFaculty(ActionEvent ae) throws ClassNotFoundException{
+        controller.professorFunctionality(4);
+        List<Section> sections = controller.chooseSection();
+        List<String> res = helperReadName(sections);
+        Object source = ae.getSource();
+        helperShowSection(res,source,"/ui/SectionChoice2.fxml");
     }
 
 
