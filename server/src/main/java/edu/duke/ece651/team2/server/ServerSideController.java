@@ -175,7 +175,7 @@ public class ServerSideController {
         EnrollmentDAO enrollmentDAO = new EnrollmentDAO(factory);
         try {
             List<Enrollment> enrollments = enrollmentDAO.findEnrollmentsByStudentId(userId);
-            if (enrollments.isEmpty()) {
+            if (enrollments==null) {
                 throw new IllegalStateException("You are not enrolled in any classes this semester!"); //TODO:testit
             } else {
                 List<String> sectionNames = new ArrayList<>();
@@ -260,7 +260,7 @@ public class ServerSideController {
             // get result from client
             try {
                 Integer num = (Integer) in.readObject();
-                if (num != null) {
+                if (num != -1) {
                     // Default eligible
                     EnrollmentDAO enrollmentDAO = new EnrollmentDAO(factory);
                     Integer sectionId = parseSections.get(num).getSectionID();

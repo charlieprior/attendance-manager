@@ -194,11 +194,12 @@ public class ButtonController {
     }
 
     @FXML
-    public void onGetEmailPreference(ActionEvent ae){
+    public void onGetEmailPreference(ActionEvent ae) throws IOException{
         controller.studentFunctionality(1);
         List<String> res = controller.receiveAllEnrolledSectionAndSetChoice(1);
         if(res!=null && res.get(0).equals("ERROR")){
             showAlert(res.get(1));
+            controller.sendObject(-1);
         }
         else{
             System.out.println("Get Sections email Pre");
@@ -208,11 +209,12 @@ public class ButtonController {
     }
 
     @FXML
-    public void onGetReport(ActionEvent ae){
+    public void onGetReport(ActionEvent ae) throws IOException{
         controller.studentFunctionality(2);
         List<String> res = controller.receiveAllEnrolledSectionAndSetChoice(2);
         if(res!=null && res.get(0).equals("ERROR")){
             showAlert(res.get(1));
+            controller.sendObject(-1);
         }
         else{
             Object source = ae.getSource();
