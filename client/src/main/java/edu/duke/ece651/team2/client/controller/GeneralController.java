@@ -45,7 +45,7 @@ public class GeneralController {
         out.flush();
     }
 
-    public void sendObject(List<Character> obj) throws JsonProcessingException, IOException{
+    public void sendObject(List<String> obj) throws JsonProcessingException, IOException{
         out.writeObject(mapper.writeValueAsString(obj)); // send string type e.g. {'A','T','P'...}
         out.flush();
     }

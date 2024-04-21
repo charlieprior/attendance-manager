@@ -11,7 +11,8 @@ fx:controller="edu.duke.ece651.team2.client.controller.ButtonController">
          <children>
             <Button layoutX="159.0" layoutY="44.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="258.0" text="1. Record Attendance From One Section " 
             onAction="#onTakeAttendance"/>
-            <Button layoutX="159.0" layoutY="97.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="257.0" text="2. Update Attendance From One Lecture" />
+            <Button layoutX="159.0" layoutY="97.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="257.0" text="2. Update Attendance From One Lecture" 
+            onAction="#onUpdateAttendance"/>
             <Button layoutX="159.0" layoutY="150.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="257.0" text="3. Export student attendance information" 
             onAction="#onGetAttendance"/>
             <Button layoutX="120.0" layoutY="208.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="315.0" text="4. Select courses to teach that are not yet assigned" 

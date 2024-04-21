@@ -331,34 +331,26 @@ public class ServerSideController {
     private void receiveUpdateAttendanceResult(int lectureId, List<Integer> studentIds) {
         serverSideView.displayMessage("Waiting for attendance updated information....");
         try {
-            String choice = mapper.readValue((String) in.readObject(), String.class);
-            List<String> resList = new ArrayList<>();
-            if (choice == null) {
-                throw new IllegalStateException("Users send an invalid choice!");
-            } else {
-                int num = Integer.parseInt(choice.substring(0, choice.length()-1));
-                char status = choice.charAt(choice.length()-1);
-                int studentId = studentIds.get(num - 1);
-                AttendanceStatus attendanceStatus;
-                switch (status) {
-                    case 'A':
-                        attendanceStatus = AttendanceStatus.ABSENT;
-                        break;
-                    case 'T':
-                        attendanceStatus = AttendanceStatus.TARDY;
-                        break;
-                    case 'P':
-                        attendanceStatus = AttendanceStatus.PRESENT;
-                        break;
-                    default:
-                        throw new IllegalStateException("Database error: can not get correct attendance status!");
+            List<Integer> response = mapper.readValue((String) in.readObject(), new TypeReference<List<Integer>>() {
+            });{
+            int num = response.get(0);
+            int status = response.get(1);
+            int studentId = studentIds.get(num );
+            AttendanceStatus attendanceStatus = AttendanceStatus.UNRECORDED;
+            switch (status) {
+                case 1:
+                    attendanceStatus = AttendanceStatus.ABSENT;
+                    break;
+                case 2:
+                    attendanceStatus = AttendanceStatus.TARDY;
+                    break;
+                case 3:
+                    attendanceStatus = AttendanceStatus.PRESENT;
+                    break;
                 }
                 AttendanceDAO attendanceDAO = new AttendanceDAO(factory);
                 AttendanceRecord attendanceRecord = new AttendanceRecord(studentId, attendanceStatus, lectureId);
                 attendanceDAO.update(attendanceRecord);
-                resList.add("Updated successfully!");
-                out.writeObject(mapper.writeValueAsString(resList));
-                out.flush();
             }
         } catch (Exception e) {
             try {
@@ -374,12 +366,57 @@ public class ServerSideController {
         }
     }
 
+    // private void receiveUpdateAttendanceResult(int lectureId, List<Integer> studentIds) {
+    //     serverSideView.displayMessage("Waiting for attendance updated information....");
+    //     try {
+    //         String choice = mapper.readValue((String) in.readObject(), String.class);
+    //         List<String> resList = new ArrayList<>();
+    //         if (choice == null) {
+    //             throw new IllegalStateException("Users send an invalid choice!");
+    //         } else {
+    //             int num = Integer.parseInt(choice.substring(0, choice.length()-1));
+    //             char status = choice.charAt(choice.length()-1);
+    //             int studentId = studentIds.get(num - 1);
+    //             AttendanceStatus attendanceStatus;
+    //             switch (status) {
+    //                 case 'A':
+    //                     attendanceStatus = AttendanceStatus.ABSENT;
+    //                     break;
+    //                 case 'T':
+    //                     attendanceStatus = AttendanceStatus.TARDY;
+    //                     break;
+    //                 case 'P':
+    //                     attendanceStatus = AttendanceStatus.PRESENT;
+    //                     break;
+    //                 default:
+    //                     throw new IllegalStateException("Database error: can not get correct attendance status!");
+    //             }
+    //             AttendanceDAO attendanceDAO = new AttendanceDAO(factory);
+    //             AttendanceRecord attendanceRecord = new AttendanceRecord(studentId, attendanceStatus, lectureId);
+    //             attendanceDAO.update(attendanceRecord);
+    //             resList.add("Updated successfully!");
+    //             out.writeObject(mapper.writeValueAsString(resList));
+    //             out.flush();
+    //         }
+    //     } catch (Exception e) {
+    //         try {
+    //             List<String> errorList = new ArrayList<>();
+    //             // send exception to client
+    //             errorList.add("ERROR");
+    //             errorList.add(e.getMessage());
+    //             out.writeObject(mapper.writeValueAsString(errorList));
+    //             out.flush();
+    //         } catch (IOException ex) {
+    //             ex.printStackTrace();
+    //         }
+    //     }
+    // }
+
     private void receiveReocrdAttendanceResult(int lectureId, List<Integer> studentIds) {
         serverSideView.displayMessage("Waiting for attendance recorded information....");
         try {
             List<Character> response = mapper.readValue((String) in.readObject(), new TypeReference<List<Character>>() {
             });
-            List<String> resList = new ArrayList<>();
             if (response == null) {
                 throw new IllegalStateException("Users send an invalid choice!");
             } else {
@@ -413,6 +450,7 @@ public class ServerSideController {
             try {
                 List<String> errorList = new ArrayList<>();
                 // send exception to client
+                System.out.println("what happens: "+e.getMessage());
                 errorList.add("ERROR");
                 errorList.add(e.getMessage());
                 out.writeObject(mapper.writeValueAsString(errorList));
@@ -586,6 +624,9 @@ public class ServerSideController {
         serverSideView.displayMessage("Professor's choice of setcion received....");
         try {
             Integer choice = (int) in.readObject();
+            if(choice==-1){
+                return;
+            }
             List<String> resList = new ArrayList<>();
             // get sectionId of the choice
             int sectionId = getSectionIdSelected(map.keySet(), choice);
