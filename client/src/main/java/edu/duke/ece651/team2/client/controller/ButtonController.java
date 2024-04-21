@@ -33,6 +33,9 @@ public class ButtonController {
     @FXML
     ComboBox<String> chooseSection;
 
+    @FXML
+    ComboBox<String> chooseLecture;
+
     GeneralController controller;
 
 
@@ -105,6 +108,17 @@ public class ButtonController {
         });
     }
 
+    public ButtonType chooseAttendance(String title,String content){
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setContentText(content);
+        ButtonType buttonP= new ButtonType("Present");
+        ButtonType buttonT = new ButtonType("Tardy");
+        ButtonType buttonA = new ButtonType("Absent");
+        alert.getButtonTypes().setAll(buttonP, buttonT,buttonA);
+        return alert.showAndWait().get();
+    }
+
 
 
     @FXML
@@ -167,7 +181,51 @@ public class ButtonController {
         showAlertTF(prompt);
         prompt = controller.confirmFromServer();
         showAlert(prompt);
-        onReturnStudent(ae);
+    }
+
+
+    @FXML
+    public void onSubmitSectionReceiveLecture(ActionEvent ae) throws IOException{
+        // onSubmitSection(ae);
+        int selectedIndex = chooseSection.getSelectionModel().getSelectedIndex();
+        controller.sendObject(selectedIndex);
+        List<String> res = controller.receiveAllLectureBySectionId(1);
+        if(res!=null && res.get(0).equals("ERROR")){
+            showAlert(res.get(1));
+            controller.sendObject(-1);
+        }
+        else{
+            System.out.println("Get Lectures");
+            Object source = ae.getSource();
+            helperShowSectionLecture(res,source,"/ui/LectureChoice.fxml",false);
+        }
+
+    }
+
+    @FXML
+    public void onGetStudentsFromLecture(ActionEvent ae) throws IOException, ClassNotFoundException{
+        // onSubmitSection(ae);
+        int selectedIndex = chooseLecture.getSelectionModel().getSelectedIndex();
+        controller.sendObject(selectedIndex);
+        System.out.println("You are choosing lecture:"+selectedIndex);
+        //TODO: take students and prompt alert, then wrap up and send back to server!
+        List<String> students = controller.receiveAllStudentInfoByLectureIdForRecord();
+        List<Character> ans = new ArrayList<>();
+        for(String stu:students){
+            ButtonType b = chooseAttendance("Record Attendance", stu);
+            if(b.getText().equals("Present")){
+                ans.add('P');
+            }
+            else if (b.getText().equals("Tardy")){
+                ans.add('T');
+            }
+            else{
+                ans.add('A');
+            }
+        }
+
+        controller.sendObject(ans);
+       
     }
 
     @FXML
@@ -179,8 +237,8 @@ public class ButtonController {
         ProfessorLogIn(source);
     }
 
-    public void helperShowSection(List<String> res, Object source,String file){
-        System.out.println("Showing section...");
+    public void helperShowSectionLecture(List<String> res, Object source,String file,boolean sec){
+        // System.out.println("Showing section...");
         Button b = (Button) source;
         Stage stage= (Stage) b.getScene().getWindow();
         try{
@@ -188,15 +246,41 @@ public class ButtonController {
             loader.setControllerFactory(controller -> new ButtonController(this.controller));
             TitledPane page =(TitledPane) loader.load();  
             ButtonController bcontroller = loader.getController();
-            ComboBox<String> chooseSection = bcontroller.chooseSection;
-            if (chooseSection != null) {
-                ObservableList<String> sections = FXCollections.observableArrayList(res);
-                chooseSection.setItems(sections);
-                Scene newScene = new Scene(page);
-                stage.setScene(newScene);
-            } else {
-                System.out.println("ComboBox not found in FXML file.");
-            }        
+            if(sec){
+                ComboBox<String> chooseSection = bcontroller.chooseSection;
+                if (chooseSection != null) {
+                    ObservableList<String> sections = FXCollections.observableArrayList(res);
+                    chooseSection.setItems(sections);
+                    Scene newScene = new Scene(page);
+                    stage.setScene(newScene);
+                }
+                else {
+                    System.out.println("ComboBox not found in FXML file.");
+                }  
+            }
+            else{
+                ComboBox<String> chooseLecture = bcontroller.chooseLecture;
+                if (chooseLecture != null) {
+                    ObservableList<String> lectures = FXCollections.observableArrayList(res);
+                    chooseLecture.setItems(lectures);
+                    Scene newScene = new Scene(page);
+                    stage.setScene(newScene);
+                }
+                else {
+                    System.out.println("ComboBox not found in FXML file.");
+                }  
+            }
+
+            // ComboBox<String> chooseSection = bcontroller.chooseSection;
+            // if (chooseSection != null) {
+            //     ObservableList<String> sections = FXCollections.observableArrayList(res);
+            //     chooseSection.setItems(sections);
+            //     Scene newScene = new Scene(page);
+            //     stage.setScene(newScene);
+            // } 
+            // else {
+            //     System.out.println("ComboBox not found in FXML file.");
+            // }        
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -213,7 +297,7 @@ public class ButtonController {
         else{
             System.out.println("Get Sections email Pre");
             Object source = ae.getSource();
-            helperShowSection(res,source,"/ui/SectionChoice1.fxml");
+            helperShowSectionLecture(res,source,"/ui/SectionChoice1.fxml",true);
         }
     }
 
@@ -227,7 +311,7 @@ public class ButtonController {
         }
         else{
             Object source = ae.getSource();
-            helperShowSection(res,source,"/ui/SectionChoice.fxml");
+            helperShowSectionLecture(res,source,"/ui/SectionChoice.fxml",true);
         }
     }
 
@@ -237,6 +321,25 @@ public class ButtonController {
             res.add("ID: "+s.getSectionID()+" Name: "+s.getName());
         }
         return res;
+    }
+
+    @FXML
+    public void onReturnFacultyL1(){
+
+    }
+
+    @FXML
+    public void onTakeAttendance(ActionEvent ae) throws ClassNotFoundException, IOException{
+        controller.professorFunctionality(1);
+        List<String> res = controller.receiveAllTakenSectionAndSendChoice(1);
+        if(res!=null && res.get(0).equals("ERROR")){
+            showAlert(res.get(1));
+            controller.sendObject(-1);
+        }
+        else{
+            Object source = ae.getSource();
+            helperShowSectionLecture(res,source,"/ui/SectionChoice4.fxml",true);
+        }
     }
 
 
@@ -250,7 +353,7 @@ public class ButtonController {
         }
         else{
             Object source = ae.getSource();
-            helperShowSection(res,source,"/ui/SectionChoice3.fxml");
+            helperShowSectionLecture(res,source,"/ui/SectionChoice3.fxml",true);
         }
     }
 
@@ -260,7 +363,7 @@ public class ButtonController {
         List<Section> sections = controller.chooseSection();
         List<String> res = helperReadName(sections);
         Object source = ae.getSource();
-        helperShowSection(res,source,"/ui/SectionChoice2.fxml");
+        helperShowSectionLecture(res,source,"/ui/SectionChoice2.fxml",true);
     }
 
 

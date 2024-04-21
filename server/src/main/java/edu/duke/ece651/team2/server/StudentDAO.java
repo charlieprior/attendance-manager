@@ -1,5 +1,6 @@
 package edu.duke.ece651.team2.server;
 
+import edu.duke.ece651.team2.shared.AttendanceStatus;
 import edu.duke.ece651.team2.shared.Student;
 
 import java.sql.ResultSet;
@@ -132,7 +133,7 @@ public class StudentDAO extends DAO<Student> {
                         resultSet.getInt("universityId"),
                         resultSet.getString("displayName"));
                 student.setStudentID(resultSet.getInt("id"));
-                attendanceMap.put(student, null);
+                attendanceMap.put(student, AttendanceStatus.UNRECORDED.toString());
             }
         } catch (SQLException e) {
             throw new RuntimeException("Failed to fetch attendance for sectionID: " + sectionID, e);

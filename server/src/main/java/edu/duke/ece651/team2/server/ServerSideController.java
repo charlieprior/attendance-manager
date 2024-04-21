@@ -405,9 +405,9 @@ public class ServerSideController {
                     AttendanceRecord attendanceRecord = new AttendanceRecord(studentId, attendanceStatus, lectureId);
                     attendanceDAO.create(attendanceRecord);
                 }
-                resList.add("Recorded successfully!");
-                out.writeObject(mapper.writeValueAsString(resList));
-                out.flush();
+                // resList.add("Recorded successfully!");
+                // out.writeObject(mapper.writeValueAsString(resList));
+                // out.flush();
             }
         } catch (Exception e) {
             try {
@@ -428,10 +428,11 @@ public class ServerSideController {
     private void sendALLStudentsEnrolled(List<Integer> lectureIdList, int sectionId, int n) {
         serverSideView.displayMessage("Professor's choice of lecture received....");
         try {
-            Integer choice = mapper.readValue((String) in.readObject(), Integer.class);
+            // Integer choice = mapper.readValue((String) in.readObject(), Integer.class);
+            int choice = (int) in.readObject();
             List<String> resList = new ArrayList<>();
-            if (choice == null) {
-                throw new IllegalStateException("Users send an invalid choice!");
+            if (choice == -1) {
+                return;
             } else {
                 // get lectureId of the choice
                 int lectureId = getLectureIdSelected(lectureIdList, choice);
@@ -674,7 +675,7 @@ public class ServerSideController {
         int lectureId = -1;
         int count = 0;
         for (Integer id : lectureIdList) {
-            if (count == choice - 1) {
+            if (count == choice) {
                 lectureId = id;
             }
             count++;
