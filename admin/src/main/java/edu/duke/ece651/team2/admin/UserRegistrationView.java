@@ -2,6 +2,7 @@ package edu.duke.ece651.team2.admin;
 
 import edu.duke.ece651.team2.shared.*;
 import edu.duke.ece651.team2.server.*;
+import javafx.application.Platform;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -238,6 +239,11 @@ public class UserRegistrationView {
                 print("Invalid Selection, please try again!");
             }
         }
+    }
+
+    public void exitOption() {
+        Platform.exit();
+        System.exit(0);
     }
 
 }
