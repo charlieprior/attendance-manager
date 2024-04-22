@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="edu.duke.ece651.team2.attendancemanager.AttendanceRecordTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2024-03-27T19:47:26" hostname="Louises-MBP.wired.duke.local" time="0.008">
+  <properties/>
+  <testcase name="testSetAttendanceDate()" classname="edu.duke.ece651.team2.attendancemanager.AttendanceRecordTest" time="0.003"/>
+  <testcase name="testGetStudentID()" classname="edu.duke.ece651.team2.attendancemanager.AttendanceRecordTest" time="0.001"/>
+  <testcase name="testGetAttendanceDate()" classname="edu.duke.ece651.team2.attendancemanager.AttendanceRecordTest" time="0.001"/>
+  <testcase name="testGetLectureID()" classname="edu.duke.ece651.team2.attendancemanager.AttendanceRecordTest" time="0.0"/>
+  <testcase name="testSetStudentID()" classname="edu.duke.ece651.team2.attendancemanager.AttendanceRecordTest" time="0.0"/>
+  <testcase name="testSetStatus()" classname="edu.duke.ece651.team2.attendancemanager.AttendanceRecordTest" time="0.001"/>
+  <testcase name="testGetStatus()" classname="edu.duke.ece651.team2.attendancemanager.AttendanceRecordTest" time="0.0"/>
+  <testcase name="testSetLectureID()" classname="edu.duke.ece651.team2.attendancemanager.AttendanceRecordTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="edu.duke.ece651.team2.attendancemanager.LectureTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2024-03-27T19:47:26" hostname="Louises-MBP.wired.duke.local" time="0.001">
+  <properties/>
+  <testcase name="testAttendanceRecord()" classname="edu.duke.ece651.team2.attendancemanager.LectureTest" time="0.0"/>
+  <testcase name="testEndLecture()" classname="edu.duke.ece651.team2.attendancemanager.LectureTest" time="0.0"/>
+  <testcase name="test_LectureGetterSetter()" classname="edu.duke.ece651.team2.attendancemanager.LectureTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
