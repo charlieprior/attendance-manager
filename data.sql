@@ -3,8 +3,8 @@ INSERT INTO Users (legalName, displayName, email, universityId, isStudent) VALUE
 INSERT INTO Users (legalName, email, universityId, isStudent) VALUES ('Professor One', 'pro1@duke.edu', 1, FALSE);
 INSERT INTO Users (legalName, displayName, email, universityId, isStudent) VALUES ('Student Two', 'Stu2', 'stud2@duke.edu' , 1,TRUE);
 INSERT INTO Users (legalName, displayName, email, universityId, isStudent) VALUES ('Student Three', 'Stu3', 'stud3@duke.edu' , 1,TRUE);
-INSERT INTO Users (legalName, displayName, email, universityId, isStudent) VALUES ('Student Four', 'Stu4', 'xl435@duke.edu' , 1,TRUE);
-INSERT INTO Users (legalName, displayName, email, universityId, isStudent) VALUES ('Student Five', 'Stu5', 'xl435@duke.edu' , 1,TRUE);
+INSERT INTO Users (legalName, displayName, email, universityId, isStudent) VALUES ('Student Four', 'Stu4', 'kc566@duke.edu' , 1,TRUE);
+INSERT INTO Users (legalName, displayName, email, universityId, isStudent) VALUES ('Student Five', 'Stu5', 'kc566@duke.edu' , 1,TRUE);
 
 INSERT INTO Passwords (id, password, isStudent) VALUES (1, 123456, TRUE);
 INSERT INTO Passwords (id, password, isStudent) VALUES (2, 123456, FALSE);
