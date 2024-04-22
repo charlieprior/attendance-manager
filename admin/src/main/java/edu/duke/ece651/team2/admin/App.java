@@ -13,7 +13,7 @@ public class App {
   private final UserRegistrationView userRegistrationView;
 
   /**
-   * Constructs a new App object for the UserRegistration
+   * Constructs a new App object for the UserRegistration Class
    * 
    * @param userRegistrationView The registration view class being initialized
    */
