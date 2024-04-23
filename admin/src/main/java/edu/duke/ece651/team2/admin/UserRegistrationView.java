@@ -97,6 +97,24 @@ public class UserRegistrationView {
         }
     }
 
+    public int removeFacultyController(String []credentials){
+        String idString = credentials[0];
+        int val;
+        if (!Objects.equals(idString, "")){
+            Integer id = Integer.valueOf(idString);
+            if (userRegistration.getProfessorID(id) != null) {
+                userRegistration.removeProfessor(id);
+                val = 1;
+            }
+            else {
+                print("This faculty member does not seem to be in the registry...\n");
+                val = 0;
+            }
+        }
+        else{val=0;}
+        return val;
+    }
+
     public void updateProfessorView() throws IOException {
         String prompt = "You are updating an existing faculty member, please provide the required info:\n" +
                 "What's the faculty's ID number:";
@@ -109,6 +127,24 @@ public class UserRegistrationView {
         } else {
             print("This faculty member does not seem to be in the registry...\n");
         }
+    }
+
+    public int updateFacultyController(String []credentials){
+        String idString = credentials[0];
+        int val;
+        if (!Objects.equals(idString, "")) {
+            Integer id = Integer.valueOf(idString);
+            if (userRegistration.getProfessorID(id) != null) {
+                String newPassword = credentials[1];
+                userRegistration.updateProfessor(id, newPassword);
+                val = 1;
+            } else {
+                print("This faculty member does not seem to be in the registry...\n");
+                val = 0;
+            }
+        }
+        else{val=0;}
+        return val;
     }
 
     public int addStudentView() throws IOException {

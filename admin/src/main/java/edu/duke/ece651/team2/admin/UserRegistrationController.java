@@ -41,6 +41,16 @@ public class UserRegistrationController {
     @FXML
     TextField studentIDNumber;
     @FXML
+    TextField facultyLegalName;
+    @FXML
+    TextField facultyDisplayName;
+    @FXML
+    TextField facultyEmail;
+    @FXML
+    TextField facultyPassword;
+    @FXML
+    TextField facultyIDNumber;
+    @FXML
     ComboBox<String> chooseUniversity;
 
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -60,6 +70,20 @@ public class UserRegistrationController {
         Stage stage = (Stage) b.getScene().getWindow();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/StudentOptions.fxml"));
+            TitledPane page = (TitledPane) loader.load();
+            Scene newScene = new Scene(page);
+            stage.setScene(newScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleFacultyRegistration(ActionEvent event){
+        Button b = (Button) event.getSource();
+        Stage stage = (Stage) b.getScene().getWindow();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/FacultyOptions.fxml"));
             TitledPane page = (TitledPane) loader.load();
             Scene newScene = new Scene(page);
             stage.setScene(newScene);
@@ -130,6 +154,19 @@ public class UserRegistrationController {
     }
 
     @FXML
+    public void onRemoveFacultySubmit() {
+        String[] credentials = new String[1];
+        credentials[0] = facultyIDNumber.getText();
+        int res = controller.removeFacultyController(credentials);
+        if(res != 0 && !Objects.equals(credentials[0], "")){
+            showAlert("Removal Successful!");
+        }
+        else{
+            showAlert("Removal Failed, please check and type again!");
+        }
+    }
+
+    @FXML
     public void goToUpdateStudent(ActionEvent event){
         Button b = (Button) event.getSource();
         Stage stage = (Stage) b.getScene().getWindow();
@@ -159,16 +196,17 @@ public class UserRegistrationController {
     }
 
     @FXML
-    public void handleProfessorRegistration(ActionEvent event) {
-        Button b = (Button) event.getSource();
-        Stage stage = (Stage) b.getScene().getWindow();
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/FacultyOptions.fxml"));
-            TitledPane page = (TitledPane) loader.load();
-            Scene newScene = new Scene(page);
-            stage.setScene(newScene);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void onUpdateFacultySubmit(){
+        String[] credentials = new String[2];
+        credentials[0] = facultyIDNumber.getText();
+        credentials[1] = facultyPassword.getText();
+        int res = controller.updateFacultyController(credentials);
+        if(res != 0 && (!Objects.equals(credentials[0], "")
+                && !Objects.equals(credentials[1], ""))){
+            showAlert("Update Successful!");
+        }
+        else{
+            showAlert("Update Failed, please check and type again!");
         }
     }
 
