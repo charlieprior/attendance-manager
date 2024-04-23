@@ -17,16 +17,16 @@ import javafx.stage.Stage;
 import javafx.application.Application;
 
 public class App extends Application{
-  private final UserRegistrationView userRegistrationView;
+  // private final UserRegistrationView userRegistrationView;
 
-  /**
-   * Constructs a new App object for the UserRegistration Class
-   * 
-   * @param userRegistrationView The registration view class being initialized
-   */
-  public App(UserRegistrationView userRegistrationView) {
-    this.userRegistrationView = userRegistrationView;
-  }
+  // /**
+  //  * Constructs a new App object for the UserRegistration Class
+  //  * 
+  //  * @param userRegistrationView The registration view class being initialized
+  //  */
+  // public App(UserRegistrationView userRegistrationView) {
+  //   this.userRegistrationView = userRegistrationView;
+  // }
 
   public void readUniversities(String filename) throws IOException{
       UniversityDAO universityDAO = new UniversityDAO(new DAOFactory());
