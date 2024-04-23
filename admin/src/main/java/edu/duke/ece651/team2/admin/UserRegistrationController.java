@@ -121,7 +121,7 @@ public class UserRegistrationController {
         String[] credentials = new String[1];
         credentials[0] = studentPassword.getText();
         int res = controller.removeStudentController(credentials);
-        if(res == 0 && !Objects.equals(credentials[0], "")){
+        if(res != 0 && !Objects.equals(credentials[0], "")){
             showAlert("Removal Successful!");
         }
         else{

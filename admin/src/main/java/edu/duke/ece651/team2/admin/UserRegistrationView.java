@@ -166,12 +166,13 @@ public class UserRegistrationView {
     public int removeStudentController(String []credentials){
         String idString = credentials[0];
         Integer id = Integer.valueOf(idString);
-        int val = 0;
+        int val = -1;
         if (userRegistration.getStudentID(id) != null) {
             userRegistration.removeStudent(id);
+            val = 1;
         } else {
             print("This student does not seem to be in the registry...\n");
-            val = 1;
+            val = 0;
         }
         return val;
     }
