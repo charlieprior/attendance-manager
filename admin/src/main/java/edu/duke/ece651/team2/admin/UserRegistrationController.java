@@ -3,6 +3,8 @@ package edu.duke.ece651.team2.admin;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.io.IOContext;
@@ -27,18 +29,20 @@ import javafx.stage.Stage;
 
 
 public class UserRegistrationController {
-    UserRegistrationView controller;
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    UserRegistration userRegistration = new UserRegistration();
+    UserRegistrationView controller = new UserRegistrationView(System.out, userRegistration, input);
 
-    public UserRegistrationController(UserRegistrationView controller) {
-        this.controller = controller;
-    }
+    // public UserRegistrationController(UserRegistrationView controller) {
+    //     this.controller = controller;
+    // }
 
     @FXML
     public void handleStudentRegistration(ActionEvent event){
         Button b = (Button) event.getSource();
         Stage stage = (Stage) b.getScene().getWindow();
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/UserSelect.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/StudentOptions.fxml"));
             TitledPane page = (TitledPane) loader.load();
             Scene newScene = new Scene(page);
             stage.setScene(newScene);
@@ -52,7 +56,7 @@ public class UserRegistrationController {
         Button b = (Button) event.getSource();
         Stage stage = (Stage) b.getScene().getWindow();
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/UserSelect.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/FacultyOptions.fxml"));
             TitledPane page = (TitledPane) loader.load();
             Scene newScene = new Scene(page);
             stage.setScene(newScene);
