@@ -15,7 +15,7 @@
                         />
                 <Button layoutX="300.0" layoutY="234.0" mnemonicParsing="false" text="Faculty Options"
                         />
-                <Button layoutX="225.0" layoutY="272.0" mnemonicParsing="false" text="Exit"
+                <Button layoutX="250.0" layoutY="272.0" mnemonicParsing="false" text="Exit"
                         />
             </children></AnchorPane>
     </content>
