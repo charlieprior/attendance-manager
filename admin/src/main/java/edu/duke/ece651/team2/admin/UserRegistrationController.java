@@ -92,7 +92,7 @@ public class UserRegistrationController {
         int res = controller.addStudentController(credentials);
         //Object source = event.getSource();
         if(res!= 0){
-            returnToMainRegistration(event);
+            showAlert("Sign-Up Successful!");
         }
         else{
             showAlert("Sign-Up Failed, please check and type again!");
