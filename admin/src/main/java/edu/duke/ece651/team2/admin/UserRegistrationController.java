@@ -141,6 +141,20 @@ public class UserRegistrationController {
     }
 
     @FXML
+    public void goToRemoveFaculty(ActionEvent event){
+        Button b = (Button) event.getSource();
+        Stage stage = (Stage) b.getScene().getWindow();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/RemoveFaculty.fxml"));
+            TitledPane page = (TitledPane) loader.load();
+            Scene newScene = new Scene(page);
+            stage.setScene(newScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     public void onRemoveStudentSubmit() {
         String[] credentials = new String[1];
         credentials[0] = studentIDNumber.getText();
@@ -172,6 +186,20 @@ public class UserRegistrationController {
         Stage stage = (Stage) b.getScene().getWindow();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/UpdateStudent.fxml"));
+            TitledPane page = (TitledPane) loader.load();
+            Scene newScene = new Scene(page);
+            stage.setScene(newScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void goToUpdateFaculty(ActionEvent event){
+        Button b = (Button) event.getSource();
+        Stage stage = (Stage) b.getScene().getWindow();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/UpdateFaculty.fxml"));
             TitledPane page = (TitledPane) loader.load();
             Scene newScene = new Scene(page);
             stage.setScene(newScene);
