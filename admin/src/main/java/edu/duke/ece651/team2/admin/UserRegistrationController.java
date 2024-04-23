@@ -42,7 +42,7 @@ public class UserRegistrationController {
         Stage stage= (Stage) b.getScene().getWindow();
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/StudentRegPage.fxml"));
-            loader.setControllerFactory(controller -> new UserRegistrationController(this.controller));
+            //loader.setControllerFactory(controller -> new UserRegistrationController(this.controller));
             TitledPane page =(TitledPane) loader.load();
             Scene newScene = new Scene(page);
             stage.setScene(newScene);
@@ -56,7 +56,7 @@ public class UserRegistrationController {
         Stage stage= (Stage) b.getScene().getWindow();
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/ProfessorRegPage.fxml"));
-            loader.setControllerFactory(controller -> new UserRegistrationController(this.controller));
+            //loader.setControllerFactory(controller -> new UserRegistrationController(this.controller));
             TitledPane page =(TitledPane) loader.load();
             Scene newScene = new Scene(page);
             stage.setScene(newScene);
