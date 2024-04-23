@@ -34,7 +34,7 @@ public class UserRegistrationController {
     }
 
     @FXML
-    public void handleStudentRegistration(ActionEvent event) {
+    public void handleStudentRegistration(ActionEvent event){
         Button b = (Button) event.getSource();
         Stage stage = (Stage) b.getScene().getWindow();
         try {
