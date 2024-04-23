@@ -33,10 +33,6 @@ public class UserRegistrationController {
     UserRegistration userRegistration = new UserRegistration();
     UserRegistrationView controller = new UserRegistrationView(System.out, userRegistration, input);
 
-    // public UserRegistrationController(UserRegistrationView controller) {
-    //     this.controller = controller;
-    // }
-
     @FXML
     public void handleStudentRegistration(ActionEvent event){
         Button b = (Button) event.getSource();

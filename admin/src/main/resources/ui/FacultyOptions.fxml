@@ -9,13 +9,13 @@
 <TitledPane animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" text="Faculty Registration Portal" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21"
             fx:controller="edu.duke.ece651.team2.admin.UserRegistrationController">
     <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0">
             <children>
-                <Button layoutX="191.0" layoutY="234.0" mnemonicParsing="false" text="New Registree"
+                <Button layoutX="150.0" layoutY="150.0" mnemonicParsing="false" text="New Registree" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                         />
-                <Button layoutX="300.0" layoutY="234.0" mnemonicParsing="false" text="Remove Faculty"
+                <Button layoutX="150.0" layoutY="200.0" mnemonicParsing="false" text="Remove Faculty" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                         />
-                <Button layoutX="268.0" layoutY="272.0" mnemonicParsing="false" text="Update Faculty"
+                <Button layoutX="150.0" layoutY="250.0" mnemonicParsing="false" text="Update Faculty" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                         />
             </children></AnchorPane>
     </content>
