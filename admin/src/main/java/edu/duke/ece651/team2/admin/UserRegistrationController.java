@@ -29,6 +29,15 @@ import javafx.stage.Stage;
 
 
 public class UserRegistrationController {
+    @FXML
+    TextField studentLegalName;
+    @FXML
+    TextField studentDisplayName;
+    @FXML
+    TextField studentEmail;
+    @FXML
+    TextField studentPassword;
+
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     UserRegistration userRegistration = new UserRegistration();
     UserRegistrationView controller = new UserRegistrationView(System.out, userRegistration, input);
@@ -39,6 +48,20 @@ public class UserRegistrationController {
         Stage stage = (Stage) b.getScene().getWindow();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/StudentOptions.fxml"));
+            TitledPane page = (TitledPane) loader.load();
+            Scene newScene = new Scene(page);
+            stage.setScene(newScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void goToAddStudent(ActionEvent event){
+        Button b = (Button) event.getSource();
+        Stage stage = (Stage) b.getScene().getWindow();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/AddStudent.fxml"));
             TitledPane page = (TitledPane) loader.load();
             Scene newScene = new Scene(page);
             stage.setScene(newScene);
