@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.io.IOContext;
@@ -91,7 +92,9 @@ public class UserRegistrationController {
         //int selectedIndex = chooseUniversity.getSelectionModel().getSelectedIndex();
         int res = controller.addStudentController(credentials);
         //Object source = event.getSource();
-        if(res!= 0){
+        if(res!= 0 &&
+                !Objects.equals(credentials[0], "") && !Objects.equals(credentials[1], "") &&
+                !Objects.equals(credentials[2], "") && !Objects.equals(credentials[3], "")){
             showAlert("Sign-Up Successful!");
         }
         else{
