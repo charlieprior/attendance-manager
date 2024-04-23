@@ -33,45 +33,6 @@ public class UserRegistrationController {
         this.controller = controller;
     }
 
-    public void setGeneralController(UserRegistrationView controller){
-        this.controller = controller;
-    }
-
-    /*public void StudentRegistration(Object source){
-        Button b = (Button) source;
-        Stage stage= (Stage) b.getScene().getWindow();
-        try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/StudentRegPage.fxml"));
-            //loader.setControllerFactory(controller -> new UserRegistrationController(this.controller));
-            TitledPane page =(TitledPane) loader.load();
-            Scene newScene = new Scene(page);
-            stage.setScene(newScene);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void ProfessorRegistration(Object source){
-        Button b = (Button) source;
-        Stage stage= (Stage) b.getScene().getWindow();
-        try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/ProfessorRegPage.fxml"));
-            //loader.setControllerFactory(controller -> new UserRegistrationController(this.controller));
-            TitledPane page =(TitledPane) loader.load();
-            Scene newScene = new Scene(page);
-            stage.setScene(newScene);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void helperQuit(Object source){
-        Button b = (Button) source;
-        Stage stage = (Stage) b.getScene().getWindow();
-        stage.close();
-
-        return;
-    }*/
     @FXML
     public void handleStudentRegistration(ActionEvent event) {
         Button b = (Button) event.getSource();
