@@ -69,6 +69,7 @@ public class App extends Application{
     App app = new App(userRegistrationView);
     app.userRegistrationApp();
   }*/
+  @Override
   public void start(Stage stage) throws IOException {
     URL xmlResource = getClass().getResource("/ui/UserSelect.fxml");
     URL cssResource = getClass().getResource("/ui/settings.css");
