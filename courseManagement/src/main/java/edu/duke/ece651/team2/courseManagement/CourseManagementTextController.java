@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * The controller for the course management app
  */
-public class CourseManagementController {
+public class CourseManagementTextController {
     /**
      * The model for the course management app
      */
@@ -36,7 +36,7 @@ public class CourseManagementController {
      * @param out    the output stream
      * @param reader the input stream
      */
-    public CourseManagementController(CourseManagement model, PrintStream out, BufferedReader reader) {
+    public CourseManagementTextController(CourseManagement model, PrintStream out, BufferedReader reader) {
         this.model = model;
         this.out = out;
         this.reader = reader;

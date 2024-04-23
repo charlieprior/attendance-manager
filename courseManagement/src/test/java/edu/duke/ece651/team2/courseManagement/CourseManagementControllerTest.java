@@ -1,7 +1,5 @@
 package edu.duke.ece651.team2.courseManagement;
 
-import edu.duke.ece651.team2.courseManagement.CourseManagement;
-import edu.duke.ece651.team2.courseManagement.CourseManagementController;
 import edu.duke.ece651.team2.server.*;
 import edu.duke.ece651.team2.shared.Course;
 import edu.duke.ece651.team2.shared.Professor;
@@ -26,7 +24,7 @@ class CourseManagementControllerTest {
         UniversityDAO universityDAO = new UniversityDAO(new DAOFactory());
         universityDAO.create(university);
         CourseManagement model = new CourseManagement(university);
-        CourseManagementController controller = new CourseManagementController(model, output, input);
+        CourseManagementTextController controller = new CourseManagementTextController(model, output, input);
 
         model.deleteAllCourses();
         model.deleteAllSections();
@@ -62,7 +60,7 @@ class CourseManagementControllerTest {
         UniversityDAO universityDAO = new UniversityDAO(new DAOFactory());
         universityDAO.create(university);
         CourseManagement model = new CourseManagement(university);
-        CourseManagementController controller = new CourseManagementController(model, output, input);
+        CourseManagementTextController controller = new CourseManagementTextController(model, output, input);
 
         model.deleteAllCourses();
         String prompt = "Please select a course (blank to exit):";
@@ -94,7 +92,7 @@ class CourseManagementControllerTest {
         UniversityDAO universityDAO = new UniversityDAO(new DAOFactory());
         universityDAO.create(university);
         CourseManagement model = new CourseManagement(university);
-        CourseManagementController controller = new CourseManagementController(model, output, input);
+        CourseManagementTextController controller = new CourseManagementTextController(model, output, input);
 
         model.deleteAllCourses();
         model.deleteAllSections();
@@ -126,7 +124,7 @@ class CourseManagementControllerTest {
         PrintStream output = new PrintStream(bytes, true);
 
         CourseManagement model = new CourseManagement(university);
-        CourseManagementController controller = new CourseManagementController(model, output, input);
+        CourseManagementTextController controller = new CourseManagementTextController(model, output, input);
 
         controller.removeCourse(); // no
         controller.removeCourse(); // yes
@@ -166,7 +164,7 @@ class CourseManagementControllerTest {
         PrintStream output = new PrintStream(bytes, true);
 
         CourseManagement model = new CourseManagement(university);
-        CourseManagementController controller = new CourseManagementController(model, output, input);
+        CourseManagementTextController controller = new CourseManagementTextController(model, output, input);
 
         controller.addSection(); // invalid course
         controller.addSection(); // empty section name
