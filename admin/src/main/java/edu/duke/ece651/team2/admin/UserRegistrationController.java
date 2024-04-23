@@ -119,7 +119,7 @@ public class UserRegistrationController {
     @FXML
     public void onRemoveStudentSubmit(){
         String[] credentials = new String[1];
-        credentials[0] = studentPassword.getText();
+        credentials[0] = studentIDNumber.getText();
         int res = controller.removeStudentController(credentials);
         if(res != 0 && !Objects.equals(credentials[0], "")){
             showAlert("Removal Successful!");
