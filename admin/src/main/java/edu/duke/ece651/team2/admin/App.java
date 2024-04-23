@@ -56,6 +56,7 @@ public class App extends Application{
     //userRegistrationView.menuOptions();
   }
 
+
   /**
    * The main method for the Attendance Manager application.
    * 
