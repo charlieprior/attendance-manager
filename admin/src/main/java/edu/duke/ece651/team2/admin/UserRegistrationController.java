@@ -87,6 +87,20 @@ public class UserRegistrationController {
     }
 
     @FXML
+    public void goToUpdateStudent(ActionEvent event){
+        Button b = (Button) event.getSource();
+        Stage stage = (Stage) b.getScene().getWindow();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/UpdateStudent.fxml"));
+            TitledPane page = (TitledPane) loader.load();
+            Scene newScene = new Scene(page);
+            stage.setScene(newScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     public void handleProfessorRegistration(ActionEvent event) {
         Button b = (Button) event.getSource();
         Stage stage = (Stage) b.getScene().getWindow();
