@@ -117,7 +117,7 @@ public class UserRegistrationController {
     }
 
     @FXML
-    public void onRemoveStudentSubmit(ActionEvent event) throws ClassNotFoundException{
+    public void onRemoveStudentSubmit(){
         String[] credentials = new String[1];
         credentials[0] = studentPassword.getText();
         int res = controller.removeStudentController(credentials);
