@@ -93,8 +93,8 @@ public class UserRegistrationController {
         int res = controller.addStudentController(credentials);
         //Object source = event.getSource();
         if(res != 0 ||
-                !Objects.equals(credentials[0], "") || !Objects.equals(credentials[1], "") ||
-                !Objects.equals(credentials[2], "") || !Objects.equals(credentials[3], "")){
+                (!Objects.equals(credentials[0], "") && !Objects.equals(credentials[1], "") &&
+                !Objects.equals(credentials[2], "") && !Objects.equals(credentials[3], ""))){
             showAlert("Sign-Up Successful!");
         }
         else{
@@ -149,8 +149,8 @@ public class UserRegistrationController {
         credentials[0] = studentIDNumber.getText();
         credentials[1] = studentPassword.getText();
         int res = controller.updateStudentController(credentials);
-        if(res != 0 || !Objects.equals(credentials[0], "")
-                    || !Objects.equals(credentials[1], "")){
+        if(res != 0 || (!Objects.equals(credentials[0], "")
+                    && !Objects.equals(credentials[1], ""))){
             showAlert("Update Successful!");
         }
         else{
