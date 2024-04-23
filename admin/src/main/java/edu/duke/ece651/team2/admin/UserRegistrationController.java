@@ -144,6 +144,21 @@ public class UserRegistrationController {
     }
 
     @FXML
+    public void onUpdateStudentSubmit(){
+        String[] credentials = new String[2];
+        credentials[0] = studentIDNumber.getText();
+        credentials[1] = studentPassword.getText();
+        int res = controller.updateStudentController(credentials);
+        if(res != 0 && !Objects.equals(credentials[0], "")
+                    && !Objects.equals(credentials[1], "")){
+            showAlert("Update Successful!");
+        }
+        else{
+            showAlert("Update Failed, please check and type again!");
+        }
+    }
+
+    @FXML
     public void handleProfessorRegistration(ActionEvent event) {
         Button b = (Button) event.getSource();
         Stage stage = (Stage) b.getScene().getWindow();

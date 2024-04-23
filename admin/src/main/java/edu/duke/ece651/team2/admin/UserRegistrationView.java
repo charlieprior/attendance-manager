@@ -191,6 +191,21 @@ public class UserRegistrationView {
         }
     }
 
+    public int updateStudentController(String []credentials){
+        String idString = credentials[0];
+        Integer id = Integer.valueOf(idString);
+        int val = -1;
+        if (userRegistration.getStudentID(id) != null) {
+            String newPassword = credentials[1];
+            userRegistration.updateStudent(id, newPassword);
+            val = 1;
+        } else {
+            print("This student does not seem to be in the registry...\n");
+            val = 0;
+        }
+        return val;
+    }
+
     /**
      * View method for the student's options in the UserRegistration portal
      */
