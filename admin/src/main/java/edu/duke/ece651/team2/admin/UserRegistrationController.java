@@ -38,7 +38,7 @@ public class UserRegistrationController {
         Button b = (Button) event.getSource();
         Stage stage = (Stage) b.getScene().getWindow();
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/StudentOptions.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/UserSelect.fxml"));
             TitledPane page = (TitledPane) loader.load();
             Scene newScene = new Scene(page);
             stage.setScene(newScene);
@@ -52,7 +52,7 @@ public class UserRegistrationController {
         Button b = (Button) event.getSource();
         Stage stage = (Stage) b.getScene().getWindow();
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/FacultyOptions.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/UserSelect.fxml"));
             TitledPane page = (TitledPane) loader.load();
             Scene newScene = new Scene(page);
             stage.setScene(newScene);
