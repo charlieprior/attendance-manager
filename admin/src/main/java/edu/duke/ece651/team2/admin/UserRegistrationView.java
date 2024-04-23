@@ -163,6 +163,19 @@ public class UserRegistrationView {
         }
     }
 
+    public int removeStudentController(String []credentials){
+        String idString = credentials[0];
+        Integer id = Integer.valueOf(idString);
+        int val = 0;
+        if (userRegistration.getStudentID(id) != null) {
+            userRegistration.removeStudent(id);
+        } else {
+            print("This student does not seem to be in the registry...\n");
+            val = 1;
+        }
+        return val;
+    }
+
     public void updateStudentView() throws IOException {
         String prompt = "You are updating an existing Student, please provide the required info:\n" +
                 "What's the student's ID number:";

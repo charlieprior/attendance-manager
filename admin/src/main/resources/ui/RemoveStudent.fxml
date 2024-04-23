@@ -14,7 +14,7 @@
                 <Label layoutX="150.0" layoutY="50.0" text="Please Type Student ID Number: " />
                 <TextField fx:id = "studentIDNumber" layoutX="150.0" layoutY="75.0" />
                 <Button layoutX="150.0" layoutY="125.0" mnemonicParsing="false" text="Submit" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                        />
+                        onAction="#onRemoveStudentSubmit"/>
                 <Button layoutX="150.0" layoutY="250.0" mnemonicParsing="false" text="Go Back" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                         onAction="#handleStudentRegistration"/>
                 <Button layoutX="150.0" layoutY="300.0" mnemonicParsing="false" text="Main Menu" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"

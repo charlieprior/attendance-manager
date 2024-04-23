@@ -92,7 +92,7 @@ public class UserRegistrationController {
         //int selectedIndex = chooseUniversity.getSelectionModel().getSelectedIndex();
         int res = controller.addStudentController(credentials);
         //Object source = event.getSource();
-        if(res!= 0 &&
+        if(res != 0 &&
                 !Objects.equals(credentials[0], "") && !Objects.equals(credentials[1], "") &&
                 !Objects.equals(credentials[2], "") && !Objects.equals(credentials[3], "")){
             showAlert("Sign-Up Successful!");
@@ -113,6 +113,19 @@ public class UserRegistrationController {
             stage.setScene(newScene);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void onRemoveStudentSubmit(ActionEvent event) throws ClassNotFoundException{
+        String[] credentials = new String[1];
+        credentials[0] = studentPassword.getText();
+        int res = controller.removeStudentController(credentials);
+        if(res == 0 && !Objects.equals(credentials[0], "")){
+            showAlert("Removal Successful!");
+        }
+        else{
+            showAlert("Removal Failed, please check and type again!");
         }
     }
 
