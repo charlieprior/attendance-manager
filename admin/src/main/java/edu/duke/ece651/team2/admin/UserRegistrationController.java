@@ -37,7 +37,7 @@ public class UserRegistrationController {
         this.controller = controller;
     }
 
-    public void StudentRegistration(Object source){
+    /*public void StudentRegistration(Object source){
         Button b = (Button) source;
         Stage stage= (Stage) b.getScene().getWindow();
         try{
@@ -63,6 +63,48 @@ public class UserRegistrationController {
         } catch(Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void helperQuit(Object source){
+        Button b = (Button) source;
+        Stage stage = (Stage) b.getScene().getWindow();
+        stage.close();
+
+        return;
+    }*/
+    @FXML
+    public void handleStudentRegistration(ActionEvent event) {
+        Button b = (Button) event.getSource();
+        Stage stage = (Stage) b.getScene().getWindow();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/StudentRegPage.fxml"));
+            TitledPane page = (TitledPane) loader.load();
+            Scene newScene = new Scene(page);
+            stage.setScene(newScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleProfessorRegistration(ActionEvent event) {
+        Button b = (Button) event.getSource();
+        Stage stage = (Stage) b.getScene().getWindow();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/ProfessorRegPage.fxml"));
+            TitledPane page = (TitledPane) loader.load();
+            Scene newScene = new Scene(page);
+            stage.setScene(newScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleExit(ActionEvent event) {
+        Button b = (Button) event.getSource();
+        Stage stage = (Stage) b.getScene().getWindow();
+        stage.close();
     }
 
 }
