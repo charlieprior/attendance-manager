@@ -37,6 +37,8 @@ public class UserRegistrationController {
     TextField studentEmail;
     @FXML
     TextField studentPassword;
+    @FXML
+    TextField studentIDNumber;
 
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     UserRegistration userRegistration = new UserRegistration();
@@ -62,6 +64,20 @@ public class UserRegistrationController {
         Stage stage = (Stage) b.getScene().getWindow();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/AddStudent.fxml"));
+            TitledPane page = (TitledPane) loader.load();
+            Scene newScene = new Scene(page);
+            stage.setScene(newScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void goToRemoveStudent(ActionEvent event){
+        Button b = (Button) event.getSource();
+        Stage stage = (Stage) b.getScene().getWindow();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/RemoveStudent.fxml"));
             TitledPane page = (TitledPane) loader.load();
             Scene newScene = new Scene(page);
             stage.setScene(newScene);
