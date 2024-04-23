@@ -166,7 +166,7 @@ public class UserRegistrationView {
     public int removeStudentController(String []credentials){
         String idString = credentials[0];
         Integer id = Integer.valueOf(idString);
-        int val = -1;
+        int val;
         if (userRegistration.getStudentID(id) != null) {
             userRegistration.removeStudent(id);
             val = 1;
@@ -194,7 +194,7 @@ public class UserRegistrationView {
     public int updateStudentController(String []credentials){
         String idString = credentials[0];
         Integer id = Integer.valueOf(idString);
-        int val = -1;
+        int val;
         if (userRegistration.getStudentID(id) != null) {
             String newPassword = credentials[1];
             userRegistration.updateStudent(id, newPassword);
