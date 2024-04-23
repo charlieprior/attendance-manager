@@ -136,6 +136,21 @@ public class UserRegistrationView {
         return ID;
     }
 
+    public int addStudentController(String []credentials){
+        String legalName = credentials[0];
+        String displayName = credentials[1];
+        String email = credentials[2];
+        //listUniversities();
+        //String id = printPromptAndRead(prompt);
+        Integer uniID =  1;
+        //Integer.valueOf(id);
+        String passkey = credentials[3];
+        Student student = new Student(legalName, email, uniID, displayName);
+        userRegistration.addStudent(student, passkey);
+        Integer ID = student.getStudentID();
+        return ID;
+    }
+
     public void removeStudentView() throws IOException {
         String prompt = "You are removing an existing Student, please provide the required info:\n" +
                 "What's the student's ID number:";

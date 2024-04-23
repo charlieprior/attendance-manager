@@ -39,10 +39,19 @@ public class UserRegistrationController {
     TextField studentPassword;
     @FXML
     TextField studentIDNumber;
+    @FXML
+    ComboBox<String> chooseUniversity;
 
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     UserRegistration userRegistration = new UserRegistration();
     UserRegistrationView controller = new UserRegistrationView(System.out, userRegistration, input);
+
+    public void showAlert(String prompt){
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Alert Message");
+        alert.setContentText(prompt);
+        alert.showAndWait();
+    }
 
     @FXML
     public void handleStudentRegistration(ActionEvent event){
@@ -69,6 +78,24 @@ public class UserRegistrationController {
             stage.setScene(newScene);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void onAddStudentSubmit(ActionEvent event) throws ClassNotFoundException{
+        String[] credentials = new String[4];
+        credentials[0] = studentLegalName.getText();
+        credentials[1] = studentDisplayName.getText();
+        credentials[2] = studentEmail.getText();
+        credentials[3] = studentPassword.getText();
+        //int selectedIndex = chooseUniversity.getSelectionModel().getSelectedIndex();
+        int res = controller.addStudentController(credentials);
+        //Object source = event.getSource();
+        if(res!= 0){
+            returnToMainRegistration(event);
+        }
+        else{
+            showAlert("Sign-Up Failed, please check and type again!");
         }
     }
 
