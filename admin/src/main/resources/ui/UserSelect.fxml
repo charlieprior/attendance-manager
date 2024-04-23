@@ -11,9 +11,9 @@ fx:controller="edu.duke.ece651.team2.admin.UserRegistrationController">
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0">
             <children>
                 <Button layoutX="150.0" layoutY="150.0" mnemonicParsing="false" text="Student Options" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                        onAction="#handleExit"/>
+                        onAction="#handleProfessorRegistration"/>
                 <Button layoutX="150.0" layoutY="200.0" mnemonicParsing="false" text="Faculty Options" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                        onAction="#handleExit"/>
+                        onAction="#handleStudentRegistration"/>
                 <Button layoutX="150.0" layoutY="250.0" mnemonicParsing="false" text="Exit" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                         onAction="#handleExit"/>
             </children>
