@@ -124,7 +124,7 @@ public class UserRegistrationController {
         if(res != 0 && !Objects.equals(credentials[0], "")){
             showAlert("Removal Successful!");
         }
-        else if (res == 0 && Objects.equals(credentials[0], "")){
+        else if (res == 0 || Objects.equals(credentials[0], "")){
             showAlert("Removal Failed, please check and type again!");
         }
     }
