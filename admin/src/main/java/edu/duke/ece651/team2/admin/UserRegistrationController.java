@@ -100,6 +100,7 @@ public class UserRegistrationController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        setUniversities(controller.listUniversitiesController());
     }
 
     public void setUniversities(List<University> unis) {
@@ -133,7 +134,6 @@ public class UserRegistrationController {
         credentials[1] = studentDisplayName.getText();
         credentials[2] = studentEmail.getText();
         credentials[3] = studentPassword.getText();
-        chooseUniversity.setItems(controller.listUniversitiesController());
         credentials[4] = chooseUniversity.getId();
         int res = controller.addStudentController(credentials);
         if(res != 0 &&
