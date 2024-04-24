@@ -59,6 +59,15 @@ public class UserRegistrationView {
         return universities.size();
     }
 
+    /**
+     * Method to list the universities in our database for selection
+     * @return the universities as options
+     */
+    public List<University> listUniversitiesController(){
+        List<University> universities = universityDAO.list();
+        return universities;
+    }
+
     public int addProfessorView() throws IOException {
         // add it to table password, get UniversityID from University
         String prompt = "What's your legal name:";
@@ -176,10 +185,8 @@ public class UserRegistrationView {
         String legalName = credentials[0];
         String displayName = credentials[1];
         String email = credentials[2];
-        //listUniversities();
-        //String id = printPromptAndRead(prompt);
-        Integer uniID =  1;
-        //Integer.valueOf(id);
+        String id = credentials[4];
+        Integer uniID =  Integer.valueOf(id);
         String passkey = credentials[3];
         Student student = new Student(legalName, email, uniID, displayName);
         userRegistration.addStudent(student, passkey);

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.io.IOContext;
 
 import edu.duke.ece651.team2.shared.Section;
+import edu.duke.ece651.team2.shared.University;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
@@ -18,15 +19,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 
 public class UserRegistrationController {
@@ -51,7 +47,7 @@ public class UserRegistrationController {
     @FXML
     TextField facultyIDNumber;
     @FXML
-    ComboBox<String> chooseUniversity;
+    ComboBox<University> chooseUniversity;
 
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     UserRegistration userRegistration = new UserRegistration();
@@ -106,19 +102,44 @@ public class UserRegistrationController {
         }
     }
 
+    public void setUniversities(List<University> unis) {
+        chooseUniversity.getItems().addAll(unis);
+        Callback<ListView<University>, ListCell<University>> cellFactory = new Callback<ListView<University>, ListCell<University>>() {
+            @Override
+            public ListCell<University> call(ListView<University> universityListView) {
+                return new ListCell<University>() {
+                    @Override
+                    public void updateItem(University item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty || item == null) {
+                            setText(null);
+                            setGraphic(null);
+                        } else {
+                            setText(item.getName());
+                        }
+                    }
+                };
+            }
+        };
+
+        chooseUniversity.setCellFactory(cellFactory);
+        chooseUniversity.setButtonCell(cellFactory.call(null));
+    }
+
     @FXML
-    public void onAddStudentSubmit(ActionEvent event) throws ClassNotFoundException{
-        String[] credentials = new String[4];
+    public void onAddStudentSubmit(){
+        String[] credentials = new String[5];
         credentials[0] = studentLegalName.getText();
         credentials[1] = studentDisplayName.getText();
         credentials[2] = studentEmail.getText();
         credentials[3] = studentPassword.getText();
-        //int selectedIndex = chooseUniversity.getSelectionModel().getSelectedIndex();
+        setUniversities(controller.listUniversitiesController());
+        credentials[4] = chooseUniversity.getId();
         int res = controller.addStudentController(credentials);
-        //Object source = event.getSource();
         if(res != 0 &&
                 (!Objects.equals(credentials[0], "") && !Objects.equals(credentials[1], "") &&
-                !Objects.equals(credentials[2], "") && !Objects.equals(credentials[3], ""))){
+                !Objects.equals(credentials[2], "") && !Objects.equals(credentials[3], "")
+                        && !Objects.equals(credentials[4], ""))){
             showAlert("Sign-Up Successful!");
         }
         else{
