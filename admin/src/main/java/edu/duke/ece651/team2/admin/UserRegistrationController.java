@@ -92,6 +92,7 @@ public class UserRegistrationController {
     public void goToAddStudent(ActionEvent event){
         Button b = (Button) event.getSource();
         Stage stage = (Stage) b.getScene().getWindow();
+        setUniversities(controller.listUniversitiesController());
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/AddStudent.fxml"));
             TitledPane page = (TitledPane) loader.load();
@@ -100,7 +101,6 @@ public class UserRegistrationController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        setUniversities(controller.listUniversitiesController());
     }
 
     public void setUniversities(List<University> unis) {
