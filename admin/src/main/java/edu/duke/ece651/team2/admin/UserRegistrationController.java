@@ -139,6 +139,7 @@ public class UserRegistrationController {
         credentials[2] = studentEmail.getText();
         credentials[3] = studentPassword.getText();
         credentials[4] = chooseUniversity.getId();
+        showAlert(chooseUniversity.getId());
         int res = controller.addStudentController(credentials);
         if(res != 0 &&
                 (!Objects.equals(credentials[0], "") && !Objects.equals(credentials[1], "") &&
@@ -149,7 +150,6 @@ public class UserRegistrationController {
         else{
             showAlert("Sign-Up Failed, please check and type again!");
         }
-        showAlert(chooseUniversity.getId());
     }
 
     @FXML
