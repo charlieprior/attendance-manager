@@ -149,6 +149,7 @@ public class UserRegistrationController {
         else{
             showAlert("Sign-Up Failed, please check and type again!");
         }
+        showAlert(chooseUniversity.getId());
     }
 
     @FXML
