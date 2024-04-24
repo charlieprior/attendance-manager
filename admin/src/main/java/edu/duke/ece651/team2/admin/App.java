@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.io.*;
 import java.net.*;
+import java.util.List;
 
 import edu.duke.ece651.team2.server.DAOFactory;
 import edu.duke.ece651.team2.server.UniversityDAO;
@@ -70,12 +71,19 @@ public class App extends Application{
     App app = new App(userRegistrationView);
     app.userRegistrationApp();
   }*/
+
+  private List<University> universityNames() {
+    DAOFactory daoFactory = new DAOFactory();
+    UniversityDAO uniDAO = new UniversityDAO(daoFactory);
+    return uniDAO.list();
+  }
+
   @Override
   public void start(Stage stage) throws IOException {
     URL xmlResource = getClass().getResource("/ui/UserSelect.fxml");
     URL cssResource = getClass().getResource("/ui/settings.css");
     FXMLLoader loader = new FXMLLoader(xmlResource);
-    //loader.setControllerFactory(controller -> new ButtonController(new GeneralController()));
+    loader.setControllerFactory(controller -> new UserRegistrationController(universityNames()));
     TitledPane tp = loader.load();
     Scene scene = new Scene(tp, 640, 480);
     scene.getStylesheets().add(cssResource.toString());
