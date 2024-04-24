@@ -139,12 +139,11 @@ public class UserRegistrationController {
         credentials[2] = studentEmail.getText();
         credentials[3] = studentPassword.getText();
         credentials[4] = String.valueOf(chooseUniversity.getValue().getId());
-        //showAlert(credentials[4]);
         int res = controller.addStudentController(credentials);
         if(res != 0 &&
                 (!Objects.equals(credentials[0], "") && !Objects.equals(credentials[1], "") &&
                 !Objects.equals(credentials[2], "") && !Objects.equals(credentials[3], "")
-                        && !Objects.equals(credentials[4], ""))){
+                        && !Objects.equals(chooseUniversity.getValue(), null))){
             showAlert("Sign-Up Successful!");
         }
         else{
