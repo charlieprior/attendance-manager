@@ -1,6 +1,8 @@
 package edu.duke.ece651.team2.courseManagement;
 
 import edu.duke.ece651.team2.shared.University;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -19,10 +21,12 @@ public class MainMenuController extends AnchorPane {
     @FXML Button AddSectionButton;
     @FXML Button AddStudentsButton;
     @FXML Button AddLecturesButton;
-
     @FXML Text welcomeText;
 
+    private final CourseManagement model;
+
     public MainMenuController(CourseManagement model) {
+        this.model = model;
         FXMLLoader loader = new FXMLLoader(getClass().getResource(
                 "/views/menu.fxml"));
         loader.setRoot(this);
@@ -35,5 +39,12 @@ public class MainMenuController extends AnchorPane {
         }
 
         welcomeText.setText("Welcome to course management for " + model.getUniversity().getName());
+        setUpdateCourseButton();
+    }
+
+    private void setUpdateCourseButton() {
+        UpdateCourseButton.setOnAction(actionEvent -> {
+            UpdateCourseButton.getScene().setRoot(new ModifyCourseController(model));
+        });
     }
 }

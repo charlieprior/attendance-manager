@@ -64,13 +64,10 @@ public class LoginController extends AnchorPane {
     }
 
     public void setButtonAction() {
-        logInButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                University university = universityComboBox.getValue();
-                CourseManagement model = new CourseManagement(university);
-                logInButton.getScene().setRoot(new MainMenuController(model));
-            }
+        logInButton.setOnAction(actionEvent -> {
+            University university = universityComboBox.getValue();
+            CourseManagement model = new CourseManagement(university);
+            logInButton.getScene().setRoot(model.getMainMenuController());
         });
     }
 }

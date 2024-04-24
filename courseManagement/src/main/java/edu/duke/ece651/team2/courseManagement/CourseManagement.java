@@ -14,9 +14,15 @@ public class CourseManagement {
     private static final ProfessorDAO professorDAO = new ProfessorDAO(daoFactory);
     private static final LectureDAO lectureDAO = new LectureDAO(daoFactory);
     private final University university;
+    private final MainMenuController mainMenuController;
 
     public CourseManagement(University university) {
         this.university = university;
+        this.mainMenuController = new MainMenuController(this);
+    }
+
+    public MainMenuController getMainMenuController() {
+        return mainMenuController;
     }
 
     public University getUniversity() {
