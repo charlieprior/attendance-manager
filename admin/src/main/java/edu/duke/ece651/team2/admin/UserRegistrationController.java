@@ -76,6 +76,7 @@ public class UserRegistrationController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        setUniversities(controller.listUniversitiesController());
     }
 
     @FXML
@@ -104,7 +105,6 @@ public class UserRegistrationController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        setUniversities(controller.listUniversitiesController());
     }
 
     public void setUniversities(List<University> unis) {
