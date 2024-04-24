@@ -57,7 +57,6 @@ public class UserRegistrationController {
     UserRegistration userRegistration = new UserRegistration();
     UserRegistrationView controller = new UserRegistrationView(System.out, userRegistration, input);
 
-
     public void showAlert(String prompt){
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Alert Message");
@@ -74,7 +73,6 @@ public class UserRegistrationController {
             TitledPane page = (TitledPane) loader.load();
             Scene newScene = new Scene(page);
             stage.setScene(newScene);
-            //setUniversities(controller.listUniversitiesController());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -106,6 +104,7 @@ public class UserRegistrationController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        setUniversities(controller.listUniversitiesController());
     }
 
     public void setUniversities(List<University> unis) {
