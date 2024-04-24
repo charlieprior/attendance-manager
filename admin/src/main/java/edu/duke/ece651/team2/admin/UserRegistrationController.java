@@ -76,7 +76,6 @@ public class UserRegistrationController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        setUniversities(controller.listUniversitiesController());
     }
 
     @FXML
@@ -93,7 +92,7 @@ public class UserRegistrationController {
         }
     }
 
-    @FXML
+    //@FXML
     public void goToAddStudent(ActionEvent event){
         Button b = (Button) event.getSource();
         Stage stage = (Stage) b.getScene().getWindow();
@@ -105,6 +104,7 @@ public class UserRegistrationController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        setUniversities(controller.listUniversitiesController());
     }
 
     public void setUniversities(List<University> unis) {
