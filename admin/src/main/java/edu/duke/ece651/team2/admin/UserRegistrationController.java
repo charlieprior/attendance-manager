@@ -18,11 +18,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
@@ -98,8 +100,14 @@ public class UserRegistrationController {
         Stage stage = (Stage) b.getScene().getWindow();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/AddStudent.fxml"));
-            TitledPane page = (TitledPane) loader.load();
-            Scene newScene = new Scene(page);
+        
+            Parent root = loader.load();
+            UserRegistrationController ucontroller = loader.getController();
+
+            List<University> unis = controller.listUniversitiesController();
+            ucontroller.setUniversities(unis);
+
+            Scene newScene = new Scene(root);
             stage.setScene(newScene);
         } catch (IOException e) {
             e.printStackTrace();
