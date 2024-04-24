@@ -3,6 +3,7 @@ package edu.duke.ece651.team2.admin;
 import edu.duke.ece651.team2.shared.*;
 import edu.duke.ece651.team2.server.*;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -63,8 +64,8 @@ public class UserRegistrationView {
      * Method to list the universities in our database for selection
      * @return the universities as options
      */
-    public List<University> listUniversitiesController(){
-        List<University> universities = universityDAO.list();
+    public ObservableList<University> listUniversitiesController(){
+        ObservableList<University> universities = (ObservableList<University>) universityDAO.list();
         return universities;
     }
 

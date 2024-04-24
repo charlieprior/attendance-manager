@@ -133,7 +133,7 @@ public class UserRegistrationController {
         credentials[1] = studentDisplayName.getText();
         credentials[2] = studentEmail.getText();
         credentials[3] = studentPassword.getText();
-        setUniversities(controller.listUniversitiesController());
+        chooseUniversity.setItems(controller.listUniversitiesController());
         credentials[4] = chooseUniversity.getId();
         int res = controller.addStudentController(credentials);
         if(res != 0 &&
