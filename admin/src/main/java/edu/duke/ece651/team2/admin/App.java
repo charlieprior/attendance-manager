@@ -80,7 +80,7 @@ public class App extends Application{
 
   @Override
   public void start(Stage stage) throws IOException {
-    URL xmlResource = getClass().getResource("/ui/UserSelect.fxml");
+    /*URL xmlResource = getClass().getResource("/ui/UserSelect.fxml");
     URL cssResource = getClass().getResource("/ui/settings.css");
     FXMLLoader loader = new FXMLLoader(xmlResource);
     loader.setControllerFactory(controller -> new UserRegistrationController(universityNames()));
@@ -88,7 +88,13 @@ public class App extends Application{
     Scene scene = new Scene(tp, 640, 480);
     scene.getStylesheets().add(cssResource.toString());
     stage.setScene(scene);
+    stage.show();*/
+    UserRegistrationController login = new UserRegistrationController(universityNames());
+    stage.setScene(new Scene(login));
+    stage.setWidth(600);
+    stage.setHeight(400);
     stage.show();
+
   }
 
   public static void main(String[] args) {
