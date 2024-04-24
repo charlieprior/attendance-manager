@@ -138,8 +138,7 @@ public class UserRegistrationController {
         int res = controller.addStudentController(credentials);
         if(res != 0 &&
                 (!Objects.equals(credentials[0], "") && !Objects.equals(credentials[1], "") &&
-                !Objects.equals(credentials[2], "") && !Objects.equals(credentials[3], "")
-                        && !Objects.equals(credentials[4], ""))){
+                !Objects.equals(credentials[2], "") && !Objects.equals(credentials[3], ""))){
             showAlert("Sign-Up Successful!");
         }
         else{
