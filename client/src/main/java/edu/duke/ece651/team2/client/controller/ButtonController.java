@@ -161,6 +161,15 @@ public class ButtonController {
         ProfessorLogIn(source);
     }
 
+    @FXML
+    public void onReturnFacultyStringList(ActionEvent ae) throws JsonProcessingException, IOException{
+        List<String> obj = new ArrayList<>();
+        obj.add("-1");
+        controller.sendObject(obj);
+        Object source = ae.getSource();
+        ProfessorLogIn(source);
+    }
+
 
     @FXML
     public void onSubmitSection(ActionEvent ae) throws IOException{

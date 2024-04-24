@@ -334,6 +334,9 @@ public class ServerSideController {
             List<Integer> response = mapper.readValue((String) in.readObject(), new TypeReference<List<Integer>>() {
             });{
             int num = response.get(0);
+            if(num==-1){
+                return;
+            }
             int status = response.get(1);
             int studentId = studentIds.get(num );
             AttendanceStatus attendanceStatus = AttendanceStatus.UNRECORDED;
