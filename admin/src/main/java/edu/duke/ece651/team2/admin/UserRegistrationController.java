@@ -57,20 +57,6 @@ public class UserRegistrationController {
     UserRegistration userRegistration = new UserRegistration();
     UserRegistrationView controller = new UserRegistrationView(System.out, userRegistration, input);
 
-    public UserRegistrationController(List<University> unis) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                "/ui/UserSelect.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
-
-        try {
-            loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        setUniversities(unis);
-    }
 
     public void showAlert(String prompt){
         Alert alert = new Alert(AlertType.INFORMATION);
