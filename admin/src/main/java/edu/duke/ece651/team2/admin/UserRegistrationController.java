@@ -51,7 +51,7 @@ public class UserRegistrationController {
     @FXML
     TextField facultyIDNumber;
     @FXML
-    ComboBox<University> chooseUniversity;
+    ComboBox<University> universityComboBox;
 
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     UserRegistration userRegistration = new UserRegistration();
@@ -92,7 +92,7 @@ public class UserRegistrationController {
         }
     }
 
-    //@FXML
+    @FXML
     public void goToAddStudent(ActionEvent event){
         Button b = (Button) event.getSource();
         Stage stage = (Stage) b.getScene().getWindow();
@@ -108,7 +108,7 @@ public class UserRegistrationController {
     }
 
     public void setUniversities(List<University> unis) {
-        chooseUniversity.getItems().addAll(unis);
+        universityComboBox.getItems().addAll(unis);
         Callback<ListView<University>, ListCell<University>> cellFactory = new Callback<ListView<University>, ListCell<University>>() {
             @Override
             public ListCell<University> call(ListView<University> universityListView) {
@@ -127,9 +127,10 @@ public class UserRegistrationController {
             }
         };
 
-        chooseUniversity.setCellFactory(cellFactory);
-        chooseUniversity.setButtonCell(cellFactory.call(null));
+        universityComboBox.setCellFactory(cellFactory);
+        universityComboBox.setButtonCell(cellFactory.call(null));
     }
+
 
     @FXML
     public void onAddStudentSubmit(){
@@ -138,12 +139,12 @@ public class UserRegistrationController {
         credentials[1] = studentDisplayName.getText();
         credentials[2] = studentEmail.getText();
         credentials[3] = studentPassword.getText();
-        credentials[4] = String.valueOf(chooseUniversity.getValue().getId());
+        credentials[4] = String.valueOf(universityComboBox.getValue().getId());
         int res = controller.addStudentController(credentials);
         if(res != 0 &&
                 (!Objects.equals(credentials[0], "") && !Objects.equals(credentials[1], "") &&
                 !Objects.equals(credentials[2], "") && !Objects.equals(credentials[3], "")
-                        && !Objects.equals(chooseUniversity.getValue(), null))){
+                        && !Objects.equals(universityComboBox.getValue(), null))){
             showAlert("Sign-Up Successful!");
         }
         else{
