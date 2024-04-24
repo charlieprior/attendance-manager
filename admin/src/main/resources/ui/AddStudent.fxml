@@ -20,7 +20,7 @@
                 <TextField fx:id = "studentEmail" layoutX="50.0" layoutY="150.0" />
                 <Label layoutX="50.0" layoutY="175.0" text="Please Set a Password: " />
                 <TextField fx:id = "studentPassword" layoutX="50.0" layoutY="200.0" />
-                <ComboBox fx:id="chooseUniversity" layoutX="150.0" layoutY="25.0" prefWidth="150.0" />
+                <ComboBox fx:id="chooseUniversity" layoutX="350.0" layoutY="25.0" prefWidth="150.0" />
                 <Button layoutX="150.0" layoutY="275.0" mnemonicParsing="false" text="Submit" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                 onAction="#onAddStudentSubmit"/>
 		        <Button layoutX="150.0" layoutY="325.0" mnemonicParsing="false" text="Go Back" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
