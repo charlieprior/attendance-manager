@@ -76,7 +76,6 @@ public class UserRegistrationView {
         String email = printPromptAndRead(prompt);
         prompt = "What's Your University?";
         print(prompt);
-        //prompt = String.valueOf(universityDAO.list());
         List<University> universities = universityDAO.list();
         listUniversities();
         prompt = "Please choose from above from the list above";
@@ -88,9 +87,18 @@ public class UserRegistrationView {
         Professor professor = new Professor(name, email, uniID);
         userRegistration.addProfessor(professor, passkey);
         Integer ID = professor.getProfessorID();
-        //String professorID = String.valueOf(ID);
-        //prompt = "The faculty's id is: " + professorID + "\n";
-        //print(prompt);
+        return ID;
+    }
+
+    public int addFacultyController(String []credentials){
+        String legalName = credentials[0];
+        String email = credentials[1];
+        String id = credentials[3];
+        Integer uniID =  Integer.valueOf(id);
+        String passkey = credentials[2];
+        Professor professor = new Professor(legalName, email, uniID);
+        userRegistration.addProfessor(professor, passkey);
+        Integer ID = professor.getProfessorID();
         return ID;
     }
 

@@ -45,8 +45,6 @@ public class UserRegistrationController {
     @FXML
     TextField facultyLegalName;
     @FXML
-    TextField facultyDisplayName;
-    @FXML
     TextField facultyEmail;
     @FXML
     TextField facultyPassword;
@@ -115,6 +113,27 @@ public class UserRegistrationController {
         setUniversities(controller.listUniversitiesController());
     }
 
+    @FXML
+    public void goToAddFaculty(ActionEvent event){
+        Button b = (Button) event.getSource();
+        Stage stage = (Stage) b.getScene().getWindow();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/AddFaculty.fxml"));
+
+            Parent root = loader.load();
+            UserRegistrationController ucontroller = loader.getController();
+
+            List<University> unis = controller.listUniversitiesController();
+            ucontroller.setUniversities(unis);
+
+            Scene newScene = new Scene(root);
+            stage.setScene(newScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        setUniversities(controller.listUniversitiesController());
+    }
+
     public void setUniversities(List<University> unis) {
         universityComboBox.getItems().addAll(unis);
         Callback<ListView<University>, ListCell<University>> cellFactory = new Callback<ListView<University>, ListCell<University>>() {
@@ -152,6 +171,25 @@ public class UserRegistrationController {
         if(res != 0 &&
                 (!Objects.equals(credentials[0], "") && !Objects.equals(credentials[1], "") &&
                 !Objects.equals(credentials[2], "") && !Objects.equals(credentials[3], "")
+                        && !Objects.equals(universityComboBox.getValue(), null))){
+            showAlert("Sign-Up Successful!");
+        }
+        else{
+            showAlert("Sign-Up Failed, please check and type again!");
+        }
+    }
+
+    @FXML
+    public void onAddFacultySubmit(){
+        String[] credentials = new String[4];
+        credentials[0] = facultyLegalName.getText();
+        credentials[1] = facultyEmail.getText();
+        credentials[2] = facultyPassword.getText();
+        credentials[3] = String.valueOf(universityComboBox.getValue().getId());
+        int res = controller.addFacultyController(credentials);
+        if(res != 0 &&
+                (!Objects.equals(credentials[0], "") && !Objects.equals(credentials[1], "")
+                        && !Objects.equals(credentials[2], "")
                         && !Objects.equals(universityComboBox.getValue(), null))){
             showAlert("Sign-Up Successful!");
         }
