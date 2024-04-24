@@ -266,7 +266,7 @@ public class UserRegistrationController {
 
     @FXML
     public void returnToMainRegistration(ActionEvent event){
-        /*Button b = (Button) event.getSource();
+        Button b = (Button) event.getSource();
         Stage stage = (Stage) b.getScene().getWindow();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/UserSelect.fxml"));
@@ -275,8 +275,7 @@ public class UserRegistrationController {
             stage.setScene(newScene);
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
-        setUniversities(controller.listUniversitiesController());
+        }
     }
 
     @FXML
