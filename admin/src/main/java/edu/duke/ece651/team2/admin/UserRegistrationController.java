@@ -138,8 +138,8 @@ public class UserRegistrationController {
         credentials[1] = studentDisplayName.getText();
         credentials[2] = studentEmail.getText();
         credentials[3] = studentPassword.getText();
-        credentials[4] = chooseUniversity.getId();
-        showAlert(chooseUniversity.getId());
+        credentials[4] = chooseUniversity.getAccessibleText();
+        showAlert(credentials[4]);
         int res = controller.addStudentController(credentials);
         if(res != 0 &&
                 (!Objects.equals(credentials[0], "") && !Objects.equals(credentials[1], "") &&
