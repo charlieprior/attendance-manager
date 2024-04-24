@@ -96,7 +96,8 @@ public class UserRegistrationController {
     public void goToAddStudent(ActionEvent event){
         Button b = (Button) event.getSource();
         Stage stage = (Stage) b.getScene().getWindow();
-        setUniversities(controller.listUniversitiesController());
+        //setUniversities(controller.listUniversitiesController());
+        chooseUniversity.getItems().addAll(controller.listUniversitiesController());
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/AddStudent.fxml"));
             TitledPane page = (TitledPane) loader.load();
