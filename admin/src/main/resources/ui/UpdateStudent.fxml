@@ -15,8 +15,8 @@
                 <TextField fx:id = "studentIDNumber" layoutX="50.0" layoutY="75.0" />
                 <Label layoutX="350.0" layoutY="50.0" text="Please Type New Student Password: " />
                 <TextField fx:id = "studentPassword" layoutX="350.0" layoutY="75.0" />
-                <Label layoutX="250.0" layoutY="100.0" text="Please Type New Student Display Name: " />
-                <TextField fx:id = "studentDisplayName" layoutX="250.0" layoutY="125.0" />
+                <Label layoutX="200.0" layoutY="100.0" text="Please Type New Student Display Name: " />
+                <TextField fx:id = "studentDisplayName" layoutX="200.0" layoutY="125.0" />
                 <Button layoutX="150.0" layoutY="175.0" mnemonicParsing="false" text="Submit" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                         onAction="#onUpdateStudentSubmit"/>
                 <Button layoutX="150.0" layoutY="300.0" mnemonicParsing="false" text="Go Back" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
