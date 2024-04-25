@@ -14,6 +14,7 @@ public class UserRegistration {
     this.studentDAO = new StudentDAO(factory);
     this.passwordDAO = new PasswordDAO(factory);
     this.professorDAO = new ProfessorDAO(factory);
+    this.universityDAO = new UniversityDAO(factory);
   }
 
   /**
