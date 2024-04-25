@@ -72,8 +72,10 @@ public class UserRegistration {
    */
   public void updateStudent(Integer id, String passkey, String newDisplayName) {
     if (studentDAO.get(id) != null) {
-      studentDAO.get(id).setDisplayName(newDisplayName);
-      studentDAO.update(studentDAO.get(id));
+      Student updateStu = studentDAO.get(id);
+      updateStu.setDisplayName(newDisplayName);
+      // studentDAO.get(id).setDisplayName(newDisplayName);
+      studentDAO.update(updateStu);
       Password newPassword = new Password(studentDAO.get(id).getStudentID(), passkey, true);
       passwordDAO.update(newPassword);
     }
