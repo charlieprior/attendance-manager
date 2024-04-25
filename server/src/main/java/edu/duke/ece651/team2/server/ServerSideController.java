@@ -342,13 +342,13 @@ public class ServerSideController {
             AttendanceStatus attendanceStatus = AttendanceStatus.UNRECORDED;
             switch (status) {
                 case 1:
-                    attendanceStatus = AttendanceStatus.ABSENT;
+                    attendanceStatus = AttendanceStatus.PRESENT;
                     break;
                 case 2:
                     attendanceStatus = AttendanceStatus.TARDY;
                     break;
                 case 3:
-                    attendanceStatus = AttendanceStatus.PRESENT;
+                    attendanceStatus = AttendanceStatus.ABSENT;
                     break;
                 }
                 AttendanceDAO attendanceDAO = new AttendanceDAO(factory);

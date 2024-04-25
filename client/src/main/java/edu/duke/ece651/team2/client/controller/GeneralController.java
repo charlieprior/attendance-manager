@@ -5,8 +5,10 @@ import edu.duke.ece651.team2.shared.*;
 import java.io.*;
 import java.net.*;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Object;
 
@@ -152,14 +154,22 @@ public class GeneralController {
         }
     }
 
+    public List<String> getResponseList(){
+        try {
+            return mapper.readValue((String) in.readObject(), new TypeReference<ArrayList<String>>() {
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public List<String> receiveAllEnrolledSectionAndSetChoice(int num) {
-        clientSideView.displayMessage("waiting");
+        clientSideView.displayMessage("waiting for Sections...");
         clientSideController.displayPromptForStudent(num);
         try {
         // get from server
-        List<String> responseList = mapper.readValue((String) in.readObject(), new TypeReference<ArrayList<String>>() {
-        });
+        List<String> responseList = getResponseList();
         clientSideView.displayMessage(""+responseList.size());
         if (responseList.isEmpty()) {
             clientSideView.displayMessage("You haven't taken any classes this semester!");
@@ -176,7 +186,9 @@ public class GeneralController {
         }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            List<String> responseList = new ArrayList<>();
+            responseList.add("Error: "+e.getMessage());
+            return responseList;
         }
     }
 
@@ -239,8 +251,7 @@ public class GeneralController {
         clientSideController.displayPromptForFacultyGetLectures(n);
         try {
         // get from server
-        List<String> responseList = mapper.readValue((String) in.readObject(), new TypeReference<ArrayList<String>>() {
-        });
+        List<String> responseList = getResponseList();
         clientSideView.displayMessage(""+responseList.size());
         if (responseList.isEmpty()) {
             clientSideView.displayMessage("This Section does not have any Lecture right now, please contact Admin!");
@@ -265,8 +276,7 @@ public class GeneralController {
         clientSideController.displayPromptForFacultyGetSections(num);
         try {
         // get from server
-        List<String> responseList = mapper.readValue((String) in.readObject(), new TypeReference<ArrayList<String>>() {
-        });
+        List<String> responseList = getResponseList();
         clientSideView.displayMessage(""+responseList.size());
         if (responseList.isEmpty()) {
             clientSideView.displayMessage("You haven't taught any classes this semester!");
@@ -289,7 +299,7 @@ public class GeneralController {
 
 
     // Professor-specific functionality
-    public void professorFunctionality(int choice) throws ClassNotFoundException {
+    public void professorFunctionality(int choice) {
         try {
             if (choice == 5) {
             out.writeObject(choice); // int type

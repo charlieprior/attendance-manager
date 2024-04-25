@@ -2,6 +2,7 @@ package edu.duke.ece651.team2.client;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
@@ -16,6 +17,7 @@ import java.io.OutputStream;
 import java.io.InputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.assertj.core.internal.InputStreams;
@@ -26,6 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.duke.ece651.team2.client.controller.ClientSideView;
 import edu.duke.ece651.team2.client.controller.GeneralController;
 import edu.duke.ece651.team2.shared.Password;
+import edu.duke.ece651.team2.shared.Section;
 
 
 public class GeneralControllerTest {
@@ -140,7 +143,7 @@ public class GeneralControllerTest {
     }
 
     @Test
-    public void testStudentFunctionality() throws IOException{
+    public void testStudentProfessorFunctionality() throws IOException{
         // Create in-memory streams
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(outStream);
@@ -165,6 +168,44 @@ public class GeneralControllerTest {
         controller.studentFunctionality(1);
         controller.studentFunctionality(2);
         controller.studentFunctionality(3);
+        controller.professorFunctionality(1);
+        controller.professorFunctionality(2);
+        controller.professorFunctionality(3);
+        controller.professorFunctionality(4);
+        controller.professorFunctionality(5);
+    }
+
+
+    @Test
+    public void testGenerateSectionAttendanceReport() throws IOException{
+        // Create in-memory streams
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outStream);
+        objectOutputStream.writeObject("generateSectionAttendanceReport function test"); 
+        objectOutputStream.flush(); 
+    
+        byte[] serializedData = outStream.toByteArray(); 
+        ByteArrayInputStream inStream = new ByteArrayInputStream(serializedData);
+        ObjectInputStream objectInputStream = new ObjectInputStream(inStream);
+    
+    
+        // Create instance of GeneralController with in-memory streams and mock ObjectMapper
+        GeneralController controller = new GeneralController();
+        controller.setIn(objectInputStream);
+
+        controller.generateSectionAttendanceReport("test");
+    }
+
+    @Test
+    public void testReceiveAllEnrolledSectionAndSetChoice() throws IOException{
+        GeneralController controller = mock(GeneralController.class);
+
+        List<String> specificList = Arrays.asList("item1", "item2", "item3");
+        when(controller.getResponseList()).thenReturn(specificList);
+
+        List<String> result = controller.receiveAllEnrolledSectionAndSetChoice(1);
+
+        assertNotNull(result);
     }
 }
 
