@@ -256,8 +256,14 @@ public class UserRegistrationView {
             if (userRegistration.getStudentID(id) != null) {
                 String newPassword = credentials[1];
                 String newDisplayName = credentials[2];
-                userRegistration.updateStudent(id, newPassword, newDisplayName);
-                val = 1;
+                if(userRegistration.isUpdatable(id)) {
+                    userRegistration.updateStudent(id, newPassword, newDisplayName);
+                    val = 1;
+                }
+                else{
+                    userRegistration.updateStudentPassword(id, newPassword);
+                    val = 2;
+                }
             } else {
                 print("This student does not seem to be in the registry...\n");
                 val = 0;

@@ -7,6 +7,7 @@ public class UserRegistration {
   StudentDAO studentDAO;
   private final PasswordDAO passwordDAO;
   ProfessorDAO professorDAO;
+  UniversityDAO universityDAO;
 
   public UserRegistration() {
     DAOFactory factory = new DAOFactory();
@@ -75,6 +76,29 @@ public class UserRegistration {
       Password newPassword = new Password(studentDAO.get(id).getStudentID(), passkey, true);
       passwordDAO.update(newPassword);
     }
+  }
+
+  /**
+   * Updates a student from the database and their password
+   *
+   * @param id      The id of the student whose password will be updated
+   * @param passkey the new password to update account
+   */
+  public void updateStudentPassword(Integer id, String passkey) {
+    if (studentDAO.get(id) != null) {
+      studentDAO.update(studentDAO.get(id));
+      Password newPassword = new Password(studentDAO.get(id).getStudentID(), passkey, true);
+      passwordDAO.update(newPassword);
+    }
+  }
+
+  /**
+   * Updates a student from the database and their password
+   *
+   * @param id      The id of the student whose password will be updated
+   */
+  public boolean isUpdatable(Integer id) {
+    return universityDAO.get(studentDAO.get(id).getUniversityId()).canChangeName();
   }
 
   /**

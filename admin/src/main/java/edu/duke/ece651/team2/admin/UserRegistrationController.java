@@ -293,10 +293,15 @@ public class UserRegistrationController {
         credentials[1] = studentPassword.getText();
         credentials[2] = studentDisplayName.getText();
         int res = controller.updateStudentController(credentials);
-        if(res != 0 && (!Objects.equals(credentials[0], "")
+        if(res == 1 && (!Objects.equals(credentials[0], "")
                     && !Objects.equals(credentials[1], "")
                     && !Objects.equals(credentials[2], ""))){
-            showAlert("Update Successful!");
+            showAlert("Update Successful: \n" + "Display Name and Password have been changed!");
+        }
+        if(res == 2 && (!Objects.equals(credentials[0], "")
+                && !Objects.equals(credentials[1], "")
+                && !Objects.equals(credentials[2], ""))){
+            showAlert("Update Successful: \n" + "Password has been changed!\n" + "(Display Name Access has Been Limited by Admin)");
         }
         else{
             showAlert("Update Failed, please check and type again!");
