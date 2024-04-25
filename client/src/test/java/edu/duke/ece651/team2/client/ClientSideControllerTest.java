@@ -26,6 +26,8 @@ public class ClientSideControllerTest {
 
         controller.displayPromptForStudent(2);
         verify(mockClientSideView).displayMessage("Below are all the courses you are enrolled in this semester, please select one to get your attendance report.");
+    
+        controller.displayPromptForStudent(3);
     }
 
     @Test
@@ -42,6 +44,7 @@ public class ClientSideControllerTest {
 
         controller.displayPromptForFacultyGetSections(3);
         verify(mockClientSideView).displayMessage("Below are the courses you are teaching this semester, please select a course to export students attendance info.");
+        controller.displayPromptForFacultyGetSections(4);
     }
 
     @Test
@@ -58,6 +61,8 @@ public class ClientSideControllerTest {
 
         controller.displayPromptForFacultyGetLectures(3);
         verify(mockClientSideView).displayMessage("Below are the lectures you are teaching this semester, please select a course to export students attendance info.");
+    
+        controller.displayPromptForFacultyGetLectures(4);
     }
 
 }

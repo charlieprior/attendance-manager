@@ -234,10 +234,9 @@ public class GeneralController {
         clientSideView.displayMessage(
             "Below are all students and their attendance status for this lecture,  please record their attendances in turn.\n");
         try {
-            List<String> response = mapper.readValue((String) in.readObject(), new TypeReference<List<String>>() {
-            });
+            List<String> response = getResponseList();
             return response;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             List<String> warning = new ArrayList<>();
             warning.add("ERROR");
@@ -268,7 +267,10 @@ public class GeneralController {
         }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            List<String> warning = new ArrayList<>();
+            warning.add("ERROR");
+            warning.add("Something went wrong.");
+            return warning;
         }
     }
 
@@ -293,7 +295,10 @@ public class GeneralController {
         }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            List<String> warning = new ArrayList<>();
+            warning.add("ERROR");
+            warning.add("Something went wrong.");
+            return warning;
         }
     }
 

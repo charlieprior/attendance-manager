@@ -292,6 +292,65 @@ public class GeneralControllerTest {
         assertNotNull(result);
         assertEquals("Some Error happens ,maybe you dont have a course", result);
     }
+
+    @Test
+    public void testReceiveAllStudentInfoByLectureIdForRecord() throws IOException, ClassNotFoundException{
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outStream);
+        objectOutputStream.writeObject("ReceiveAllStudentInfoByLectureIdForRecord"); 
+        objectOutputStream.flush(); 
+    
+        byte[] serializedData = outStream.toByteArray(); 
+        ByteArrayInputStream inStream = new ByteArrayInputStream(serializedData);
+        ObjectInputStream objectInputStream = new ObjectInputStream(inStream);
+    
+    
+        // Create instance of GeneralController with in-memory streams and mock ObjectMapper
+        GeneralController controller = new GeneralController();
+        controller.setIn(objectInputStream);
+        List<String> result = controller.receiveAllStudentInfoByLectureIdForRecord();
+
+    }
+
+    @Test
+    public void testReceiveAllLectureBySectionId() throws IOException{
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outStream);
+        objectOutputStream.writeObject("ReceiveAllLectureBySectionId"); 
+        objectOutputStream.flush(); 
+    
+        byte[] serializedData = outStream.toByteArray(); 
+        ByteArrayInputStream inStream = new ByteArrayInputStream(serializedData);
+        ObjectInputStream objectInputStream = new ObjectInputStream(inStream);
+    
+    
+        // Create instance of GeneralController with in-memory streams and mock ObjectMapper
+        GeneralController controller = new GeneralController();
+        controller.setIn(objectInputStream);
+        List<String> result = controller.receiveAllLectureBySectionId(1);
+
+        assertNotNull(result);
+    }
+
+    @Test
+    public void testReceiveAllTakenSectionAndSendChoice() throws IOException{
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outStream);
+        objectOutputStream.writeObject("ReceiveAllTakenSectionAndSendChoice"); 
+        objectOutputStream.flush(); 
+    
+        byte[] serializedData = outStream.toByteArray(); 
+        ByteArrayInputStream inStream = new ByteArrayInputStream(serializedData);
+        ObjectInputStream objectInputStream = new ObjectInputStream(inStream);
+    
+    
+        // Create instance of GeneralController with in-memory streams and mock ObjectMapper
+        GeneralController controller = new GeneralController();
+        controller.setIn(objectInputStream);
+        List<String> result = controller.receiveAllTakenSectionAndSendChoice(1);
+
+        assertNotNull(result);
+    }
 }
 
 
