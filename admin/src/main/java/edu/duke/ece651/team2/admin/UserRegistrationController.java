@@ -298,9 +298,11 @@ public class UserRegistrationController {
                     && !Objects.equals(credentials[2], ""))){
             showAlert("Update Successful: \n" + "Display Name and Password have been changed!");
         }
-        else if(res == 2 && (!Objects.equals(credentials[0], "")
+        else if((res == 2 && (!Objects.equals(credentials[0], "")
                 && !Objects.equals(credentials[1], "")
-                && !Objects.equals(credentials[2], ""))){
+                && !Objects.equals(credentials[2], ""))) ||
+                (res == 2 && (!Objects.equals(credentials[0], "")
+                && !Objects.equals(credentials[1], "")))){
             showAlert("Update Successful: \n" + "Password has been changed!\n" + "(Display Name Access has Been Limited by Admin)");
         }
         else{

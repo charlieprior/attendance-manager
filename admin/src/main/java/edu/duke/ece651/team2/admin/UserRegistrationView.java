@@ -256,7 +256,7 @@ public class UserRegistrationView {
             if (userRegistration.getStudentID(id) != null) {
                 String newPassword = credentials[1];
                 String newDisplayName = credentials[2];
-                if(userRegistration.isUpdatable(id)) {
+                if(!userRegistration.isUpdatable(id)) {
                     userRegistration.updateStudent(id, newPassword, newDisplayName);
                     val = 1;
                 }
