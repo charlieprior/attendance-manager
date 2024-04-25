@@ -28,6 +28,14 @@ public class GeneralController {
         clientSideController = new ClientSideController(clientSideView);
     }
 
+    public void setOut(ObjectOutputStream out){
+        this.out = out;
+    }
+
+    public void setIn(ObjectInputStream in){
+        this.in = in;
+    }
+
     public String[] parseMessage(String receivedMessage, String delimiter) {
         return receivedMessage.split(delimiter);
     }

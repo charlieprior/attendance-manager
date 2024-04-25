@@ -19,4 +19,8 @@ class AppTest {
       a = new App();
       a.start(stage);
   }
+
+  public void testSubmit(){
+    
+  }
 }
