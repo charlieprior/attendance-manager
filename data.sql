@@ -1,3 +1,6 @@
+insert into University (id,name,changeName) values (1,'Duke',1);
+insert into University (id,name,changeName) values (2,'UNC',1);
+insert into University (id,name,changeName) values (3,'NCSU',0);
 
 INSERT INTO Users (legalName, displayName, email, universityId, isStudent) VALUES ('Student One', 'Stu1', 'stud1@duke.edu' , 1,TRUE);
 INSERT INTO Users (legalName, email, universityId, isStudent) VALUES ('Professor One', 'pro1@duke.edu', 1, FALSE);

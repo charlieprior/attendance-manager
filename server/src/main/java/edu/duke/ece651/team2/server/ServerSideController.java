@@ -443,11 +443,13 @@ public class ServerSideController {
                     }
                     AttendanceDAO attendanceDAO = new AttendanceDAO(factory);
                     AttendanceRecord attendanceRecord = new AttendanceRecord(studentId, attendanceStatus, lectureId);
-                    attendanceDAO.create(attendanceRecord);
+                    if(attendanceDAO.get(lectureId, studentId)==null){
+                        attendanceDAO.create(attendanceRecord);
+                    }
+                    else{
+                        attendanceDAO.update(attendanceRecord);
+                    }
                 }
-                // resList.add("Recorded successfully!");
-                // out.writeObject(mapper.writeValueAsString(resList));
-                // out.flush();
             }
         } catch (Exception e) {
             try {
@@ -479,13 +481,13 @@ public class ServerSideController {
                 int lectureId = getLectureIdSelected(lectureIdList, choice);
                 // get student list and attendance status
                 StudentDAO studentDAO = new StudentDAO(factory);
-                Map<Student, String> resMap;
-                if(n==2){
-                    resMap = studentDAO.getAttendanceByLectureId(lectureId);
-                }
-                else{
-                    resMap = studentDAO.getStudentsBySectionID(sectionId);
-                }
+                Map<Student, String> resMap = studentDAO.getAttendanceByLectureId(sectionId,lectureId);
+                // if(n==2){
+                //     resMap = studentDAO.getAttendanceByLectureId(lectureId);
+                // }
+                // else{
+                //     resMap = studentDAO.getStudentsBySectionID(sectionId);
+                // }
                 if (resMap.isEmpty()) {
                     throw new IllegalStateException("Database error: can not get student list!");
                 } else {
