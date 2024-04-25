@@ -28,7 +28,7 @@ public class UserRegistrationTest {
         userRegistration.addStudent(student,"password");
         Professor professor = new Professor("Charlie Prior","CharlieP@duke.edu",1);
         userRegistration.addProfessor(professor,"passwords");
-        userRegistration.updateStudent(student.getStudentID(),"newpassword");
+        userRegistration.updateStudent(student.getStudentID(),"newpassword", "newDisplayName");
         userRegistration.removeStudent(student.getStudentID());
         assertNull(userRegistration.studentDAO.get(student.getStudentID()));
         userRegistration.updateProfessor(professor.getProfessorID(),"newpassword2");

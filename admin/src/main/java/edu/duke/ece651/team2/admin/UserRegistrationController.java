@@ -174,6 +174,9 @@ public class UserRegistrationController {
                         && !Objects.equals(universityComboBox.getValue(), null))){
             showAlert("Sign-Up Successful!");
         }
+        else if (Objects.equals(universityComboBox.getValue(), null)){
+            showAlert("Sign-Up Failed, please University Selection!");
+        }
         else{
             showAlert("Sign-Up Failed, please check and type again!");
         }
@@ -192,6 +195,9 @@ public class UserRegistrationController {
                         && !Objects.equals(credentials[2], "")
                         && !Objects.equals(universityComboBox.getValue(), null))){
             showAlert("Sign-Up Successful!");
+        }
+        else if (Objects.equals(universityComboBox.getValue(), null)){
+            showAlert("Sign-Up Failed, please University Selection!");
         }
         else{
             showAlert("Sign-Up Failed, please check and type again!");
@@ -282,12 +288,14 @@ public class UserRegistrationController {
 
     @FXML
     public void onUpdateStudentSubmit(){
-        String[] credentials = new String[2];
+        String[] credentials = new String[3];
         credentials[0] = studentIDNumber.getText();
         credentials[1] = studentPassword.getText();
+        credentials[2] = studentDisplayName.getText();
         int res = controller.updateStudentController(credentials);
         if(res != 0 && (!Objects.equals(credentials[0], "")
-                    && !Objects.equals(credentials[1], ""))){
+                    && !Objects.equals(credentials[1], "")
+                    && !Objects.equals(credentials[2], ""))){
             showAlert("Update Successful!");
         }
         else{

@@ -66,10 +66,12 @@ public class UserRegistration {
    * 
    * @param id      The id of the student whose password will be updated
    * @param passkey the new password to update account
+   * @param newDisplayName the new displayName for the student
    */
-  public void updateStudent(Integer id, String passkey) {
+  public void updateStudent(Integer id, String passkey, String newDisplayName) {
     if (studentDAO.get(id) != null) {
       studentDAO.update(studentDAO.get(id));
+      studentDAO.get(id).setDisplayName(newDisplayName);
       Password newPassword = new Password(studentDAO.get(id).getStudentID(), passkey, true);
       passwordDAO.update(newPassword);
     }

@@ -13,8 +13,10 @@
             <children>
                 <Label layoutX="50.0" layoutY="50.0" text="Please Type Student ID Number: " />
                 <TextField fx:id = "studentIDNumber" layoutX="50.0" layoutY="75.0" />
-                <Label layoutX="350.0" layoutY="50.0" text="Please Type New Student Password: " />
+                <Label layoutX="250.0" layoutY="50.0" text="Please Type New Student Password: " />
                 <TextField fx:id = "studentPassword" layoutX="350.0" layoutY="75.0" />
+                <Label layoutX="450.0" layoutY="50.0" text="Please Type New Student Display Name: " />
+                <TextField fx:id = "studentDisplayName" layoutX="350.0" layoutY="75.0" />
                 <Button layoutX="150.0" layoutY="125.0" mnemonicParsing="false" text="Submit" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                         onAction="#onUpdateStudentSubmit"/>
                 <Button layoutX="150.0" layoutY="250.0" mnemonicParsing="false" text="Go Back" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"

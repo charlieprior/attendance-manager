@@ -240,7 +240,9 @@ public class UserRegistrationView {
         if (userRegistration.getStudentID(id) != null) {
             prompt = "What would you like to set as your new password?\n";
             String newPassword = printPromptAndRead(prompt);
-            userRegistration.updateStudent(id, newPassword);
+            prompt = "What would you like to change your display name to?\n";
+            String newDisplayName = printPromptAndRead(prompt);
+            userRegistration.updateStudent(id, newPassword, newDisplayName);
         } else {
             print("This student does not seem to be in the registry...\n");
         }
@@ -253,7 +255,8 @@ public class UserRegistrationView {
             Integer id = Integer.valueOf(idString);
             if (userRegistration.getStudentID(id) != null) {
                 String newPassword = credentials[1];
-                userRegistration.updateStudent(id, newPassword);
+                String newDisplayName = credentials[2];
+                userRegistration.updateStudent(id, newPassword, newDisplayName);
                 val = 1;
             } else {
                 print("This student does not seem to be in the registry...\n");
