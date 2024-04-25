@@ -195,8 +195,8 @@ public class GeneralController {
 
     public String confirmFromServer() {
         try {
-        String responseStr = mapper.readValue((String) in.readObject(), String.class);
-        if (!responseStr.isEmpty()) {
+        String responseStr = (String) in.readObject();
+        if (responseStr!=null) {
             String[] parts = responseStr.split("\\|\\|");
             // String stateCode = parts[0]; // 0/1 0 - error, 1 - success
             String prompt = parts[1];
@@ -216,7 +216,7 @@ public class GeneralController {
         try {
         // get from server
         String responseStr = (String)in.readObject();
-        if (!responseStr.isEmpty()) {
+        if (responseStr!=null) {
             String[] parts = responseStr.split("\\|\\|");
             // String stateCode = parts[0]; // 0/1 0 - error, 1 - success
             String prompt = parts[1];

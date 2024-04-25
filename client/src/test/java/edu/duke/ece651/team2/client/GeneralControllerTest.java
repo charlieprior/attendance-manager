@@ -198,14 +198,99 @@ public class GeneralControllerTest {
 
     @Test
     public void testReceiveAllEnrolledSectionAndSetChoice() throws IOException{
-        GeneralController controller = mock(GeneralController.class);
-
-        List<String> specificList = Arrays.asList("item1", "item2", "item3");
-        when(controller.getResponseList()).thenReturn(specificList);
-
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outStream);
+        objectOutputStream.writeObject("ReceiveAllEnrolledSectionAndSetChoice"); 
+        objectOutputStream.flush(); 
+    
+        byte[] serializedData = outStream.toByteArray(); 
+        ByteArrayInputStream inStream = new ByteArrayInputStream(serializedData);
+        ObjectInputStream objectInputStream = new ObjectInputStream(inStream);
+    
+    
+        // Create instance of GeneralController with in-memory streams and mock ObjectMapper
+        GeneralController controller = new GeneralController();
+        controller.setIn(objectInputStream);
         List<String> result = controller.receiveAllEnrolledSectionAndSetChoice(1);
 
         assertNotNull(result);
+    }
+
+    @Test
+    public void testConfirmFromServer() throws IOException, ClassNotFoundException{
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outStream);
+        objectOutputStream.writeObject("1||Success"); 
+        objectOutputStream.flush(); 
+    
+        byte[] serializedData = outStream.toByteArray(); 
+        ByteArrayInputStream inStream = new ByteArrayInputStream(serializedData);
+        ObjectInputStream objectInputStream = new ObjectInputStream(inStream);
+    
+
+        GeneralController controller = new GeneralController();
+        controller.setIn(objectInputStream);
+        String result = controller.confirmFromServer();
+
+        assertNotNull(result);
+        assertEquals("Success", result);
+        controller.confirmFromServer();
+
+        outStream = new ByteArrayOutputStream();
+        objectOutputStream = new ObjectOutputStream(outStream);
+        objectOutputStream.writeObject(null); 
+        objectOutputStream.flush(); 
+    
+        serializedData = outStream.toByteArray(); 
+        inStream = new ByteArrayInputStream(serializedData);
+        objectInputStream = new ObjectInputStream(inStream);
+    
+
+        controller = new GeneralController();
+        controller.setIn(objectInputStream);
+        result = controller.confirmFromServer();
+
+        assertNotNull(result);
+        assertEquals("Server failed to send a message!", result);
+
+    }
+
+    @Test
+    public void testChangeEmailPref() throws IOException{
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outStream);
+        objectOutputStream.writeObject("1||Success"); 
+        objectOutputStream.flush(); 
+    
+        byte[] serializedData = outStream.toByteArray(); 
+        ByteArrayInputStream inStream = new ByteArrayInputStream(serializedData);
+        ObjectInputStream objectInputStream = new ObjectInputStream(inStream);
+    
+
+        GeneralController controller = new GeneralController();
+        controller.setIn(objectInputStream);
+        String result = controller.changeEmailPreferences();
+
+        assertNotNull(result);
+        assertEquals("Success", result);
+        controller.changeEmailPreferences();
+
+        outStream = new ByteArrayOutputStream();
+        objectOutputStream = new ObjectOutputStream(outStream);
+        objectOutputStream.writeObject(null); 
+        objectOutputStream.flush(); 
+    
+        serializedData = outStream.toByteArray(); 
+        inStream = new ByteArrayInputStream(serializedData);
+        objectInputStream = new ObjectInputStream(inStream);
+    
+
+        controller = new GeneralController();
+        controller.setIn(objectInputStream);
+        result = controller.changeEmailPreferences();
+
+        assertNotNull(result);
+        assertEquals("Some Error happens ,maybe you dont have a course", result);
     }
 }
 
