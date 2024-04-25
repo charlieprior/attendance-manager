@@ -12,6 +12,9 @@ import com.mysql.cj.x.protobuf.MysqlxDatatypes.Object;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.checkerframework.checker.units.qual.m;
+
 import java.util.Arrays;
 
 public class GeneralController {
@@ -36,6 +39,14 @@ public class GeneralController {
         this.in = in;
     }
 
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
+
+    public void setMapper(ObjectMapper mapper){
+        this.mapper = mapper;
+    }
+
     public String[] parseMessage(String receivedMessage, String delimiter) {
         return receivedMessage.split(delimiter);
     }
@@ -48,10 +59,10 @@ public class GeneralController {
         out.flush();
     }
 
-    public void sendObject(Object obj) throws IOException{
-        out.writeObject(obj);
-        out.flush();
-    }
+    // public void sendObject(Object obj) throws IOException{
+    //     out.writeObject(obj);
+    //     out.flush();
+    // }
 
     public void sendObject(List<String> obj) throws JsonProcessingException, IOException{
         out.writeObject(mapper.writeValueAsString(obj)); // send string type e.g. {'A','T','P'...}
