@@ -105,7 +105,6 @@ public class GeneralControllerTest {
         // Assertion
         assertEquals(1, userType); 
 
-        // Create in-memory streams
         outStream = new ByteArrayOutputStream();
         objectOutputStream = new ObjectOutputStream(outStream);
         objectOutputStream.writeObject("2:someSerializedData"); 
@@ -118,13 +117,10 @@ public class GeneralControllerTest {
         controller.setOut(objectOutputStream);
         controller.setIn(objectInputStream);
 
-        // Call the method under test
         userType = controller.login(credentials);
     
-        // Assertion
         assertEquals(2, userType); 
 
-        // Create in-memory streams
         outStream = new ByteArrayOutputStream();
         objectOutputStream = new ObjectOutputStream(outStream);
         objectOutputStream.writeObject("3:someSerializedData"); 
@@ -137,12 +133,38 @@ public class GeneralControllerTest {
         controller.setOut(objectOutputStream);
         controller.setIn(objectInputStream);
 
-        // Call the method under test
         userType = controller.login(credentials);
     
-        // Assertion
         assertEquals(0, userType); 
 
+    }
+
+    @Test
+    public void testStudentFunctionality() throws IOException{
+        // Create in-memory streams
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outStream);
+        objectOutputStream.writeObject("someSerializedData"); 
+        objectOutputStream.flush(); 
+    
+        byte[] serializedData = outStream.toByteArray(); 
+        ByteArrayInputStream inStream = new ByteArrayInputStream(serializedData);
+        ObjectInputStream objectInputStream = new ObjectInputStream(inStream);
+    
+        // Mock ObjectMapper
+        ObjectMapper objectMapper = mock(ObjectMapper.class);
+        when(objectMapper.writeValueAsString(any(int.class))).thenReturn("someSerializedPassword");
+    
+        // Create instance of GeneralController with in-memory streams and mock ObjectMapper
+        GeneralController controller = new GeneralController();
+        controller.setOut(objectOutputStream);
+        controller.setIn(objectInputStream);
+        controller.setMapper(objectMapper);
+    
+        // Call the method under test
+        controller.studentFunctionality(1);
+        controller.studentFunctionality(2);
+        controller.studentFunctionality(3);
     }
 }
 
