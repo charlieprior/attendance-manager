@@ -43,7 +43,7 @@ public class App extends Application {
         LoginController login = new LoginController(universityNames());
         stage.setScene(new Scene(login));
         stage.setWidth(600);
-        stage.setHeight(400);
+        stage.setHeight(450);
         stage.show();
     }
 
