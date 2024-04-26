@@ -7,14 +7,18 @@ import javafx.scene.control.*;
 import javafx.util.Callback;
 
 public class RemoveStudentController extends UpdateSectionSuperController {
-    @FXML ComboBox<Student> StudentSelector;
-    @FXML Button DeleteButton;
+    @FXML
+    ComboBox<Student> StudentSelector;
+    @FXML
+    Button DeleteButton;
+
     RemoveStudentController(CourseManagement model) {
         super(model, "/views/removeStudent.fxml");
         setDeleteButton();
     }
 
-    @FXML public void sectionSelected() {
+    @FXML
+    public void sectionSelected() {
         Section section = SectionSelector.getValue();
         StudentSelector.getItems().clear();
         StudentSelector.getItems().addAll(model.getStudentsBySection(section));
@@ -43,13 +47,17 @@ public class RemoveStudentController extends UpdateSectionSuperController {
     private void setDeleteButton() {
         DeleteButton.setOnAction(actionEvent -> {
             Student student = StudentSelector.getValue();
-            if(student == null) {
+            if (student == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a student", ButtonType.OK);
                 alert.showAndWait();
                 return;
             }
-            model.removeStudent(student);
-            DeleteButton.getScene().setRoot(model.getMainMenuController());
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + student.getLegalName() + "?", ButtonType.OK, ButtonType.CANCEL);
+            alert.showAndWait().filter(response -> response == ButtonType.OK)
+                    .ifPresent(response -> {
+                        model.removeStudent(student);
+                        DeleteButton.getScene().setRoot(model.getMainMenuController());
+                    });
         });
     }
 }

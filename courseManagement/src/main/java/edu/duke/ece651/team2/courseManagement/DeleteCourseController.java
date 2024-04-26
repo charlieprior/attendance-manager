@@ -24,8 +24,12 @@ public class DeleteCourseController extends UpdateCourseSuperController {
                 alert.showAndWait();
                 return;
             }
-            model.removeCourse(course);
-            ConfirmButton.getScene().setRoot(model.getMainMenuController());
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + course.getName() + "?", ButtonType.OK, ButtonType.CANCEL);
+            alert.showAndWait().filter(response -> response == ButtonType.OK)
+                    .ifPresent(response -> {
+                        model.removeCourse(course);
+                        ConfirmButton.getScene().setRoot(model.getMainMenuController());
+                    });
         });
     }
 }

@@ -26,8 +26,12 @@ public class DeleteSectionController extends UpdateSectionSuperController {
                 alert.showAndWait();
                 return;
             }
-            model.removeSection(section);
-            ConfirmButton.getScene().setRoot(model.getMainMenuController());
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + section.getName() + "?", ButtonType.OK, ButtonType.CANCEL);
+            alert.showAndWait().filter(response -> response == ButtonType.OK)
+                    .ifPresent(response -> {
+                        model.removeSection(section);
+                        ConfirmButton.getScene().setRoot(model.getMainMenuController());
+                    });
         });
     }
 }
