@@ -1,6 +1,7 @@
 package edu.duke.ece651.team2.server;
 
 import edu.duke.ece651.team2.shared.AttendanceStatus;
+import edu.duke.ece651.team2.shared.Section;
 import edu.duke.ece651.team2.shared.Student;
 
 import java.sql.ResultSet;
@@ -168,6 +169,14 @@ public class StudentDAO extends DAO<Student> {
         }
 
         return attendanceMap;
+    }
+
+    public List<Student> getStudentsBySection(Section section) {
+        List<Object> values = Collections.singletonList(section.getSectionID());
+        return super.list(daoFactory, "SELECT u.id, u.legalName, u.displayName, u.email, u.universityId, u.isStudent " +
+                "FROM Users u, Enrollment e WHERE u.isStudent=TRUE AND " +
+                "u.id=e.studentId AND " +
+                "e.sectionId=?", values);
     }
 
 }

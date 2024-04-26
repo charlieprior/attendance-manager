@@ -76,6 +76,10 @@ public class CourseManagement {
         sectionDAO.remove(section);
     }
 
+    public void removeStudent(Student student) {studentDAO.remove(student);}
+
+    public List<Student> getStudentsBySection(Section section) {return studentDAO.getStudentsBySection(section);}
+
     public List<Professor> listProfessors() {
         return professorDAO.listByUniversity(university.getId());
     }

@@ -22,6 +22,7 @@ public class MainMenuController extends AnchorPane {
     @FXML Button AddStudentButton;
     @FXML Button BulkAddStudentsButton;
     @FXML Button AddLectureButton;
+    @FXML Button RemoveStudentButton;
     @FXML Text welcomeText;
 
     private final CourseManagement model;
@@ -49,6 +50,7 @@ public class MainMenuController extends AnchorPane {
         setAddStudentButton();
         setBulkAddStudentsButton();
         setAddLectureButton();
+        setRemoveStudentButton();
     }
 
     private void setUpdateCourseButton() {
@@ -102,6 +104,12 @@ public class MainMenuController extends AnchorPane {
     private void setAddLectureButton() {
         AddLectureButton.setOnAction(actionEvent -> {
             AddLectureButton.getScene().setRoot(new AddLectureController(model));
+        });
+    }
+
+    private void setRemoveStudentButton() {
+        RemoveStudentButton.setOnAction(actionEvent -> {
+            RemoveStudentButton.getScene().setRoot(new RemoveStudentController(model));
         });
     }
 }

@@ -18,5 +18,6 @@
       <Button fx:id="AddStudentButton" layoutX="210.0" layoutY="320.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="180.0" text="Add one student" />
       <Text fx:id="welcomeText" layoutX="215.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="169.21630859375" />
       <Button fx:id="AddLectureButton" layoutX="210.0" layoutY="352.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="180.0" text="Add a lecture to a section" />
+      <Button fx:id="RemoveStudentButton" layoutX="210.0" layoutY="384.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="180.0" text="Remove Student" />
    </children>
 </fx:root>
