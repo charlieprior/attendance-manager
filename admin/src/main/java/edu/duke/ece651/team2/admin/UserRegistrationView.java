@@ -30,7 +30,7 @@ public class UserRegistrationView {
         DAOFactory factory = new DAOFactory();
         this.universityDAO = new UniversityDAO(factory);
     }
-
+  
     /**
      * Prints the specified prompt to the user.
      *

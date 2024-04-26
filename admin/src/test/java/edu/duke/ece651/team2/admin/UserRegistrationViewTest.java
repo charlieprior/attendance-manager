@@ -1,13 +1,18 @@
 package edu.duke.ece651.team2.admin;
 
-import edu.duke.ece651.team2.admin.UserRegistration;
-import edu.duke.ece651.team2.admin.UserRegistrationView;
-import edu.duke.ece651.team2.server.UniversityDAO;
-import edu.duke.ece651.team2.shared.University;
+import static org.mockito.Answers.valueOf;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.StringReader;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
+import edu.duke.ece651.team2.shared.Student;
+import edu.duke.ece651.team2.shared.University;
 
 public class UserRegistrationViewTest {
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -17,6 +22,7 @@ public class UserRegistrationViewTest {
         System.setOut(new PrintStream(outContent)); // Redirect System.out to capture print statements
     }
 
+  //@Disabled
     @Test
     public void testAddRemoveStudentAndProfessorViews() throws IOException {
         UserRegistration userRegistration = new UserRegistration();
@@ -73,9 +79,12 @@ public class UserRegistrationViewTest {
         UserRegistrationView userRegistrationView8 = new UserRegistrationView(System.out, userRegistration, reader8);
         userRegistrationView8.menuOptions();
 
+        userRegistrationView1.listUniversities();
+        userRegistrationView1.listUniversitiesController();
         userRegistrationView1.universityDAO.remove(university);
     }
 
+  //@Disabled
     @Test
     public void testAddUpdateStudentAndProfessorViews() throws IOException {
         UserRegistration userRegistration = new UserRegistration();
@@ -92,7 +101,7 @@ public class UserRegistrationViewTest {
         userRegistrationView1.universityDAO.create(university);
 
         // successfully updating student password
-        String simulatedInputs2 = "4\n1\n4\n3\n" + studentID + "\n" + "newpassword\n" + "3\n";
+        String simulatedInputs2 = "4\n1\n4\n3\n" + studentID + "\n" + "newpassword\n" + "newName\n" + "3\n";
         BufferedReader reader2 = new BufferedReader(new StringReader(simulatedInputs2));
         UserRegistrationView userRegistrationView2 = new UserRegistrationView(System.out, userRegistration, reader2);
         userRegistrationView2.menuOptions();
@@ -125,4 +134,45 @@ public class UserRegistrationViewTest {
         userRegistrationView1.universityDAO.remove(university);
     }
 
+  @Test
+    public void testControllerMethods() throws IOException {
+        UserRegistration userRegistration = new UserRegistration();
+
+        // registering student
+        String simulatedInputs = "Kenan Colak\nkencolak\nkc566@duke.edu\n1\npassword\n";
+        BufferedReader reader1 = new BufferedReader(new StringReader(simulatedInputs));
+        String []simulatedInputs1 = new String[5];
+        simulatedInputs1[0]= "Kenan Colak";
+        simulatedInputs1[1] = "kencolak";
+        simulatedInputs1[2] = "kc566@duke.edu";
+        simulatedInputs1[3] = "password";
+        UserRegistrationView userRegistrationView1 = new UserRegistrationView(System.out, userRegistration, reader1);
+        University university = new University("University 1", true);
+        userRegistrationView1.universityDAO.create(university);
+        simulatedInputs1[4] = String.valueOf(university.getId());
+        userRegistrationView1.addStudentController(simulatedInputs1);
+
+        Student student = new Student("Kenan Colak", "kc566@duke.edu",1,
+                                              "kencolak");
+        userRegistration.addStudent(student,"password");
+        String []simulatedInputs2 = new String[3];
+        String []simulatedInputs3 = new String[3];
+        String []simulatedInputs4 = new String[3];
+        simulatedInputs2[0]= String.valueOf(student.getStudentID());
+        simulatedInputs2[1]= "newpassword";
+        simulatedInputs2[2] = "newkenan";
+        simulatedInputs3[0]= String.valueOf(student.getStudentID());
+        simulatedInputs3[1]= "";
+        simulatedInputs3[2] = "";
+        simulatedInputs4[0]= String.valueOf(2);
+        simulatedInputs4[1]= "";
+        simulatedInputs4[2] = "";
+        userRegistrationView1.updateStudentController(simulatedInputs2);
+        userRegistrationView1.updateStudentController(simulatedInputs3);
+        userRegistrationView1.updateStudentController(simulatedInputs4);
+        userRegistration.removeStudent(student.getStudentID());
+        
+        userRegistrationView1.listUniversitiesController();
+        userRegistrationView1.universityDAO.remove(university);
+    }
 }

@@ -47,7 +47,7 @@ public class UserRegistrationController {
         }
     }
     
-    public void handleProfessorRegistration(Object source) {
+    public void handleProfessorRegistration(ActionEvent event) {
         Button b = (Button) source;
         Stage stage = (Stage) b.getScene().getWindow();
         try {
@@ -66,26 +66,4 @@ public class UserRegistrationController {
         Stage stage = (Stage) b.getScene().getWindow();
         stage.close();
     }
-
-  @FXML
-    public void onLogInButton(ActionEvent ae) throws ClassNotFoundException{
-        if(!controller.getConnected()){
-            controller.connectToServer();
-        }
-        String[] credentials = new String[2];
-        credentials[0] = logInFieldID.getText();
-        credentials[1] = logInFieldPassword.getText();
-        int res = controller.login(credentials);
-        Object source = ae.getSource();
-        if(res==1){
-            StudentLogIn(source);
-        }
-        else if(res==2){
-            ProfessorLogIn(source);
-        }
-        else{
-            showAlert("Log In fail, please check and type again!");
-        }
-    }
-
 }

@@ -18,17 +18,6 @@ import javafx.stage.Stage;
 import javafx.application.Application;
 
 public class App extends Application{
-  // private final UserRegistrationView userRegistrationView;
-
-  // /**
-  //  * Constructs a new App object for the UserRegistration Class
-  //  * 
-  //  * @param userRegistrationView The registration view class being initialized
-  //  */
-  // public App(UserRegistrationView userRegistrationView) {
-  //   this.userRegistrationView = userRegistrationView;
-  // }
-
   public void readUniversities(String filename) throws IOException{
       UniversityDAO universityDAO = new UniversityDAO(new DAOFactory());
       BufferedReader br = new BufferedReader(new FileReader(filename));
@@ -56,21 +45,6 @@ public class App extends Application{
     readUniversities("universities.csv");
     //userRegistrationView.menuOptions();
   }
-
-
-  /**
-   * The main method for the Attendance Manager application.
-   * 
-   * @param args The command-line arguments.
-   * @throws IOException We will not handle this exception.
-   */
-  /*public static void main(String[] args) throws IOException {
-    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-    UserRegistration userRegistration = new UserRegistration();
-    UserRegistrationView userRegistrationView = new UserRegistrationView(System.out, userRegistration, input);
-    App app = new App(userRegistrationView);
-    app.userRegistrationApp();
-  }*/
 
   private List<University> universityNames() {
     DAOFactory daoFactory = new DAOFactory();

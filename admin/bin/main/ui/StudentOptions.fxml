@@ -7,16 +7,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <TitledPane animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" text="Student Registration Portal" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21"
-            >
+            fx:controller="edu.duke.ece651.team2.admin.UserRegistrationController">
     <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0">
             <children>
-                <Button layoutX="191.0" layoutY="234.0" mnemonicParsing="false" text="New Registree"
-                        />
-                <Button layoutX="300.0" layoutY="234.0" mnemonicParsing="false" text="Remove Student"
-                        />
-                <Button layoutX="268.0" layoutY="272.0" mnemonicParsing="false" text="Update Student"
-                        />
+                <Button layoutX="150.0" layoutY="50.0" mnemonicParsing="false" text="New Registree" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                        onAction="#goToAddStudent"/>
+                <Button layoutX="150.0" layoutY="100.0" mnemonicParsing="false" text="Remove Student" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                        onAction="#goToRemoveStudent"/>
+                <Button layoutX="150.0" layoutY="150.0" mnemonicParsing="false" text="Update Student" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                        onAction="#goToUpdateStudent"/>
+                <Button layoutX="150.0" layoutY="200.0" mnemonicParsing="false" text="Main Menu" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                        onAction="#returnToMainRegistration"/>
+                <Button layoutX="150.0" layoutY="250.0" mnemonicParsing="false" text="Exit" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                        onAction="#handleExit"/>
             </children></AnchorPane>
     </content>
 </TitledPane>
