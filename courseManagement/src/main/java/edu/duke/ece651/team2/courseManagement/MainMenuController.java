@@ -48,6 +48,7 @@ public class MainMenuController extends AnchorPane {
         setDeleteSectionButton();
         setAddStudentButton();
         setBulkAddStudentsButton();
+        setAddLectureButton();
     }
 
     private void setUpdateCourseButton() {
@@ -95,6 +96,12 @@ public class MainMenuController extends AnchorPane {
     private void setBulkAddStudentsButton() {
         BulkAddStudentsButton.setOnAction(actionEvent -> {
             BulkAddStudentsButton.getScene().setRoot(new BulkAddStudentsController(model));
+        });
+    }
+
+    private void setAddLectureButton() {
+        AddLectureButton.setOnAction(actionEvent -> {
+            AddLectureButton.getScene().setRoot(new AddLectureController(model));
         });
     }
 }

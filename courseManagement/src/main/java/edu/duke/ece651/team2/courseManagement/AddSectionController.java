@@ -64,8 +64,13 @@ public class AddSectionController extends UpdateSectionSuperController {
                 return;
             }
 
-            Section section = new Section(course.getCourseID(), professor.getProfessorID(), newName);
-            model.addSection(section);
+            if(professor == null) {
+                Section section = new Section(course.getCourseID(), null, newName);
+                model.addSection(section);
+            } else {
+                Section section = new Section(course.getCourseID(), professor.getProfessorID(), newName);
+                model.addSection(section);
+            }
             ConfirmButton.getScene().setRoot(model.getMainMenuController());
         });
     }
