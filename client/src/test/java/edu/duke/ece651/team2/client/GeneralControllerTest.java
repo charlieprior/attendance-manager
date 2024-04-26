@@ -140,6 +140,10 @@ public class GeneralControllerTest {
     
         assertEquals(0, userType); 
 
+
+        String[] test = {"s", "password"};
+        controller.login(test);
+
     }
 
     @Test

@@ -47,6 +47,14 @@ public class ButtonController {
         this.controller = controller;
     }
 
+    public void setlogInFieldID(TextField logTextField){
+        this.logInFieldID = logTextField;
+    }
+
+    public void setlogInFieldPassword(TextField logInFieldPassword){
+        this.logInFieldPassword = logInFieldPassword;
+    }
+
     public void StudentLogIn(Object source){
         Button b = (Button) source;
         Stage stage= (Stage) b.getScene().getWindow();
