@@ -3,6 +3,7 @@ package edu.duke.ece651.team2.client;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
@@ -140,9 +141,8 @@ public class GeneralControllerTest {
     
         assertEquals(0, userType); 
 
-
         String[] test = {"s", "password"};
-        controller.login(test);
+        assertThrows(IOException.class, ()->controller.logIn(test));
 
     }
 

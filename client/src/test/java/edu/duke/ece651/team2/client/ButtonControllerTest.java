@@ -151,7 +151,7 @@ public class ButtonControllerTest {
     // @Test
     // void testOnReturnStudent() throws ClassNotFoundException {
 
-    //     Button b = new Button("Log In");
+    //     Button b = new Button("Return");
 
     //     Platform.runLater(() -> {
     //         StackPane root = new StackPane(b);
@@ -160,15 +160,18 @@ public class ButtonControllerTest {
     //         Stage stage = new Stage();
     //         stage.setScene(scene);
     //         stage.show();
+    //         stage.close();
 
     //         try {
-    //             buttonController.onLogInButton(new ActionEvent(b, null));
-    //         } catch (ClassNotFoundException e) {
+    //             buttonController.onReturnStudent(new ActionEvent(b, null));
+    //             buttonController.onReturnFaculty(new ActionEvent(b, null));
+    //         } catch (Exception e) {
     //             e.printStackTrace();
     //         }
     //     });
 
     //     WaitForAsyncUtils.waitForFxEvents();
-    
     // }
+
+    
 }
