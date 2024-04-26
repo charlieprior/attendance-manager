@@ -82,11 +82,13 @@ public class BulkAddStudentsController extends UpdateSectionSuperController {
 
                 try {
                     List<String> lines = csvLoader.getLines(selectedFile.getAbsolutePath(), HeaderCheckBox.isSelected());
-                    List<Student> students = csvLoader.getStudents(lines, delimiter, legalNameIndex, emailIndex, displayNameIndex, model.getUniversity().getId());
+                    System.out.println(lines);
+                    // Indices must start from 0
+                    List<Student> students = csvLoader.getStudents(lines, delimiter, legalNameIndex-1, emailIndex-1, displayNameIndex-1, model.getUniversity().getId());
                     for (Student student : students) {
                         model.addStudentToSection(student, section);
                     }
-                } catch (IOException e) {
+                } catch (Exception e) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "File could not be read", ButtonType.OK);
                     alert.showAndWait();
                     AddButton.getScene().setRoot(model.getMainMenuController());
