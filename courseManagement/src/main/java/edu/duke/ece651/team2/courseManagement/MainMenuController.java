@@ -19,8 +19,9 @@ public class MainMenuController extends AnchorPane {
     @FXML Button UpdateSectionButton;
     @FXML Button DeleteSectionButton;
     @FXML Button AddSectionButton;
-    @FXML Button AddStudentsButton;
-    @FXML Button AddLecturesButton;
+    @FXML Button AddStudentButton;
+    @FXML Button BulkAddStudentsButton;
+    @FXML Button AddLectureButton;
     @FXML Text welcomeText;
 
     private final CourseManagement model;
@@ -40,11 +41,46 @@ public class MainMenuController extends AnchorPane {
 
         welcomeText.setText("Welcome to course management for " + model.getUniversity().getName());
         setUpdateCourseButton();
+        setDeleteCourseButton();
+        setAddCourseButton();
+        setUpdateSectionButton();
+        setAddSectionButton();
+        setDeleteSectionButton();
     }
 
     private void setUpdateCourseButton() {
         UpdateCourseButton.setOnAction(actionEvent -> {
             UpdateCourseButton.getScene().setRoot(new ModifyCourseController(model));
+        });
+    }
+
+    private void setDeleteCourseButton() {
+        DeleteCourseButton.setOnAction(actionEvent -> {
+            DeleteCourseButton.getScene().setRoot(new DeleteCourseController(model));
+        });
+    }
+
+    private void setAddCourseButton() {
+        AddCourseButton.setOnAction(actionEvent -> {
+            AddCourseButton.getScene().setRoot(new AddCourseController(model));
+        });
+    }
+
+    private void setUpdateSectionButton() {
+        UpdateSectionButton.setOnAction(actionEvent -> {
+            UpdateSectionButton.getScene().setRoot(new ModifySectionController(model));
+        });
+    }
+
+    private void setAddSectionButton() {
+        AddSectionButton.setOnAction(actionEvent -> {
+            AddSectionButton.getScene().setRoot(new AddSectionController(model));
+        });
+    }
+
+    private void setDeleteSectionButton() {
+        DeleteSectionButton.setOnAction(actionEvent -> {
+            DeleteSectionButton.getScene().setRoot(new DeleteSectionController(model));
         });
     }
 }

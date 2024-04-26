@@ -14,8 +14,9 @@
       <Button fx:id="UpdateSectionButton" layoutX="210.0" layoutY="192.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="180.0" text="Update an existing section" />
       <Button fx:id="DeleteSectionButton" layoutX="210.0" layoutY="224.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="180.0" text="Delete an existing section" />
       <Button fx:id="AddSectionButton" layoutX="210.0" layoutY="256.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="180.0" text="Add a new section" />
-      <Button fx:id="AddStudentsButton" layoutX="210.0" layoutY="288.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="180.0" text="Add students to a section" />
-      <Button fx:id="AddLecturesButton" layoutX="210.0" layoutY="320.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="180.0" text="Add lectures to a section" />
+      <Button fx:id="BulkAddStudentsButton" layoutX="210.0" layoutY="288.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="180.0" text="Bulk add students" />
+      <Button fx:id="AddStudentButton" layoutX="210.0" layoutY="320.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="180.0" text="Add one student" />
       <Text fx:id="welcomeText" layoutX="215.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="169.21630859375" />
+      <Button fx:id="AddLectureButton" layoutX="210.0" layoutY="352.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="180.0" text="Add a lecture to a section" />
    </children>
 </fx:root>
