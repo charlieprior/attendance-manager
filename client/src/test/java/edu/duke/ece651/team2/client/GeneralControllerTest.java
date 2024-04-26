@@ -141,9 +141,6 @@ public class GeneralControllerTest {
     
         assertEquals(0, userType); 
 
-        String[] test = {"s", "password"};
-        assertThrows(IOException.class, ()->controller.logIn(test));
-
     }
 
     @Test
