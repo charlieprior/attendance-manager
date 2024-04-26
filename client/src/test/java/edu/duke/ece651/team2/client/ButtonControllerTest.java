@@ -28,42 +28,6 @@ import javafx.stage.Stage;
 @ExtendWith(ApplicationExtension.class)
 public class ButtonControllerTest {
 
-    // TextField logInFieldID;
-    // TextField logInFieldPassword;
-    // GeneralController controller;
-    // ButtonController bc;
-
-    // @Start
-    // private void start(Stage stage) {
-    //     logInFieldID = new TextField();
-    //     logInFieldPassword = new TextField();
-    //     controller = mock(GeneralController.class);
-    //     bc = new ButtonController(controller);
-    //     bc.setlogInFieldID(logInFieldID);
-    //     bc.setlogInFieldPassword(logInFieldPassword);
-    // }
-    
-    // @Test
-    // public void testOnLogInButton() throws ClassNotFoundException {
-    //     when(controller.getConnected()).thenReturn(true);
-    //     when(controller.login(any())).thenReturn(1); 
-
-    //     Platform.runLater(()->{
-    //         logInFieldID.setText("student id");
-    //         logInFieldPassword.setText("student password");
-    //         Button b = new Button("Log In");
-    //         try {
-    //             bc.onLogInButton(new ActionEvent(b,null));
-    //         } catch (ClassNotFoundException e) {
-    //             e.printStackTrace();
-    //         }
-    //     });
-
-    //     WaitForAsyncUtils.waitForFxEvents();
-    //     verify(controller).login(any());
-    //     verify(bc).StudentLogIn(any());
-    // }
-
 
     private ButtonController buttonController;
     private GeneralController mockController;
@@ -102,6 +66,7 @@ public class ButtonControllerTest {
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.show();
+            stage.close();
 
             try {
                 buttonController.onLogInButton(new ActionEvent(b, null));
@@ -135,6 +100,7 @@ public class ButtonControllerTest {
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.show();
+            stage.close();
 
             try {
                 buttonController.onLogInButton(new ActionEvent(b, null));
@@ -168,6 +134,7 @@ public class ButtonControllerTest {
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.show();
+            stage.close();
 
             try {
                 buttonController.onLogInButton(new ActionEvent(b, null));
@@ -179,4 +146,29 @@ public class ButtonControllerTest {
         WaitForAsyncUtils.waitForFxEvents();
     
     }
+
+
+    // @Test
+    // void testOnReturnStudent() throws ClassNotFoundException {
+
+    //     Button b = new Button("Log In");
+
+    //     Platform.runLater(() -> {
+    //         StackPane root = new StackPane(b);
+    //         Scene scene = new Scene(root);
+
+    //         Stage stage = new Stage();
+    //         stage.setScene(scene);
+    //         stage.show();
+
+    //         try {
+    //             buttonController.onLogInButton(new ActionEvent(b, null));
+    //         } catch (ClassNotFoundException e) {
+    //             e.printStackTrace();
+    //         }
+    //     });
+
+    //     WaitForAsyncUtils.waitForFxEvents();
+    
+    // }
 }
