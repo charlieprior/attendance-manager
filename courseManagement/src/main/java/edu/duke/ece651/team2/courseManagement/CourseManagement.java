@@ -60,7 +60,7 @@ public class CourseManagement {
 
     public void addStudentToSection(Student student, Section section) {
         studentDAO.create(student);
-        Enrollment enrollment = new Enrollment(student.getStudentID(), section.getSectionID(), true);
+        Enrollment enrollment = new Enrollment(section.getSectionID(), student.getStudentID(), true);
         enrollmentDAO.create(enrollment);
     }
 
