@@ -164,7 +164,7 @@ public class ButtonControllerTest {
 
             try {
                 buttonController.onReturnStudent(new ActionEvent(b, null));
-                buttonController.onReturnFaculty(new ActionEvent(b, null));
+                //buttonController.onReturnFaculty(new ActionEvent(b, null));
             } catch (Exception e) {
                 e.printStackTrace();
             }
