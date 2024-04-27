@@ -173,5 +173,29 @@ public class ButtonControllerTest {
         WaitForAsyncUtils.waitForFxEvents();
     }
 
+    @Test
+    void testOnReturnFaculty() throws ClassNotFoundException {
+
+        Button b = new Button("Return");
+
+        Platform.runLater(() -> {
+            StackPane root = new StackPane(b);
+            Scene scene = new Scene(root);
+
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+            stage.close();
+
+            try {
+                buttonController.onReturnFaculty(new ActionEvent(b, null));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        WaitForAsyncUtils.waitForFxEvents();
+    }
+
     
 }

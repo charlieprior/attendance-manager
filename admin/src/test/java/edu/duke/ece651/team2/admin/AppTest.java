@@ -32,9 +32,10 @@ class AppTest {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     UserRegistration userRegistration = new UserRegistration();
     UserRegistrationView userRegistrationView = new UserRegistrationView(System.out, userRegistration, input);
-    App app = new App(userRegistrationView);
-    app.readUniversities("universities.csv");
     UniversityDAO universityDAO = new UniversityDAO(new DAOFactory());
+    App app = new App(userRegistrationView);
+    universityDAO.deleteAll();
+    app.readUniversities("universities.csv");
     List<University> us = universityDAO.list();
     assertEquals(3, us.size());
     assertEquals("Duke University",us.get(0).getName());
@@ -43,9 +44,7 @@ class AppTest {
     assertTrue(us.get(1).canChangeName());
     assertEquals("NC State",us.get(2).getName());
     assertFalse(us.get(2).canChangeName());
-    universityDAO.remove(us.get(0));
-    universityDAO.remove(us.get(1));
-    universityDAO.remove(us.get(2));
+    universityDAO.deleteAll();
     assertThrows(IOException.class, ()->app.readUniversities("test.csv"));
   }
 
