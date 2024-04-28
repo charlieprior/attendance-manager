@@ -51,6 +51,7 @@ public class StudentTest {
     public void testEquals() {
         Student anotherStudent = new Student("Some Student", "stu1@test.com", 876, "s1");
         anotherStudent.setStudentID(1001);
+        assertEquals(student, student);
         assertEquals(student, anotherStudent);
     }
 
@@ -58,6 +59,8 @@ public class StudentTest {
     public void testNotEquals() {
         Student anotherStudent = new Student("Some Student", "stu2@test.com", 876, "s2");
         anotherStudent.setStudentID(1002);
+        assertNotEquals(student, null);
+        assertNotEquals(student, new Professor("Some professor", "Pro@test.com", 876));
         assertNotEquals(student, anotherStudent);
     }
 

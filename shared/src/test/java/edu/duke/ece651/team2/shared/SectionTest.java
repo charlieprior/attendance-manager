@@ -15,6 +15,7 @@ public class SectionTest {
 
     @BeforeEach
     public void setUp() {
+        Section s1 = new Section();
         section = new Section(1, 2, "Section 1");
         section.setSectionID(1001);
     }
