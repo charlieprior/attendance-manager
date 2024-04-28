@@ -56,7 +56,7 @@ public class UserRegistrationController {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     UserRegistration userRegistration = new UserRegistration();
     UserRegistrationView controller = new UserRegistrationView(System.out, userRegistration, input);
-
+  
     public void showAlert(String prompt){
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Alert Message");

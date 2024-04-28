@@ -1,13 +1,57 @@
 package edu.duke.ece651.team2.admin;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
+import org.testfx.framework.junit5.ApplicationExtension;
+import org.testfx.util.WaitForAsyncUtils;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+@ExtendWith(ApplicationExtension.class)
 public class UserRegistrationControllerTest {
-  @Test
-  public void test_() {
 
-  }
+
+    private UserRegistrationView controller;
+    private UserRegistrationController userController;
+    TextField studentLegalName;
+    TextField studentDisplayName;
+    TextField studentEmail;
+    TextField studentPassword;
+    TextField studentIDNumber;
+    TextField facultyLegalName;
+    TextField facultyEmail;
+    TextField facultyPassword;
+    TextField facultyIDNumber;
+
+    @BeforeEach
+    void setUp() {
+        // Create a mock GeneralController
+      userController = Mockito.mock(UserRegistrationController.class);
+        controller = new UserRegistrationView(userController);
+        studentLegalName = new TextField();
+        studentDisplayName = new TextField();
+        studentEmail = new TextField();
+        studentPassword = new TextField();
+        studentIDNumber = new TextField();
+        facultyLegalName = new TextField();
+        facultyEmail = new TextField();
+        facultyPassword = new TextField();
+        facultyIDNumber = new TextField(); 
+        //buttonController.setlogInFieldID(logInFieldID);
+        //buttonController.setlogInFieldPassword(logInFieldPassword);
+    }
 
 }
