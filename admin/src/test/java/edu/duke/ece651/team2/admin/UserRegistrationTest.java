@@ -32,7 +32,6 @@ public class UserRegistrationTest {
         userRegistration.addProfessor(professor,"passwords");
         userRegistration.updateStudent(student.getStudentID(),"newpassword", "newDisplayName");
         userRegistration.updateStudentPassword(student.getStudentID(), "newpassword1");
-        userRegistration.isUpdatable(student.getStudentID());
         userRegistration.removeStudent(student.getStudentID());
         assertNull(userRegistration.studentDAO.get(student.getStudentID()));
         userRegistration.updateProfessor(professor.getProfessorID(),"newpassword2");
