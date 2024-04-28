@@ -1,0 +1,17 @@
+Student ID,Student Name,Date,Status,Score
+1,Student One,2024-01-01,ABSENT,0.0
+1,Student One,2024-01-03,UNRECORDED,0.0
+1,Student One,2024-01-05,UNRECORDED,0.0
+
+3,Student Two,2024-01-01,TARDY,0.8
+3,Student Two,2024-01-03,UNRECORDED,0.0
+3,Student Two,2024-01-05,UNRECORDED,0.0
+
+4,Student Three,2024-01-01,PRESENT,1.0
+4,Student Three,2024-01-03,UNRECORDED,0.0
+4,Student Three,2024-01-05,UNRECORDED,0.0
+
+5,Student Four,2024-01-01,TARDY,0.8
+5,Student Four,2024-01-03,UNRECORDED,0.0
+5,Student Four,2024-01-05,UNRECORDED,0.0
+

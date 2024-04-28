@@ -57,6 +57,9 @@ subprojects{
 
         testImplementation 'org.testfx:openjfx-monocle:jdk-12.0.1+2'
 
+        testImplementation 'org.powermock:powermock-api-mockito2:2.0.9'
+        testImplementation 'org.powermock:powermock-module-junit4:2.0.9'
+
     }
     clover{
         compiler{
