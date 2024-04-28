@@ -57,9 +57,11 @@ public class UserRegistrationController {
     UserRegistration userRegistration = new UserRegistration();
     UserRegistrationView controller = new UserRegistrationView(System.out, userRegistration, input);
 
-    public UserRegistrationController(UserRegistrationView controller) {
-        this.controller = controller;
-    }
+    public UserRegistrationController(){}
+
+    // public UserRegistrationController(UserRegistrationView controller) {
+    //     this.controller = controller;
+    // }
 
     public void setStudentLegalName(TextField studentLegalName){
         this.studentLegalName = studentLegalName;
@@ -142,7 +144,7 @@ public class UserRegistrationController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        setUniversities(controller.listUniversitiesController());
+        //setUniversities(controller.listUniversitiesController());
     }
 
     @FXML
@@ -163,7 +165,7 @@ public class UserRegistrationController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        setUniversities(controller.listUniversitiesController());
+        //setUniversities(controller.listUniversitiesController());
     }
 
     public void setUniversities(List<University> unis) {
