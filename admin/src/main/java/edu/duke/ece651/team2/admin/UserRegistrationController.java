@@ -139,7 +139,7 @@ public class UserRegistrationController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        setUniversities(controller.listUniversitiesController());
+        //setUniversities(controller.listUniversitiesController());
     }
 
     @FXML
