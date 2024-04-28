@@ -23,8 +23,8 @@ subprojects{
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     javafx {
-    version = "19.0.2.1"
-    modules = [ 'javafx.controls', 'javafx.fxml'  ]
+        version = "19.0.2.1"
+        modules = [ 'javafx.controls', 'javafx.fxml' ,'javafx.base', 'javafx.graphics']
     }
     dependencies {
         // Use JUnit Jupiter for testing.
