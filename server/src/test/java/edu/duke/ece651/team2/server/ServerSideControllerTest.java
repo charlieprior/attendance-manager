@@ -9,6 +9,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -35,12 +36,14 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.services.gmail.GmailScopes;
 
 import edu.duke.ece651.team2.shared.AttendanceRecord;
 import edu.duke.ece651.team2.shared.AttendanceReport;
 import edu.duke.ece651.team2.shared.AttendanceStatus;
 import edu.duke.ece651.team2.shared.Course;
 import edu.duke.ece651.team2.shared.Enrollment;
+import edu.duke.ece651.team2.shared.GmailSetup;
 import edu.duke.ece651.team2.shared.Lecture;
 import edu.duke.ece651.team2.shared.Password;
 import edu.duke.ece651.team2.shared.Section;
@@ -500,6 +503,7 @@ public class ServerSideControllerTest {
         AttendanceDAO attendanceDAO = mock(AttendanceDAO.class);
         controller.setLectureDAO(lectureDAO);
         controller.setStudentDAO(studentDAO);
+        controller.setAttendanceDAO(attendanceDAO);
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(outStream);
         objectOutputStream.writeObject(0); 
@@ -534,8 +538,67 @@ public class ServerSideControllerTest {
         when(studentDAO.get(anyInt())).thenReturn(s);
         controller.getAttendanceReportForLecture(0, itest);
         controller.sendAttendanceRecord(test);
-
         
+    }
+
+    @Test
+    public void testSendEmailToClient() throws IOException, GeneralSecurityException{
+        ServerSideView mockview = mock(ServerSideView.class);
+        ObjectMapper mockMapper = mock(ObjectMapper.class);
+        ServerSideController controller = new ServerSideController(mockview);
+        LectureDAO lectureDAO = mock(LectureDAO.class);
+        StudentDAO studentDAO = mock(StudentDAO.class);
+        AttendanceDAO attendanceDAO = mock(AttendanceDAO.class);
+        SectionDAO sectionDAO = mock(SectionDAO.class);
+        CourseDAO courseDAO = mock(CourseDAO.class);
+        GmailSetup setup = mock(GmailSetup.class);
+        controller.setLectureDAO(lectureDAO);
+        controller.setStudentDAO(studentDAO);
+        controller.setAttendanceDAO(attendanceDAO);
+        controller.setSectionDAO(sectionDAO);
+        controller.setCourseDAO(courseDAO);
+        controller.setGmailSetup(setup);
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outStream);
+        objectOutputStream.writeObject(0); 
+        objectOutputStream.flush(); 
+        byte[] serializedData = outStream.toByteArray(); 
+        ByteArrayInputStream inStream = new ByteArrayInputStream(serializedData);
+        ObjectInputStream objectInputStream = new ObjectInputStream(inStream);
+        controller.setMapper(mockMapper);
+        controller.setObjectInputStream(objectInputStream);
+        controller.setObjectOutputStream(objectOutputStream);
+        Map<Integer,String> test = new HashedMap<>();
+        test.put(0,"ok");
+        Map<Student,String> stest = new HashedMap<>();
+        Student s = new Student("legal", "email", 1, "display");
+        s.setStudentID(0);
+        stest.put(s,"stu 1");
+        Lecture l = new Lecture(0);
+        List<Lecture> ltest = new ArrayList<>();
+        ltest.add(l);
+        HashSet<Integer> itest = new HashSet<>();
+        itest.add(0);
+        Section sec = new Section(0, null, "ok");
+        sec.setSectionID(0);
+        Course course = new Course("course 0", 0);
+        when(lectureDAO.getLecturesBySectionId(anyInt())).thenReturn(ltest);
+        when(studentDAO.getStudentsBySectionID(anyInt())).thenReturn(stest);
+        when(sectionDAO.getBySectionId(anyInt())).thenReturn(sec);
+        when(courseDAO.getCourseByCourseId(anyInt())).thenReturn(course);
+        AttendanceRecord rcd1 = new AttendanceRecord(0, AttendanceStatus.UNRECORDED, 0);
+        // AttendanceReport r1 = new AttendanceReport(rcd1, "OK Legal","2024-1-1");
+        // List<AttendanceReport> l1 = new ArrayList<>();
+        // l1.add(r1);
+        List<AttendanceRecord> rcdtest = new ArrayList<>();
+        rcdtest.add(rcd1);
+        when(lectureDAO.get(anyInt())).thenReturn(l);
+        when(attendanceDAO.get(anyInt(), anyInt())).thenReturn(rcd1);
+        when(attendanceDAO.getAllAttendancesForLecture(anyInt())).thenReturn(rcdtest);
+        when(studentDAO.get(anyInt())).thenReturn(s);
+        doNothing().when(setup).sendEmail(anyString(), anyString(), anyString());
+        controller.getAttendanceReportForLecture(0, itest);
+        controller.sendAttendanceRecord(test);
     }
 
 

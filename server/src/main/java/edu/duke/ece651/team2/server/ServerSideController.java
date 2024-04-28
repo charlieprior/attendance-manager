@@ -46,10 +46,9 @@ public class ServerSideController {
     private int status; // whether the user is professor of student; // student - 1, faculty - 2, error
                         // - 0
     private Integer universityID;
-    private final GmailSetup gmailSetup;
+    private GmailSetup gmailSetup;
     private PasswordDAO passwordDAO = new PasswordDAO(factory);
     private StudentDAO studentDAO = new StudentDAO(factory);
-    private UniversityDAO universityDAO = new UniversityDAO(factory);
     private CourseDAO courseDAO = new CourseDAO(factory);
     private SectionDAO sectionDAO = new SectionDAO(factory);
     private LectureDAO lectureDAO = new LectureDAO(factory);
@@ -63,10 +62,6 @@ public class ServerSideController {
 
     public void setStudentDAO(StudentDAO studentDAO) {
         this.studentDAO = studentDAO;
-    }
-
-    public void setUniversityDAO(UniversityDAO universityDAO) {
-        this.universityDAO = universityDAO;
     }
 
     public void setCourseDAO(CourseDAO courseDAO) {
@@ -91,6 +86,10 @@ public class ServerSideController {
 
     public void setAttendanceDAO(AttendanceDAO attendanceDAO) {
         this.attendanceDAO = attendanceDAO;
+    }
+
+    public void setGmailSetup(GmailSetup gmailSetup){
+        this.gmailSetup = gmailSetup;
     }
 
     public ServerSideController(ServerSideView serverSideView) throws IOException, GeneralSecurityException {
@@ -769,11 +768,6 @@ public class ServerSideController {
     }
 
     public void sendEmailToClient(int sectionId) throws IOException, GeneralSecurityException {
-        LectureDAO lectureDAO = new LectureDAO(factory);
-        AttendanceDAO attendanceDAO = new AttendanceDAO(factory);
-        StudentDAO studentDAO = new StudentDAO(factory);
-        SectionDAO sectionDAO = new SectionDAO(factory);
-        CourseDAO courseDAO = new CourseDAO(factory);
         List<Lecture> lectures = lectureDAO.getLecturesBySectionId(sectionId);
         if (lectures.isEmpty()) {
             throw new IllegalStateException("No lectures found for section with ID: " + sectionId);
@@ -792,14 +786,20 @@ public class ServerSideController {
             }
             String statuString = attendanceRecord.getStatus().toString();
             float f = 0;
-            if(attendanceRecord!=null){
-                if(attendanceRecord.getStatus()==AttendanceStatus.PRESENT){
-                    f=1;
-                }
-                else if (attendanceRecord.getStatus()==AttendanceStatus.TARDY){
-                    f+=0.8;
-                }
+            if(attendanceRecord.getStatus()==AttendanceStatus.PRESENT){
+                f=1;
             }
+            else if (attendanceRecord.getStatus()==AttendanceStatus.TARDY){
+                f+=0.8;
+            }
+            // if(attendanceRecord!=null){
+            //     if(attendanceRecord.getStatus()==AttendanceStatus.PRESENT){
+            //         f=1;
+            //     }
+            //     else if (attendanceRecord.getStatus()==AttendanceStatus.TARDY){
+            //         f+=0.8;
+            //     }
+            // }
             result += String.format("Lecture ID: %d, Date: %s, Status: %s,Score %f", lectureId, dateStr, statuString,f) + "\n";
         }
 
