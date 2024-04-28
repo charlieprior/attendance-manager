@@ -53,6 +53,7 @@ class ProfessorDAOTest {
 
     @Test
     void testListByUniversity(){
+        professorDAO.deleteAll();
         Professor p1 = new Professor("p1", "p1@duke.edu", 1);
         Professor p2 = new Professor("p2", "p2@school.edu", 2);
         Professor p3 = new Professor("p3", "p3@duke.edu", 1);
