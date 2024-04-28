@@ -643,6 +643,7 @@ public class ServerSideControllerTest {
         ltest.add(l);
         List<Enrollment> enrollments = new ArrayList<>();
         Enrollment e = new Enrollment(0, 0, true);
+        enrollments.add(new Enrollment(0, 0, false));
         enrollments.add(e);
         List<Student> stus = new ArrayList<>();
         stus.add(s);
@@ -666,12 +667,17 @@ public class ServerSideControllerTest {
         controller.sendWeeklyReport();
         rcd1 = new AttendanceRecord(0, AttendanceStatus.TARDY, 0);
         when(attendanceDAO.get(anyInt(), anyInt())).thenReturn(rcd1);
-        controller.sendEmailToClient(0);
+        controller.sendWeeklyReport();
         when(attendanceDAO.get(anyInt(), anyInt())).thenReturn(null);
+        controller.sendWeeklyReport();
+        ltest = new ArrayList<>();
+        when(lectureDAO.getLecturesBySectionIdDECS(anyInt())).thenReturn(ltest);
+        enrollments = new ArrayList<>();
+        when(enrollmentDAO.findEnrollmentsByStudentId(anyInt())).thenReturn(enrollments);
         controller.sendWeeklyReport();
         stus = new ArrayList<>();
         when(studentDAO.list()).thenReturn(stus);
-        controller.sendEmailToClient(0);
+        controller.sendWeeklyReport();
     }
 
 
