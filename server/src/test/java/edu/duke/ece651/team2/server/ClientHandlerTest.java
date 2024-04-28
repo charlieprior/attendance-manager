@@ -16,6 +16,8 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
+import edu.duke.ece651.team2.shared.Section;
+
 public class ClientHandlerTest {
     
 
@@ -53,5 +55,7 @@ public class ClientHandlerTest {
         assertEquals("",h.handleFacultyRequest(4));
         assertEquals("break", h.handleFacultyRequest(5));
         assertEquals("Invalid request!", h.handleFacultyRequest(6));
+        when(msc.getChosenSection(anyList())).thenReturn(0);
+        doNothing().when(msc).setFaculty(any(Section.class));
     }
 }

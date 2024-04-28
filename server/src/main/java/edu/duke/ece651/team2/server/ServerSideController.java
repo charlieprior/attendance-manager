@@ -518,7 +518,7 @@ public class ServerSideController {
         }
     }
 
-    private void writeRecordsToCSV(HashMap<Integer,List<AttendanceReport>> reports){
+    public void writeRecordsToCSV(HashMap<Integer,List<AttendanceReport>> reports){
         StringBuffer whole = new StringBuffer();
         String header = "Student ID,Student Name,Date,Status,Score";
         whole.append(header+"\n");
@@ -542,7 +542,7 @@ public class ServerSideController {
         }
     }
 
-    private void sendAttendanceRecord(Map<Integer, String> map) {
+    public void sendAttendanceRecord(Map<Integer, String> map) {
         serverSideView.displayMessage("Professor's choice of setcion received....");
         try {
             Integer choice = (int) in.readObject();
@@ -551,13 +551,11 @@ public class ServerSideController {
             }
             // get sectionId of the choice
             int sectionId = getSectionIdSelected(map.keySet(), choice);
-            StudentDAO studentDAO = new StudentDAO(factory);
             Map<Student, String> students = studentDAO.getStudentsBySectionID(sectionId);
             HashSet<Integer> studentID = new HashSet<>();
             for(Student s:students.keySet()){
                 studentID.add(s.getStudentID());
             }
-            LectureDAO lectureDAO = new LectureDAO(factory);
             List<Lecture> lectures = lectureDAO.getLecturesBySectionId(sectionId);
             if (lectures.isEmpty()) {
                 throw new IllegalStateException("Database error: can not get lectures!");
@@ -699,13 +697,11 @@ public class ServerSideController {
     }
 
     public HashMap<Integer,AttendanceReport> getAttendanceReportForLecture(int lectureId,HashSet<Integer> students) {
-        StudentDAO studentDAO = new StudentDAO(factory);
         // Map<Student, String> resMap = studentDAO.getAttendanceByLectureId(lectureId);
         // if (resMap == null) {
         //     //throw new IllegalStateException("No student data found for lecture with ID: " + lectureId);
         //     return null;
         // }
-        LectureDAO lectureDAO = new LectureDAO(factory);
         Lecture lecture = lectureDAO.get(lectureId);
         // if (lecture == null) {
         //     throw new IllegalArgumentException("Lecture with ID " + lectureId + " not found.");
@@ -716,7 +712,6 @@ public class ServerSideController {
 
         String dateStr = String.format("%04d-%02d-%02d", year, month, day);
 
-        AttendanceDAO attendanceDAO = new AttendanceDAO(factory);
         List<AttendanceRecord> attendanceRecords = attendanceDAO.getAllAttendancesForLecture(lectureId);
         // if (attendanceRecords.isEmpty()) {
         //     // throw new IllegalStateException("No attendance records found for lecture with ID: " + lectureId);

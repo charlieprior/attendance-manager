@@ -11,6 +11,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import java.net.Socket;
 import java.util.*;
@@ -36,9 +37,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.duke.ece651.team2.shared.AttendanceRecord;
+import edu.duke.ece651.team2.shared.AttendanceReport;
 import edu.duke.ece651.team2.shared.AttendanceStatus;
 import edu.duke.ece651.team2.shared.Course;
 import edu.duke.ece651.team2.shared.Enrollment;
+import edu.duke.ece651.team2.shared.Lecture;
 import edu.duke.ece651.team2.shared.Password;
 import edu.duke.ece651.team2.shared.Section;
 import edu.duke.ece651.team2.shared.Student;
@@ -249,6 +252,37 @@ public class ServerSideControllerTest {
         controller.receiveEmailPreferenceFromClient(1,2);
     }
 
+    // @Test
+    // public void testHandleChangeEmailPreference() throws IOException, GeneralSecurityException{
+    //     ServerSideView mockview = mock(ServerSideView.class);
+    //     ObjectMapper mockMapper = mock(ObjectMapper.class);
+    //     EnrollmentDAO enrollmentDAO = mock(EnrollmentDAO.class);
+    //     ServerSideController controller = new ServerSideController(mockview);
+    //     ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+    //     ObjectOutputStream objectOutputStream = new ObjectOutputStream(outStream);
+    //     objectOutputStream.writeObject(0); 
+    //     objectOutputStream.flush(); 
+    //     byte[] serializedData = outStream.toByteArray(); 
+    //     ByteArrayInputStream inStream = new ByteArrayInputStream(serializedData);
+    //     ObjectInputStream objectInputStream = new ObjectInputStream(inStream);
+    //     controller.setMapper(mockMapper);
+    //     controller.setObjectInputStream(objectInputStream);
+    //     controller.setObjectOutputStream(objectOutputStream);
+    //     controller.setEnrollmentDAO(enrollmentDAO);
+    //     ServerSideController mockController = spy(controller);
+    //     Section section = new Section();
+    //     section.setSectionID(1);
+    //     List<Section> parseSections = new ArrayList<>();
+    //     parseSections.add(section);
+    //     section = new Section();
+    //     section.setSectionID(2);
+    //     parseSections.add(section);
+    //     Mockito.when(mockController.sendAllEnrolledSectionNames(anyInt())).thenReturn(parseSections);
+    //     when(enrollmentDAO.checkNotify(anyInt(), any())).thenReturn(true);
+    //     controller.handleChangeEmailPreference(0);
+
+    // }
+
     @Test
     public void testgetInstructSectiongetNoFacultySection() throws IOException, GeneralSecurityException{
         SectionDAO sectionDAO = mock(SectionDAO.class);
@@ -439,5 +473,70 @@ public class ServerSideControllerTest {
         controller.setObjectInputStream(objectInputStream);
         controller.sendALLStudentsEnrolled(res, 0, 2);
     }
+
+
+    @Test
+    public void testWriteCSV() throws IOException, GeneralSecurityException{
+        HashMap<Integer,List<AttendanceReport>> test = new HashMap<>();
+        AttendanceReport r1 = new AttendanceReport(new AttendanceRecord(1, AttendanceStatus.UNRECORDED, 0), "OK Legal","2024-1-1");
+        List<AttendanceReport> l1 = new ArrayList<>();
+        l1.add(r1);
+        test.put(0,l1);
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outStream);
+        ServerSideView mockview = mock(ServerSideView.class);
+        ServerSideController controller = new ServerSideController(mockview);
+        controller.setObjectOutputStream(objectOutputStream);
+        controller.writeRecordsToCSV(test);
+    }
+
+    @Test
+    public void testSendAttendanceRecord() throws IOException, GeneralSecurityException{
+        ServerSideView mockview = mock(ServerSideView.class);
+        ObjectMapper mockMapper = mock(ObjectMapper.class);
+        ServerSideController controller = new ServerSideController(mockview);
+        LectureDAO lectureDAO = mock(LectureDAO.class);
+        StudentDAO studentDAO = mock(StudentDAO.class);
+        AttendanceDAO attendanceDAO = mock(AttendanceDAO.class);
+        controller.setLectureDAO(lectureDAO);
+        controller.setStudentDAO(studentDAO);
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outStream);
+        objectOutputStream.writeObject(0); 
+        objectOutputStream.flush(); 
+        byte[] serializedData = outStream.toByteArray(); 
+        ByteArrayInputStream inStream = new ByteArrayInputStream(serializedData);
+        ObjectInputStream objectInputStream = new ObjectInputStream(inStream);
+        controller.setMapper(mockMapper);
+        controller.setObjectInputStream(objectInputStream);
+        controller.setObjectOutputStream(objectOutputStream);
+        Map<Integer,String> test = new HashedMap<>();
+        test.put(0,"ok");
+        Map<Student,String> stest = new HashedMap<>();
+        Student s = new Student("legal", "email", 1, "display");
+        s.setStudentID(0);
+        stest.put(s,"stu 1");
+        Lecture l = new Lecture(0);
+        List<Lecture> ltest = new ArrayList<>();
+        ltest.add(l);
+        HashSet<Integer> itest = new HashSet<>();
+        itest.add(0);
+        when(lectureDAO.getLecturesBySectionId(anyInt())).thenReturn(ltest);
+        when(studentDAO.getStudentsBySectionID(anyInt())).thenReturn(stest);
+        AttendanceRecord rcd1 = new AttendanceRecord(0, AttendanceStatus.UNRECORDED, 0);
+        // AttendanceReport r1 = new AttendanceReport(rcd1, "OK Legal","2024-1-1");
+        // List<AttendanceReport> l1 = new ArrayList<>();
+        // l1.add(r1);
+        List<AttendanceRecord> rcdtest = new ArrayList<>();
+        rcdtest.add(rcd1);
+        when(lectureDAO.get(anyInt())).thenReturn(l);
+        when(attendanceDAO.getAllAttendancesForLecture(anyInt())).thenReturn(rcdtest);
+        when(studentDAO.get(anyInt())).thenReturn(s);
+        controller.getAttendanceReportForLecture(0, itest);
+        controller.sendAttendanceRecord(test);
+
+        
+    }
+
 
 }
