@@ -50,8 +50,34 @@ public class UserRegistrationControllerTest {
         facultyEmail = new TextField();
         facultyPassword = new TextField();
         facultyIDNumber = new TextField(); 
-        //buttonController.setlogInFieldID(logInFieldID);
-        //buttonController.setlogInFieldPassword(logInFieldPassword);
+        userController.setStudentLegalName(studentLegalName);
+        userController.setStudentDisplayName(studentDisplayName);
+        userController.setStudentEmail(studentEmail);
+        userController.setStudentPassword(studentPassword);
+        userController.setStudentIDNumber(studentIDNumber);
+        userController.setFacultyLegalName(facultyLegalName);
+        userController.setFacultyEmail(facultyEmail);
+        userController.setFacultyPassword(facultyPassword);
+        userController.setFacultyIDNumber(facultyIDNumber);
+    }
+
+    @Test
+    void testStudentController() throws ClassNotFoundException {
+        when(mockController.addStudentController(any())).thenReturn(1); // Assuming 1 means success
+        // Set up the test scenario
+        Platform.runLater(() -> {
+            studentLegalName.setText("Kenan Colak");
+            studentDisplayName.setText("kc566");
+            studentEmail.setText("kc566@duke.edu");
+            studentPassword.setText("passwordStudent");
+        });
+        // Perform action
+        Platform.runLater(() -> userController.onAddStudentSubmit());
+        WaitForAsyncUtils.waitForFxEvents();
+
+        // Verify behavior
+        verify(mockController, times(1)).addStudentController(any());
+        verify(userController, times(1)).showAlert("Sign-Up Successful!");
     }
 
 }
