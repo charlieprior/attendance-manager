@@ -575,6 +575,7 @@ public class ServerSideControllerTest {
         s.setStudentID(0);
         stest.put(s,"stu 1");
         Lecture l = new Lecture(0);
+        l.setLectureID(0);
         List<Lecture> ltest = new ArrayList<>();
         ltest.add(l);
         HashSet<Integer> itest = new HashSet<>();
@@ -597,8 +598,7 @@ public class ServerSideControllerTest {
         when(attendanceDAO.getAllAttendancesForLecture(anyInt())).thenReturn(rcdtest);
         when(studentDAO.get(anyInt())).thenReturn(s);
         doNothing().when(setup).sendEmail(anyString(), anyString(), anyString());
-        controller.getAttendanceReportForLecture(0, itest);
-        controller.sendAttendanceRecord(test);
+        controller.sendEmailToClient(0);
     }
 
 
