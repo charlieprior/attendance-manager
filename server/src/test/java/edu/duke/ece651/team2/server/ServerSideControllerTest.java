@@ -601,8 +601,9 @@ public class ServerSideControllerTest {
         controller.sendEmailToClient(0);
         when(attendanceDAO.get(anyInt(), anyInt())).thenReturn(null);
         controller.sendEmailToClient(0);
-        when(lectureDAO.getLecturesBySectionId(anyInt())).thenReturn(null);
-        controller.sendEmailToClient(0);
+        ltest = new ArrayList<>();
+        when(lectureDAO.getLecturesBySectionId(anyInt())).thenReturn(ltest);
+        assertThrows(IllegalStateException.class, ()->controller.sendEmailToClient(0));
     }
 
     @Test
