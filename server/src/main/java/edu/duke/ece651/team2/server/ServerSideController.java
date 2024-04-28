@@ -588,7 +588,6 @@ public class ServerSideController {
             List<String> resList = new ArrayList<>();
             // get sectionId of the choice
             int sectionId = getSectionIdSelected(map.keySet(), choice);
-            LectureDAO lectureDAO = new LectureDAO(factory);
             List<Lecture> lectures = lectureDAO.getLecturesBySectionId(sectionId);
             if (lectures.isEmpty()) {
                 throw new IllegalStateException("Database error: can not get lectures!");
