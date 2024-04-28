@@ -20,6 +20,7 @@ import javafx.application.Application;
 public class App extends Application{
   public void readUniversities(String filename) throws IOException{
       UniversityDAO universityDAO = new UniversityDAO(new DAOFactory());
+      universityDAO.deleteAll();
       BufferedReader br = new BufferedReader(new FileReader(filename));
       String line = br.readLine();
       while ((line = br.readLine()) != null) {
@@ -54,9 +55,11 @@ public class App extends Application{
 
   @Override
   public void start(Stage stage) throws IOException {
+    userRegistrationApp();
     URL xmlResource = getClass().getResource("/ui/UserSelect.fxml");
     URL cssResource = getClass().getResource("/ui/settings.css");
     FXMLLoader loader = new FXMLLoader(xmlResource);
+    // loader.setControllerFactory(controller -> new UserRegistrationController());
     //loader.setControllerFactory(controller -> new UserRegistrationController(universityNames()));
     TitledPane tp = loader.load();
     Scene scene = new Scene(tp, 640, 480);

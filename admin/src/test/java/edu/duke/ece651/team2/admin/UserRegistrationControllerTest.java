@@ -40,7 +40,7 @@ public class UserRegistrationControllerTest {
     void setUp() {
         // Create a mock GeneralController
         mockController = Mockito.mock(UserRegistrationView.class);
-        userController = new UserRegistrationController(mockController);
+        userController = Mockito.mock(UserRegistrationController.class);
         studentLegalName = new TextField();
         studentDisplayName = new TextField();
         studentEmail = new TextField();
