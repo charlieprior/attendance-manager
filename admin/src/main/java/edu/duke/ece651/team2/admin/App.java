@@ -20,7 +20,6 @@ import javafx.application.Application;
 public class App extends Application{
   public void readUniversities(String filename) throws IOException{
       UniversityDAO universityDAO = new UniversityDAO(new DAOFactory());
-      universityDAO.deleteAll();
       BufferedReader br = new BufferedReader(new FileReader(filename));
       String line = br.readLine();
       while ((line = br.readLine()) != null) {
@@ -33,7 +32,9 @@ public class App extends Application{
         else{
           support = true;
         }
-        universityDAO.create(new University(data[0], support));
+        if(!universityDAO.exist(data[0])){
+          universityDAO.create(new University(data[0], support));
+        }
     }
   }
 
