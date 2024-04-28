@@ -315,7 +315,7 @@ public class ServerSideControllerTest {
         List<Integer> res = new ArrayList<>();
         res.add(1);
         res.add(1);
-        when(mockMapper.readValue(anyString(), eq(List.class))).thenReturn(res);
+        when(mockMapper.readValue(anyString(), eq(new TypeReference<List<Integer>>() {}))).thenReturn(res);
         when(mockMapper.writeValueAsString(anyString())).thenReturn("ok");
         Mockito.doNothing().when(attendanceDAO).update(Mockito.any(AttendanceRecord.class));
         controller.receiveUpdateAttendanceResult(0, res);
@@ -394,7 +394,6 @@ public class ServerSideControllerTest {
         controller.setStudentDAO(studentDAO);
         List<Integer> res = new ArrayList<>();
         res.add(1);
-        when(mockMapper.readValue(anyString())).thenReturn(res);
         when(mockMapper.writeValueAsString(anyString())).thenReturn("ok");
         when(studentDAO.getAttendanceByLectureId(anyInt(),anyInt())).thenReturn(new HashedMap<Student,String>());
         controller.sendALLStudentsEnrolled(res, 0, 0);
@@ -421,6 +420,7 @@ public class ServerSideControllerTest {
         Student s = new Student("name","email",1,"name");
         s.setStudentID(1);
         test.put(s,"ok");
+        outStream = new ByteArrayOutputStream();
         objectOutputStream = new ObjectOutputStream(outStream);
         objectOutputStream.writeObject(0); 
         objectOutputStream.flush(); 
