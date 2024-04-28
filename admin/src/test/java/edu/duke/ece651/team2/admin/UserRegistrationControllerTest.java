@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 public class UserRegistrationControllerTest {
 
 
-    private UserRegistrationView controller;
+    private UserRegistrationView mockController;
     private UserRegistrationController userController;
     TextField studentLegalName;
     TextField studentDisplayName;
@@ -39,8 +39,8 @@ public class UserRegistrationControllerTest {
     @BeforeEach
     void setUp() {
         // Create a mock GeneralController
-      userController = Mockito.mock(UserRegistrationController.class);
-        controller = new UserRegistrationView(userController);
+        mockController = Mockito.mock(UserRegistrationView.class);
+        userController = new UserRegistrationController(mockController);
         studentLegalName = new TextField();
         studentDisplayName = new TextField();
         studentEmail = new TextField();

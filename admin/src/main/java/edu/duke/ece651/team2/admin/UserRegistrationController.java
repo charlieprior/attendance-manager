@@ -56,7 +56,39 @@ public class UserRegistrationController {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     UserRegistration userRegistration = new UserRegistration();
     UserRegistrationView controller = new UserRegistrationView(System.out, userRegistration, input);
-  
+
+    public UserRegistrationController(UserRegistrationView controller) {
+        this.controller = controller;
+    }
+
+    public void setStudentLegalName(TextField studentLegalName){
+        this.studentLegalName = studentLegalName;
+    }
+    public void setStudentDisplayName(TextField studentDisplayName){
+        this.studentDisplayName = studentDisplayName;
+    }
+    public void setStudentEmail(TextField studentEmail){
+        this.studentEmail = studentEmail;
+    }
+    public void setStudentPassword(TextField studentPassword){
+        this.studentPassword = studentPassword;
+    }
+    public void setStudentIDNumber(TextField studentIDNumber){
+        this.studentIDNumber = studentIDNumber;
+    }
+    public void setFacultyLegalName(TextField facultyLegalName){
+        this.facultyLegalName = facultyLegalName;
+    }
+    public void setFacultyEmail(TextField facultyEmail){
+        this.facultyEmail = facultyEmail;
+    }
+    public void setFacultyPassword(TextField facultyPassword){
+        this.facultyPassword = facultyPassword;
+    }
+    public void setFacultyIDNumber(TextField facultyIDNumber){
+        this.facultyIDNumber = facultyIDNumber;
+    }
+
     public void showAlert(String prompt){
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Alert Message");
