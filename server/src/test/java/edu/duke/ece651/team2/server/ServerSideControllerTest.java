@@ -32,6 +32,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.duke.ece651.team2.shared.AttendanceRecord;
@@ -360,7 +361,7 @@ public class ServerSideControllerTest {
         sid.add(1);
         sid.add(2);
         sid.add(3);
-        when(mockMapper.readValue(anyString(), eq(List.class))).thenReturn(res);
+        when(mockMapper.readValue(anyString(), eq(new TypeReference<List<Character>>() {}))).thenReturn(res);
         when(mockMapper.writeValueAsString(anyString())).thenReturn("ok");
         Mockito.doNothing().when(attendanceDAO).create(Mockito.any(AttendanceRecord.class));
         Mockito.doNothing().when(attendanceDAO).update(Mockito.any(AttendanceRecord.class));
@@ -370,7 +371,7 @@ public class ServerSideControllerTest {
         controller.receiveReocrdAttendanceResult(0, sid);
         res = new ArrayList<>();
         res.add('N');
-        when(mockMapper.readValue(anyString(), eq(List.class))).thenReturn(res);
+        when(mockMapper.readValue(anyString(), eq(new TypeReference<List<Character>>() {}))).thenReturn(res);
         controller.receiveReocrdAttendanceResult(0, sid);
     }
 
@@ -393,7 +394,7 @@ public class ServerSideControllerTest {
         controller.setStudentDAO(studentDAO);
         List<Integer> res = new ArrayList<>();
         res.add(1);
-        when(mockMapper.readValue(anyString(), eq(List.class))).thenReturn(res);
+        when(mockMapper.readValue(anyString())).thenReturn(res);
         when(mockMapper.writeValueAsString(anyString())).thenReturn("ok");
         when(studentDAO.getAttendanceByLectureId(anyInt(),anyInt())).thenReturn(new HashedMap<Student,String>());
         controller.sendALLStudentsEnrolled(res, 0, 0);
