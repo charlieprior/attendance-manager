@@ -370,11 +370,11 @@ public class ServerSideController {
         sectionDAO.update(s);
     }
 
-    private void receiveUpdateAttendanceResult(int lectureId, List<Integer> studentIds) {
+    public void receiveUpdateAttendanceResult(int lectureId, List<Integer> studentIds) {
         serverSideView.displayMessage("Waiting for attendance updated information....");
         try {
             List<Integer> response = mapper.readValue((String) in.readObject(), new TypeReference<List<Integer>>() {
-            });{
+            });
             int num = response.get(0);
             if(num==-1){
                 return;
@@ -393,10 +393,8 @@ public class ServerSideController {
                     attendanceStatus = AttendanceStatus.ABSENT;
                     break;
                 }
-                AttendanceDAO attendanceDAO = new AttendanceDAO(factory);
                 AttendanceRecord attendanceRecord = new AttendanceRecord(studentId, attendanceStatus, lectureId);
                 attendanceDAO.update(attendanceRecord);
-            }
         } catch (Exception e) {
             try {
                 List<String> errorList = new ArrayList<>();
@@ -411,7 +409,7 @@ public class ServerSideController {
         }
     }
 
-    private void receiveReocrdAttendanceResult(int lectureId, List<Integer> studentIds) {
+    public void receiveReocrdAttendanceResult(int lectureId, List<Integer> studentIds) {
         serverSideView.displayMessage("Waiting for attendance recorded information....");
         try {
             List<Character> response = mapper.readValue((String) in.readObject(), new TypeReference<List<Character>>() {
@@ -437,7 +435,6 @@ public class ServerSideController {
                         default:
                             throw new IllegalStateException("Database error: can not get correct attendance status!");
                     }
-                    AttendanceDAO attendanceDAO = new AttendanceDAO(factory);
                     AttendanceRecord attendanceRecord = new AttendanceRecord(studentId, attendanceStatus, lectureId);
                     if(attendanceDAO.get(lectureId, studentId)==null){
                         attendanceDAO.create(attendanceRecord);
@@ -464,7 +461,7 @@ public class ServerSideController {
     }
 
 
-    private void sendALLStudentsEnrolled(List<Integer> lectureIdList, int sectionId, int n) {
+    public void sendALLStudentsEnrolled(List<Integer> lectureIdList, int sectionId, int n) {
         serverSideView.displayMessage("Professor's choice of lecture received....");
         try {
             // Integer choice = mapper.readValue((String) in.readObject(), Integer.class);
@@ -476,7 +473,6 @@ public class ServerSideController {
                 // get lectureId of the choice
                 int lectureId = getLectureIdSelected(lectureIdList, choice);
                 // get student list and attendance status
-                StudentDAO studentDAO = new StudentDAO(factory);
                 Map<Student, String> resMap = studentDAO.getAttendanceByLectureId(sectionId,lectureId);
                 // if(n==2){
                 //     resMap = studentDAO.getAttendanceByLectureId(lectureId);
