@@ -829,12 +829,7 @@ public class ServerSideController {
 
 
     public void sendWeeklyReport() throws IOException, GeneralSecurityException {
-        // assume we can get date
-        StudentDAO studentDAO = new StudentDAO(factory);
-        EnrollmentDAO enrollmentDAO = new EnrollmentDAO(factory);
         List<Student> studentList = studentDAO.list();
-        AttendanceDAO attendanceDAO = new AttendanceDAO(factory);
-        LectureDAO lectureDAO = new LectureDAO(factory);
 
         if (studentList.isEmpty()) {
             serverSideView.displayMessage("Please notice admin user to import student data first!");
@@ -889,7 +884,6 @@ public class ServerSideController {
 
                 // send Email
                 serverSideView.displayMessage("Sending weekly report to " + student.getEmail() + "...");
-                GmailSetup gmailSetup = new GmailSetup();
                 gmailSetup.sendEmail(student.getEmail(),
                         "Weekly Attendance Report for " + student.getDisplayName(),
                         "Dear " + student.getDisplayName() + "\n" + "Here is your attendance report for this week.\n"
