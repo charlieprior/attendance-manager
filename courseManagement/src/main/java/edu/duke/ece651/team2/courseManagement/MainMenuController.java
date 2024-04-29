@@ -105,7 +105,7 @@ public class MainMenuController extends AnchorPane {
 
     private void setRemoveStudentButton() {
         RemoveStudentButton.setOnAction(actionEvent -> {
-            RemoveStudentButton.getScene().setRoot(new RemoveStudentController(model));
+            RemoveStudentButton.getScene().setRoot(new UnenrollStudentController(model));
         });
     }
 }

@@ -9,8 +9,8 @@
    <children>
       <ComboBox fx:id="CourseSelector" layoutX="193.0" layoutY="64.0" onAction="#courseSelected" prefHeight="26.0" prefWidth="213.0" />
       <Label layoutX="254.0" layoutY="27.0" text="Select a course" />
-      <Label layoutX="228.0" layoutY="192.0" text="Select a student to remove" />
-      <Button fx:id="DeleteButton" layoutX="205.0" layoutY="275.0" minWidth="55.5" mnemonicParsing="false" text="Delete" />
+      <Label layoutX="222.0" layoutY="192.0" text="Select a student to unenroll" />
+      <Button fx:id="UnenrollButton" layoutX="205.0" layoutY="275.0" minWidth="55.5" mnemonicParsing="false" text="Unenroll" />
       <Button fx:id="CancelButton" layoutX="341.0" layoutY="275.0" minWidth="55.5" mnemonicParsing="false" text="Cancel" />
       <ComboBox fx:id="SectionSelector" layoutX="194.0" layoutY="143.0" onAction="#sectionSelected" prefHeight="26.0" prefWidth="213.0" />
       <Label layoutX="252.0" layoutY="107.0" text="Select a section" />

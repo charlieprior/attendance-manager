@@ -77,6 +77,15 @@ public class CourseManagement {
 
     public void removeStudent(Student student) {studentDAO.remove(student);}
 
+    public void unenrollStudent(Student student, Section section) {
+        List<Enrollment> enrollments = enrollmentDAO.findEnrollmentsByStudentId(student.getStudentID());
+        for(Enrollment e : enrollments) {
+            if(e.getSectionId().equals(section.getSectionID())) {
+                enrollmentDAO.remove(e);
+            }
+        }
+    }
+
     public List<Student> getStudentsBySection(Section section) {return studentDAO.getStudentsBySection(section);}
 
     public List<Professor> listProfessors() {
