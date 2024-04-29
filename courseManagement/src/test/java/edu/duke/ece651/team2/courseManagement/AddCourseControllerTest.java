@@ -52,35 +52,9 @@ class AddCourseControllerTest extends ApplicationTest {
         assertEquals(expected, new HashSet<>(model.listCourses().stream().map(Course::getName).collect(Collectors.toSet())));
     }
 
-//    @Test
-//    public void testEmptyName() {
-//        Platform.runLater(() -> {
-//            clickOn("#ConfirmButton");
-//
-//            interact(() -> {
-//
-//                ButtonBar buttonBar = lookup(".button-bar").query();
-//                Button okButton = (Button) buttonBar.getButtons().stream()
-//                        .filter(button -> button instanceof Button && "OK".equals(((Button) button).getText()))
-//                        .findFirst()
-//                        .orElseThrow(() -> new RuntimeException("OK button not found"));
-//                clickOn(okButton);
-//            });
-//        });
-//    }
-
-    // Utility method to print all nodes
-
     @Test
-    public void listAllWindows() {
+    public void testEmptyName() {
       clickOn("#ConfirmButton");
       FxAssert.verifyThat(window("Error"), WindowMatchers.isShowing());
-        List<Window> windows = Window.getWindows();
-        for (Window window : windows) {
-            if (window instanceof Stage) {
-                Stage stage = (Stage) window;
-                System.out.println("Stage Title: " + stage.getTitle() + ", Scene: " + stage.getScene());
-            }
-        }
 }
     }
