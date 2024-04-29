@@ -55,7 +55,12 @@ public class EnrollStudentController extends UpdateSectionSuperController {
                 alert.showAndWait();
                 return;
             }
-            model.addStudentToSection(student, section);
+            boolean success = model.addStudentToSection(section, student);
+            if(!success) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "This student is already enrolled", ButtonType.OK);
+                alert.showAndWait();
+                return;
+            }
             EnrollButton.getScene().setRoot(model.getMainMenuController());
         });
     }

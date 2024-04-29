@@ -59,13 +59,12 @@ public class CourseManagementMock implements CourseManagementInterface {
     }
 
     @Override
-    public void addStudentToSection(Student student, Section section) {
-
+    public boolean addStudentToSection(Section section, Student student) {
+        return false;
     }
 
     @Override
     public void addStudentToSection(Integer studentId, Section section) {
-
     }
 
     @Override

@@ -67,10 +67,21 @@ public class CourseManagement implements CourseManagementInterface {
     }
 
 
+    /**
+     * Enrolls a student to a section
+     * @param section the section to enroll a student to
+     * @param student the student to enroll
+     * @return true if student is successfully enrolled, false otherwise
+     */
     @Override
-    public void addStudentToSection(Student student, Section section) {
-        Enrollment enrollment = new Enrollment(section.getSectionID(), student.getStudentID(), true);
-        enrollmentDAO.create(enrollment);
+    public boolean addStudentToSection(Section section, Student student) {
+        boolean enrolled = enrollmentDAO.checkEnrolled(section.getSectionID(), student.getStudentID());
+        if(!enrolled) {
+            Enrollment enrollment = new Enrollment(section.getSectionID(), student.getStudentID(), true);
+            enrollmentDAO.create(enrollment);
+            return true;
+        }
+        return false;
     }
 
     @Override

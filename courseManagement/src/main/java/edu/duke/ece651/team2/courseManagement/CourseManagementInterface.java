@@ -22,7 +22,7 @@ public interface CourseManagementInterface {
 
     List<Section> getSections(Course course);
 
-    void addStudentToSection(Student student, Section section);
+    boolean addStudentToSection(Section section, Student student);
 
     void addStudentToSection(Integer studentId, Section section);
 
