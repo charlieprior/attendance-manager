@@ -41,4 +41,12 @@ public class CSVLoader {
         return students;
     }
 
+    public List<Integer> getIds(List<String> lines) {
+        List<Integer> ids = new ArrayList<>();
+        for(String line : lines) {
+            ids.add(Integer.valueOf(line));
+        }
+        return ids;
+    }
+
 }
