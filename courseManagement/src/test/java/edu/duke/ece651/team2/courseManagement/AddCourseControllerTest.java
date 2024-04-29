@@ -3,32 +3,24 @@ package edu.duke.ece651.team2.courseManagement;
 import edu.duke.ece651.team2.shared.Course;
 import edu.duke.ece651.team2.shared.University;
 import javafx.application.Platform;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 import org.testfx.api.FxAssert;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.base.WindowMatchers;
 import org.testfx.util.WaitForAsyncUtils;
-import org.testfx.api.FxAssert;
-import org.testfx.matcher.base.WindowMatchers;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AddCourseControllerTest extends ApplicationTest {
     University university = new University("Duke", true);
     CourseManagementInterface model;
+
     @Override
     public void start(Stage stage) {
         model = new CourseManagementMock(university);
@@ -54,7 +46,7 @@ class AddCourseControllerTest extends ApplicationTest {
 
     @Test
     public void testEmptyName() {
-      clickOn("#ConfirmButton");
-      FxAssert.verifyThat(window("Error"), WindowMatchers.isShowing());
-}
+        clickOn("#ConfirmButton");
+        FxAssert.verifyThat(window("Error"), WindowMatchers.isShowing());
     }
+}
