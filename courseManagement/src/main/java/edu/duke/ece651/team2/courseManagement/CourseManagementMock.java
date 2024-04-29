@@ -2,11 +2,14 @@ package edu.duke.ece651.team2.courseManagement;
 
 import edu.duke.ece651.team2.shared.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CourseManagementMock implements CourseManagementInterface {
     private final University university;
     private final MainMenuController mainMenuController;
+
+    List<Course> courses = new ArrayList<Course>();
 
     public CourseManagementMock(University university) {
         this.university = university;
@@ -25,12 +28,12 @@ public class CourseManagementMock implements CourseManagementInterface {
 
     @Override
     public List<Course> listCourses() {
-        return null;
+        return courses;
     }
 
     @Override
     public void addCourse(Course course) {
-
+        courses.add(course);
     }
 
     @Override
