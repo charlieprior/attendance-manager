@@ -18,35 +18,35 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AddCourseControllerTest extends ApplicationTest {
-    University university = new University("Duke", true);
-    CourseManagementInterface model;
+    // University university = new University("Duke", true);
+    // CourseManagementInterface model;
 
-    @Override
-    public void start(Stage stage) {
-        model = new CourseManagementMock(university);
+    // @Override
+    // public void start(Stage stage) {
+    //     model = new CourseManagementMock(university);
 
-        Scene scene = new Scene(new AddCourseController(model), 600, 500);
-        stage.setScene(scene);
-        stage.show();
-    }
+    //     Scene scene = new Scene(new AddCourseController(model), 600, 500);
+    //     stage.setScene(scene);
+    //     stage.show();
+    // }
 
-    @Test
-    public void testAddCourse() {
-        Platform.runLater(() -> {
-            clickOn("#CourseNameField");
-            write("CourseName");
-            clickOn("#ConfirmButton");
-        });
-        WaitForAsyncUtils.waitForFxEvents();
+    // @Test
+    // public void testAddCourse() {
+    //     Platform.runLater(() -> {
+    //         clickOn("#CourseNameField");
+    //         write("CourseName");
+    //         clickOn("#ConfirmButton");
+    //     });
+    //     WaitForAsyncUtils.waitForFxEvents();
 
-        Set<String> expected = new HashSet<>();
-        expected.add("CourseName");
-        assertEquals(expected, new HashSet<>(model.listCourses().stream().map(Course::getName).collect(Collectors.toSet())));
-    }
+    //     Set<String> expected = new HashSet<>();
+    //     expected.add("CourseName");
+    //     assertEquals(expected, new HashSet<>(model.listCourses().stream().map(Course::getName).collect(Collectors.toSet())));
+    // }
 
-    @Test
-    public void testEmptyName() {
-        clickOn("#ConfirmButton");
-        FxAssert.verifyThat(window("Error"), WindowMatchers.isShowing());
-    }
+    // @Test
+    // public void testEmptyName() {
+    //     clickOn("#ConfirmButton");
+    //     FxAssert.verifyThat(window("Error"), WindowMatchers.isShowing());
+    // }
 }

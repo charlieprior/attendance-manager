@@ -378,6 +378,7 @@ public class UserRegistrationController {
         Button b = (Button) event.getSource();
         Stage stage = (Stage) b.getScene().getWindow();
         stage.close();
+        return;
     }
 
 }
