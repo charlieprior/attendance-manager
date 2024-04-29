@@ -2,6 +2,7 @@ package edu.duke.ece651.team2.admin;
 
 import edu.duke.ece651.team2.shared.*;
 import edu.duke.ece651.team2.server.*;
+import javafx.application.Platform;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class UserRegistrationView {
         DAOFactory factory = new DAOFactory();
         this.universityDAO = new UniversityDAO(factory);
     }
-
+  
     /**
      * Prints the specified prompt to the user.
      *
@@ -58,6 +59,15 @@ public class UserRegistrationView {
         return universities.size();
     }
 
+    /**
+     * Method to list the universities in our database for selection
+     * @return the universities as options
+     */
+    public List<University> listUniversitiesController(){
+        List<University> universities = universityDAO.list();
+        return universities;
+    }
+
     public int addProfessorView() throws IOException {
         // add it to table password, get UniversityID from University
         String prompt = "What's your legal name:";
@@ -66,7 +76,6 @@ public class UserRegistrationView {
         String email = printPromptAndRead(prompt);
         prompt = "What's Your University?";
         print(prompt);
-        //prompt = String.valueOf(universityDAO.list());
         List<University> universities = universityDAO.list();
         listUniversities();
         prompt = "Please choose from above from the list above";
@@ -78,9 +87,18 @@ public class UserRegistrationView {
         Professor professor = new Professor(name, email, uniID);
         userRegistration.addProfessor(professor, passkey);
         Integer ID = professor.getProfessorID();
-        //String professorID = String.valueOf(ID);
-        //prompt = "The faculty's id is: " + professorID + "\n";
-        //print(prompt);
+        return ID;
+    }
+
+    public int addFacultyController(String []credentials){
+        String legalName = credentials[0];
+        String email = credentials[1];
+        String id = credentials[3];
+        Integer uniID =  Integer.valueOf(id);
+        String passkey = credentials[2];
+        Professor professor = new Professor(legalName, email, uniID);
+        userRegistration.addProfessor(professor, passkey);
+        Integer ID = professor.getProfessorID();
         return ID;
     }
 
@@ -96,6 +114,24 @@ public class UserRegistrationView {
         }
     }
 
+    public int removeFacultyController(String []credentials){
+        String idString = credentials[0];
+        int val;
+        if (!Objects.equals(idString, "")){
+            Integer id = Integer.valueOf(idString);
+            if (userRegistration.getProfessorID(id) != null) {
+                userRegistration.removeProfessor(id);
+                val = 1;
+            }
+            else {
+                print("This faculty member does not seem to be in the registry...\n");
+                val = 0;
+            }
+        }
+        else{val=0;}
+        return val;
+    }
+
     public void updateProfessorView() throws IOException {
         String prompt = "You are updating an existing faculty member, please provide the required info:\n" +
                 "What's the faculty's ID number:";
@@ -108,6 +144,24 @@ public class UserRegistrationView {
         } else {
             print("This faculty member does not seem to be in the registry...\n");
         }
+    }
+
+    public int updateFacultyController(String []credentials){
+        String idString = credentials[0];
+        int val;
+        if (!Objects.equals(idString, "")) {
+            Integer id = Integer.valueOf(idString);
+            if (userRegistration.getProfessorID(id) != null) {
+                String newPassword = credentials[1];
+                userRegistration.updateProfessor(id, newPassword);
+                val = 1;
+            } else {
+                print("This faculty member does not seem to be in the registry...\n");
+                val = 0;
+            }
+        }
+        else{val=0;}
+        return val;
     }
 
     public int addStudentView() throws IOException {
@@ -135,6 +189,19 @@ public class UserRegistrationView {
         return ID;
     }
 
+    public int addStudentController(String []credentials){
+        String legalName = credentials[0];
+        String displayName = credentials[1];
+        String email = credentials[2];
+        String id = credentials[4];
+        Integer uniID =  Integer.valueOf(id);
+        String passkey = credentials[3];
+        Student student = new Student(legalName, email, uniID, displayName);
+        userRegistration.addStudent(student, passkey);
+        Integer ID = student.getStudentID();
+        return ID;
+    }
+
     public void removeStudentView() throws IOException {
         String prompt = "You are removing an existing Student, please provide the required info:\n" +
                 "What's the student's ID number:";
@@ -147,6 +214,24 @@ public class UserRegistrationView {
         }
     }
 
+    public int removeStudentController(String []credentials){
+        String idString = credentials[0];
+        int val;
+        if (!Objects.equals(idString, "")){
+            Integer id = Integer.valueOf(idString);
+            if (userRegistration.getStudentID(id) != null) {
+                userRegistration.removeStudent(id);
+                val = 1;
+            }
+            else {
+                print("This student does not seem to be in the registry...\n");
+                val = 0;
+            }
+        }
+        else{val=0;}
+        return val;
+    }
+
     public void updateStudentView() throws IOException {
         String prompt = "You are updating an existing Student, please provide the required info:\n" +
                 "What's the student's ID number:";
@@ -155,10 +240,37 @@ public class UserRegistrationView {
         if (userRegistration.getStudentID(id) != null) {
             prompt = "What would you like to set as your new password?\n";
             String newPassword = printPromptAndRead(prompt);
-            userRegistration.updateStudent(id, newPassword);
+            prompt = "What would you like to change your display name to?\n";
+            String newDisplayName = printPromptAndRead(prompt);
+            userRegistration.updateStudent(id, newPassword, newDisplayName);
         } else {
             print("This student does not seem to be in the registry...\n");
         }
+    }
+
+    public int updateStudentController(String []credentials){
+        String idString = credentials[0];
+        int val;
+        if (!Objects.equals(idString, "")) {
+            Integer id = Integer.valueOf(idString);
+            if (userRegistration.getStudentID(id) != null) {
+                String newPassword = credentials[1];
+                String newDisplayName = credentials[2];
+                if(userRegistration.isUpdatable(id)) {
+                    userRegistration.updateStudent(id, newPassword, newDisplayName);
+                    val = 1;
+                }
+                else{
+                    userRegistration.updateStudentPassword(id, newPassword);
+                    val = 2;
+                }
+            } else {
+                print("This student does not seem to be in the registry...\n");
+                val = 0;
+            }
+        }
+        else{val=0;}
+        return val;
     }
 
     /**
@@ -238,6 +350,11 @@ public class UserRegistrationView {
                 print("Invalid Selection, please try again!");
             }
         }
+    }
+
+    public void exitOption() {
+        Platform.exit();
+        System.exit(0);
     }
 
 }
