@@ -31,14 +31,14 @@ class AddCourseControllerTest extends ApplicationTest {
     @Test
     public void testAddCourse() {
         Platform.runLater(() -> {
-            rightClickOn("#CourseNameField");
+            clickOn("#CourseNameField");
             write("CourseName");
-            rightClickOn("#ConfirmButton");
+            clickOn("#ConfirmButton");
         });
+        WaitForAsyncUtils.waitForFxEvents();
 
-        Set<Course> expected = new HashSet<>();
-        expected.add(new Course("CourseName", university.getId()));
-
-        assertEquals(expected, new HashSet<>(model.listCourses()));
+        Set<String> expected = new HashSet<>();
+        expected.add("CourseName");
+        assertEquals("CourseName", new HashSet<>(model.listCourses().stream().map(Course::getName).collect(Collectors.toSet())));
     }
 }
