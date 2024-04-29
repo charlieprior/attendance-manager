@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;
 
-public class AddSectionController extends UpdateSectionSuperController {
+public class AddSectionController extends UpdateCourseSuperController {
     @FXML
     Button ConfirmButton;
 

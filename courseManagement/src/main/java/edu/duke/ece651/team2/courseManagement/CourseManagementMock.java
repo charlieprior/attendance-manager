@@ -4,17 +4,22 @@ import edu.duke.ece651.team2.shared.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CourseManagementMock implements CourseManagementInterface {
     private final University university;
     private final MainMenuController mainMenuController;
 
-    List<Course> courses = new ArrayList<Course>();
+    List<Course> courses = new ArrayList<>();
+    List<Professor> professors = new ArrayList<>();
+    List<Section> sections = new ArrayList<>();
 
     public CourseManagementMock(University university) {
         this.university = university;
         this.mainMenuController = new MainMenuController(this);
     }
+
+    public void addProfessor(Professor professor) { professors.add(professor); }
 
     @Override
     public MainMenuController getMainMenuController() {
@@ -58,7 +63,9 @@ public class CourseManagementMock implements CourseManagementInterface {
 
     @Override
     public List<Section> getSections(Course course) {
-        return null;
+        return sections.stream()
+                .filter(section -> section.getCourseId().equals(course.getCourseID()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -112,7 +119,7 @@ public class CourseManagementMock implements CourseManagementInterface {
 
     @Override
     public void addSection(Section section) {
-
+        sections.add(section);
     }
 
     @Override
