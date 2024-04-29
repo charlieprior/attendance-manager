@@ -134,7 +134,7 @@ public class UserRegistrationViewTest {
         userRegistrationView1.universityDAO.remove(university);
     }
 
-  @Test
+    @Test
     public void testControllerMethods() throws IOException {
         UserRegistration userRegistration = new UserRegistration();
 
@@ -157,7 +157,7 @@ public class UserRegistrationViewTest {
         facultyAdder[3] = String.valueOf(university.getId());
         int id = userRegistrationView1.addStudentController(simulatedInputs1);
         Integer facID = userRegistrationView1.addFacultyController(facultyAdder);
-        Student student = new Student("Kenan Colak", "kc566@duke.edu",1,
+        Student student = new Student("Kenan Colak", "kc566@duke.edu",university.getId(),
                                               "kencolak");
         userRegistration.addStudent(student,"password");
         String []simulatedInputs2 = new String[3];

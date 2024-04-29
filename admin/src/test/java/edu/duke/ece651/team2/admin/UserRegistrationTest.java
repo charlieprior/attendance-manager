@@ -25,10 +25,12 @@ public class UserRegistrationTest {
     @Test
     void testRemoveAndUpdate(){
         UserRegistration userRegistration = new UserRegistration();
-        Student student = new Student("Kenan Colak", "kc566@duke.edu",1,
+        University u = new University("u1", false);
+        userRegistration.universityDAO.create(u);
+        Student student = new Student("Kenan Colak", "kc566@duke.edu",u.getId(),
                 "kencolak");
         userRegistration.addStudent(student,"password");
-        Professor professor = new Professor("Charlie Prior","CharlieP@duke.edu",1);
+        Professor professor = new Professor("Charlie Prior","CharlieP@duke.edu",u.getId());
         userRegistration.addProfessor(professor,"passwords");
         userRegistration.updateStudent(student.getStudentID(),"newpassword", "newDisplayName");
         userRegistration.updateStudentPassword(student.getStudentID(), "newpassword1");
@@ -38,8 +40,11 @@ public class UserRegistrationTest {
         userRegistration.updateProfessor(professor.getProfessorID(),"newpassword2");
         userRegistration.removeProfessor(professor.getProfessorID());
         assertNull(userRegistration.professorDAO.get(professor.getProfessorID()));
-        userRegistration.updateStudent(1, "newpassword", "newName");
-        userRegistration.updateStudentPassword(1, "newpassword");
+        userRegistration.updateStudent(student.getStudentID(), "newpassword", "newName");
+        userRegistration.updateStudentPassword(professor.getProfessorID(), "newpassword");
+        userRegistration.universityDAO.remove(u);
+        userRegistration.studentDAO.remove(student);
+        userRegistration.professorDAO.remove(professor);
     }
 
 }
