@@ -28,8 +28,6 @@ WORKDIR /home/juser
 
 # Setup a minimal emacs with dcoverage
 USER juser
-FROM some_base_image
-RUN useradd -ms /bin/bash juser
 WORKDIR /home/juser
 COPY --chown=juser scripts/emacs-bare.sh ./
 RUN mkdir -p /home/juser/.emacs.d/dcoverage
@@ -66,3 +64,4 @@ RUN chown juser coverage-out
 
 # compile the code
 RUN ./gradlew  assemble
+RUN ./gradlew clean
