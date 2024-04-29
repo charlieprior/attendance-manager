@@ -7,7 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
+import org.testfx.api.FxAssert;
 import org.testfx.framework.junit5.ApplicationTest;
+import org.testfx.matcher.base.WindowMatchers;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -48,5 +50,22 @@ class ModifyCourseControllerTest extends ApplicationTest {
         Set<String> expected = new HashSet<>();
         expected.add("NewCourseName");
         assertEquals(expected, new HashSet<>(model.listCourses().stream().map(Course::getName).collect(Collectors.toSet())));
+    }
+
+    @Test
+    public void testNullCourse() {
+        clickOn("#CourseNameField");
+        write("NewCourseName");
+        clickOn("#ConfirmButton");
+        FxAssert.verifyThat(window("Error"), WindowMatchers.isShowing());
+    }
+
+    @Test
+    public void testNullName() {
+        clickOn("#CourseSelector");
+        type(KeyCode.DOWN);
+        type(KeyCode.ENTER);
+        clickOn("#ConfirmButton");
+        FxAssert.verifyThat(window("Error"), WindowMatchers.isShowing());
     }
 }
