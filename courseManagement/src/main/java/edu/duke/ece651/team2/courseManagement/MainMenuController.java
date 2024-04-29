@@ -1,8 +1,5 @@
 package edu.duke.ece651.team2.courseManagement;
 
-import edu.duke.ece651.team2.shared.University;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -10,7 +7,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
-import java.util.List;
 
 public class MainMenuController extends AnchorPane {
     @FXML Button UpdateCourseButton;
@@ -91,7 +87,7 @@ public class MainMenuController extends AnchorPane {
 
     private void setAddStudentButton() {
         AddStudentButton.setOnAction(actionEvent -> {
-            AddStudentButton.getScene().setRoot(new AddStudentController(model));
+            AddStudentButton.getScene().setRoot(new EnrollStudentController(model));
         });
     }
 

@@ -59,7 +59,6 @@ public class CourseManagement {
 
 
     public void addStudentToSection(Student student, Section section) {
-        studentDAO.create(student);
         Enrollment enrollment = new Enrollment(section.getSectionID(), student.getStudentID(), true);
         enrollmentDAO.create(enrollment);
     }
@@ -99,4 +98,6 @@ public class CourseManagement {
     public void deleteAllSections() {
         sectionDAO.deleteAll();
     }
+
+    public List<Student> getAllStudentsInUniversity() { return studentDAO.getStudentsByUniversity(university); }
 }

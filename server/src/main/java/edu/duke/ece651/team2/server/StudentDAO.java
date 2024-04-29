@@ -3,6 +3,7 @@ package edu.duke.ece651.team2.server;
 import edu.duke.ece651.team2.shared.AttendanceStatus;
 import edu.duke.ece651.team2.shared.Section;
 import edu.duke.ece651.team2.shared.Student;
+import edu.duke.ece651.team2.shared.University;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -177,6 +178,11 @@ public class StudentDAO extends DAO<Student> {
                 "FROM Users u, Enrollment e WHERE u.isStudent=TRUE AND " +
                 "u.id=e.studentId AND " +
                 "e.sectionId=?", values);
+    }
+
+    public List<Student> getStudentsByUniversity(University university) {
+        List<Object> values = Collections.singletonList(university.getId());
+        return super.list(daoFactory, "SELECT * FROM Users WHERE isStudent=TRUE AND universityId = ?", values);
     }
 
 }
