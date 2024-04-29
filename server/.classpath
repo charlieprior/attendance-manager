@@ -249,7 +249,7 @@
 			<attribute name="gradle.buildServer" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/louiseli/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.9.10/9674aba5ee793e54b864952b001166848da0f26b/byte-buddy-agent-1.9.10.jar" sourcepath="/Users/louiseli/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.9.10/a00b33b443dc92a59ab01f21e37dd2aee07c4256/byte-buddy-agent-1.9.10-sources.jar">
+	<classpathentry kind="lib" path="/Users/louiseli/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.10.14/627b576d22189363c49eb59859664490ae230b38/byte-buddy-agent-1.10.14.jar" sourcepath="/Users/louiseli/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.10.14/e38eda86eceb2110b5f3f73d1d0a3ce54f44e9ca/byte-buddy-agent-1.10.14-sources.jar">
 		<attributes>
 			<attribute name="test" value="true"/>
 			<attribute name="gradle.buildServer" value="true"/>
@@ -273,7 +273,7 @@
 			<attribute name="gradle.buildServer" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/louiseli/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy/1.9.10/211a2b4d3df1eeef2a6cacf78d74a1f725e7a840/byte-buddy-1.9.10.jar" sourcepath="/Users/louiseli/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy/1.9.10/4a97f2b09ac6a9966e3aaddb4362b81d795d250b/byte-buddy-1.9.10-sources.jar">
+	<classpathentry kind="lib" path="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-core/3.3.3/4878395d4e63173f3825e17e5e0690e8054445f1/mockito-core-3.3.3.jar" sourcepath="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-core/3.3.3/cd917802078ffceaa508aa75af70ef62aed20d22/mockito-core-3.3.3-sources.jar">
 		<attributes>
 			<attribute name="test" value="true"/>
 			<attribute name="gradle.buildServer" value="true"/>
@@ -285,7 +285,13 @@
 			<attribute name="gradle.buildServer" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-core/2.28.2/91110215a8cb9b77a46e045ee758f77d79167cc0/mockito-core-2.28.2.jar" sourcepath="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-core/2.28.2/8322b59516491570931c086329654ef841e61811/mockito-core-2.28.2-sources.jar">
+	<classpathentry kind="lib" path="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.powermock/powermock-module-junit4-common/2.0.9/661b819ad3e8b5cab72bea3816ba2602d82d7f00/powermock-module-junit4-common-2.0.9.jar" sourcepath="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.powermock/powermock-module-junit4-common/2.0.9/19011224dc5440ab1f5a06b90c74f7da288e6d5d/powermock-module-junit4-common-2.0.9-sources.jar">
+		<attributes>
+			<attribute name="test" value="true"/>
+			<attribute name="gradle.buildServer" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.powermock/powermock-reflect/2.0.9/4bb9ed43e5221926fb86cae44b445de110a51d05/powermock-reflect-2.0.9.jar" sourcepath="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.powermock/powermock-reflect/2.0.9/ea2f38ebd091c996fd28394dda3d8d77dd905963/powermock-reflect-2.0.9-sources.jar">
 		<attributes>
 			<attribute name="test" value="true"/>
 			<attribute name="gradle.buildServer" value="true"/>
@@ -297,7 +303,43 @@
 			<attribute name="gradle.buildServer" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.powermock/powermock-api-support/2.0.9/65deba8a4207715b7d8fa6c1b8d8cac06e6ecb00/powermock-api-support-2.0.9.jar" sourcepath="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.powermock/powermock-api-support/2.0.9/eb54f9398b1b38558a8081b9bcf087bcc43ae451/powermock-api-support-2.0.9-sources.jar">
+		<attributes>
+			<attribute name="test" value="true"/>
+			<attribute name="gradle.buildServer" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.powermock/powermock-api-mockito2/2.0.9/7e16a11ab06b718121a7537476c55b3c9551ae03/powermock-api-mockito2-2.0.9.jar" sourcepath="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.powermock/powermock-api-mockito2/2.0.9/937ddba0a4c5ad13921dec21ff4518e1db2061d6/powermock-api-mockito2-2.0.9-sources.jar">
+		<attributes>
+			<attribute name="test" value="true"/>
+			<attribute name="gradle.buildServer" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/louiseli/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy/1.10.14/5288bd154aa7bc8ea81a658f60a790f646025832/byte-buddy-1.10.14.jar" sourcepath="/Users/louiseli/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy/1.10.14/8d5dbca8667cb26af8ee3feada8a600bd54f0c12/byte-buddy-1.10.14-sources.jar">
+		<attributes>
+			<attribute name="test" value="true"/>
+			<attribute name="gradle.buildServer" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest/2.1/9420ba32c29217b54eebd26ff7f9234d31c3fbb2/hamcrest-2.1.jar" sourcepath="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest/2.1/aa6763235632b77fd9245c850b6a7dc09382314c/hamcrest-2.1-sources.jar">
+		<attributes>
+			<attribute name="test" value="true"/>
+			<attribute name="gradle.buildServer" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.powermock/powermock-core/2.0.9/50e5d2652fd311ee9c33919dfadd44504a582210/powermock-core-2.0.9.jar" sourcepath="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.powermock/powermock-core/2.0.9/4f7de5c1b67499068d64ee5ca5380c819bd1cd9b/powermock-core-2.0.9-sources.jar">
+		<attributes>
+			<attribute name="test" value="true"/>
+			<attribute name="gradle.buildServer" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.27.0-GA/f63e6aa899e15eca8fdaa402a79af4c417252213/javassist-3.27.0-GA.jar" sourcepath="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.27.0-GA/e5dea2989ab81731501c670be0d1514512dbc13a/javassist-3.27.0-GA-sources.jar">
+		<attributes>
+			<attribute name="test" value="true"/>
+			<attribute name="gradle.buildServer" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.objenesis/objenesis/3.0.1/11cfac598df9dc48bb9ed9357ed04212694b7808/objenesis-3.0.1.jar" sourcepath="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.objenesis/objenesis/3.0.1/4aaa3e228e1ae7c71ded703b8742c37c058057fd/objenesis-3.0.1-sources.jar">
 		<attributes>
 			<attribute name="test" value="true"/>
 			<attribute name="gradle.buildServer" value="true"/>
@@ -333,7 +375,19 @@
 			<attribute name="gradle.buildServer" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/Users/louiseli/.gradle/caches/modules-2/files-2.1/junit/junit/4.12/2973d150c0dc1fefe998f834810d68f278ea58ec/junit-4.12.jar" sourcepath="/Users/louiseli/.gradle/caches/modules-2/files-2.1/junit/junit/4.12/a6c32b40bf3d76eca54e3c601e5d1470c86fcdfa/junit-4.12-sources.jar">
+		<attributes>
+			<attribute name="test" value="true"/>
+			<attribute name="gradle.buildServer" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.7.2/62faa742964a9d8dab8fdb4a0eab7b01441c171f/junit-jupiter-5.7.2.jar" sourcepath="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.7.2/7009caa171d1d6af0f6f09dff25f9f574826a490/junit-jupiter-5.7.2-sources.jar">
+		<attributes>
+			<attribute name="test" value="true"/>
+			<attribute name="gradle.buildServer" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.powermock/powermock-module-junit4/2.0.9/9f13da80a3d75cc9579b55389e919f661ec42f0/powermock-module-junit4-2.0.9.jar" sourcepath="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.powermock/powermock-module-junit4/2.0.9/a5a85421c4f61c6078245dde5480ed4bc3e3dc99/powermock-module-junit4-2.0.9-sources.jar">
 		<attributes>
 			<attribute name="test" value="true"/>
 			<attribute name="gradle.buildServer" value="true"/>
@@ -357,16 +411,10 @@
 			<attribute name="gradle.buildServer" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.objenesis/objenesis/2.6/639033469776fd37c08358c6b92a4761feb2af4b/objenesis-2.6.jar" sourcepath="/Users/louiseli/.gradle/caches/modules-2/files-2.1/org.objenesis/objenesis/2.6/96614f514a1031296657bf0dde452dc15e42fcb8/objenesis-2.6-sources.jar">
-		<attributes>
-			<attribute name="test" value="true"/>
-			<attribute name="gradle.buildServer" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="src" path="/shared">
 		<attributes>
 			<attribute name="gradle.buildServer" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="output" path="bin/default"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,15 +1,22 @@
+insert into University (id,name,changeName) values (1,'Duke',1);
+insert into University (id,name,changeName) values (2,'UNC',1);
+insert into University (id,name,changeName) values (3,'NCSU',0);
 
 INSERT INTO Users (legalName, displayName, email, universityId, isStudent) VALUES ('Student One', 'Stu1', 'stud1@duke.edu' , 1,TRUE);
 INSERT INTO Users (legalName, email, universityId, isStudent) VALUES ('Professor One', 'pro1@duke.edu', 1, FALSE);
 INSERT INTO Users (legalName, displayName, email, universityId, isStudent) VALUES ('Student Two', 'Stu2', 'stud2@duke.edu' , 1,TRUE);
 INSERT INTO Users (legalName, displayName, email, universityId, isStudent) VALUES ('Student Three', 'Stu3', 'stud3@duke.edu' , 1,TRUE);
 INSERT INTO Users (legalName, displayName, email, universityId, isStudent) VALUES ('Student Four', 'Stu4', 'xl435@duke.edu' , 1,TRUE);
+INSERT INTO Users (legalName, displayName, email, universityId, isStudent) VALUES ('Student Five', 'Stu5', 'xl435@duke.edu' , 1,TRUE);
+INSERT INTO Users (legalName, email, universityId, isStudent) VALUES ('Professor Two', 'pro2@duke.edu' , 1,False);
 
 INSERT INTO Passwords (id, password, isStudent) VALUES (1, 123456, TRUE);
 INSERT INTO Passwords (id, password, isStudent) VALUES (2, 123456, FALSE);
 INSERT INTO Passwords (id, password, isStudent) VALUES (3, 123456, TRUE);
 INSERT INTO Passwords (id, password, isStudent) VALUES (4, 123456, TRUE);
 INSERT INTO Passwords (id, password, isStudent) VALUES (5, 123456, TRUE);
+INSERT INTO Passwords (id, password, isStudent) VALUES (6, 123456, TRUE);
+INSERT INTO Passwords (id, password, isStudent) VALUES (7, 123456, FALSE);
 
 INSERT INTO Enrollment (sectionId, studentId, notify) VALUES (1, 1, TRUE);
 INSERT INTO Enrollment (sectionId, studentId, notify) VALUES (2, 1, FALSE);

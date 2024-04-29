@@ -7,12 +7,14 @@ public class UserRegistration {
   StudentDAO studentDAO;
   private final PasswordDAO passwordDAO;
   ProfessorDAO professorDAO;
+  UniversityDAO universityDAO;
 
   public UserRegistration() {
     DAOFactory factory = new DAOFactory();
     this.studentDAO = new StudentDAO(factory);
     this.passwordDAO = new PasswordDAO(factory);
     this.professorDAO = new ProfessorDAO(factory);
+    this.universityDAO = new UniversityDAO(factory);
   }
 
   /**
@@ -62,17 +64,44 @@ public class UserRegistration {
   }
 
   /**
-   * Updates a student from the database and their password
+   * Updates a student from the database and their password + display Name
    * 
    * @param id      The id of the student whose password will be updated
    * @param passkey the new password to update account
+   * @param newDisplayName the new displayName for the student
    */
-  public void updateStudent(Integer id, String passkey) {
+  public void updateStudent(Integer id, String passkey, String newDisplayName) {
+    if (studentDAO.get(id) != null) {
+      Student updateStu = studentDAO.get(id);
+      updateStu.setDisplayName(newDisplayName);
+      // studentDAO.get(id).setDisplayName(newDisplayName);
+      studentDAO.update(updateStu);
+      Password newPassword = new Password(studentDAO.get(id).getStudentID(), passkey, true);
+      passwordDAO.update(newPassword);
+    }
+  }
+
+  /**
+   * Updates a student from the database and their password
+   *
+   * @param id      The id of the student whose password will be updated
+   * @param passkey the new password to update account
+   */
+  public void updateStudentPassword(Integer id, String passkey) {
     if (studentDAO.get(id) != null) {
       studentDAO.update(studentDAO.get(id));
       Password newPassword = new Password(studentDAO.get(id).getStudentID(), passkey, true);
       passwordDAO.update(newPassword);
     }
+  }
+
+  /**
+   * Updates a student from the database and their password
+   *
+   * @param id      The id of the student whose password will be updated
+   */
+  public boolean isUpdatable(Integer id) {
+    return universityDAO.get(studentDAO.get(id).getUniversityId()).canChangeName();
   }
 
   /**

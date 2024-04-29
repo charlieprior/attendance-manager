@@ -88,6 +88,15 @@ public class UniversityDAO extends DAO<University> {
         return super.get(daoFactory, "SELECT * FROM University WHERE id = ?", values);
     }
 
+    public boolean exist(String name){
+        List<Object> values = Collections.singletonList(name);
+        University u = super.get(daoFactory, "SELECT * FROM University WHERE name = ?", values);
+        if(u!=null){
+            return true;
+        }
+        return false;
+    }
+
     public void deleteAll() {
         super.deleteAll(daoFactory, "University");
     }

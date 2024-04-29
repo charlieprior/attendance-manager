@@ -30,7 +30,7 @@ public class Student {
      * email, and display name.
      *
      * @param legalName   The legal name of the student.
-     * @param id          The student ID of the student.
+     * @param universityId The university ID of the student.
      * @param email       The email of the student.
      * @param displayName The display name of the student.
      */
@@ -116,9 +116,9 @@ public class Student {
     }
 
     /**
-     * Set the email of the student.
+     * Set the displayName of the student.
      *
-     * @param email The email of the student.
+     * @param displayName The display name of the student.
      */
 
     public void setDisplayName(String displayName) {

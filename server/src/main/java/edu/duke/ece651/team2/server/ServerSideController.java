@@ -46,7 +46,51 @@ public class ServerSideController {
     private int status; // whether the user is professor of student; // student - 1, faculty - 2, error
                         // - 0
     private Integer universityID;
-    private final GmailSetup gmailSetup;
+    private GmailSetup gmailSetup;
+    private PasswordDAO passwordDAO = new PasswordDAO(factory);
+    private StudentDAO studentDAO = new StudentDAO(factory);
+    private CourseDAO courseDAO = new CourseDAO(factory);
+    private SectionDAO sectionDAO = new SectionDAO(factory);
+    private LectureDAO lectureDAO = new LectureDAO(factory);
+    private ProfessorDAO professorDAO = new ProfessorDAO(factory);
+    private EnrollmentDAO enrollmentDAO = new EnrollmentDAO(factory);
+    private AttendanceDAO attendanceDAO = new AttendanceDAO(factory);
+
+    public void setPasswordDAO(PasswordDAO passwordDAO) {
+        this.passwordDAO = passwordDAO;
+    }
+
+    public void setStudentDAO(StudentDAO studentDAO) {
+        this.studentDAO = studentDAO;
+    }
+
+    public void setCourseDAO(CourseDAO courseDAO) {
+        this.courseDAO = courseDAO;
+    }
+
+    public void setSectionDAO(SectionDAO sectionDAO) {
+        this.sectionDAO = sectionDAO;
+    }
+
+    public void setLectureDAO(LectureDAO lectureDAO) {
+        this.lectureDAO = lectureDAO;
+    }
+
+    public void setProfessorDAO(ProfessorDAO professorDAO) {
+        this.professorDAO = professorDAO;
+    }
+
+    public void setEnrollmentDAO(EnrollmentDAO enrollmentDAO) {
+        this.enrollmentDAO = enrollmentDAO;
+    }
+
+    public void setAttendanceDAO(AttendanceDAO attendanceDAO) {
+        this.attendanceDAO = attendanceDAO;
+    }
+
+    public void setGmailSetup(GmailSetup gmailSetup){
+        this.gmailSetup = gmailSetup;
+    }
 
     public ServerSideController(ServerSideView serverSideView) throws IOException, GeneralSecurityException {
         this.serverSideView = serverSideView;
@@ -67,15 +111,26 @@ public class ServerSideController {
         return in;
     }
 
+    public void setObjectInputStream(ObjectInputStream in){
+        this.in = in;
+    }
+
     public ObjectOutputStream getObjectOutputStream() {
         return out;
+    }
+
+    public void setObjectOutputStream(ObjectOutputStream out){
+        this.out = out;
+    }
+
+    public void setMapper(ObjectMapper mapper){
+        this.mapper = mapper;
     }
 
     public String[] validateLogin(int userID, String password) {
         // implement logic to validate login credentials (check database)
         // student - 1, faculty - 2, error - 0
         String[] resultStr = new String[2];
-        PasswordDAO passwordDAO = new PasswordDAO(factory);
         Password result = passwordDAO.get(userID);
 
         // id not found
@@ -97,7 +152,6 @@ public class ServerSideController {
                 resultStr[1] = "Welcome to xxx system!";
                 user_id = userID;
                 status = 1;
-                StudentDAO studentDAO = new StudentDAO(factory);
                 universityID = studentDAO.getUniversityID(user_id);
                 return resultStr;
             } else {
@@ -106,7 +160,6 @@ public class ServerSideController {
                 resultStr[1] = "Welcome to xxx system!";
                 status = 2;
                 user_id = userID;
-                ProfessorDAO professorDAO = new ProfessorDAO(factory);
                 universityID = professorDAO.getUniversityID(user_id);
                 return resultStr;
             }
@@ -172,24 +225,20 @@ public class ServerSideController {
     }
 
     public List<Section> sendAllEnrolledSectionNames(Integer userId) throws IOException {
-        EnrollmentDAO enrollmentDAO = new EnrollmentDAO(factory);
         try {
             List<Enrollment> enrollments = enrollmentDAO.findEnrollmentsByStudentId(userId);
-            if (enrollments.isEmpty()) {
-                throw new IllegalStateException("You are not enrolled in any classes this semester!"); //TODO:testit
+            if (enrollments==null) {
+                throw new IllegalStateException("You are not enrolled in any classes this semester!");
             } else {
                 List<String> sectionNames = new ArrayList<>();
                 List<String> courseNames = new ArrayList<>();
                 List<Section> sections = new ArrayList<>();
                 for (Enrollment enrollment : enrollments) {
-                    // get Section
-                    SectionDAO sectionDAO = new SectionDAO(factory);
                     Section section = sectionDAO.getBySectionId(enrollment.getSectionId());
                     // if (section == null) {
                     //     // throw
                     //     throw new Exception("Section not found for sectionId: " + enrollment.getSectionId());
                     // }
-                    CourseDAO courseDAO = new CourseDAO(factory);
                     Course course = courseDAO.getCourseByCourseId(section.getCourseId());
                     // if (course == null) {
                     //     // throw
@@ -200,6 +249,7 @@ public class ServerSideController {
                     sections.add(section);
                 }
                 List<String> response = getCourseSectionList(sectionNames, courseNames);
+                System.out.println("Going to send!!");
                 out.writeObject(mapper.writeValueAsString(response));
                 out.flush();
                 return sections;
@@ -221,20 +271,18 @@ public class ServerSideController {
     }
 
     public String checkEnrollmentStatus(List<Section> parseSections,int num,int userId){
-        EnrollmentDAO enrollmentDAO = new EnrollmentDAO(factory);
         Integer sectionId = parseSections.get(num - 1).getSectionID();
         boolean isSubscribed = enrollmentDAO.checkNotify(sectionId, userId);
         String subscriptionStatus = isSubscribed ? "Subscribed" : "Unsubscribed";
         return subscriptionStatus;
     }
 
-    private void receiveEmailPreferenceFromClient(int sectionId,int userId) {
+    public void receiveEmailPreferenceFromClient(int sectionId,int userId) {
         // get result from client
         try {
             Integer num = (Integer) in.readObject();
             if (num != null) {
                 if (num == 1) {// 1-change, 0-change
-                    EnrollmentDAO enrollmentDAO = new EnrollmentDAO(factory);
                     // write in the db
                     enrollmentDAO.updateNotifyBySectionIdAndStudentId(sectionId, userId);
                     out.writeObject(mapper.writeValueAsString("1||" + "Update Successfully!"));
@@ -259,10 +307,9 @@ public class ServerSideController {
             // get result from client
             try {
                 Integer num = (Integer) in.readObject();
-                if (num != null) {
+                if (num != -1) {
                     // Default eligible
-                    EnrollmentDAO enrollmentDAO = new EnrollmentDAO(factory);
-                    Integer sectionId = parseSections.get(num - 1).getSectionID();
+                    Integer sectionId = parseSections.get(num).getSectionID();
                     boolean isSubscribed = enrollmentDAO.checkNotify(sectionId, userId);
                     String subscriptionStatus = isSubscribed ? "Subscribed" : "Unsubscribed";
                     // send to client
@@ -290,14 +337,11 @@ public class ServerSideController {
     }
 
     public List<Section> getInstructSection() {
-        SectionDAO sectionDAO = new SectionDAO(factory);
         return sectionDAO.list(user_id);
     }
 
     public List<Section> getNoFacultySection() {
-        CourseDAO courseDAO = new CourseDAO(factory);
         List<Course> courses = courseDAO.listByUniversity(universityID);
-        SectionDAO sectionDAO = new SectionDAO(factory);
         List<Section> ans = new ArrayList<>();
         for(Course c:courses){
             ans.addAll(sectionDAO.noInstructorSection(c.getCourseID()));
@@ -305,57 +349,51 @@ public class ServerSideController {
         return ans;
     }
 
-    public Section getChosenSection(List<Section> s) throws ClassNotFoundException {
+    public int getChosenSection(List<Section> s) throws ClassNotFoundException {
         try {
             String json = mapper.writeValueAsString(s);
             out.writeObject(json);
-            Section chosen = mapper.readValue((String) in.readObject(), Section.class);
+            int chosen = (int) in.readObject();
             return chosen;
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
+            // Section chosen = mapper.readValue((String) in.readObject(), Section.class);
+            // return chosen;
+        } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return -1;
+            // return null;
         }
     }
 
     public void setFaculty(Section s) {
-        SectionDAO sectionDAO = new SectionDAO(factory);
         s.setInstructorId(user_id);
         sectionDAO.update(s);
     }
 
-    private void receiveUpdateAttendanceResult(int lectureId, List<Integer> studentIds) {
+    public void receiveUpdateAttendanceResult(int lectureId, List<Integer> studentIds) {
         serverSideView.displayMessage("Waiting for attendance updated information....");
         try {
-            String choice = mapper.readValue((String) in.readObject(), String.class);
-            List<String> resList = new ArrayList<>();
-            if (choice == null) {
-                throw new IllegalStateException("Users send an invalid choice!");
-            } else {
-                int num = Integer.parseInt(choice.substring(0, choice.length()-1));
-                char status = choice.charAt(choice.length()-1);
-                int studentId = studentIds.get(num - 1);
-                AttendanceStatus attendanceStatus;
-                switch (status) {
-                    case 'A':
-                        attendanceStatus = AttendanceStatus.ABSENT;
-                        break;
-                    case 'T':
-                        attendanceStatus = AttendanceStatus.TARDY;
-                        break;
-                    case 'P':
-                        attendanceStatus = AttendanceStatus.PRESENT;
-                        break;
-                    default:
-                        throw new IllegalStateException("Database error: can not get correct attendance status!");
+            List<Integer> response = mapper.readValue((String) in.readObject(), new TypeReference<List<Integer>>() {
+            });
+            int num = response.get(0);
+            if(num==-1){
+                return;
+            }
+            int status = response.get(1);
+            int studentId = studentIds.get(num );
+            AttendanceStatus attendanceStatus = AttendanceStatus.UNRECORDED;
+            switch (status) {
+                case 1:
+                    attendanceStatus = AttendanceStatus.PRESENT;
+                    break;
+                case 2:
+                    attendanceStatus = AttendanceStatus.TARDY;
+                    break;
+                case 3:
+                    attendanceStatus = AttendanceStatus.ABSENT;
+                    break;
                 }
-                AttendanceDAO attendanceDAO = new AttendanceDAO(factory);
                 AttendanceRecord attendanceRecord = new AttendanceRecord(studentId, attendanceStatus, lectureId);
                 attendanceDAO.update(attendanceRecord);
-                resList.add("Updated successfully!");
-                out.writeObject(mapper.writeValueAsString(resList));
-                out.flush();
-            }
         } catch (Exception e) {
             try {
                 List<String> errorList = new ArrayList<>();
@@ -370,12 +408,11 @@ public class ServerSideController {
         }
     }
 
-    private void receiveReocrdAttendanceResult(int lectureId, List<Integer> studentIds) {
+    public void receiveReocrdAttendanceResult(int lectureId, List<Integer> studentIds) {
         serverSideView.displayMessage("Waiting for attendance recorded information....");
         try {
             List<Character> response = mapper.readValue((String) in.readObject(), new TypeReference<List<Character>>() {
             });
-            List<String> resList = new ArrayList<>();
             if (response == null) {
                 throw new IllegalStateException("Users send an invalid choice!");
             } else {
@@ -397,18 +434,20 @@ public class ServerSideController {
                         default:
                             throw new IllegalStateException("Database error: can not get correct attendance status!");
                     }
-                    AttendanceDAO attendanceDAO = new AttendanceDAO(factory);
                     AttendanceRecord attendanceRecord = new AttendanceRecord(studentId, attendanceStatus, lectureId);
-                    attendanceDAO.create(attendanceRecord);
+                    if(attendanceDAO.get(lectureId, studentId)==null){
+                        attendanceDAO.create(attendanceRecord);
+                    }
+                    else{
+                        attendanceDAO.update(attendanceRecord);
+                    }
                 }
-                resList.add("Recorded successfully!");
-                out.writeObject(mapper.writeValueAsString(resList));
-                out.flush();
             }
         } catch (Exception e) {
             try {
                 List<String> errorList = new ArrayList<>();
                 // send exception to client
+                System.out.println("what happens: "+e.getMessage());
                 errorList.add("ERROR");
                 errorList.add(e.getMessage());
                 out.writeObject(mapper.writeValueAsString(errorList));
@@ -421,25 +460,25 @@ public class ServerSideController {
     }
 
 
-    private void sendALLStudentsEnrolled(List<Integer> lectureIdList, int sectionId, int n) {
+    public void sendALLStudentsEnrolled(List<Integer> lectureIdList, int sectionId, int n) {
         serverSideView.displayMessage("Professor's choice of lecture received....");
         try {
-            Integer choice = mapper.readValue((String) in.readObject(), Integer.class);
+            // Integer choice = mapper.readValue((String) in.readObject(), Integer.class);
+            int choice = (int) in.readObject();
             List<String> resList = new ArrayList<>();
-            if (choice == null) {
-                throw new IllegalStateException("Users send an invalid choice!");
+            if (choice == -1) {
+                return;
             } else {
                 // get lectureId of the choice
                 int lectureId = getLectureIdSelected(lectureIdList, choice);
                 // get student list and attendance status
-                StudentDAO studentDAO = new StudentDAO(factory);
-                Map<Student, String> resMap;
-                if(n==2){
-                    resMap = studentDAO.getAttendanceByLectureId(lectureId);
-                }
-                else{
-                    resMap = studentDAO.getStudentsBySectionID(sectionId);
-                }
+                Map<Student, String> resMap = studentDAO.getAttendanceByLectureId(sectionId,lectureId);
+                // if(n==2){
+                //     resMap = studentDAO.getAttendanceByLectureId(lectureId);
+                // }
+                // else{
+                //     resMap = studentDAO.getStudentsBySectionID(sectionId);
+                // }
                 if (resMap.isEmpty()) {
                     throw new IllegalStateException("Database error: can not get student list!");
                 } else {
@@ -478,7 +517,7 @@ public class ServerSideController {
         }
     }
 
-    private void writeRecordsToCSV(HashMap<Integer,List<AttendanceReport>> reports){
+    public void writeRecordsToCSV(HashMap<Integer,List<AttendanceReport>> reports){
         StringBuffer whole = new StringBuffer();
         String header = "Student ID,Student Name,Date,Status,Score";
         whole.append(header+"\n");
@@ -502,19 +541,20 @@ public class ServerSideController {
         }
     }
 
-    private void sendAttendanceRecord(Map<Integer, String> map) {
+    public void sendAttendanceRecord(Map<Integer, String> map) {
         serverSideView.displayMessage("Professor's choice of setcion received....");
         try {
             Integer choice = (int) in.readObject();
+            if(choice==-1){
+                return;
+            }
             // get sectionId of the choice
             int sectionId = getSectionIdSelected(map.keySet(), choice);
-            StudentDAO studentDAO = new StudentDAO(factory);
             Map<Student, String> students = studentDAO.getStudentsBySectionID(sectionId);
             HashSet<Integer> studentID = new HashSet<>();
             for(Student s:students.keySet()){
                 studentID.add(s.getStudentID());
             }
-            LectureDAO lectureDAO = new LectureDAO(factory);
             List<Lecture> lectures = lectureDAO.getLecturesBySectionId(sectionId);
             if (lectures.isEmpty()) {
                 throw new IllegalStateException("Database error: can not get lectures!");
@@ -537,51 +577,17 @@ public class ServerSideController {
         }
     }
 
-    //private void sendAttendanceFILE(int sectionId, List<Integer> lectureIdList) {
-        // serverSideView.displayMessage("Professor's choice of lecture received....");
-        // try {
-        //     Integer choice = mapper.readValue((String) in.readObject(), Integer.class);
-        //     if (choice == null) {
-        //         throw new IllegalStateException("Users send an invalid choice!");
-        //     } else {
-        //         // get lectureId of the choice
-        //         int lectureId = getLectureIdSelected(lectureIdList, choice);
-        //         // get student list and attendance status
-        //         List<AttendanceReport> attendanceReports = getAttendanceReportForLecture(lectureId);
-        //         PersistenceManager persistenceManager = new PersistenceManager();
-        //         persistenceManager.writeRecordsToCSV(lectureId + "-attendance-report", attendanceReports);
-        //         // send file to client
-        //         File fileToSend = new File("export/" + lectureId + "-attendance-report" + ".csv");
-        //         try (FileInputStream fileInputStream = new FileInputStream(fileToSend)) {
-
-        //             out.writeObject(fileToSend);
-        //             out.flush();
-        //             serverSideView.displayMessage("File sent.");
-        //         }
-        //     }
-        // } catch (Exception e) {
-        //     try {
-        //         List<String> errorList = new ArrayList<>();
-        //         // send exception to client
-        //         errorList.add("ERROR");
-        //         errorList.add(e.getMessage());
-        //         out.writeObject(mapper.writeValueAsString(errorList));
-        //         out.flush();
-        //     } catch (IOException ex) {
-        //         ex.printStackTrace();
-        //     }
-        // }
-    //}
-
     private void sendLectureListBySectionId(Map<Integer, String> map, int n) throws ClassNotFoundException, IOException {
         // receive choice (int) from client
         serverSideView.displayMessage("Professor's choice of setcion received....");
         try {
             Integer choice = (int) in.readObject();
+            if(choice==-1){
+                return;
+            }
             List<String> resList = new ArrayList<>();
             // get sectionId of the choice
             int sectionId = getSectionIdSelected(map.keySet(), choice);
-            LectureDAO lectureDAO = new LectureDAO(factory);
             List<Lecture> lectures = lectureDAO.getLecturesBySectionId(sectionId);
             if (lectures.isEmpty()) {
                 throw new IllegalStateException("Database error: can not get lectures!");
@@ -626,8 +632,8 @@ public class ServerSideController {
         try {
             Map<Integer, String> namesWithSectionId = sectionDAO.getCourseAndSectionNamesByInstructorId(userId);
             List<String> resList = new ArrayList<>();
-            if (namesWithSectionId.isEmpty()) {
-                throw new IllegalStateException("Failed to query database!");
+            if (namesWithSectionId==null) {
+                throw new IllegalStateException("Failed to query database, or you dont have any Course!");
             } else {
                 for (Integer key : namesWithSectionId.keySet()) {
                     String value = namesWithSectionId.get(key);
@@ -667,7 +673,7 @@ public class ServerSideController {
         int lectureId = -1;
         int count = 0;
         for (Integer id : lectureIdList) {
-            if (count == choice - 1) {
+            if (count == choice) {
                 lectureId = id;
             }
             count++;
@@ -680,7 +686,7 @@ public class ServerSideController {
         int count = 0;
         int sectionId = -1;
         for (Integer key : mapset) {
-            if (count == choice - 1) {
+            if (count == choice) {
                 sectionId = key;
             }
             count++;
@@ -689,13 +695,11 @@ public class ServerSideController {
     }
 
     public HashMap<Integer,AttendanceReport> getAttendanceReportForLecture(int lectureId,HashSet<Integer> students) {
-        StudentDAO studentDAO = new StudentDAO(factory);
         // Map<Student, String> resMap = studentDAO.getAttendanceByLectureId(lectureId);
         // if (resMap == null) {
         //     //throw new IllegalStateException("No student data found for lecture with ID: " + lectureId);
         //     return null;
         // }
-        LectureDAO lectureDAO = new LectureDAO(factory);
         Lecture lecture = lectureDAO.get(lectureId);
         // if (lecture == null) {
         //     throw new IllegalArgumentException("Lecture with ID " + lectureId + " not found.");
@@ -706,7 +710,6 @@ public class ServerSideController {
 
         String dateStr = String.format("%04d-%02d-%02d", year, month, day);
 
-        AttendanceDAO attendanceDAO = new AttendanceDAO(factory);
         List<AttendanceRecord> attendanceRecords = attendanceDAO.getAllAttendancesForLecture(lectureId);
         // if (attendanceRecords.isEmpty()) {
         //     // throw new IllegalStateException("No attendance records found for lecture with ID: " + lectureId);
@@ -733,20 +736,6 @@ public class ServerSideController {
                 attendanceReports.put(id,new AttendanceReport(attendanceRecord, legal_name, dateStr));
             }
         }
-        // for (Student student : resMap.keySet()) {
-        //     int studentId = student.getStudentID();
-        //     for (AttendanceRecord attendanceRecord : attendanceRecords) {
-        //         int studentId2 = attendanceRecord.getStudentId();
-
-        //         if (studentId == studentId2) {
-        //             attendanceReports.add(new AttendanceReport(attendanceRecord, student.getLegalName(), dateStr));
-        //         }
-        //     }
-        // }
-        // if (attendanceReports.isEmpty()) {
-        //     throw new IllegalStateException(
-        //             "Failed to generate report for lecture with ID: " + lectureId);
-        // }
         return attendanceReports;
     }
 
@@ -756,20 +745,21 @@ public class ServerSideController {
             // get result from client (choice)
             try {
                 Integer num = (Integer) in.readObject();
-                if (num != null) {
+                if (num != -1) {
                     // Default eligible
                     // assume num is eligible
                     // sending report function
                     // ...
-                    Integer sectionId = parseSections.get(num - 1).getSectionID();
+                    Integer sectionId = parseSections.get(num).getSectionID();
 
                     // loop up all lectures for this setcion
                     sendEmailToClient(sectionId);
 
                     // finished sending
-                } else {
-                    out.writeObject("0||" + "Invalid request format (please input a number)!");
-                }
+                } 
+                // else {
+                //     out.writeObject("0||" + "Invalid request format (please input a number)!");
+                // }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -777,11 +767,6 @@ public class ServerSideController {
     }
 
     public void sendEmailToClient(int sectionId) throws IOException, GeneralSecurityException {
-        LectureDAO lectureDAO = new LectureDAO(factory);
-        AttendanceDAO attendanceDAO = new AttendanceDAO(factory);
-        StudentDAO studentDAO = new StudentDAO(factory);
-        SectionDAO sectionDAO = new SectionDAO(factory);
-        CourseDAO courseDAO = new CourseDAO(factory);
         List<Lecture> lectures = lectureDAO.getLecturesBySectionId(sectionId);
         if (lectures.isEmpty()) {
             throw new IllegalStateException("No lectures found for section with ID: " + sectionId);
@@ -800,14 +785,20 @@ public class ServerSideController {
             }
             String statuString = attendanceRecord.getStatus().toString();
             float f = 0;
-            if(attendanceRecord!=null){
-                if(attendanceRecord.getStatus()==AttendanceStatus.PRESENT){
-                    f=1;
-                }
-                else if (attendanceRecord.getStatus()==AttendanceStatus.TARDY){
-                    f+=0.8;
-                }
+            if(attendanceRecord.getStatus()==AttendanceStatus.PRESENT){
+                f=1;
             }
+            else if (attendanceRecord.getStatus()==AttendanceStatus.TARDY){
+                f+=0.8;
+            }
+            // if(attendanceRecord!=null){
+            //     if(attendanceRecord.getStatus()==AttendanceStatus.PRESENT){
+            //         f=1;
+            //     }
+            //     else if (attendanceRecord.getStatus()==AttendanceStatus.TARDY){
+            //         f+=0.8;
+            //     }
+            // }
             result += String.format("Lecture ID: %d, Date: %s, Status: %s,Score %f", lectureId, dateStr, statuString,f) + "\n";
         }
 
@@ -837,12 +828,7 @@ public class ServerSideController {
 
 
     public void sendWeeklyReport() throws IOException, GeneralSecurityException {
-        // assume we can get date
-        StudentDAO studentDAO = new StudentDAO(factory);
-        EnrollmentDAO enrollmentDAO = new EnrollmentDAO(factory);
         List<Student> studentList = studentDAO.list();
-        AttendanceDAO attendanceDAO = new AttendanceDAO(factory);
-        LectureDAO lectureDAO = new LectureDAO(factory);
 
         if (studentList.isEmpty()) {
             serverSideView.displayMessage("Please notice admin user to import student data first!");
@@ -897,7 +883,6 @@ public class ServerSideController {
 
                 // send Email
                 serverSideView.displayMessage("Sending weekly report to " + student.getEmail() + "...");
-                GmailSetup gmailSetup = new GmailSetup();
                 gmailSetup.sendEmail(student.getEmail(),
                         "Weekly Attendance Report for " + student.getDisplayName(),
                         "Dear " + student.getDisplayName() + "\n" + "Here is your attendance report for this week.\n"
