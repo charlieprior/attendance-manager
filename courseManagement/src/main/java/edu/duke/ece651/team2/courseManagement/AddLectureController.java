@@ -14,7 +14,7 @@ public class AddLectureController extends UpdateSectionSuperController {
     @FXML DatePicker datePicker;
     @FXML Button AddButton;
 
-    AddLectureController(CourseManagement model) {
+    AddLectureController(CourseManagementInterface model) {
         super(model, "/views/addLecture.fxml");
         setAddButton();
     }

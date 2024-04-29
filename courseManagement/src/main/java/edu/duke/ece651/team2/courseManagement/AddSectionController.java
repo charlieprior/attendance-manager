@@ -17,7 +17,7 @@ public class AddSectionController extends UpdateSectionSuperController {
     @FXML
     ComboBox<Professor> InstructorSelector;
 
-    AddSectionController(CourseManagement model) {
+    AddSectionController(CourseManagementInterface model) {
         super(model, "/views/addSection.fxml");
 
         setInstructorSelector();

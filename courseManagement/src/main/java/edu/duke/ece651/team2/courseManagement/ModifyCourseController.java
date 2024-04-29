@@ -8,7 +8,7 @@ public class ModifyCourseController extends UpdateCourseSuperController {
     @FXML TextField CourseNameField;
     @FXML Button ConfirmButton;
 
-    ModifyCourseController(CourseManagement model) {
+    ModifyCourseController(CourseManagementInterface model) {
         super(model, "/views/modifyCourse.fxml");
 
         setConfirmButton();

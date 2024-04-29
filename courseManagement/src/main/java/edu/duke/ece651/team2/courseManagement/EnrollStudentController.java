@@ -10,7 +10,7 @@ public class EnrollStudentController extends UpdateSectionSuperController {
     @FXML ComboBox<Student> StudentSelector;
     @FXML Button EnrollButton;
 
-    EnrollStudentController(CourseManagement model) {
+    EnrollStudentController(CourseManagementInterface model) {
         super(model, "/views/enrollStudent.fxml");
 
         setStudentSelector();

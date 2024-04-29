@@ -12,7 +12,7 @@ import java.util.List;
 abstract public class UpdateCourseSuperController extends SuperController {
     @FXML
     ComboBox<Course> CourseSelector;
-    UpdateCourseSuperController(CourseManagement model, String fxml) {
+    UpdateCourseSuperController(CourseManagementInterface model, String fxml) {
         super(model, fxml);
 
         setCourses();

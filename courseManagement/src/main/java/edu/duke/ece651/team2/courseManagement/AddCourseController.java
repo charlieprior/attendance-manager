@@ -14,7 +14,7 @@ public class AddCourseController extends SuperController {
     @FXML
     TextField CourseNameField;
 
-    AddCourseController(CourseManagement model) {
+    AddCourseController(CourseManagementInterface model) {
         super(model, "/views/addCourse.fxml");
         setConfirmButton();
     }

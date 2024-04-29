@@ -21,9 +21,9 @@ public class MainMenuController extends AnchorPane {
     @FXML Button RemoveStudentButton;
     @FXML Text welcomeText;
 
-    private final CourseManagement model;
+    private final CourseManagementInterface model;
 
-    public MainMenuController(CourseManagement model) {
+    public MainMenuController(CourseManagementInterface model) {
         this.model = model;
         FXMLLoader loader = new FXMLLoader(getClass().getResource(
                 "/views/menu.fxml"));

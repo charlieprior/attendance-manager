@@ -12,7 +12,7 @@ public class UnenrollStudentController extends UpdateSectionSuperController {
     @FXML
     Button UnenrollButton;
 
-    UnenrollStudentController(CourseManagement model) {
+    UnenrollStudentController(CourseManagementInterface model) {
         super(model, "/views/unenrollStudent.fxml");
         setUnenrollButton();
     }

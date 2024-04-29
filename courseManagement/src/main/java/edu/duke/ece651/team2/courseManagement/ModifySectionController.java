@@ -15,7 +15,7 @@ public class ModifySectionController extends UpdateSectionSuperController {
     @FXML
     TextField SectionNameField;
 
-    ModifySectionController(CourseManagement model) {
+    ModifySectionController(CourseManagementInterface model) {
         super(model, "/views/modifySection.fxml");
 
         setConfirmButton();

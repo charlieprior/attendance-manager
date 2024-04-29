@@ -17,9 +17,9 @@ public abstract class SuperController extends AnchorPane {
     @FXML
     Button CancelButton;
 
-    protected final CourseManagement model;
+    protected final CourseManagementInterface model;
 
-    SuperController(CourseManagement model, String fxml) {
+    SuperController(CourseManagementInterface model, String fxml) {
         this.model = model;
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(

@@ -26,7 +26,7 @@ public class BulkEnrollStudentsController extends UpdateSectionSuperController {
 
     File selectedFile;
 
-    BulkEnrollStudentsController(CourseManagement model) {
+    BulkEnrollStudentsController(CourseManagementInterface model) {
         super(model, "/views/bulkAddStudents.fxml");
 
         fileChooser = new FileChooser();

@@ -10,7 +10,7 @@ public class DeleteCourseController extends UpdateCourseSuperController {
     @FXML
     Button ConfirmButton;
 
-    DeleteCourseController(CourseManagement model) {
+    DeleteCourseController(CourseManagementInterface model) {
         super(model, "/views/deleteCourse.fxml");
 
         setConfirmButton();

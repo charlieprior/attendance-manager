@@ -14,7 +14,7 @@ public abstract class UpdateSectionSuperController extends UpdateCourseSuperCont
 
     @FXML ComboBox<Section> SectionSelector;
 
-    UpdateSectionSuperController(CourseManagement model, String fxml) {
+    UpdateSectionSuperController(CourseManagementInterface model, String fxml) {
         super(model, fxml);
     }
 
