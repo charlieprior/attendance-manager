@@ -9,12 +9,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -75,10 +77,13 @@ class AddCourseControllerTest extends ApplicationTest {
     }
 
     @Test
-    public void listAllNodes() {
-        Button confirmButton = lookup("#ConfirmButton").queryButton();
-        Scene scene = confirmButton.getScene();
-        clickOn("#ConfirmButton");
-        printNodes(scene.getRoot(), "");
+    public void listAllWindows() {
+        List<Window> windows = Window.getWindows();
+        for (Window window : windows) {
+            if (window instanceof Stage) {
+                Stage stage = (Stage) window;
+                System.out.println("Stage Title: " + stage.getTitle() + ", Scene: " + stage.getScene());
+            }
+        }
     }
 }
