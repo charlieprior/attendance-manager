@@ -4,7 +4,6 @@ import edu.duke.ece651.team2.shared.Course;
 import edu.duke.ece651.team2.shared.Professor;
 import edu.duke.ece651.team2.shared.Section;
 import edu.duke.ece651.team2.shared.University;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -12,13 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.testfx.api.FxAssert;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.base.WindowMatchers;
-import org.testfx.util.WaitForAsyncUtils;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AddSectionControllerTest extends ApplicationTest {
     University university = new University("Duke", true);

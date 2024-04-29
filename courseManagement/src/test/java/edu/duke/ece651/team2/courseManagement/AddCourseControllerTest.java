@@ -3,14 +3,12 @@ package edu.duke.ece651.team2.courseManagement;
 
 import edu.duke.ece651.team2.shared.Course;
 import edu.duke.ece651.team2.shared.University;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.testfx.api.FxAssert;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.base.WindowMatchers;
-import org.testfx.util.WaitForAsyncUtils;
 
 import java.util.HashSet;
 import java.util.Set;

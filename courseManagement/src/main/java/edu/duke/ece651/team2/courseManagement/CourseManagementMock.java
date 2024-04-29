@@ -13,6 +13,7 @@ public class CourseManagementMock implements CourseManagementInterface {
     List<Course> courses = new ArrayList<>();
     List<Professor> professors = new ArrayList<>();
     List<Section> sections = new ArrayList<>();
+    List<Lecture> lectures = new ArrayList<>();
 
     public CourseManagementMock(University university) {
         this.university = university;
@@ -124,7 +125,11 @@ public class CourseManagementMock implements CourseManagementInterface {
 
     @Override
     public void addLecture(Lecture lecture) {
+        lectures.add(lecture);
+    }
 
+    public List<Lecture> getLectures() {
+        return lectures;
     }
 
     @Override
