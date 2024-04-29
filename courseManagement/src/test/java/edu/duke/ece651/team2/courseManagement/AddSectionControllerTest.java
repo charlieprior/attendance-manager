@@ -6,6 +6,7 @@ import edu.duke.ece651.team2.shared.Section;
 import edu.duke.ece651.team2.shared.University;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
@@ -33,22 +34,22 @@ class AddSectionControllerTest extends ApplicationTest {
         course.setCourseID(0);
         model.addCourse(course);
 
-        Scene scene = new Scene(new AddCourseController(model), 600, 500);
+        Scene scene = new Scene(new AddSectionController(model), 600, 500);
         stage.setScene(scene);
         stage.show();
     }
 
     @Test
     public void testAddSection() {
-        Platform.runLater(() -> {
             clickOn("#CourseSelector");
-            clickOn("NewCourse");
+            type(KeyCode.DOWN);
+            type(KeyCode.ENTER);
             clickOn("#InstructorSelector");
-            clickOn("Professor");
+            type(KeyCode.DOWN);
+            type(KeyCode.ENTER);
             clickOn("#SectionNameField");
             write("SectionName");
-        });
-        WaitForAsyncUtils.waitForFxEvents();
+            clickOn("#ConfirmButton");
 
         Set<String> expected = new HashSet<>();
         expected.add("SectionName");

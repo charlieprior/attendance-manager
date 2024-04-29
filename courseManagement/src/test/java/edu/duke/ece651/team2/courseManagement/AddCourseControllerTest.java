@@ -1,3 +1,4 @@
+
 package edu.duke.ece651.team2.courseManagement;
 
 import edu.duke.ece651.team2.shared.Course;
@@ -32,12 +33,9 @@ class AddCourseControllerTest extends ApplicationTest {
 
     @Test
     public void testAddCourse() {
-        Platform.runLater(() -> {
             clickOn("#CourseNameField");
             write("CourseName");
             clickOn("#ConfirmButton");
-        });
-        WaitForAsyncUtils.waitForFxEvents();
 
         Set<String> expected = new HashSet<>();
         expected.add("CourseName");
