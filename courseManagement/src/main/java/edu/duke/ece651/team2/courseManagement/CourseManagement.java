@@ -63,6 +63,11 @@ public class CourseManagement {
         enrollmentDAO.create(enrollment);
     }
 
+    public void addStudentToSection(Integer studentId, Section section) {
+        Enrollment enrollment = new Enrollment(section.getSectionID(), studentId, true);
+        enrollmentDAO.create(enrollment);
+    }
+
     public Section getSection(Integer sectionId) {
         return sectionDAO.get(sectionId);
     }

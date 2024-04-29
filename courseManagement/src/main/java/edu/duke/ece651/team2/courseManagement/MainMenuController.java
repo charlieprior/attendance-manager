@@ -93,7 +93,7 @@ public class MainMenuController extends AnchorPane {
 
     private void setBulkAddStudentsButton() {
         BulkAddStudentsButton.setOnAction(actionEvent -> {
-            BulkAddStudentsButton.getScene().setRoot(new BulkAddStudentsController(model));
+            BulkAddStudentsButton.getScene().setRoot(new BulkEnrollStudentsController(model));
         });
     }
 
