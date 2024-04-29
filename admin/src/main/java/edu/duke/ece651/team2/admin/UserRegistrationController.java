@@ -206,7 +206,7 @@ public class UserRegistrationController {
                 (!Objects.equals(credentials[0], "") && !Objects.equals(credentials[1], "") &&
                 !Objects.equals(credentials[2], "") && !Objects.equals(credentials[3], "")
                         && !Objects.equals(universityComboBox.getValue(), null))){
-            showAlert("Sign-Up Successful!");
+            showAlert("Sign-Up Successful!\n" + "User ID is: " + res);
         }
         else if (Objects.equals(universityComboBox.getValue(), null)){
             showAlert("Sign-Up Failed, please University Selection!");
@@ -228,7 +228,7 @@ public class UserRegistrationController {
                 (!Objects.equals(credentials[0], "") && !Objects.equals(credentials[1], "")
                         && !Objects.equals(credentials[2], "")
                         && !Objects.equals(universityComboBox.getValue(), null))){
-            showAlert("Sign-Up Successful!");
+            showAlert("Sign-Up Successful!\n" + "User ID is: " + res);
         }
         else if (Objects.equals(universityComboBox.getValue(), null)){
             showAlert("Sign-Up Failed, please University Selection!");
