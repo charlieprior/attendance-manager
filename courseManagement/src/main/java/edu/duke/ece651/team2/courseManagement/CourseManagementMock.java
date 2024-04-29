@@ -109,7 +109,7 @@ public class CourseManagementMock implements CourseManagementInterface {
 
     @Override
     public List<Professor> listProfessors() {
-        return null;
+        return professors;
     }
 
     @Override
