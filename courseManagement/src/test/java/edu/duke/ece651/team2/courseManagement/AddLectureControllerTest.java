@@ -5,7 +5,9 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
+import org.testfx.api.FxAssert;
 import org.testfx.framework.junit5.ApplicationTest;
+import org.testfx.matcher.base.WindowMatchers;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -31,7 +33,7 @@ class AddLectureControllerTest extends ApplicationTest {
         section.setSectionID(0);
         model.addSection(section);
 
-        Scene scene = new Scene(new AddSectionController(model), 600, 500);
+        Scene scene = new Scene(new AddLectureController(model), 600, 500);
         stage.setScene(scene);
         stage.show();
     }
@@ -60,6 +62,25 @@ class AddLectureControllerTest extends ApplicationTest {
         assertEquals(expectedYear, new HashSet<>(lectures.stream().map(Lecture::getYear).collect(Collectors.toSet())));
         assertEquals(expectedMonth, new HashSet<>(lectures.stream().map(Lecture::getMonth).collect(Collectors.toSet())));
         assertEquals(expectedDay, new HashSet<>(lectures.stream().map(Lecture::getDay).collect(Collectors.toSet())));
+    }
+
+    @Test
+    public void testNullSection() {
+        clickOn("#datePicker");
+        write("4/20/1969");
+        clickOn("#AddButton");
+        FxAssert.verifyThat(window("Error"), WindowMatchers.isShowing());
+    }
+
+    @Test
+    public void testNullDate() {
+        clickOn("#CourseSelector");
+        type(KeyCode.DOWN);
+        type(KeyCode.ENTER);
+        clickOn("#SectionSelector");
+        type(KeyCode.DOWN);
+        type(KeyCode.ENTER);
+        FxAssert.verifyThat(window("Error"), WindowMatchers.isShowing());
     }
 
 }
