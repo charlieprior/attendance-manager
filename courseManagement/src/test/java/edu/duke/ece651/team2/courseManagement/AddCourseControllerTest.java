@@ -4,6 +4,8 @@ import edu.duke.ece651.team2.shared.Course;
 import edu.duke.ece651.team2.shared.University;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.stage.Stage;
 import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
@@ -39,6 +41,22 @@ class AddCourseControllerTest extends ApplicationTest {
 
         Set<String> expected = new HashSet<>();
         expected.add("CourseName");
-        assertEquals("CourseName", new HashSet<>(model.listCourses().stream().map(Course::getName).collect(Collectors.toSet())));
+        assertEquals(expected, new HashSet<>(model.listCourses().stream().map(Course::getName).collect(Collectors.toSet())));
+    }
+
+    @Test
+    public void testEmptyName() {
+        Platform.runLater(() -> {
+            clickOn("#ConfirmButton");
+
+            interact(() -> {
+                ButtonBar buttonBar = lookup(".button-bar").query();
+                Button okButton = (Button) buttonBar.getButtons().stream()
+                        .filter(button -> button instanceof Button && "OK".equals(((Button) button).getText()))
+                        .findFirst()
+                        .orElseThrow(() -> new RuntimeException("OK button not found"));
+                clickOn(okButton);
+            });
+        });
     }
 }
