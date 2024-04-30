@@ -72,6 +72,9 @@ public class CourseManagementMock implements CourseManagementInterface {
 
     @Override
     public boolean addStudentToSection(Section section, Student student) {
+        if(student.getLegalName().equals("Duplicate")) {
+            return false;
+        }
         enrollments.add(new Pair<>(section, student));
         return true;
     }
@@ -148,6 +151,7 @@ public class CourseManagementMock implements CourseManagementInterface {
 
     @Override
     public List<Student> getAllStudentsInUniversity() {
-        return Collections.singletonList(new Student("Name", "email", university.getId(), "displayName"));
+        return Arrays.asList(new Student("Name", "email", university.getId(), "displayName"),
+                new Student("Duplicate", "email", university.getId(), "displayName"));
     }
 }

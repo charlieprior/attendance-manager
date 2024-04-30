@@ -77,4 +77,20 @@ class EnrollStudentControllerTest extends ApplicationTest {
         clickOn("#EnrollButton");
         FxAssert.verifyThat(window("Error"), WindowMatchers.isShowing());
     }
+
+    @Test
+    public void testDuplicate() {
+        clickOn("#CourseSelector");
+        type(KeyCode.DOWN);
+        type(KeyCode.ENTER);
+        clickOn("#SectionSelector");
+        type(KeyCode.DOWN);
+        type(KeyCode.ENTER);
+        clickOn("#StudentSelector");
+        type(KeyCode.DOWN);
+        type(KeyCode.DOWN);
+        type(KeyCode.ENTER);
+        clickOn("#EnrollButton");
+        FxAssert.verifyThat(window("Error"), WindowMatchers.isShowing());
+    }
 }
