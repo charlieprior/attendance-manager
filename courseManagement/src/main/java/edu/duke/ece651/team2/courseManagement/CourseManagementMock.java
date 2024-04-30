@@ -1,20 +1,27 @@
 package edu.duke.ece651.team2.courseManagement;
 
 import edu.duke.ece651.team2.shared.*;
+import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class CourseManagementMock implements CourseManagementInterface {
     private final University university;
     private final MainMenuController mainMenuController;
 
-    List<Course> courses = new ArrayList<Course>();
+    List<Course> courses = new ArrayList<>();
+    List<Professor> professors = new ArrayList<>();
+    List<Section> sections = new ArrayList<>();
+    List<Lecture> lectures = new ArrayList<>();
+    List<Pair<Section, Student>> enrollments = new ArrayList<>();
 
     public CourseManagementMock(University university) {
         this.university = university;
         this.mainMenuController = new MainMenuController(this);
     }
+
+    public void addProfessor(Professor professor) { professors.add(professor); }
 
     @Override
     public MainMenuController getMainMenuController() {
@@ -38,12 +45,12 @@ public class CourseManagementMock implements CourseManagementInterface {
 
     @Override
     public void deleteAllCourses() {
-
+        courses.clear();
     }
 
     @Override
     public void removeCourse(Course course) {
-
+        courses.remove(course);
     }
 
     @Override
@@ -53,21 +60,28 @@ public class CourseManagementMock implements CourseManagementInterface {
 
     @Override
     public void updateCourse(Course course) {
-
+        // nothing to do, this is purely to update in the DAO
     }
 
     @Override
     public List<Section> getSections(Course course) {
-        return null;
+        return sections.stream()
+                .filter(section -> section.getCourseId().equals(course.getCourseID()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public boolean addStudentToSection(Section section, Student student) {
-        return false;
+        if(student.getLegalName().equals("Duplicate")) {
+            return false;
+        }
+        enrollments.add(new Pair<>(section, student));
+        return true;
     }
 
     @Override
     public void addStudentToSection(Integer studentId, Section section) {
+        // unused
     }
 
     @Override
@@ -97,12 +111,18 @@ public class CourseManagementMock implements CourseManagementInterface {
 
     @Override
     public List<Student> getStudentsBySection(Section section) {
-        return null;
+        List<Student> ret = new ArrayList<>();
+        for(Pair<Section, Student> p : enrollments) {
+            if(p.getKey().equals(section)) {
+                ret.add(p.getValue());
+            }
+        }
+        return ret;
     }
 
     @Override
     public List<Professor> listProfessors() {
-        return null;
+        return professors;
     }
 
     @Override
@@ -112,12 +132,16 @@ public class CourseManagementMock implements CourseManagementInterface {
 
     @Override
     public void addSection(Section section) {
-
+        sections.add(section);
     }
 
     @Override
     public void addLecture(Lecture lecture) {
+        lectures.add(lecture);
+    }
 
+    public List<Lecture> getLectures() {
+        return lectures;
     }
 
     @Override
@@ -127,6 +151,7 @@ public class CourseManagementMock implements CourseManagementInterface {
 
     @Override
     public List<Student> getAllStudentsInUniversity() {
-        return null;
+        return Arrays.asList(new Student("Name", "email", university.getId(), "displayName"),
+                new Student("Duplicate", "email", university.getId(), "displayName"));
     }
 }
