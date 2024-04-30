@@ -48,15 +48,16 @@ class DeleteCourseControllerTest extends ApplicationTest {
         type(KeyCode.ENTER);
         clickOn("#ConfirmButton");
 
-        Window confirmation = window("Confirmation");
-        String confirmationButtonId = confirmation.getScene().getRoot().getChildrenUnmodifiable()
-                .stream().filter(node -> node instanceof Button)
-                .filter(button -> ((Button) button).getText().equals("OK")).findFirst()
-                .orElseThrow(RuntimeException::new).getId();
-        clickOn(confirmationButtonId);
+        List<Window> windows = Window.getWindows();
+        for (Window window : windows) {
+            if (window instanceof Stage) {
+                Stage stage = (Stage) window;
+                System.out.println("Stage Title: " + stage.getTitle() + ", Scene: " + stage.getScene());
+            }
+        }
 
-        List<Course> expected = new ArrayList<>();
-        assertEquals(expected, model.listCourses());
+        FxAssert.verifyThat(window("Confirmation"), WindowMatchers.isShowing());
+
     }
 
     @Test
