@@ -47,9 +47,12 @@ public class ButtonController {
         this.controller = controller;
     }
 
+    public void setlogInFieldID(TextField logTextField){
+        this.logInFieldID = logTextField;
+    }
 
-    public void setGeneralController(GeneralController controller){
-        this.controller = controller;
+    public void setlogInFieldPassword(TextField logInFieldPassword){
+        this.logInFieldPassword = logInFieldPassword;
     }
 
     public void StudentLogIn(Object source){
@@ -157,6 +160,15 @@ public class ButtonController {
     @FXML
     public void onReturnFaculty(ActionEvent ae) throws IOException{
         controller.sendObject(-1);
+        Object source = ae.getSource();
+        ProfessorLogIn(source);
+    }
+
+    @FXML
+    public void onReturnFacultyStringList(ActionEvent ae) throws JsonProcessingException, IOException{
+        List<String> obj = new ArrayList<>();
+        obj.add("-1");
+        controller.sendObject(obj);
         Object source = ae.getSource();
         ProfessorLogIn(source);
     }

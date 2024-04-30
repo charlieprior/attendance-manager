@@ -50,4 +50,29 @@ class ProfessorDAOTest {
     //    Integer id = professorDAO.getUniversityID(2);
     //    assertEquals(1, id);
     // }
+
+    @Test
+    void testListByUniversity(){
+        professorDAO.deleteAll();
+        Professor p1 = new Professor("p1", "p1@duke.edu", 1);
+        Professor p2 = new Professor("p2", "p2@school.edu", 2);
+        Professor p3 = new Professor("p3", "p3@duke.edu", 1);
+        professorDAO.create(p1);
+        professorDAO.create(p2);
+        professorDAO.create(p3);
+        List<Professor> ps = professorDAO.listByUniversity(1);
+        assertEquals(2, ps.size());
+        assertEquals("p1",ps.get(0).getName());
+        assertEquals("p3",ps.get(1).getName());
+        professorDAO.deleteAll();
+    }
+
+    @Test
+    void testGetUniversityID(){
+        Professor p1 = new Professor("p1", "p1@duke.edu", 2);
+        professorDAO.create(p1);
+
+        assertEquals(2, professorDAO.getUniversityID(p1.getProfessorID()));
+        professorDAO.remove(p1);
+    }
 }

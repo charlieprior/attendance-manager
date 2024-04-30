@@ -134,7 +134,7 @@ public class UserRegistrationViewTest {
         userRegistrationView1.universityDAO.remove(university);
     }
 
-  @Test
+    @Test
     public void testControllerMethods() throws IOException {
         UserRegistration userRegistration = new UserRegistration();
 

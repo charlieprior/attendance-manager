@@ -3,7 +3,10 @@ package edu.duke.ece651.team2.server;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -23,6 +26,7 @@ public class CourseDAOTest {
         // Insert the course into the database
         courseDAO.create(course);
 
+        assertThrows(IllegalArgumentException.class, ()->courseDAO.create(course));
         // Retrieve the course from the database using its ID
         Course retrievedCourse = courseDAO.get(course.getCourseID());
 
@@ -40,6 +44,8 @@ public class CourseDAOTest {
     public void testupdate(){
         Course course = new Course("Test Course", 1);
 
+        assertThrows(IllegalArgumentException.class, ()->courseDAO.update(course));
+        assertThrows(IllegalArgumentException.class, ()->courseDAO.remove(course));
         // Insert the course into the database
         courseDAO.create(course);
 
@@ -60,6 +66,31 @@ public class CourseDAOTest {
         
         courseDAO.deleteAll();
         assertEquals(0, courseDAO.list().size());
+    }
+
+    @Test
+    void testListByUniversity(){
+        Course course1 = new Course("Test Course 1", 1);
+        Course course2 = new Course("Test Course 2", 2);
+        Course course3 = new Course("Test Course 3", 1);
+        courseDAO.create(course1);
+        courseDAO.create(course2);
+        courseDAO.create(course3);
+        List<Course> courses = courseDAO.listByUniversity(1);
+        assertEquals(2, courses.size());
+        assertEquals("Test Course 1",courses.get(0).getName());
+        assertEquals("Test Course 3",courses.get(1).getName());
+        courseDAO.deleteAll();
+    }
+
+    @Test
+    void testGetCourseByCourseId(){
+        Course course1 = new Course("Test Course 1", 1);
+        Course course2 = new Course("Test Course 2", 2);
+        courseDAO.create(course1);
+        courseDAO.create(course2);
+        assertEquals("Test Course 1", courseDAO.getCourseByCourseId(course1.getCourseID()).getName());
+        courseDAO.deleteAll();
     }
     
 }

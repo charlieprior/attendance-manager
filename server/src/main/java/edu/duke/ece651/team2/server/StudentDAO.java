@@ -1,7 +1,9 @@
 package edu.duke.ece651.team2.server;
 
 import edu.duke.ece651.team2.shared.AttendanceStatus;
+import edu.duke.ece651.team2.shared.Section;
 import edu.duke.ece651.team2.shared.Student;
+import edu.duke.ece651.team2.shared.University;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -142,15 +144,41 @@ public class StudentDAO extends DAO<Student> {
         return attendanceMap;
     }
 
+    public boolean ifRecorded(int lectureId){
+        String sql = "SELECT * FROM Attendance WHERE lectureId = ?";
+        List<Object> values = Collections.singletonList(lectureId);
+        try (ResultSet resultSet = executeQuery(daoFactory, sql, values)) {
+            if(resultSet.next()){
+                return true;
+            }
+            return false;
+        }
+        catch (SQLException e) {
+            throw new RuntimeException("Something went wrong with database, lectureId:" + lectureId, e);
+        }
+    }
+
     //use for updating old records
-    public Map<Student, String> getAttendanceByLectureId(int lectureId) {
+    public Map<Student, String> getAttendanceByLectureId(int sectionId,int lectureId) {
         Map<Student, String> attendanceMap = new HashMap<>();
-        String sql = "SELECT u.id, u.legalName, u.displayName, a.status, u.email, u.universityId " +
+        boolean recorded = ifRecorded(lectureId);
+        List<Object> values;
+        String sql;
+        if(recorded){
+            sql = "SELECT u.id, u.legalName, u.displayName, a.status, u.email, u.universityId " +
                 "FROM Enrollment e " +
                 "JOIN Attendance a ON e.studentId = a.studentId " +
                 "JOIN Users u ON e.studentId = u.id " +
                 "WHERE a.lectureId = ?";
-        List<Object> values = Collections.singletonList(lectureId);
+            values = Collections.singletonList(lectureId);
+        }
+        else{
+            sql = "SELECT u.id, u.legalName, u.displayName, u.email, u.universityId " +
+                "FROM Enrollment e " +
+                "JOIN Users u ON e.studentId = u.id " +
+                "WHERE e.sectionId = ?";
+            values = Collections.singletonList(sectionId);
+        }  
 
         try (ResultSet resultSet = executeQuery(daoFactory, sql, values)) {
             while (resultSet.next()) {
@@ -160,7 +188,13 @@ public class StudentDAO extends DAO<Student> {
                         resultSet.getInt("universityId"),
                         resultSet.getString("displayName"));
                 student.setStudentID(resultSet.getInt("id"));
-                String status = resultSet.getString("status");
+                String status;
+                if(recorded){
+                    status = resultSet.getString("status");
+                }
+                else{
+                    status = AttendanceStatus.UNRECORDED.toString();
+                }
                 attendanceMap.put(student, status);
             }
         } catch (SQLException e) {
@@ -168,6 +202,19 @@ public class StudentDAO extends DAO<Student> {
         }
 
         return attendanceMap;
+    }
+
+    public List<Student> getStudentsBySection(Section section) {
+        List<Object> values = Collections.singletonList(section.getSectionID());
+        return super.list(daoFactory, "SELECT u.id, u.legalName, u.displayName, u.email, u.universityId, u.isStudent " +
+                "FROM Users u, Enrollment e WHERE u.isStudent=TRUE AND " +
+                "u.id=e.studentId AND " +
+                "e.sectionId=?", values);
+    }
+
+    public List<Student> getStudentsByUniversity(University university) {
+        List<Object> values = Collections.singletonList(university.getId());
+        return super.list(daoFactory, "SELECT * FROM Users WHERE isStudent=TRUE AND universityId = ?", values);
     }
 
 }

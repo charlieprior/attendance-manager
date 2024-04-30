@@ -126,4 +126,8 @@ public class ProfessorDAO extends DAO<Professor> {
             throw new RuntimeException("Failed to fetch attendance for UniversityID for student: " + id, e);
         }
     }
+
+    public void deleteAll(){
+        super.deleteAll(daoFactory, "Users");
+    }
 }

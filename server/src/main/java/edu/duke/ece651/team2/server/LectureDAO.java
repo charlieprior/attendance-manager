@@ -107,4 +107,8 @@ public class LectureDAO extends DAO<Lecture> {
         String sql = "SELECT * FROM Lecture WHERE sectionId = ? ORDER BY date DeSC";
         return super.list(daoFactory, sql, values);
     }
+
+    public void deleteAll(){
+        super.deleteAll(daoFactory, "Lecture");
+    }
 }

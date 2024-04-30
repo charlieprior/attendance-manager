@@ -16,9 +16,9 @@ public class ClientSideView {
         System.out.println(message);
     }
 
-    public String promptUser(String prompt) throws IOException {
-        System.out.println(prompt);
-        return reader.readLine();
-    }
+    // public String promptUser(String prompt) throws IOException {
+    //     System.out.println(prompt);
+    //     return reader.readLine();
+    // }
 
 }
