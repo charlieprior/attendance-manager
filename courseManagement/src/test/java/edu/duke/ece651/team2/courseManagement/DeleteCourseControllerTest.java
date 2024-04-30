@@ -27,15 +27,15 @@ class DeleteCourseControllerTest extends ApplicationTest {
     Professor professor;
     Course course;
 
-    private void printNodes(Node node, String indent) {
-        System.out.println(indent + node.getClass().getSimpleName() + " - " + node.getId());
-        if (node instanceof Parent) {
-            Parent parent = (Parent) node;
-            for (Node child : parent.getChildrenUnmodifiable()) {
-                printNodes(child, indent + "  ");
-            }
-        }
-    }
+//    private void printNodes(Node node, String indent) {
+//        System.out.println(indent + node.getClass().getSimpleName() + " - " + node.getId());
+//        if (node instanceof Parent) {
+//            Parent parent = (Parent) node;
+//            for (Node child : parent.getChildrenUnmodifiable()) {
+//                printNodes(child, indent + "  ");
+//            }
+//        }
+//    }
 
     @Override
     public void start(Stage stage) {
@@ -59,13 +59,8 @@ class DeleteCourseControllerTest extends ApplicationTest {
         type(KeyCode.ENTER);
         clickOn("#ConfirmButton");
 
-        List<Node> nodes = window("Confirmation").getScene().getRoot().getChildrenUnmodifiable();
-        for(Node n : nodes) {
-            printNodes(n, " ");
-        }
-
-//        List<Course> expected = new ArrayList<>();
-//        assertEquals(expected, model.listCourses());
+        FxAssert.verifyThat(window("Confirmation"), WindowMatchers.isShowing());
+        // Literally impossible to progress further with TestFX because buttons in dialogs don't get ids
     }
 
     @Test
