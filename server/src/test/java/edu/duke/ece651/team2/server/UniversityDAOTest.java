@@ -2,6 +2,7 @@ package edu.duke.ece651.team2.server;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -14,12 +15,15 @@ import edu.duke.ece651.team2.shared.University;
 public class UniversityDAOTest {
     DAOFactory factory = new DAOFactory();
     UniversityDAO universityDAO = new UniversityDAO(factory);
+    University u;
 
 
     @Test
     public void testCreate(){
-        University u = new University("testu1", false);
+        universityDAO.deleteAll();
+        u = new University("testu1", false);
         universityDAO.create(u);
+        assertThrows(IllegalArgumentException.class, ()->universityDAO.create(u));
         assertEquals(1, universityDAO.list().size());
         assertEquals("testu1", universityDAO.list().get(0).getName());
         universityDAO.remove(u);
@@ -28,7 +32,10 @@ public class UniversityDAOTest {
 
     @Test
     public void testupdate(){
-        University u = new University("testu1", false);
+        universityDAO.deleteAll();
+        u = new University("testu1", false);
+        assertThrows(IllegalArgumentException.class, ()->universityDAO.update(u));
+        assertThrows(IllegalArgumentException.class, ()->universityDAO.remove(u));
         universityDAO.create(u);
         Integer id = u.getId();
         assertFalse(universityDAO.list().get(0).canChangeName());

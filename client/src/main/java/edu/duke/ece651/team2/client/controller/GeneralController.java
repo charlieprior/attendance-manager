@@ -5,13 +5,18 @@ import edu.duke.ece651.team2.shared.*;
 import java.io.*;
 import java.net.*;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Object;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.checkerframework.checker.units.qual.m;
+
 import java.util.Arrays;
 
 public class GeneralController {
@@ -28,6 +33,22 @@ public class GeneralController {
         clientSideController = new ClientSideController(clientSideView);
     }
 
+    public void setOut(ObjectOutputStream out){
+        this.out = out;
+    }
+
+    public void setIn(ObjectInputStream in){
+        this.in = in;
+    }
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
+
+    public void setMapper(ObjectMapper mapper){
+        this.mapper = mapper;
+    }
+
     public String[] parseMessage(String receivedMessage, String delimiter) {
         return receivedMessage.split(delimiter);
     }
@@ -40,10 +61,10 @@ public class GeneralController {
         out.flush();
     }
 
-    public void sendObject(Object obj) throws IOException{
-        out.writeObject(obj);
-        out.flush();
-    }
+    // public void sendObject(Object obj) throws IOException{
+    //     out.writeObject(obj);
+    //     out.flush();
+    // }
 
     public void sendObject(List<String> obj) throws JsonProcessingException, IOException{
         out.writeObject(mapper.writeValueAsString(obj)); // send string type e.g. {'A','T','P'...}
@@ -106,11 +127,6 @@ public class GeneralController {
         }
     }
 
-    private void generateButtonFXMLPage(List<String> choices,String fileName){
-        String path = "client/src/main/resources/ui/"+fileName;
-
-    }
-
     public List<Section> chooseSection() throws ClassNotFoundException {
         try {
             Section[] sections = mapper.readValue((String) in.readObject(), Section[].class);
@@ -122,31 +138,6 @@ public class GeneralController {
         }
     }
 
-    // private Section chooseSection() throws ClassNotFoundException {
-    //     try {
-    //     Section[] sections = mapper.readValue((String) in.readObject(), Section[].class);
-    //     Section chosen = clientSideController.displayAndChooseSection(sections);
-    //     return chosen;
-
-    //     } catch (IOException e) {
-    //     // TODO Auto-generated catch block
-    //     e.printStackTrace();
-    //     return null;
-    //     }
-    // }
-
-    private Student[] getStudentsFromSection(Section s) throws ClassNotFoundException {
-        try {
-        out.writeObject(mapper.writeValueAsString(s));
-        out.flush();
-        Student[] students = mapper.readValue((String) in.readObject(), Student[].class);
-        return students;
-        } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-        return null;
-        }
-    }
 
     public void generateSectionAttendanceReport(String fileName){
         clientSideView.displayMessage("Waiting for the exported file...");
@@ -163,25 +154,22 @@ public class GeneralController {
         }
     }
 
-
-    // private void beFaculty() throws ClassNotFoundException {
-    //     Section s = chooseSection();
-    //     try {
-    //     out.writeObject(mapper.writeValueAsString(s));
-    //     out.flush();
-    //     } catch (IOException e) {
-    //     // TODO Auto-generated catch block
-    //     e.printStackTrace();
-    //     }
-    // }
+    public List<String> getResponseList(){
+        try {
+            return mapper.readValue((String) in.readObject(), new TypeReference<ArrayList<String>>() {
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public List<String> receiveAllEnrolledSectionAndSetChoice(int num) {
-        clientSideView.displayMessage("waiting");
+        clientSideView.displayMessage("waiting for Sections...");
         clientSideController.displayPromptForStudent(num);
         try {
         // get from server
-        List<String> responseList = mapper.readValue((String) in.readObject(), new TypeReference<ArrayList<String>>() {
-        });
+        List<String> responseList = getResponseList();
         clientSideView.displayMessage(""+responseList.size());
         if (responseList.isEmpty()) {
             clientSideView.displayMessage("You haven't taken any classes this semester!");
@@ -198,67 +186,20 @@ public class GeneralController {
         }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            List<String> responseList = new ArrayList<>();
+            responseList.add("Error: "+e.getMessage());
+            return responseList;
         }
     }
 
-    // private void receiveAllEnrolledSectionAndSetChoice(int num) {
-    //     clientSideController.displayPromptForStudent(num);
-    //     try {
-    //     // get from server
-    //     List<String> responseList = mapper.readValue((String) in.readObject(), new TypeReference<ArrayList<String>>() {
-    //     });
-    //     if (responseList.isEmpty()) {
-    //         clientSideView.displayMessage("You haven't taken any classes this semester!");
-    //         return;
-    //     } else {
-    //         if (responseList.get(0).equals("ERROR")) {
-    //         clientSideView.displayMessage(responseList.get(1));
-    //         return;
-    //         } else {
-    //         int len = responseList.size();
-    //         int resNum = -1;
-    //         while (true) {
-    //             String choice = clientSideController.listSectionCourseName(responseList);
-    //             if (clientSideController.isValidIntegerInRange(choice, 1, len)) {
-    //             resNum = Integer.parseInt(choice);
-    //             break;
-    //             } else {
-    //             clientSideView.displayMessage("Please enter a valid number!");
-    //             }
-    //         }
-    //         out.writeObject(resNum); // send int type to String
-    //         if (num == 1) {
-    //             changeEmailPreferences();
-    //         } else {
-    //             // num == 2
-    //             receiveReportResult();
-    //         }
-    //         }
-    //     }
-    //     } catch (Exception e) {
-    //     e.printStackTrace();
-    //     }
-    // }
-
-    // 1. set email preferences
-    private void setEmailPreferences() {
-        receiveAllEnrolledSectionAndSetChoice(1);
-    }
 
     public String confirmFromServer() {
         try {
-        String responseStr = mapper.readValue((String) in.readObject(), String.class);
-        if (!responseStr.isEmpty()) {
+        String responseStr = (String) in.readObject();
+        if (responseStr!=null) {
             String[] parts = responseStr.split("\\|\\|");
             // String stateCode = parts[0]; // 0/1 0 - error, 1 - success
             String prompt = parts[1];
-            // if (stateCode.equals("0")) {
-            // clientSideView.displayMessage(prompt);
-            // } else {
-            // // success
-            // clientSideView.displayMessage(prompt);
-            // }
             return prompt;
         } else {
             return "Server failed to send a message!";
@@ -275,39 +216,11 @@ public class GeneralController {
         try {
         // get from server
         String responseStr = (String)in.readObject();
-        if (!responseStr.isEmpty()) {
+        if (responseStr!=null) {
             String[] parts = responseStr.split("\\|\\|");
             // String stateCode = parts[0]; // 0/1 0 - error, 1 - success
             String prompt = parts[1];
             return prompt;
-        //     if (stateCode.equals("0")) {
-        //     clientSideView.displayMessage(prompt);
-        //     } else if (stateCode.equals("1")) {
-        //     int resNum = -1;
-        //     while (true) {
-        //         String choice = clientSideView.promptUser(prompt);
-        //         if (clientSideController.isValidIntegerInRange(choice, 0, 1)) {
-        //         resNum = Integer.parseInt(choice);
-        //         break;
-        //         } else {
-        //         clientSideView.displayMessage("Please enter a valid number!");
-        //         }
-        //     }
-        //     // client asked to change status
-        //     out.writeObject(resNum);
-        //     out.flush();
-        //     confirmFromServer();
-        //     // if (resNum == 1) {
-        //     //   out.writeObject(resNum);
-        //     //   out.flush();
-        //     //   // receive msg from server
-        //     //   confirmFromServer();
-        //     // }
-        //     } else {
-        //     clientSideView.displayMessage("Error request!");
-        //     }
-        // } else {
-        //     clientSideView.displayMessage("Server failed to send a message!");
         }
             return "Some Error happens ,maybe you dont have a course";
         } catch (Exception e) {
@@ -316,40 +229,14 @@ public class GeneralController {
         }
     }
 
-    // 2. get attendance report for a course
-    private void getAttendanceReport() {
-        receiveAllEnrolledSectionAndSetChoice(2);
-    }
-
-    private void receiveReportResult() {
-        clientSideView.displayMessage("Pending report...");
-        // confirmFromServer();
-    }
-
-    private void receiveAttendanceUpdateAndRecordResult(int n) throws ClassNotFoundException {
-        clientSideController.displayPromptForFacultyGetConfirm(n);
-        try {
-        List<String> response = mapper.readValue((String) in.readObject(), new TypeReference<List<String>>() {
-        });
-        if (response.get(0).equals("ERROR")) {
-            // handle error (format we set response[0] = "ERROR")
-            clientSideView.displayMessage(response.get(1));
-        } else {
-            clientSideView.displayMessage(response.get(0));
-        }
-        } catch (IOException e) {
-        e.printStackTrace();
-        }
-    }
 
     public List<String> receiveAllStudentInfoByLectureIdForRecord() throws ClassNotFoundException {
         clientSideView.displayMessage(
             "Below are all students and their attendance status for this lecture,  please record their attendances in turn.\n");
         try {
-            List<String> response = mapper.readValue((String) in.readObject(), new TypeReference<List<String>>() {
-            });
+            List<String> response = getResponseList();
             return response;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             List<String> warning = new ArrayList<>();
             warning.add("ERROR");
@@ -358,107 +245,12 @@ public class GeneralController {
         }
     }
 
-    // public void receiveAllStudentInfoByLectureIdForRecord() throws ClassNotFoundException {
-    //     clientSideView.displayMessage(
-    //         "Below are all students and their attendance status for this lecture,  please record their attendances in turn.\n");
-    //     try {
-    //     List<String> response = mapper.readValue((String) in.readObject(), new TypeReference<List<String>>() {
-    //     });
-    //     if (response.get(0).equals("ERROR")) {
-    //         // handle error (format we set response[0] = "ERROR")
-    //         clientSideView.displayMessage(response.get(1));
-    //     } else {
-    //         int len = response.size();
-    //         // display all student
-    //         clientSideController.displayAllClassAttendance(response);
-    //         clientSideView.displayMessage("=============");
-    //         // Ask users for input
-    //         List<Character> inputAttendance = new ArrayList<>();
-    //         for (int i = 0; i < len; i++) {
-    //         clientSideView.displayMessage(response.get(i));
-    //         String choice = "";
-    //         clientSideView.displayMessage(
-    //             "You can only input A,T,P (A-absent,P-present,T-tardy), you can only input it once.\n"
-    //                 + "Please confirm it before entering, otherwise, please select 'update attendance' to modify it.");
-    //         while (true) {
-    //             if (clientSideController.isValidStringForRecord(choice)) {
-    //             break;
-    //             } else {
-    //             choice = clientSideView.promptUser("Please enter a valid input!");
-    //             //clientSideView.displayMessage("Please enter a valid input!");
-    //             }
-    //         }
-    //         inputAttendance.add(choice.charAt(0));
-
-    //         }
-    //         out.writeObject(mapper.writeValueAsString(inputAttendance)); // send string type e.g. {'A','T','P'...}
-    //         out.flush();
-
-    //         // receive from server
-    //         receiveAttendanceUpdateAndRecordResult(1);
-
-    //     }
-    //     } catch (IOException e) {
-    //     e.printStackTrace();
-    //     }
-    // }
-
-    private void receiveAllStudentInfoByLectureIdForUpdate() throws ClassNotFoundException {
-        clientSideView.displayMessage(
-            "Below are all students and their attendance status for this lecture, please select one to update your attendance.\n"
-                + "Please enter a number and a letter (A-absent, T-tardy, P-present), e.g. for 1. Qianyi(1222) you can enter '1A'.");
-        try {
-        List<String> response = mapper.readValue((String) in.readObject(), new TypeReference<List<String>>() {
-        });
-        if (response.get(0).equals("ERROR")) {
-            // handle error (format we set response[0] = "ERROR")
-            clientSideView.displayMessage(response.get(1));
-        } else {
-            int len = response.size();
-            // Ask users for input
-            String choice = "";
-            while (true) {
-            choice = clientSideController.listSectionCourseName(response);
-            if (clientSideController.isValidStringForAttendance(choice, len)) {
-                break;
-            } else {
-                clientSideView.displayMessage("Please enter a valid input!");
-            }
-            }
-            out.writeObject(mapper.writeValueAsString(choice)); // send string type e.g. (1A, 2P, 3T)
-            out.flush();
-            receiveAttendanceUpdateAndRecordResult(2);
-        }
-        } catch (IOException e) {
-        e.printStackTrace();
-        }
-    }
-
-    private void receiveExportFileForAttendance() throws ClassNotFoundException, IOException {
-        clientSideView.displayMessage("Waiting for the exported file...");
-        try {
-        File receivedFile = (File) in.readObject();
-        String savePath = "your/desired/path/";
-        try (FileOutputStream fileOutputStream = new FileOutputStream(savePath + receivedFile.getName())) {
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = in.read(buffer)) != -1) {
-            fileOutputStream.write(buffer, 0, bytesRead);
-            }
-            clientSideView.displayMessage("File received and saved as " + savePath + receivedFile.getName());
-        }
-        } catch (Exception e) {
-        clientSideView.displayMessage(e.getMessage());
-        }
-
-    }
 
     public List<String> receiveAllLectureBySectionId(int n){
         clientSideController.displayPromptForFacultyGetLectures(n);
         try {
         // get from server
-        List<String> responseList = mapper.readValue((String) in.readObject(), new TypeReference<ArrayList<String>>() {
-        });
+        List<String> responseList = getResponseList();
         clientSideView.displayMessage(""+responseList.size());
         if (responseList.isEmpty()) {
             clientSideView.displayMessage("This Section does not have any Lecture right now, please contact Admin!");
@@ -475,57 +267,18 @@ public class GeneralController {
         }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            List<String> warning = new ArrayList<>();
+            warning.add("ERROR");
+            warning.add("Something went wrong.");
+            return warning;
         }
     }
-
-    // private void receiveAllLectureBySectionId(int n) throws ClassNotFoundException {
-    //     clientSideController.displayPromptForFacultyGetLectures(n);
-    //     try {
-    //     List<String> response = mapper.readValue((String) in.readObject(), new TypeReference<List<String>>() {
-    //     });
-    //     if (response.get(0).equals("ERROR")) {
-    //         // handle error (format we set response[0] = "ERROR")
-    //         clientSideView.displayMessage(response.get(1));
-    //     } else {
-    //         int len = response.size();
-    //         int resNum = -1;
-    //         // Ask users for input
-    //         while (true) {
-    //         String choice = clientSideController.listSectionCourseName(response);
-    //         if (clientSideController.isValidIntegerInRange(choice, 1, len)) {
-    //             resNum = Integer.parseInt(choice);
-    //             break;
-    //         } else {
-    //             clientSideView.displayMessage("Please enter a valid number!");
-    //         }
-    //         }
-    //         out.writeObject(mapper.writeValueAsString(resNum)); // send int type
-    //         out.flush();
-    //         if (n == 2) {
-    //         // update
-    //         receiveAllStudentInfoByLectureIdForUpdate();
-    //         } else if (n == 1) {
-    //         // record
-    //         receiveAllStudentInfoByLectureIdForRecord();
-    //         } 
-    //         // else if (n == 3) {
-    //         //   // export
-    //         //   receiveExportFileForAttendance();
-    //         // }
-
-    //     }
-    //     } catch (IOException e) {
-    //     e.printStackTrace();
-    //     }
-    // }
 
     public List<String> receiveAllTakenSectionAndSendChoice(int num) {
         clientSideController.displayPromptForFacultyGetSections(num);
         try {
         // get from server
-        List<String> responseList = mapper.readValue((String) in.readObject(), new TypeReference<ArrayList<String>>() {
-        });
+        List<String> responseList = getResponseList();
         clientSideView.displayMessage(""+responseList.size());
         if (responseList.isEmpty()) {
             clientSideView.displayMessage("You haven't taught any classes this semester!");
@@ -542,72 +295,16 @@ public class GeneralController {
         }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            List<String> warning = new ArrayList<>();
+            warning.add("ERROR");
+            warning.add("Something went wrong.");
+            return warning;
         }
     }
 
-    // private void receiveAllTakenSectionAndSendChoice(int n) throws ClassNotFoundException {
-    //     clientSideController.displayPromptForFacultyGetSections(n);
-    //     try {
-    //     List<String> response = mapper.readValue((String) in.readObject(), new TypeReference<List<String>>() {
-    //     });
-    //     if (response.get(0).equals("ERROR")) {
-    //         // handle error (format we set response[0] = "ERROR")
-    //         clientSideView.displayMessage(response.get(1));
-    //     } else {
-    //         int len = response.size();
-    //         int resNum = -1;
-    //         // Ask users for input
-    //         while (true) {
-    //         String choice = clientSideController.listSectionCourseName(response);
-    //         if (clientSideController.isValidIntegerInRange(choice, 1, len)) {
-    //             resNum = Integer.parseInt(choice);
-    //             break;
-    //         } else {
-    //             clientSideView.displayMessage("Please enter a valid number!");
-    //         }
-    //         }
-    //         out.writeObject(resNum); // send int type
-    //         out.flush();
-    //         if(n==3){
-    //         generateSectionAttendanceReport(response.get(resNum));
-    //         }
-    //         else{
-    //         receiveAllLectureBySectionId(n);
-    //         }
-    //     }
-    //     } catch (IOException e) {
-    //     e.printStackTrace();
-    //     }
-    // }
-
-    // 2. update attendance
-    private void updateAttendance() throws ClassNotFoundException {
-        // 1. choose a section to update
-        // 2. choose a lecture to update
-        // 3. choose a student to update
-        // 4. change his attendance status
-        receiveAllTakenSectionAndSendChoice(2);
-
-    }
-
-    // 3. export student attendance for a lecture
-    private void exportStuentAttendance() throws ClassNotFoundException {
-        // 1. choose a section to export
-        // 2. choose a lecture to export
-        receiveAllTakenSectionAndSendChoice(3);
-    }
-
-    // 1. record attendance for a lecture
-    private void recordAttendance() throws ClassNotFoundException {
-        // 1. choose a section to record
-        // 2. choose a lecture to record
-        // 3. show all students in turn
-        receiveAllTakenSectionAndSendChoice(1);
-    }
 
     // Professor-specific functionality
-    public void professorFunctionality(int choice) throws ClassNotFoundException {
+    public void professorFunctionality(int choice) {
         try {
             if (choice == 5) {
             out.writeObject(choice); // int type
@@ -640,20 +337,6 @@ public class GeneralController {
         }
     }
 
-    // public void startLogIn(String[] credentials) throws ClassNotFoundException {
-    //     int userType = login(credentials);
-    //     if (userType == 1) {
-    //         clientSideView.displayMessage("Student login successful.");
-    //         studentFunctionality();
-    //         clientSideView.displayMessage("Student leaving successful.");
-    //     } else if (userType == 2) {
-    //         clientSideView.displayMessage("Faculty login successful.");
-    //         professorFunctionality();
-    //         clientSideView.displayMessage("Faculty leaving successful.");
-    //     } else {
-    //         clientSideView.displayMessage("Unknown user type.");
-    //     }
-    // }
 
     public void connectToServer() throws ClassNotFoundException {
 

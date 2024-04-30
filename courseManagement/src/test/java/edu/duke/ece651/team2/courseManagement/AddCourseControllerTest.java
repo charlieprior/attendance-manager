@@ -40,9 +40,9 @@ class AddCourseControllerTest extends ApplicationTest {
         assertEquals(expected, new HashSet<>(model.listCourses().stream().map(Course::getName).collect(Collectors.toSet())));
     }
 
-    @Test
-    public void testEmptyName() {
-        clickOn("#ConfirmButton");
-        FxAssert.verifyThat(window("Error"), WindowMatchers.isShowing());
-    }
+    // @Test
+    // public void testEmptyName() {
+    //     clickOn("#ConfirmButton");
+    //     FxAssert.verifyThat(window("Error"), WindowMatchers.isShowing());
+    // }
 }

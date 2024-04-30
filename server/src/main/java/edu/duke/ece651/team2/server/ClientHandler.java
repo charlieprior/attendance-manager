@@ -33,6 +33,10 @@ public class ClientHandler implements Runnable {
         this.status = serverSideController.getStatus();
     }
 
+    public void setUserID(Integer id){
+        this.userId = id;
+    }
+
     // public void takeAttendance() throws ClassNotFoundException {
     //     List<Section> sections = serverSideController.getInstructSection();
     //     Section s_chosen = serverSideController.getChosenSection(sections);
@@ -48,7 +52,7 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    private String handleFacultyRequest(Integer request) throws ClassNotFoundException {
+    public String handleFacultyRequest(Integer request) throws ClassNotFoundException {
         String res = "";
         if (request == 1) {
             // Execute recording attendance
@@ -95,7 +99,7 @@ public class ClientHandler implements Runnable {
 
     
 
-    private String handleStudentRequest(Integer request) throws IOException, ClassNotFoundException {
+    public String handleStudentRequest(Integer request) throws IOException, ClassNotFoundException {
         String res = "";
         if (request == 1) {
             // Execute setting email preferences

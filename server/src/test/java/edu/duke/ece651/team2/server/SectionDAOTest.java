@@ -3,6 +3,7 @@ package edu.duke.ece651.team2.server;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 import java.util.Map;
@@ -19,11 +20,13 @@ public class SectionDAOTest {
 
     @Test
     public void testCreateAndGet() {
+        sectionDAO.deleteAll();
         // Create a new Section object
         Section section = new Section(1, 1, "Test Section");
 
         // Insert the section into the database
         sectionDAO.create(section);
+        assertThrows(IllegalArgumentException.class, ()->sectionDAO.create(section));
 
         // Retrieve the section from the database using its ID
         Section retrievedSection = sectionDAO.get(section.getSectionID());
@@ -44,6 +47,8 @@ public class SectionDAOTest {
         // Create a new Section object
         Section section = new Section(1, 1, "Test Section");
 
+        assertThrows(IllegalArgumentException.class, ()->sectionDAO.update(section));
+        assertThrows(IllegalArgumentException.class, ()->sectionDAO.remove(section));
         // Insert the section into the database
         sectionDAO.create(section);
 
@@ -117,5 +122,21 @@ public class SectionDAOTest {
         sectionDAO.remove(section);
         assertEquals(0, sectionDAO.list().size());
         assertEquals(0, courseDAO.list().size());
+    }
+
+    @Test
+    public void testList(){
+        Section s1 = new Section(3, 2, "S1");
+        Section s2 = new Section(1,null,"S2");
+        Section s3 = new Section(2, 2, "S3");
+        sectionDAO.create(s1);
+        sectionDAO.create(s2);
+        sectionDAO.create(s3);
+        List<Section> ss = sectionDAO.list(2);
+        assertEquals(2, ss.size());
+        assertEquals("S1", ss.get(0).getName());
+        assertEquals("S3", ss.get(1).getName());
+        sectionDAO.deleteAll();
+
     }
 }
