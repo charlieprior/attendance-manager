@@ -20,6 +20,7 @@ public class UniversityDAOTest {
 
     @Test
     public void testCreate(){
+        universityDAO.deleteAll();
         u = new University("testu1", false);
         universityDAO.create(u);
         assertThrows(IllegalArgumentException.class, ()->universityDAO.create(u));
