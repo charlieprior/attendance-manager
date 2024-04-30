@@ -80,6 +80,7 @@ class AddLectureControllerTest extends ApplicationTest {
         clickOn("#SectionSelector");
         type(KeyCode.DOWN);
         type(KeyCode.ENTER);
+        clickOn("#AddButton");
         FxAssert.verifyThat(window("Error"), WindowMatchers.isShowing());
     }
 
