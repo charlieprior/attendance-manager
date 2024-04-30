@@ -32,6 +32,7 @@ public class UniversityDAOTest {
 
     @Test
     public void testupdate(){
+        universityDAO.deleteAll();
         u = new University("testu1", false);
         assertThrows(IllegalArgumentException.class, ()->universityDAO.update(u));
         assertThrows(IllegalArgumentException.class, ()->universityDAO.remove(u));
