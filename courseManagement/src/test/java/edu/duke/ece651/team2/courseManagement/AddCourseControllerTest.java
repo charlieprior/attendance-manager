@@ -1,4 +1,3 @@
-
 package edu.duke.ece651.team2.courseManagement;
 
 import edu.duke.ece651.team2.shared.Course;
@@ -31,18 +30,18 @@ class AddCourseControllerTest extends ApplicationTest {
 
     @Test
     public void testAddCourse() {
-            clickOn("#CourseNameField");
-            write("CourseName");
-            clickOn("#ConfirmButton");
+        clickOn("#CourseNameField");
+        write("CourseName");
+        clickOn("#ConfirmButton");
 
         Set<String> expected = new HashSet<>();
         expected.add("CourseName");
         assertEquals(expected, new HashSet<>(model.listCourses().stream().map(Course::getName).collect(Collectors.toSet())));
     }
 
-    // @Test
-    // public void testEmptyName() {
-    //     clickOn("#ConfirmButton");
-    //     FxAssert.verifyThat(window("Error"), WindowMatchers.isShowing());
-    // }
+    @Test
+    public void testEmptyName() {
+        clickOn("#ConfirmButton");
+        FxAssert.verifyThat(window("Error"), WindowMatchers.isShowing());
+    }
 }
