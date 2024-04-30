@@ -201,15 +201,14 @@ public class UserRegistrationController {
         credentials[2] = studentEmail.getText();
         credentials[3] = studentPassword.getText();
         credentials[4] = String.valueOf(universityComboBox.getValue().getId());
-        int res = controller.addStudentController(credentials);
-        if(res != 0 &&
-                (!Objects.equals(credentials[0], "") && !Objects.equals(credentials[1], "") &&
+        if((!Objects.equals(credentials[0], "") && !Objects.equals(credentials[1], "") &&
                 !Objects.equals(credentials[2], "") && !Objects.equals(credentials[3], "")
                         && !Objects.equals(universityComboBox.getValue(), null))){
+            int res = controller.addStudentController(credentials);
             showAlert("Sign-Up Successful!\n" + "User ID is: " + res);
         }
         else if (Objects.equals(universityComboBox.getValue(), null)){
-            showAlert("Sign-Up Failed, please University Selection!");
+            showAlert("Sign-Up Failed, please make a University Selection!");
         }
         else{
             showAlert("Sign-Up Failed, please check and type again!");
@@ -223,15 +222,14 @@ public class UserRegistrationController {
         credentials[1] = facultyEmail.getText();
         credentials[2] = facultyPassword.getText();
         credentials[3] = String.valueOf(universityComboBox.getValue().getId());
-        int res = controller.addFacultyController(credentials);
-        if(res != 0 &&
-                (!Objects.equals(credentials[0], "") && !Objects.equals(credentials[1], "")
+        if((!Objects.equals(credentials[0], "") && !Objects.equals(credentials[1], "")
                         && !Objects.equals(credentials[2], "")
                         && !Objects.equals(universityComboBox.getValue(), null))){
+            int res = controller.addFacultyController(credentials);
             showAlert("Sign-Up Successful!\n" + "User ID is: " + res);
         }
         else if (Objects.equals(universityComboBox.getValue(), null)){
-            showAlert("Sign-Up Failed, please University Selection!");
+            showAlert("Sign-Up Failed, please make a University Selection!");
         }
         else{
             showAlert("Sign-Up Failed, please check and type again!");
