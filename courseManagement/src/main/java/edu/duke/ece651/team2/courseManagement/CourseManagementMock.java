@@ -1,9 +1,9 @@
 package edu.duke.ece651.team2.courseManagement;
 
 import edu.duke.ece651.team2.shared.*;
+import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CourseManagementMock implements CourseManagementInterface {
@@ -14,6 +14,7 @@ public class CourseManagementMock implements CourseManagementInterface {
     List<Professor> professors = new ArrayList<>();
     List<Section> sections = new ArrayList<>();
     List<Lecture> lectures = new ArrayList<>();
+    List<Pair<Section, Student>> enrollments = new ArrayList<>();
 
     public CourseManagementMock(University university) {
         this.university = university;
@@ -44,12 +45,12 @@ public class CourseManagementMock implements CourseManagementInterface {
 
     @Override
     public void deleteAllCourses() {
-
+        courses.clear();
     }
 
     @Override
     public void removeCourse(Course course) {
-
+        courses.remove(course);
     }
 
     @Override
@@ -59,7 +60,7 @@ public class CourseManagementMock implements CourseManagementInterface {
 
     @Override
     public void updateCourse(Course course) {
-
+        // nothing to do, this is purely to update in the DAO
     }
 
     @Override
@@ -71,11 +72,13 @@ public class CourseManagementMock implements CourseManagementInterface {
 
     @Override
     public boolean addStudentToSection(Section section, Student student) {
-        return false;
+        enrollments.add(new Pair<>(section, student));
+        return true;
     }
 
     @Override
     public void addStudentToSection(Integer studentId, Section section) {
+        // unused
     }
 
     @Override
@@ -105,7 +108,13 @@ public class CourseManagementMock implements CourseManagementInterface {
 
     @Override
     public List<Student> getStudentsBySection(Section section) {
-        return null;
+        List<Student> ret = new ArrayList<>();
+        for(Pair<Section, Student> p : enrollments) {
+            if(p.getKey().equals(section)) {
+                ret.add(p.getValue());
+            }
+        }
+        return ret;
     }
 
     @Override
@@ -139,6 +148,6 @@ public class CourseManagementMock implements CourseManagementInterface {
 
     @Override
     public List<Student> getAllStudentsInUniversity() {
-        return null;
+        return Collections.singletonList(new Student("Name", "email", university.getId(), "displayName"));
     }
 }
