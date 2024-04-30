@@ -1,201 +1,217 @@
-// package edu.duke.ece651.team2.client;
+package edu.duke.ece651.team2.client;
 
-// import static org.mockito.ArgumentMatchers.any;
-// import static org.mockito.Mockito.mock;
-// import static org.mockito.Mockito.never;
-// import static org.mockito.Mockito.times;
-// import static org.mockito.Mockito.verify;
-// import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
-// import org.junit.jupiter.api.extension.ExtendWith;
-// import org.mockito.Mockito;
-// import org.testfx.framework.junit5.ApplicationExtension;
-// import org.testfx.framework.junit5.Start;
-// import org.testfx.util.WaitForAsyncUtils;
+import java.io.IOException;
 
-// import edu.duke.ece651.team2.client.controller.ButtonController;
-// import edu.duke.ece651.team2.client.controller.GeneralController;
-// import javafx.application.Platform;
-// import javafx.event.ActionEvent;
-// import javafx.scene.Scene;
-// import javafx.scene.control.Button;
-// import javafx.scene.control.TextField;
-// import javafx.scene.layout.StackPane;
-// import javafx.stage.Stage;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.testfx.framework.junit5.ApplicationExtension;
+import org.testfx.framework.junit5.Start;
+import org.testfx.util.WaitForAsyncUtils;
 
-// @ExtendWith(ApplicationExtension.class)
-// public class ButtonControllerTest {
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import edu.duke.ece651.team2.client.controller.ButtonController;
+import edu.duke.ece651.team2.client.controller.GeneralController;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+@ExtendWith(ApplicationExtension.class)
+public class ButtonControllerTest {
 
 
-//     private ButtonController buttonController;
-//     private GeneralController mockController;
-//     TextField logInFieldID;
-//     TextField logInFieldPassword;
+    private ButtonController buttonController;
+    private GeneralController mockController;
+    TextField logInFieldID;
+    TextField logInFieldPassword;
 
-//     @BeforeEach
-//     void setUp() {
-//         // Create a mock GeneralController
-//         mockController = Mockito.mock(GeneralController.class);
+    ComboBox<String> chooseLectureMock;
+    ComboBox<String> chooseSectionMock;
+    ComboBox<String> chooseStudentMock;
+
+    @BeforeEach
+    void setUp() {
+        // Create a mock GeneralController
+        mockController = Mockito.mock(GeneralController.class);
         
-//         // Create the ButtonController instance with the mock GeneralController
-//         buttonController = new ButtonController(mockController);
-//         logInFieldID = new TextField();
-//         logInFieldPassword = new TextField();
-//         buttonController.setlogInFieldID(logInFieldID);
-//         buttonController.setlogInFieldPassword(logInFieldPassword);
-//     }
+        // Create the ButtonController instance with the mock GeneralController
+        buttonController = new ButtonController(mockController);
+        logInFieldID = new TextField();
+        logInFieldPassword = new TextField();
+        buttonController.setlogInFieldID(logInFieldID);
+        buttonController.setlogInFieldPassword(logInFieldPassword);
+    }
 
-//     @Test
-//     void testOnLogInButtonStudent() throws ClassNotFoundException {
-//         // Set up the test scenario
-//         logInFieldID.setText("student id");
-//         logInFieldPassword.setText("student password");
+    @Test
+    void testOnLogInButtonStudent() throws ClassNotFoundException {
+        // Set up the test scenario
+        logInFieldID.setText("student id");
+        logInFieldPassword.setText("student password");
 
-//         // Mock the GeneralController's behavior
-//         when(mockController.getConnected()).thenReturn(true);
-//         when(mockController.login(any(String[].class))).thenReturn(1); // Successful login
+        // Mock the GeneralController's behavior
+        when(mockController.getConnected()).thenReturn(true);
+        when(mockController.login(any(String[].class))).thenReturn(1); // Successful login
 
-//         Button b = new Button("Log In");
+        Button b = new Button("Log In");
 
-//         Platform.runLater(() -> {
-//             StackPane root = new StackPane(b);
-//             Scene scene = new Scene(root);
+        Platform.runLater(() -> {
+            StackPane root = new StackPane(b);
+            Scene scene = new Scene(root);
 
-//             Stage stage = new Stage();
-//             stage.setScene(scene);
-//             stage.show();
-//             stage.close();
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+            stage.close();
 
-//             try {
-//                 buttonController.onLogInButton(new ActionEvent(b, null));
-//             } catch (ClassNotFoundException e) {
-//                 e.printStackTrace();
-//             }
-//         });
+            try {
+                buttonController.onLogInButton(new ActionEvent(b, null));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
 
-//         WaitForAsyncUtils.waitForFxEvents();
-//         // // Verify that the correct methods are called
-//         // verify(mockController, times(1)).getConnected();
-//         // verify(mockController, times(1)).login(any(String[].class));
-//     }
+        WaitForAsyncUtils.waitForFxEvents();
+        // // Verify that the correct methods are called
+        // verify(mockController, times(1)).getConnected();
+        // verify(mockController, times(1)).login(any(String[].class));
+    }
 
-//     @Test
-//     void testOnLogInButtonFaculty() throws ClassNotFoundException {
-//         // Set up the test scenario
-//         logInFieldID.setText("professor id");
-//         logInFieldPassword.setText("professor password");
+    @Test
+    void testOnLogInButtonFaculty() throws ClassNotFoundException {
+        // Set up the test scenario
+        logInFieldID.setText("professor id");
+        logInFieldPassword.setText("professor password");
 
-//         // Mock the GeneralController's behavior
-//         when(mockController.getConnected()).thenReturn(true);
-//         when(mockController.login(any(String[].class))).thenReturn(2); // Successful login
+        // Mock the GeneralController's behavior
+        when(mockController.getConnected()).thenReturn(true);
+        when(mockController.login(any(String[].class))).thenReturn(2); // Successful login
 
-//         Button b = new Button("Log In");
+        Button b = new Button("Log In");
 
-//         Platform.runLater(() -> {
-//             StackPane root = new StackPane(b);
-//             Scene scene = new Scene(root);
+        Platform.runLater(() -> {
+            StackPane root = new StackPane(b);
+            Scene scene = new Scene(root);
 
-//             Stage stage = new Stage();
-//             stage.setScene(scene);
-//             stage.show();
-//             stage.close();
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+            stage.close();
 
-//             try {
-//                 buttonController.onLogInButton(new ActionEvent(b, null));
-//             } catch (ClassNotFoundException e) {
-//                 e.printStackTrace();
-//             }
-//         });
+            try {
+                buttonController.onLogInButton(new ActionEvent(b, null));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
 
-//         WaitForAsyncUtils.waitForFxEvents();
-//         // // Verify that the correct methods are called
-//         // verify(mockController, times(1)).getConnected();
-//         // verify(mockController, times(1)).login(any(String[].class));
-//     }
+        WaitForAsyncUtils.waitForFxEvents();
+        // // Verify that the correct methods are called
+        // verify(mockController, times(1)).getConnected();
+        // verify(mockController, times(1)).login(any(String[].class));
+    }
 
-//     @Test
-//     void testOnLogInButtonAlert() throws ClassNotFoundException {
-//         // Set up the test scenario
-//         logInFieldID.setText("no id");
-//         logInFieldPassword.setText("no password");
+    @Test
+    void testOnLogInButtonAlert() throws ClassNotFoundException {
+        // Set up the test scenario
+        logInFieldID.setText("no id");
+        logInFieldPassword.setText("no password");
 
-//         // Mock the GeneralController's behavior
-//         when(mockController.getConnected()).thenReturn(true);
-//         when(mockController.login(any(String[].class))).thenReturn(-1);
+        // Mock the GeneralController's behavior
+        when(mockController.getConnected()).thenReturn(true);
+        when(mockController.login(any(String[].class))).thenReturn(-1);
 
-//         Button b = new Button("Log In");
+        Button b = new Button("Log In");
 
-//         Platform.runLater(() -> {
-//             StackPane root = new StackPane(b);
-//             Scene scene = new Scene(root);
+        Platform.runLater(() -> {
+            StackPane root = new StackPane(b);
+            Scene scene = new Scene(root);
 
-//             Stage stage = new Stage();
-//             stage.setScene(scene);
-//             stage.show();
-//             stage.close();
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+            stage.close();
 
-//             try {
-//                 buttonController.onLogInButton(new ActionEvent(b, null));
-//             } catch (ClassNotFoundException e) {
-//                 e.printStackTrace();
-//             }
-//         });
+            try {
+                buttonController.onLogInButton(new ActionEvent(b, null));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
 
-//         WaitForAsyncUtils.waitForFxEvents();
+        WaitForAsyncUtils.waitForFxEvents();
     
-//     }
+    }
 
 
-//     @Test
-//     void testOnReturnStudent() throws ClassNotFoundException {
+    @Test
+    void testOnReturnStudent() throws ClassNotFoundException {
 
-//         Button b = new Button("Return");
+        Button b = new Button("Return");
 
-//         Platform.runLater(() -> {
-//             StackPane root = new StackPane(b);
-//             Scene scene = new Scene(root);
+        Platform.runLater(() -> {
+            StackPane root = new StackPane(b);
+            Scene scene = new Scene(root);
 
-//             Stage stage = new Stage();
-//             stage.setScene(scene);
-//             stage.show();
-//             stage.close();
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+            stage.close();
 
-//             try {
-//                 buttonController.onReturnStudent(new ActionEvent(b, null));
-//                 //buttonController.onReturnFaculty(new ActionEvent(b, null));
-//             } catch (Exception e) {
-//                 e.printStackTrace();
-//             }
-//         });
+            try {
+                buttonController.onReturnStudent(new ActionEvent(b, null));
+                //buttonController.onReturnFaculty(new ActionEvent(b, null));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
-//         WaitForAsyncUtils.waitForFxEvents();
-//     }
+        WaitForAsyncUtils.waitForFxEvents();
+    }
 
-//     @Test
-//     void testOnReturnFaculty() throws ClassNotFoundException {
+    @Test
+    void testOnReturnFaculty() throws ClassNotFoundException {
 
-//         Button b = new Button("Return");
+        Button b = new Button("Return");
 
-//         Platform.runLater(() -> {
-//             StackPane root = new StackPane(b);
-//             Scene scene = new Scene(root);
+        Platform.runLater(() -> {
+            StackPane root = new StackPane(b);
+            Scene scene = new Scene(root);
 
-//             Stage stage = new Stage();
-//             stage.setScene(scene);
-//             stage.show();
-//             stage.close();
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+            stage.close();
 
-//             try {
-//                 buttonController.onReturnFaculty(new ActionEvent(b, null));
-//             } catch (Exception e) {
-//                 e.printStackTrace();
-//             }
-//         });
+            try {
+                buttonController.onReturnFaculty(new ActionEvent(b, null));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
-//         WaitForAsyncUtils.waitForFxEvents();
-//     }
+        WaitForAsyncUtils.waitForFxEvents();
+    }
 
-    
-// }
+}
