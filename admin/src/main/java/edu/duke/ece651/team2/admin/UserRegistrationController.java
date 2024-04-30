@@ -345,10 +345,12 @@ public class UserRegistrationController {
         String[] credentials = new String[2];
         credentials[0] = facultyIDNumber.getText();
         credentials[1] = facultyPassword.getText();
-        int res = controller.updateFacultyController(credentials);
-        if(res != 0 && (!Objects.equals(credentials[0], "")
+        if((!Objects.equals(credentials[0], "")
                 && !Objects.equals(credentials[1], ""))){
-            showAlert("Update Successful!");
+            int res = controller.updateFacultyController(credentials);
+            if (res != 0){
+                showAlert("Update Successful!");
+            }
         }
         else{
             showAlert("Update Failed, please check and type again!");
