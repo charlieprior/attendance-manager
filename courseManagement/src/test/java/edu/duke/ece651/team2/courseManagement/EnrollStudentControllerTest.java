@@ -8,7 +8,9 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
+import org.testfx.api.FxAssert;
 import org.testfx.framework.junit5.ApplicationTest;
+import org.testfx.matcher.base.WindowMatchers;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -48,11 +50,31 @@ class EnrollStudentControllerTest extends ApplicationTest {
         clickOn("#StudentSelector");
         type(KeyCode.DOWN);
         type(KeyCode.ENTER);
-        clickOn("#ConfirmButton");
+        clickOn("#EnrollButton");
 
         Set<String> expected = new HashSet<>();
         expected.add("Name");
         assertEquals(expected, new HashSet<>(model.getStudentsBySection(section).stream().map(Student::getLegalName).collect(Collectors.toSet())));
     }
 
+    @Test
+    public void testNullSection() {
+        clickOn("#StudentSelector");
+        type(KeyCode.DOWN);
+        type(KeyCode.ENTER);
+        clickOn("#EnrollButton");
+        FxAssert.verifyThat(window("Error"), WindowMatchers.isShowing());
+    }
+
+    @Test
+    public void testNullStudent() {
+        clickOn("#CourseSelector");
+        type(KeyCode.DOWN);
+        type(KeyCode.ENTER);
+        clickOn("#SectionSelector");
+        type(KeyCode.DOWN);
+        type(KeyCode.ENTER);
+        clickOn("#EnrollButton");
+        FxAssert.verifyThat(window("Error"), WindowMatchers.isShowing());
+    }
 }
