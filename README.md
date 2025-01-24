@@ -1,5 +1,7 @@
 # ECE 651 - Spring 24 - Team Project - Attendance Manager
 
+**Final Grade: 97.57%**
+
 ## Overview
 This project was created over the course of a semester for the Duke University Software Engineering course. The project is a text-based terminal application that allows professors to take attendance in their classes. The application allows professors to load a roster from a CSV file, take attendance, mark students as present, absent, or tardy, and export the attendance records to a file. The application also sends notifications to students when their attendance is changed and sends a weekly report to students with their attendance records. The application also allows students to request a name change that will be reflected in the attendance records. The application is designed to be operating system independent and to run on Windows, Mac, Linux, etc. The application is designed to be secure and to protect the sensitive information about enrollment and attendance. The application is designed to be user-friendly and to save professors time in taking attendance. The project was written in Java using JavaFX for the GUI and JUnit for testing. It uses JDBC and MySQL for database management. The project was managed using GitLab and GitLab CI/CD was used for continuous integration and deployment. The project was developed using the Agile methodology and the Scrum framework. The project was developed by a team of four students: Charles Prior, Louise Li, Qianyi Xue, and Kenan Colak.
 
