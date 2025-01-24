@@ -1,78 +1,25 @@
-# ECE 651 - Spring 24 - Team Project - Evolution 1
+# ECE 651 - Spring 24 - Team Project - Attendance Manager
 
-[![pipeline status](https://gitlab.oit.duke.edu/kits/project-000-000-01-test/project-team-2/badges/main/pipeline.svg)](https://gitlab.oit.duke.edu/kits/project-000-000-01-test/project-team-2/-/commits/main)
-[![coverage report](https://gitlab.oit.duke.edu/kits/project-000-000-01-test/project-team-2/badges/main/coverage.svg)](https://gitlab.oit.duke.edu/kits/project-000-000-01-test/project-team-2/-/commits/main)
+## Overview
+This project was created over the course of a semester for the Duke University Software Engineering course. The project is a text-based terminal application that allows professors to take attendance in their classes. The application allows professors to load a roster from a CSV file, take attendance, mark students as present, absent, or tardy, and export the attendance records to a file. The application also sends notifications to students when their attendance is changed and sends a weekly report to students with their attendance records. The application also allows students to request a name change that will be reflected in the attendance records. The application is designed to be operating system independent and to run on Windows, Mac, Linux, etc. The application is designed to be secure and to protect the sensitive information about enrollment and attendance. The application is designed to be user-friendly and to save professors time in taking attendance. The project was written in Java using JavaFX for the GUI and JUnit for testing. It uses JDBC and MySQL for database management. The project was managed using GitLab and GitLab CI/CD was used for continuous integration and deployment. The project was developed using the Agile methodology and the Scrum framework. The project was developed by a team of four students: Charles Prior, Louise Li, Qianyi Xue, and Kenan Colak.
 
-## Coverage
+## Demo
+The following video demonstrates the functionality of the application:
+[Video Demo](https://www.dropbox.com/scl/fi/b5c47rlfi0angzrbui8z3/final_project_demo.mov?rlkey=h8zwef1xpexh8r8wwrj65k30o&dl=0)
 
-[Detailed Coverage](https://project-team-2-kits-project-000-000-01-test-f5e0897fa759ec651cb.pages.oit.duke.edu/)
+## Installation
+The project uses gradle for building and running the application.
 
-## Team #2
-
-*Please replace the _x_ above with your team number*
-
-## Team Members
-
-*Please complete your team information:*
-
-- *Louise Li / xl435*
-- *Charles Prior / cgp26*
-- *Qianyi Xue / qx49*
-- *Kenan Colak / kc566*
-
-## LEAD TA
-
-- **Your Project LEAD TA is**: *Xingqi*
-- Your team will have one lead TA, to which you can reach out for clarification on the specifications.
-- You can ask for help from any TA, but regarding specifications, the LEAD TA definitions will have precedence over all
-  other TAs.
-
-## Logistics
-
-Before we dive into the requirements, here are a few things you need to know about the logistics of this project:
-
-- We expect you to perform **good project management: estimating the time of tasks, setting intermediate deadlines,
-  tracking progress, and adjusting your schedule as needed. For this evolution of your project, we have provided a
-  spreadsheet with one possible task breakdown. You may use our task breakdown, or create your own. You may use a
-  spreadsheet, GitLab issues, or any other tool you want. However, you must perform this project management and discuss
-  it with your TA by 3/19. You may of course revise this as you go.
-- Please make **UML diagrams** of your planned design. Set up an appointment to discuss the initial version with your TA
-  no later than 3/19. Revise them as needed and submit final versions with your final code. This is part of your design
-  grade.
-- Keep in mind that **change is the only constant** in software engineering and prepare for it.
-- We expect you to **use issues, feature branches, pull requests, and perform code reviews**. The process you use for
-  software development is also part of your grade.
-- As always, we expect you to produce **clean code**:  to include comments, have good variable names, clean formatting,
-  and well-abstracted methods. Your group should define its own coding standard, and you should all ensure that you
-  follow it.
-- Your TA is your “customer” but also your mentor. You should meet with them frequently. You should meet at least twice
-  per week while working on an evolution. You should have at least one “sprint review” style meeting per evolution, but
-  may have more. There should be no surprises in grading—you should know what your TA thinks of your project throughout.
-- As we discussed in class, if you are having team problems, you should attempt to resolve them yourselves, and if that
-  fails, involve your TA and/or professor. Whether your team is working well or poorly together, we ask that each of you
-  do an individual contribution assessment at the end of each evolution. We will post a link to this form later.
-
-### List of things you will be graded on:
-
-- Functionality
-- Design
-- Documentation (including initial UML review + final UML diagrams).
-- Testing (at least branch coverage)
-- Other Code Quality Factors (e.g., naming, formatting, smells).
-- Process + project management (Issue tracking, CI/CD, Code Reviews, etc).
-
-### Policies and Integrity
-
-- You need to create your own design and code.
-- Gathering code from the internet and reusing it is not an acceptable practice for this course.
-- The use of AI-driven tools (like ChatGPT, Copilot, etc.) is not allowed.
-- The use of pre-existing solutions (design patterns excluded) is also not acceptable in this course.
-- Reviewing other systems as examples is acceptable *but* you must document the sources and include those in your
-  repository.
-- Violation of the previous policies is considered academic misconduct and it will be reported to the proper university
-  officials.
+## My contributions
+I was responsible for the following tasks:
+- Implementing the "Course" class
+- Implementing the initial email notifier system
+- Implementing the UI for student status and course selection
+- Implementing CI/CD pipeline
+- Designing the database and implementing the database connection
 
 ## User Stories
+_The following user stories were developed for the project:_
 
 During lecture time, most professors take attendance to record which students attend sessions.
 Some professors take attendance using a signing sheet which is circulated among the students to sign their names.
@@ -121,22 +68,3 @@ In many cases, students desire that a different name be displayed during the att
 Thus, they can reach out to the professor asking them to change their name.
 Given that, some university systems don't allow name changes, both the legal name and the display name should be kept in
 sync.
-
-## Submission
-
-- Project Submission is through GitLab
-    - Make sure to commit, push, and generate a release on GitLab before the deadline.
-- Late submission policy
-    - Late submissions are not allowed without a completed request before the deadline.
-    - Grade penalty policy applies as described on day one slides.
-- Documentation
-    - Diagrams and their sources must be included in a folder called documentation in the GitLab repository.
-        - Although you can use any tool, the tool needs to be freely available.
-        - PDF printouts should also be included.
-        - We recommend [StarUML](https://staruml.io) to generate the diagrams. *You can use it as an evaluation, and
-          including a white rectangle in the back helps you to generate good printouts.*
-    - Software Requirement Specification (SRS) Document
-        - Document clearly the requirements of the software.
-    - Design Decisions
-        - Include a document discussing the design decisions you made. E.g., which design patterns did you consider and
-          why did you select one over the others. 
